@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity" tools:orientation="vertical"
+>
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            style="?android:attr/buttonBarStyle" android:id="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/tvResult" android:layout_weight="3"
+                android:gravity="bottom|right" android:background="@drawable/text_view_shadow"
+                android:textSize="30sp"
+                android:paddingLeft="10dp" android:paddingRight="10dp" android:textColor="@android:color/black"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="wrap_content" android:layout_width="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp" tools:layout_editor_absoluteY="-2dp" android:layout_weight="1"
+                style="?android:attr/buttonBarStyle">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="1"
+                    style="?android:attr/buttonBarStyle">
+                <Button
+                        android:text="Clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonClear" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@android:color/black" android:textSize="18sp"
+                        android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"/>
+                <Button
+                        android:text="No Ads"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNoAds" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@android:color/black" android:textSize="18sp"
+                        android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"/>
+                <Button
+                        android:text="History"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonHistory" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@android:color/black" android:textSize="16sp"
+                        android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"/>
+                <Button
+                        android:text="Del"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/button6" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@android:color/black" android:textSize="18sp"
+                        android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="1">
+                <Button
+                        android:text="Year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonYear" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@color/colorNums" android:textSize="18sp"
+                        android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="Month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonMonth" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@color/colorNums" android:textSize="18sp"
+                        android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="Week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonWeek" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@color/colorNums" android:textSize="18sp"
+                        android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="Day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonDay" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@color/colorNums" android:textSize="18sp"
+                        android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="1">
+                <Button
+                        android:text="Hour "
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonHour" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@color/colorNums" android:textSize="18sp"
+                        android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="Minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonMinute" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@color/colorNums" android:textSize="18sp"
+                        android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="Second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonSecond" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@color/colorNums" android:textSize="18sp"
+                        android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="Msec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonMsec" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@color/colorNums" android:textSize="18sp"
+                        android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="1">
+                <Button
+                        android:text="7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum7" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum8" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum9" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="@string/button_divide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonDivide" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+                        android:textColor="@android:color/holo_blue_dark"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="1">
+                <Button
+                        android:text="4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum4" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum5" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum6" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="@string/button_multiply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonMultiply" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+                        android:textColor="@android:color/holo_blue_dark"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="1">
+                <Button
+                        android:text="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum1" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum2" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum3" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="@string/button_substraction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonSubstraction"
+                        android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+                        android:textColor="@android:color/holo_blue_dark"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="1">
+                <Button
+                        android:text="."
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonComma" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textColor="@android:color/black" android:textSize="36sp"
+                        android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"/>
+                <Button
+                        android:text="0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonNum0" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="="
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonEqual" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+                        android:padding="0dp"/>
+                <Button
+                        android:text="+"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/buttonAddition" android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                        android:textSize="36sp"
+                        android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+                        android:textColor="@android:color/holo_blue_dark"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
