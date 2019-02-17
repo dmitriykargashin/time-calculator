@@ -8,6 +8,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 import com.dmitriykargashin.timecalculator.extension.toHTMLWithColor
 import com.dmitriykargashin.timecalculator.lexer.TokenType
+import android.text.TextUtils
+import android.text.Html
+import android.text.Spanned
+import com.dmitriykargashin.timecalculator.extension.removeAllSpaces
+import com.dmitriykargashin.timecalculator.extension.removeHTML
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         /// times
         buttonYear.setOnClickListener {
             //todo https://stackoverflow.com/questions/37904739/html-fromhtml-deprecated-in-android-n
-         //   tvResult.append(" Year ".toHTMLWithColor())
+            //   tvResult.append(" Year ".toHTMLWithColor())
             tvResult.append(TokenType.YEAR.value.addStartAndEndSpace().toHTMLWithColor())
         }
         buttonMonth.setOnClickListener {
@@ -82,18 +88,18 @@ class MainActivity : AppCompatActivity() {
             tvResult.append(TokenType.MSECOND.value.addStartAndEndSpace().toHTMLWithColor())
         }
 
-        ///operators
+        ///operations
         buttonMultiply.setOnClickListener {
             tvResult.append(TokenType.MULTIPLY.value.addStartAndEndSpace())
-          //  tvResult.append(" \u00D7 ")
+            //  tvResult.append(" \u00D7 ")
         }
         buttonDivide.setOnClickListener {
             tvResult.append(TokenType.DIVIDE.value.addStartAndEndSpace())
-          //  tvResult.append(" \u00F7 ")
+            //  tvResult.append(" \u00F7 ")
         }
         buttonSubstraction.setOnClickListener {
             tvResult.append(TokenType.MINUS.value.addStartAndEndSpace())
-         //   tvResult.append(" \u2212 ")
+            //   tvResult.append(" \u2212 ")
         }
         buttonAddition.setOnClickListener {
             tvResult.append(TokenType.PLUS.value.addStartAndEndSpace())
@@ -102,6 +108,10 @@ class MainActivity : AppCompatActivity() {
 
         buttonClear.setOnClickListener {
             tvResult.text = ""
+        }
+
+        buttonEqual.setOnClickListener {
+            tvResult.text = tvResult.text.toString().removeHTML().removeAllSpaces()
         }
     }
 }
