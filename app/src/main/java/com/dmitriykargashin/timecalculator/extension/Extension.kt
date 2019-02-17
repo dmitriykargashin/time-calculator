@@ -10,5 +10,10 @@ import android.text.Spanned
 fun String.toHTMLWithColor(): Spanned {
 
 //todo how to get color from colors.xml&?
-    return Html.fromHtml("<small><small><font color='#33691e'>" + this + "</font></small></small>")
+    return Html.fromHtml("<small><small><font color='#33691e'>$this</font></small></small>")
+}
+
+fun String.addStartAndEndSpace(): String {
+
+    return " $this "
 }

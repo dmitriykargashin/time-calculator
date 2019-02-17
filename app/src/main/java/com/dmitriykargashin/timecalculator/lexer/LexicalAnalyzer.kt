@@ -15,7 +15,7 @@ class LexicalAnalyzer(var stringExrpession: String) {
     fun analyze(): MutableList<Token> {
         // removes spaces
         stringExrpession = stringExrpession.replace(" ", "")
-stringExrpession.indexOf("Month")
+        //stringExrpession.indexOf("Month")
 
 
         return listOfTokens

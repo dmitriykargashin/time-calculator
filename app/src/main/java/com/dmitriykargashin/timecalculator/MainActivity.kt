@@ -2,10 +2,12 @@ package com.dmitriykargashin.timecalculator
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.dmitriykargashin.timecalculator.extension.addStartAndEndSpace
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 import com.dmitriykargashin.timecalculator.extension.toHTMLWithColor
+import com.dmitriykargashin.timecalculator.lexer.TokenType
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,43 +57,47 @@ class MainActivity : AppCompatActivity() {
         /// times
         buttonYear.setOnClickListener {
             //todo https://stackoverflow.com/questions/37904739/html-fromhtml-deprecated-in-android-n
-            tvResult.append(" Year ".toHTMLWithColor())
+         //   tvResult.append(" Year ".toHTMLWithColor())
+            tvResult.append(TokenType.YEAR.value.addStartAndEndSpace().toHTMLWithColor())
         }
         buttonMonth.setOnClickListener {
-            tvResult.append(" Month ".toHTMLWithColor())
+            tvResult.append(TokenType.MONTH.value.addStartAndEndSpace().toHTMLWithColor())
         }
         buttonWeek.setOnClickListener {
-            tvResult.append(" Week ".toHTMLWithColor())
+            tvResult.append(TokenType.WEEK.value.addStartAndEndSpace().toHTMLWithColor())
         }
         buttonDay.setOnClickListener {
-            tvResult.append(" Day ".toHTMLWithColor())
+            tvResult.append(TokenType.DAY.value.addStartAndEndSpace().toHTMLWithColor())
         }
         buttonHour.setOnClickListener {
-            tvResult.append(" Hour ".toHTMLWithColor())
+            tvResult.append(TokenType.HOUR.value.addStartAndEndSpace().toHTMLWithColor())
         }
         buttonMinute.setOnClickListener {
-            tvResult.append(" Minute ".toHTMLWithColor())
+            tvResult.append(TokenType.MINUTE.value.addStartAndEndSpace().toHTMLWithColor())
         }
         buttonSecond.setOnClickListener {
-            tvResult.append(" Second ".toHTMLWithColor())
+            tvResult.append(TokenType.SECOND.value.addStartAndEndSpace().toHTMLWithColor())
         }
         buttonMsec.setOnClickListener {
-            tvResult.append(" MSec ".toHTMLWithColor())
+            tvResult.append(TokenType.MSECOND.value.addStartAndEndSpace().toHTMLWithColor())
         }
 
         ///operators
         buttonMultiply.setOnClickListener {
-
-            tvResult.append(" \u00D7 ")
+            tvResult.append(TokenType.MULTIPLY.value.addStartAndEndSpace())
+          //  tvResult.append(" \u00D7 ")
         }
         buttonDivide.setOnClickListener {
-            tvResult.append(" \u00F7 ")
+            tvResult.append(TokenType.DIVIDE.value.addStartAndEndSpace())
+          //  tvResult.append(" \u00F7 ")
         }
         buttonSubstraction.setOnClickListener {
-            tvResult.append(" \u2212 ")
+            tvResult.append(TokenType.MINUS.value.addStartAndEndSpace())
+         //   tvResult.append(" \u2212 ")
         }
         buttonAddition.setOnClickListener {
-            tvResult.append(" + ")
+            tvResult.append(TokenType.PLUS.value.addStartAndEndSpace())
+            //tvResult.append(" + ")
         }
 
         buttonClear.setOnClickListener {
