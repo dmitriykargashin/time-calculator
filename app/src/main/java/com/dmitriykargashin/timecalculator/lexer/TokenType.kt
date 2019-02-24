@@ -55,4 +55,8 @@ sealed class TokenType {
         override val value = "MSecond"
     }
 
+    object ERROR : TokenType() {
+        override val value = "ERROR"
+    }
+
 }
