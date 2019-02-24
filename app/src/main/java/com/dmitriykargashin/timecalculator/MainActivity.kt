@@ -13,9 +13,12 @@ import android.text.Html
 import android.text.Spanned
 import com.dmitriykargashin.timecalculator.extension.removeAllSpaces
 import com.dmitriykargashin.timecalculator.extension.removeHTML
+import com.dmitriykargashin.timecalculator.lexer.LexicalAnalyzer
+import com.dmitriykargashin.timecalculator.lexer.Token
 
 
 class MainActivity : AppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +114,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonEqual.setOnClickListener {
-            tvResult.text = tvResult.text.toString().removeHTML().removeAllSpaces()
+            val lexicalAnalyzer: LexicalAnalyzer =
+                LexicalAnalyzer(tvResult.text.toString().removeHTML().removeAllSpaces())
+
+
+            val listOfTokens: MutableList<Token> = lexicalAnalyzer.analyze()
+            var resultString = ""
+          //  var i: Int
+            for (token in listOfTokens) {
+                resultString += token.type.value + "..."
+            }
+
+            tvResult.text = resultString
+
         }
     }
 }

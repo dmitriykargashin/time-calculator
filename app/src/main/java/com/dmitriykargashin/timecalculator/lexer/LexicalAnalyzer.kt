@@ -12,7 +12,7 @@ class LexicalAnalyzer(var stringExrpession: String) {
 
     // as result list of tokens
     val listOfTokens: MutableList<Token> = ArrayList()
-    val currentPosition: Int = 0
+    var currentPosition: Int = 0
     val stringExrpessionLength: Int = stringExrpession.length
 
     fun analyze(): MutableList<Token> {
@@ -26,8 +26,13 @@ class LexicalAnalyzer(var stringExrpession: String) {
     }
 
     private fun startAnalyze() {
+        var tmpToken: Token
 
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        while (currentPosition < stringExrpessionLength) {
+            tmpToken = findCurrentFullToken()
+            listOfTokens.add(tmpToken)
+            currentPosition += tmpToken.length()
+        }
     }
 
     //Finding out that current symbol is digit
@@ -37,18 +42,16 @@ class LexicalAnalyzer(var stringExrpession: String) {
     fun isLetter(x: Char): Boolean = x.isLetter()
 
     //Finding out that current symbol is operator
-    fun isOperator(x: Char): Boolean = x.equals(TokenType.PLUS.value) or x.equals(TokenType.MINUS.value) or
-            x.equals(TokenType.MULTIPLY.value) or x.equals(TokenType.DIVIDE.value)
+    fun isOperator(x: Char): Boolean = x.equals(TokenType.PLUS.value[0]) or x.equals(TokenType.MINUS.value[0]) or
+            x.equals(TokenType.MULTIPLY.value[0]) or x.equals(TokenType.DIVIDE.value[0])
 
     //Finding out that current symbol is dot
     fun isDot(x: Char): Boolean = x.equals('.')
 
-    // finding full token body from current position
-    fun findCurrentFullToken(): Token? {
 
-        //   var currentTokenType:TokenType = findCurrentTokenType()
-        //   when
-        var findedToken: Token? = null
+    // finding full token body from current position
+    fun findCurrentFullToken(): Token {
+        var findedToken: Token = Token(TokenType.ERROR, currentPosition)
 
         if (currentPosition <= stringExrpessionLength) {
 
@@ -56,38 +59,86 @@ class LexicalAnalyzer(var stringExrpession: String) {
                 isDigit((stringExrpession[currentPosition])) -> {
                     findedToken = findCurrentDigitalToken()
                 }
+
                 isLetter((stringExrpession[currentPosition])) -> {
                     findedToken = findCurrentLetterToken()
-
                 }
+
                 isOperator((stringExrpession[currentPosition])) -> {
                     findedToken = findCurrentOperatorToken()
                 }
+
                 isDot((stringExrpession[currentPosition])) -> {
                     findedToken = findCurrentDigitalToken()
                 }
+
             }
 
         }
-        {
+        return findedToken
 
+    }
+
+    private fun findCurrentOperatorToken(): Token {
+        when {
+            stringExrpession[currentPosition] == TokenType.PLUS.value[0] -> {
+                return Token(TokenType.PLUS, currentPosition)
+            }
+            stringExrpession[currentPosition] == TokenType.MINUS.value[0] -> {
+                return Token(TokenType.MINUS, currentPosition)
+            }
+            stringExrpession[currentPosition] == TokenType.DIVIDE.value[0] -> {
+                return Token(TokenType.DIVIDE, currentPosition)
+            }
+            stringExrpession[currentPosition] == TokenType.MULTIPLY.value[0] -> {
+                return Token(TokenType.MULTIPLY, currentPosition)
+            }
+            else -> return Token(TokenType.ERROR, currentPosition)
         }
 
-        return findedToken
     }
 
-    private fun findCurrentOperatorToken(): Token? {
+    private fun findCurrentLetterToken(): Token {
+        when {
+            stringExrpession.startsWith(TokenType.YEAR.value, currentPosition) -> {
+                return Token(TokenType.YEAR, currentPosition)
+            }
+
+            stringExrpession.startsWith(TokenType.MONTH.value, currentPosition) -> {
+                return Token(TokenType.MONTH, currentPosition)
+            }
+
+            stringExrpession.startsWith(TokenType.WEEK.value, currentPosition) -> {
+                return Token(TokenType.WEEK, currentPosition)
+            }
+
+            stringExrpession.startsWith(TokenType.DAY.value, currentPosition) -> {
+                return Token(TokenType.DAY, currentPosition)
+            }
+
+            stringExrpession.startsWith(TokenType.HOUR.value, currentPosition) -> {
+                return Token(TokenType.HOUR, currentPosition)
+            }
+
+            stringExrpession.startsWith(TokenType.MINUTE.value, currentPosition) -> {
+                return Token(TokenType.MINUTE, currentPosition)
+            }
+
+            stringExrpession.startsWith(TokenType.SECOND.value, currentPosition) -> {
+                return Token(TokenType.SECOND, currentPosition)
+            }
+
+            stringExrpession.startsWith(TokenType.MSECOND.value, currentPosition) -> {
+                return Token(TokenType.MSECOND, currentPosition)
+            }
+
+            else -> return Token(TokenType.ERROR, currentPosition)
+        }
+    }
+
+    private fun findCurrentDigitalToken(): Token {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-    private fun findCurrentLetterToken(): Token? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun findCurrentDigitalToken(): Token? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
 
 
 }
