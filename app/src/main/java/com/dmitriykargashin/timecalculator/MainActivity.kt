@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
             var resultString = ""
           //  var i: Int
             for (token in listOfTokens) {
-                resultString += token.type.value + "..."
+                resultString += token.strRepresentation + "..."
             }
 
             tvResult.text = resultString

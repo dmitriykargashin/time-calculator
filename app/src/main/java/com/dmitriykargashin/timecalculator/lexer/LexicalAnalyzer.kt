@@ -8,6 +8,9 @@ package com.dmitriykargashin.timecalculator.lexer
 
 import com.dmitriykargashin.timecalculator.extension.removeAllSpaces
 
+import java.util.regex.Pattern
+
+
 class LexicalAnalyzer(var stringExrpession: String) {
 
     // as result list of tokens
@@ -51,7 +54,7 @@ class LexicalAnalyzer(var stringExrpession: String) {
 
     // finding full token body from current position
     fun findCurrentFullToken(): Token {
-        var findedToken: Token = Token(TokenType.ERROR, currentPosition)
+        var findedToken = Token(TokenType.ERROR, currentPosition)
 
         if (currentPosition <= stringExrpessionLength) {
 
@@ -137,7 +140,15 @@ class LexicalAnalyzer(var stringExrpession: String) {
     }
 
     private fun findCurrentDigitalToken(): Token {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+
+        val p = Pattern.compile("-?[\\d\\.]+")
+        val m = p.matcher(stringExrpession)
+
+        m.find(currentPosition)
+
+        return Token(TokenType.NUMBER, m.group(), currentPosition)
+
     }
 
 
