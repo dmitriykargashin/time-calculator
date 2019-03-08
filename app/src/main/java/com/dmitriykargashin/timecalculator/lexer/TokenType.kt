@@ -1,5 +1,6 @@
 package com.dmitriykargashin.timecalculator.lexer
 
+
 sealed class TokenType {
     abstract val value: String
 
@@ -20,7 +21,7 @@ sealed class TokenType {
     }
 
     object NUMBER : TokenType() {
-       override val value = "0.0" // current value may differ!! should use stringRepresenatation for view actual value
+        override val value = "0.0" // current value may differ!! should use stringRepresenatation for view actual value
     }
 
     object YEAR : TokenType() {

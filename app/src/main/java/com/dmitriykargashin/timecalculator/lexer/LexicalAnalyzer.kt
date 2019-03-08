@@ -14,11 +14,12 @@ import java.util.regex.Pattern
 class LexicalAnalyzer(var stringExrpession: String) {
 
     // as result list of tokens
-    val listOfTokens: MutableList<Token> = ArrayList()
+    val listOfTokens: Tokens = Tokens() //MutableList<Token> = ArrayList()
     var currentPosition: Int = 0
     val stringExrpessionLength: Int = stringExrpession.length
 
-    fun analyze(): MutableList<Token> {
+
+    fun analyze(): Tokens{
         // removes spaces
         stringExrpession = stringExrpession.removeAllSpaces()
 

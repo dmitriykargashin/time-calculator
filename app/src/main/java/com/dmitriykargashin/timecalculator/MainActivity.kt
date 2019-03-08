@@ -8,13 +8,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 import com.dmitriykargashin.timecalculator.extension.toHTMLWithColor
 import com.dmitriykargashin.timecalculator.lexer.TokenType
-import android.text.TextUtils
-import android.text.Html
-import android.text.Spanned
+
+import com.dmitriykargashin.timecalculator.calculator.CalculatorOfTime
 import com.dmitriykargashin.timecalculator.extension.removeAllSpaces
 import com.dmitriykargashin.timecalculator.extension.removeHTML
 import com.dmitriykargashin.timecalculator.lexer.LexicalAnalyzer
 import com.dmitriykargashin.timecalculator.lexer.Token
+import com.dmitriykargashin.timecalculator.lexer.Tokens
 
 
 class MainActivity : AppCompatActivity() {
@@ -118,10 +118,14 @@ class MainActivity : AppCompatActivity() {
                 LexicalAnalyzer(tvResult.text.toString().removeHTML().removeAllSpaces())
 
 
-            val listOfTokens: MutableList<Token> = lexicalAnalyzer.analyze()
+            val listOfTokens: Tokens = lexicalAnalyzer.analyze()
             var resultString = ""
           //  var i: Int
-            for (token in listOfTokens) {
+
+            val listOfResultTokens: Tokens = CalculatorOfTime.evaluate(listOfTokens)
+
+
+            for (token in listOfResultTokens) {
                 resultString += token.strRepresentation + "..."
             }
 
