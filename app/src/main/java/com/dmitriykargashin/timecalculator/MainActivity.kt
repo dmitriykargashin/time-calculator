@@ -2,6 +2,8 @@ package com.dmitriykargashin.timecalculator
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.TextView
 import com.dmitriykargashin.timecalculator.extension.addStartAndEndSpace
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -15,6 +17,9 @@ import com.dmitriykargashin.timecalculator.extension.removeHTML
 import com.dmitriykargashin.timecalculator.lexer.LexicalAnalyzer
 import com.dmitriykargashin.timecalculator.lexer.Token
 import com.dmitriykargashin.timecalculator.lexer.Tokens
+import java.util.*
+import java.nio.file.Files.size
+import java.nio.file.Files.size
 
 
 class MainActivity : AppCompatActivity() {
@@ -114,23 +119,34 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonEqual.setOnClickListener {
-            val lexicalAnalyzer: LexicalAnalyzer =
-                LexicalAnalyzer(tvResult.text.toString().removeHTML().removeAllSpaces())
+            val lexicalAnalyzer = LexicalAnalyzer(tvResult.text.toString().removeHTML().removeAllSpaces())
 
 
             val listOfTokens: Tokens = lexicalAnalyzer.analyze()
-            var resultString = ""
-          //  var i: Int
 
             val listOfResultTokens: Tokens = CalculatorOfTime.evaluate(listOfTokens)
 
 
-            for (token in listOfResultTokens) {
-                resultString += token.strRepresentation + "..."
-            }
-
-            tvResult.text = resultString
+            tvResult.text = ""
+            convertEvaluatedTokensToFormattedString(tvResult, listOfResultTokens)
 
         }
+    }
+
+
+    private fun convertEvaluatedTokensToFormattedString(textView: TextView, listOfResultTokens: Tokens) {
+
+
+        for (token in listOfResultTokens) {
+            when (token.type) {
+                TokenType.NUMBER ->
+                    textView.append(token.strRepresentation)
+
+                TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
+                    textView.append(token.strRepresentation.addStartAndEndSpace().toHTMLWithColor())
+            }
+        }
+  //      Log.i("TAG", textView.text.toString())
+
     }
 }

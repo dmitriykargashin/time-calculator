@@ -17,32 +17,57 @@ import net.objecthunter.exp4j.ExpressionBuilder
 
 abstract class CalculatorOfTime {
 
-    private val MILLIS_IN_SECOND = 1000
-    private val SECONDS_IN_MINUTE = 60
-    private val MINUTES_IN_HOUR = 60
-    private val HOURS_IN_DAY = 24
-    private val DAYS_IN_YEAR = 365
-    private val MILLISECONDS_IN_YEAR =
-        MILLIS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong() * HOURS_IN_DAY.toLong() * DAYS_IN_YEAR.toLong()
 
     companion object {
+
+
+        private val MILLISECONDS_IN_SECOND = 1000
+        private val SECONDS_IN_MINUTE = 60
+        private val MINUTES_IN_HOUR = 60
+        private val HOURS_IN_DAY = 24
+        private val DAYS_IN_WEEK = 7
+        private val DAYS_IN_MONTH = 30
+        private val DAYS_IN_YEAR = 365
+
+        private val MILLISECONDS_IN_YEAR =
+            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong() * HOURS_IN_DAY.toLong() * DAYS_IN_YEAR.toLong()
+
+        private val MILLISECONDS_IN_MONTH =
+            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong() * HOURS_IN_DAY.toLong() * DAYS_IN_MONTH.toLong()
+
+        private val MILLISECONDS_IN_WEEK =
+            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong() * HOURS_IN_DAY.toLong() * DAYS_IN_WEEK.toLong()
+
+        private val MILLISECONDS_IN_DAY =
+            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong() * HOURS_IN_DAY.toLong()
+
+        private val MILLISECONDS_IN_HOUR =
+            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong()
+
+        private val MILLISECONDS_IN_MINUTE =
+            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong()
+
+
         fun evaluate(tokensToEvaluate: Tokens): Tokens {
 
 
-            return evaluateSimpleArithmeticExpression(tokensToEvaluate)
+            //
 
-            if (isSimpleArithmeticExpression(tokensToEvaluate))
-                return evaluateSimpleArithmeticExpression(tokensToEvaluate)
-            else {
-                var tokensinMsecs = convertExpressionToMsecs(tokensToEvaluate)
-            }
+            /*   if (isSimpleArithmeticExpression(tokensToEvaluate))
+                   return evaluateSimpleArithmeticExpression(tokensToEvaluate)
+               else {*/
+            val tokensinMsecs = convertExpressionToMsecs(tokensToEvaluate)
+            val evaluatedToken = evaluateSimpleArithmeticExpression(tokensinMsecs)
+
+            return convertExpressionInMsecsToType(evaluatedToken[0], TokenType.HOUR)
+            //  }
 
             /*  for (token in tokensinMsecs) {
               when (token.type) {
                   TokenType.
               }
           }*/
-            return tokensToEvaluate
+            //      return tokensToEvaluate
 
         }
 
@@ -51,20 +76,19 @@ abstract class CalculatorOfTime {
 
 
             val txt = tokensToEvaluate.toString()
+            Log.i("TAG", txt)
+
             // Create an Expression (A class from exp4j library)
             val expression = ExpressionBuilder(txt).build()
             try {
                 // Calculate the result and display
                 val result = expression.evaluate()
 
-                val resultTokens: Tokens = Tokens()
+                // we'll return result as one NUMBER token
+                val resultTokens = Tokens()
                 resultTokens.add(Token(TokenType.NUMBER, result.toString(), 0))
 
-
                 return resultTokens
-
-
-                Log.d("TAG", result.toString())
 
                 // txtInput.text = result.toString()
                 //     lastDot = true // Result contains a dot
@@ -86,7 +110,7 @@ abstract class CalculatorOfTime {
 
 
             return tokensToEvaluate
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
 
 */
             return tokensToEvaluate
@@ -106,14 +130,199 @@ abstract class CalculatorOfTime {
         }
 
         private fun convertExpressionToMsecs(tokensToConvert: Tokens): Tokens {
-            var convertedTokens: Tokens = Tokens()
+            var convertedTokens = Tokens()
 
-            /*   for (token in tokensToConvert) {
-               when (token.type) {
-                   TokenType.
-               }
-           }*/
+            for (token in tokensToConvert) {
+                when (token.type) {
+                    // main idea is to convert all time strings to "multiply on it's representation of one unit in Msecs"
+
+                    TokenType.SECOND -> {
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(
+                            Token(
+                                TokenType.NUMBER,
+                                MILLISECONDS_IN_SECOND.toString(),
+                                0
+                            )
+                        )
+                    }
+                    TokenType.MINUTE -> {
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(
+                            Token(
+                                TokenType.NUMBER,
+                                MILLISECONDS_IN_MINUTE.toString(),
+                                0
+                            )
+                        )
+                    }
+
+                    TokenType.HOUR -> {
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(
+                            Token(
+                                TokenType.NUMBER,
+                                MILLISECONDS_IN_HOUR.toString(),
+                                0
+                            )
+                        )
+                    }
+
+                    TokenType.DAY -> {
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(
+                            Token(
+                                TokenType.NUMBER,
+                                MILLISECONDS_IN_DAY.toString(),
+                                0
+                            )
+                        )
+                    }
+
+                    TokenType.WEEK -> {
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(
+                            Token(
+                                TokenType.NUMBER,
+                                MILLISECONDS_IN_WEEK.toString(),
+                                0
+                            )
+                        )
+                    }
+
+
+                    TokenType.MONTH -> {
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(
+                            Token(
+                                TokenType.NUMBER,
+                                MILLISECONDS_IN_MONTH.toString(),
+                                0
+                            )
+                        )
+                    }
+
+                    TokenType.YEAR -> {
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(
+                            Token(
+                                TokenType.NUMBER,
+                                MILLISECONDS_IN_YEAR.toString(),
+                                0
+                            )
+                        )
+                    }
+
+                    TokenType.NUMBER -> {
+                        convertedTokens.add(
+                            Token(
+                                TokenType.NUMBER,
+                                token.strRepresentation,
+                                token.position
+                            )
+                        )
+                    }
+
+                    TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS -> {
+                        convertedTokens.add(
+                            Token(
+                                token.type,
+                                token.position
+                            )
+                        )
+                    }
+                }
+            }
             return convertedTokens
+        }
+
+
+        // here we convert result expression to specified type
+        private fun convertExpressionInMsecsToType(token: Token, type: TokenType): Tokens {
+            val convertedTokens = Tokens()
+            when (type) {
+
+                TokenType.SECOND -> {
+
+                    convertedTokens.add(
+                        Token(
+                            TokenType.NUMBER,
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_SECOND).toString(),
+                            0
+                        )
+                    )
+                }
+                TokenType.MINUTE -> {
+                    convertedTokens.add(
+                        Token(
+                            TokenType.NUMBER,
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_MINUTE).toString(),
+                            0
+                        )
+                    )
+                }
+
+                TokenType.HOUR -> {
+                    convertedTokens.add(
+                        Token(
+                            TokenType.NUMBER,
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_HOUR).toString(),
+                            0
+                        )
+                    )
+                }
+
+                TokenType.DAY -> {
+                    convertedTokens.add(
+                        Token(
+                            TokenType.NUMBER,
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_DAY).toString(),
+                            0
+                        )
+                    )
+                }
+
+                TokenType.WEEK -> {
+                    convertedTokens.add(
+                        Token(
+                            TokenType.NUMBER,
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_WEEK).toString(),
+                            0
+                        )
+                    )
+                }
+
+
+                TokenType.MONTH -> {
+                    convertedTokens.add(
+                        Token(
+                            TokenType.NUMBER,
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_MONTH).toString(),
+                            0
+                        )
+                    )
+                }
+
+                TokenType.YEAR -> {
+                    convertedTokens.add(
+                        Token(
+                            TokenType.NUMBER,
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_YEAR).toString(),
+                            0
+                        )
+                    )
+                }
+
+            }
+            convertedTokens.add(Token(type, 0))
+            return convertedTokens
+        }
+
+        // here we convert result expression to nearest time
+        private fun convertExpressionInMsecsToNearest(tokens: Tokens): Tokens {
+
+
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
     }
