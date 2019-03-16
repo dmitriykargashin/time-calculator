@@ -56,10 +56,12 @@ abstract class CalculatorOfTime {
             /*   if (isSimpleArithmeticExpression(tokensToEvaluate))
                    return evaluateSimpleArithmeticExpression(tokensToEvaluate)
                else {*/
-            val tokensinMsecs = convertExpressionToMsecs(tokensToEvaluate)
+            val tokensWithParentheses = setParenthesesToExpression(tokensToEvaluate)
+            val tokensinMsecs = convertExpressionToMsecs(tokensWithParentheses)
             val evaluatedToken = evaluateSimpleArithmeticExpression(tokensinMsecs)
 
-            return convertExpressionInMsecsToType(evaluatedToken[0], TokenType.HOUR)
+            //  return convertExpressionInMsecsToType(evaluatedToken[0], TokenType.HOUR)
+            return convertExpressionInMsecsToNearest(evaluatedToken[0])
             //  }
 
             /*  for (token in tokensinMsecs) {
@@ -214,6 +216,7 @@ abstract class CalculatorOfTime {
                     }
 
                     TokenType.NUMBER -> {
+                        convertedTokens.add(Token(TokenType.PLUS, 0))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
@@ -223,7 +226,7 @@ abstract class CalculatorOfTime {
                         )
                     }
 
-                    TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS -> {
+                    TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS, TokenType.PARENTHESES_RIGHT, TokenType.PARENTHESES_LEFT -> {
                         convertedTokens.add(
                             Token(
                                 token.type,
@@ -231,6 +234,7 @@ abstract class CalculatorOfTime {
                             )
                         )
                     }
+
                 }
             }
             return convertedTokens
@@ -319,11 +323,103 @@ abstract class CalculatorOfTime {
         }
 
         // here we convert result expression to nearest time
-        private fun convertExpressionInMsecsToNearest(tokens: Tokens): Tokens {
+        private fun convertExpressionInMsecsToNearest(token: Token): Tokens {
+            val convertedTokens = Tokens()
+            val valueOfToken = token.strRepresentation.toDouble()
+            val years = valueOfToken.div(MILLISECONDS_IN_YEAR).toInt()
+            val months = (valueOfToken - years * MILLISECONDS_IN_YEAR).div(MILLISECONDS_IN_MONTH).toInt()
+            val weeks = (valueOfToken - (years * MILLISECONDS_IN_YEAR + months * MILLISECONDS_IN_MONTH)).div(
+                MILLISECONDS_IN_WEEK
+            ).toInt()
+            val days =
+                (valueOfToken - (years * MILLISECONDS_IN_YEAR + months * MILLISECONDS_IN_MONTH + weeks * MILLISECONDS_IN_WEEK)).div(
+                    MILLISECONDS_IN_DAY
+                ).toInt()
+            val hours =
+                (valueOfToken - (years * MILLISECONDS_IN_YEAR + months * MILLISECONDS_IN_MONTH + weeks * MILLISECONDS_IN_WEEK + days * MILLISECONDS_IN_DAY)).div(
+                    MILLISECONDS_IN_HOUR
+                ).toInt()
+
+            val minutes =
+                (valueOfToken - (years * MILLISECONDS_IN_YEAR + months * MILLISECONDS_IN_MONTH + weeks * MILLISECONDS_IN_WEEK + days * MILLISECONDS_IN_DAY + hours * MILLISECONDS_IN_HOUR)).div(
+                    MILLISECONDS_IN_MINUTE
+                ).toInt()
+
+            val seconds =
+                (valueOfToken - (years * MILLISECONDS_IN_YEAR + months * MILLISECONDS_IN_MONTH + weeks * MILLISECONDS_IN_WEEK + days * MILLISECONDS_IN_DAY + hours * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE)).div(
+                    MILLISECONDS_IN_SECOND
+                ).toInt()
+
+            val mseconds =
+                (valueOfToken - (years * MILLISECONDS_IN_YEAR + months * MILLISECONDS_IN_MONTH + weeks * MILLISECONDS_IN_WEEK + days * MILLISECONDS_IN_DAY + hours * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE + seconds * MILLISECONDS_IN_SECOND)).toInt()
+
+            if (years != 0) {
+                convertedTokens.add(Token(TokenType.NUMBER, years.toString(), 0))
+                convertedTokens.add(Token(TokenType.YEAR, 0))
+            }
 
 
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            if (months != 0) {
+                convertedTokens.add(Token(TokenType.NUMBER, months.toString(), 0))
+                convertedTokens.add(Token(TokenType.MONTH, 0))
+            }
+
+            if (weeks != 0) {
+                convertedTokens.add(Token(TokenType.NUMBER, weeks.toString(), 0))
+                convertedTokens.add(Token(TokenType.WEEK, 0))
+            }
+            if (days != 0) {
+                convertedTokens.add(Token(TokenType.NUMBER, days.toString(), 0))
+                convertedTokens.add(Token(TokenType.DAY, 0))
+            }
+            if (hours != 0) {
+                convertedTokens.add(Token(TokenType.NUMBER, hours.toString(), 0))
+                convertedTokens.add(Token(TokenType.HOUR, 0))
+            }
+
+            if (minutes != 0) {
+                convertedTokens.add(Token(TokenType.NUMBER, minutes.toString(), 0))
+                convertedTokens.add(Token(TokenType.MINUTE, 0))
+            }
+
+            if (seconds != 0) {
+                convertedTokens.add(Token(TokenType.NUMBER, seconds.toString(), 0))
+                convertedTokens.add(Token(TokenType.SECOND, 0))
+            }
+
+            if (mseconds != 0) {
+                convertedTokens.add(Token(TokenType.NUMBER, mseconds.toString(), 0))
+                convertedTokens.add(Token(TokenType.MSECOND, 0))
+            }
+            return convertedTokens
+        }
+
+
+        private fun setParenthesesToExpression(tokensToSetParntheses: Tokens): Tokens {
+            val tokensWithParentheses = Tokens()
+            var isParenthesesBegins = false
+            for (token in tokensToSetParntheses) {
+                when (token.type) {
+                    TokenType.NUMBER -> {
+                        if (!isParenthesesBegins) {
+                            tokensWithParentheses.add(Token(TokenType.PARENTHESES_LEFT, 0))
+                            isParenthesesBegins = true
+                        }
+                    }
+                    TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS -> {
+
+                        tokensWithParentheses.add(Token(TokenType.PARENTHESES_RIGHT, 0))
+                        isParenthesesBegins = false
+
+                    }
+                }
+                tokensWithParentheses.add(Token(token.type, token.strRepresentation, token.position))
+
+            }
+            tokensWithParentheses.add(Token(TokenType.PARENTHESES_RIGHT, 0))
+            return tokensWithParentheses
         }
 
     }
 }
+
