@@ -421,5 +421,7 @@ abstract class CalculatorOfTime {
         }
 
     }
+
+    //todo In result of negative expression will be terms with MINUS symbol EACH
 }
 

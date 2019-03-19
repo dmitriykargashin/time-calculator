@@ -2,7 +2,6 @@ package com.dmitriykargashin.timecalculator
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import com.dmitriykargashin.timecalculator.extension.addStartAndEndSpace
 import kotlinx.android.synthetic.main.activity_main.*
@@ -15,11 +14,7 @@ import com.dmitriykargashin.timecalculator.calculator.CalculatorOfTime
 import com.dmitriykargashin.timecalculator.extension.removeAllSpaces
 import com.dmitriykargashin.timecalculator.extension.removeHTML
 import com.dmitriykargashin.timecalculator.lexer.LexicalAnalyzer
-import com.dmitriykargashin.timecalculator.lexer.Token
 import com.dmitriykargashin.timecalculator.lexer.Tokens
-import java.util.*
-import java.nio.file.Files.size
-import java.nio.file.Files.size
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,104 +30,126 @@ class MainActivity : AppCompatActivity() {
     private fun initButtonListeners() {
         //nums
         buttonNum1.setOnClickListener {
-            tvResult.append("1")
+            tvExpressionField.append("1")
+            calculateAndPrintResult()
         }
         buttonNum2.setOnClickListener {
-            tvResult.append("2")
+            tvExpressionField.append("2")
+            calculateAndPrintResult()
         }
         buttonNum3.setOnClickListener {
-            tvResult.append("3")
+            tvExpressionField.append("3")
+            calculateAndPrintResult()
         }
         buttonNum4.setOnClickListener {
-            tvResult.append("4")
+            tvExpressionField.append("4")
+            calculateAndPrintResult()
         }
         buttonNum5.setOnClickListener {
-            tvResult.append("5")
+            tvExpressionField.append("5")
+            calculateAndPrintResult()
         }
         buttonNum6.setOnClickListener {
-            tvResult.append("6")
+            tvExpressionField.append("6")
+            calculateAndPrintResult()
         }
         buttonNum7.setOnClickListener {
-            tvResult.append("7")
+            tvExpressionField.append("7")
+            calculateAndPrintResult()
         }
         buttonNum8.setOnClickListener {
-            tvResult.append("8")
+            tvExpressionField.append("8")
+            calculateAndPrintResult()
         }
         buttonNum9.setOnClickListener {
-            tvResult.append("9")
+            tvExpressionField.append("9")
+            calculateAndPrintResult()
         }
         buttonNum0.setOnClickListener {
-            tvResult.append("0")
+            tvExpressionField.append("0")
+            calculateAndPrintResult()
         }
         buttonComma.setOnClickListener {
-            tvResult.append(".")
+            tvExpressionField.append(".")
+            calculateAndPrintResult()
         }
 
         /// times
         buttonYear.setOnClickListener {
             //todo https://stackoverflow.com/questions/37904739/html-fromhtml-deprecated-in-android-n
             //   tvResult.append(" Year ".toHTMLWithColor())
-            tvResult.append(TokenType.YEAR.value.addStartAndEndSpace().toHTMLWithColor())
+            tvExpressionField.append(TokenType.YEAR.value.addStartAndEndSpace().toHTMLWithColor())
+            calculateAndPrintResult()
         }
         buttonMonth.setOnClickListener {
-            tvResult.append(TokenType.MONTH.value.addStartAndEndSpace().toHTMLWithColor())
+            tvExpressionField.append(TokenType.MONTH.value.addStartAndEndSpace().toHTMLWithColor())
+            calculateAndPrintResult()
         }
         buttonWeek.setOnClickListener {
-            tvResult.append(TokenType.WEEK.value.addStartAndEndSpace().toHTMLWithColor())
+            tvExpressionField.append(TokenType.WEEK.value.addStartAndEndSpace().toHTMLWithColor())
+            calculateAndPrintResult()
         }
         buttonDay.setOnClickListener {
-            tvResult.append(TokenType.DAY.value.addStartAndEndSpace().toHTMLWithColor())
+            tvExpressionField.append(TokenType.DAY.value.addStartAndEndSpace().toHTMLWithColor())
+            calculateAndPrintResult()
         }
         buttonHour.setOnClickListener {
-            tvResult.append(TokenType.HOUR.value.addStartAndEndSpace().toHTMLWithColor())
+            tvExpressionField.append(TokenType.HOUR.value.addStartAndEndSpace().toHTMLWithColor())
+            calculateAndPrintResult()
         }
         buttonMinute.setOnClickListener {
-            tvResult.append(TokenType.MINUTE.value.addStartAndEndSpace().toHTMLWithColor())
+            tvExpressionField.append(TokenType.MINUTE.value.addStartAndEndSpace().toHTMLWithColor())
+            calculateAndPrintResult()
         }
         buttonSecond.setOnClickListener {
-            tvResult.append(TokenType.SECOND.value.addStartAndEndSpace().toHTMLWithColor())
+            tvExpressionField.append(TokenType.SECOND.value.addStartAndEndSpace().toHTMLWithColor())
+            calculateAndPrintResult()
         }
         buttonMsec.setOnClickListener {
-            tvResult.append(TokenType.MSECOND.value.addStartAndEndSpace().toHTMLWithColor())
+            tvExpressionField.append(TokenType.MSECOND.value.addStartAndEndSpace().toHTMLWithColor())
+            calculateAndPrintResult()
         }
 
         ///operations
         buttonMultiply.setOnClickListener {
-            tvResult.append(TokenType.MULTIPLY.value.addStartAndEndSpace())
+            tvExpressionField.append(TokenType.MULTIPLY.value.addStartAndEndSpace())
             //  tvResult.append(" \u00D7 ")
         }
         buttonDivide.setOnClickListener {
-            tvResult.append(TokenType.DIVIDE.value.addStartAndEndSpace())
+            tvExpressionField.append(TokenType.DIVIDE.value.addStartAndEndSpace())
             //  tvResult.append(" \u00F7 ")
         }
         buttonSubstraction.setOnClickListener {
-            tvResult.append(TokenType.MINUS.value.addStartAndEndSpace())
+            tvExpressionField.append(TokenType.MINUS.value.addStartAndEndSpace())
             //   tvResult.append(" \u2212 ")
         }
         buttonAddition.setOnClickListener {
-            tvResult.append(TokenType.PLUS.value.addStartAndEndSpace())
+            tvExpressionField.append(TokenType.PLUS.value.addStartAndEndSpace())
             //tvResult.append(" + ")
         }
 
         buttonClear.setOnClickListener {
-            tvResult.text = ""
+            tvExpressionField.text = ""
         }
 
         buttonEqual.setOnClickListener {
-            val lexicalAnalyzer = LexicalAnalyzer(tvResult.text.toString().removeHTML().removeAllSpaces())
-
-
-            val listOfTokens: Tokens = lexicalAnalyzer.analyze()
-
-            val listOfResultTokens: Tokens = CalculatorOfTime.evaluate(listOfTokens)
-
-
-            tvResult.text = ""
-            convertEvaluatedTokensToFormattedString(tvResult, listOfResultTokens)
+            calculateAndPrintResult()
 
         }
     }
 
+    private fun calculateAndPrintResult(){
+        val lexicalAnalyzer = LexicalAnalyzer(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+
+
+        val listOfTokens: Tokens = lexicalAnalyzer.analyze()
+
+        val listOfResultTokens: Tokens = CalculatorOfTime.evaluate(listOfTokens)
+
+
+        tvOnlineResult.text = ""
+        convertEvaluatedTokensToFormattedString(tvOnlineResult, listOfResultTokens)
+    }
 
     private fun convertEvaluatedTokensToFormattedString(textView: TextView, listOfResultTokens: Tokens) {
 
@@ -146,7 +163,7 @@ class MainActivity : AppCompatActivity() {
                     textView.append(token.strRepresentation.addStartAndEndSpace().toHTMLWithColor())
             }
         }
-  //      Log.i("TAG", textView.text.toString())
+        //      Log.i("TAG", textView.text.toString())
 
     }
 }
