@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2019. Dmitriy Kargashin
+  -->
+
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity" tools:orientation="vertical"
+        tools:layout_editor_absoluteY="25dp">
+
+
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/tvExpressionField"
+            android:fontFamily="@font/googlesans_regular" android:textSize="24sp"
+            android:gravity="bottom|right"
+            android:textColor="@android:color/black" android:background="@android:color/white"
+            android:paddingEnd="10dp" android:paddingLeft="10dp" android:paddingTop="10dp"
+            android:scrollbars="vertical"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:clickable="true"
+            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.0"
+            android:scrollbarAlwaysDrawVerticalTrack="true" android:fadingEdge="vertical"
+            android:fadingEdgeLength="12dp"/>
+
+
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/tvOnlineResult"
+            android:gravity="bottom|right"
+            android:textSize="18sp"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/googlesans_regular" android:paddingTop="20dp"
+            android:background="@android:color/white" android:textStyle="bold" android:paddingEnd="10dp"
+            android:singleLine="true"
+            android:scrollbarAlwaysDrawHorizontalTrack="true" android:scrollbars="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/tvSpaceWithShadowOnly"
+            android:background="@drawable/text_view_shadow" android:textSize="8sp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonClear"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <Button
+            android:text="Clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonClear"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@android:color/black" android:textSize="18sp"
+            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum7"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/buttonNoAds" app:layout_constraintHorizontal_bias="0.16"/>
+    <Button
+            android:text="No Ads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNoAds"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@android:color/black" android:textSize="18sp"
+            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum8"
+            app:layout_constraintStart_toEndOf="@+id/buttonClear"
+            app:layout_constraintEnd_toStartOf="@+id/buttonHistory"/>
+    <Button
+            android:text="History"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonHistory"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@android:color/black" android:textSize="16sp"
+            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum9" app:layout_constraintStart_toEndOf="@+id/buttonNoAds"
+            app:layout_constraintEnd_toStartOf="@+id/button6"/>
+    <Button
+            android:text="Del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/button6"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@android:color/black" android:textSize="18sp"
+            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonHistory"
+            app:layout_constraintBottom_toTopOf="@+id/buttonDivide"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <Button
+            android:text="Year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonYear"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@color/colorNums" android:textSize="18sp"
+            android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintEnd_toStartOf="@+id/buttonMonth"
+            app:layout_constraintBottom_toTopOf="@+id/buttonWeek"
+            app:layout_constraintStart_toEndOf="@+id/buttonDivide"/>
+    <Button
+            android:text="Month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonMonth"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@color/colorNums" android:textSize="18sp"
+            android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/buttonDay"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/buttonYear"/>
+    <Button
+            android:text="Week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonWeek"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@color/colorNums" android:textSize="18sp"
+            android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintEnd_toStartOf="@+id/buttonDay" app:layout_constraintBottom_toTopOf="@+id/buttonHour"
+            app:layout_constraintStart_toEndOf="@+id/buttonMultiply"
+    />
+    <Button
+            android:text="Day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonDay"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@color/colorNums" android:textSize="18sp"
+            android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/buttonMinute"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/buttonWeek"/>
+
+
+    <Button
+            android:text="Hour "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonHour"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@color/colorNums" android:textSize="18sp"
+            android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintEnd_toStartOf="@+id/buttonMinute"
+            app:layout_constraintStart_toEndOf="@+id/buttonSubstraction"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSecond"/>
+    <Button
+            android:text="Minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonMinute"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@color/colorNums" android:textSize="18sp"
+            android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/buttonMsec"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/buttonHour"/>
+    <Button
+            android:text="Second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonSecond"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@color/colorNums" android:textSize="18sp"
+            android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintEnd_toStartOf="@+id/buttonMsec"
+            app:layout_constraintStart_toEndOf="@+id/buttonAddition"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:text="Msec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonMsec"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@color/colorNums" android:textSize="18sp"
+            android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/buttonSecond"
+            android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <Button
+            android:text="77"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum7"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum4" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum8"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
+    <Button
+            android:text="8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum8"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum7"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum5"
+            app:layout_constraintHorizontal_chainStyle="packed" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum9"/>
+    <Button
+            android:text="9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum9"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum8"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum6" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonDivide"/>
+    <Button
+            android:text="@string/button_divide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonDivide"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/buttonMultiply"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum9"
+            app:layout_constraintEnd_toStartOf="@+id/buttonYear"/>
+
+
+    <Button
+            android:text="4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum4"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum1" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum5"/>
+    <Button
+            android:text="5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum5"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum4"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum2"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonNum6"
+    />
+    <Button
+            android:text="6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum6"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum3"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonMultiply"/>
+    <Button
+            android:text="@string/button_multiply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonMultiply"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum6"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSubstraction"
+            app:layout_constraintEnd_toStartOf="@+id/buttonWeek"/>
+
+
+    <Button
+            android:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum1"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintHorizontal_bias="0.31"
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum2"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum0"/>
+    <Button
+            android:text="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum2"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum1"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum3"
+            app:layout_constraintBottom_toTopOf="@+id/buttonComma"/>
+    <Button
+            android:text="3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum3"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintBottom_toTopOf="@+id/buttonEqual"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum2"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSubstraction"/>
+    <Button
+            android:text="@string/button_substraction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonSubstraction"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum3"
+            app:layout_constraintEnd_toStartOf="@+id/buttonHour"
+            app:layout_constraintBottom_toTopOf="@+id/buttonAddition"/>
+
+
+    <Button
+            android:text="."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonComma"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@android:color/black" android:textSize="30sp"
+            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonNum0"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonEqual"/>
+    <Button
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonNum0"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonComma"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
+    <Button
+            android:text="="
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonEqual"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
+            android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonComma"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonAddition"/>
+    <Button
+            android:text="+"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonAddition"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textSize="30sp"
+            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toEndOf="@+id/buttonEqual"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSecond"/>
+
+
+</android.support.constraint.ConstraintLayout>
