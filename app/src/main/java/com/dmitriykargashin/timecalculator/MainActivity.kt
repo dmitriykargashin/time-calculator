@@ -139,6 +139,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun calculateAndPrintResult(){
+        //todo i need performing it in separate thread
         val lexicalAnalyzer = LexicalAnalyzer(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
 
 
