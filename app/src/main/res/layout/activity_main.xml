@@ -60,7 +60,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonYear" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNoAds"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonNoAds"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="No Ads"
             android:layout_width="wrap_content"
@@ -69,9 +70,11 @@
             android:textColor="@android:color/black" android:textSize="18sp"
             android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
             android:fontFamily="@font/googlesans_regular"
+            android:background="?selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toTopOf="@+id/buttonMonth" app:layout_constraintStart_toEndOf="@+id/buttonClear"
             android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonHistory"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonHistory"
+    />
     <Button
             android:text="History"
             android:layout_width="wrap_content"
@@ -83,7 +86,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonNoAds"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonWeek" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/button6"/>
+            app:layout_constraintEnd_toStartOf="@+id/button6" android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="Del"
             android:layout_width="wrap_content"
@@ -95,7 +98,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonHistory"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonDay" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
 
 
     <Button
@@ -109,7 +112,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonHour"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonMonth"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonMonth"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="Month"
             android:layout_width="wrap_content"
@@ -121,7 +125,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonYear" android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonMinute"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonWeek"
-    />
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="Week"
             android:layout_width="wrap_content"
@@ -133,7 +137,8 @@
             app:layout_constraintStart_toEndOf="@+id/buttonMonth"
             android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonSecond"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonDay"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonDay"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="Day"
             android:layout_width="wrap_content"
@@ -145,7 +150,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonWeek"
             android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonMsec"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
 
 
     <Button
@@ -159,7 +164,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonNum7"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonMinute"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonMinute"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="Minute"
             android:layout_width="wrap_content"
@@ -171,7 +177,8 @@
             app:layout_constraintBottom_toTopOf="@+id/buttonNum8"
             app:layout_constraintStart_toEndOf="@+id/buttonHour"
             android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonSecond"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonSecond"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="Second"
             android:layout_width="wrap_content"
@@ -183,7 +190,8 @@
             app:layout_constraintStart_toEndOf="@+id/buttonMinute"
             android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonNum9"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonMsec"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonMsec"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="Msec"
             android:layout_width="wrap_content"
@@ -195,7 +203,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonSecond"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonDivide" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
 
 
     <Button
@@ -208,7 +216,8 @@
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum4" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum8"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum8"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="8"
             android:layout_width="wrap_content"
@@ -221,7 +230,8 @@
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum5"
             app:layout_constraintHorizontal_chainStyle="packed" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum9"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum9"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="9"
             android:layout_width="wrap_content"
@@ -233,7 +243,8 @@
             app:layout_constraintStart_toEndOf="@+id/buttonNum8"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum6" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonDivide"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonDivide"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="@string/button_divide"
             android:layout_width="wrap_content"
@@ -246,7 +257,7 @@
             app:layout_constraintBottom_toTopOf="@+id/buttonMultiply"
             app:layout_constraintStart_toEndOf="@+id/buttonNum9" android:layout_marginStart="8dp"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
-    />
+            android:background="?selectableItemBackgroundBorderless"/>
 
 
     <Button
@@ -260,7 +271,8 @@
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum1" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum5"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum5"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="5"
             android:layout_width="wrap_content"
@@ -273,7 +285,7 @@
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum2"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonNum6"
-    />
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="6"
             android:layout_width="wrap_content"
@@ -286,7 +298,8 @@
             app:layout_constraintBottom_toTopOf="@+id/buttonNum3"
             app:layout_constraintStart_toEndOf="@+id/buttonNum5"
             android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonMultiply"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonMultiply"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="@string/button_multiply"
             android:layout_width="wrap_content"
@@ -299,7 +312,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonNum6"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonSubstraction" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
 
 
     <Button
@@ -313,7 +326,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum0" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum2"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum2"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="2"
             android:layout_width="wrap_content"
@@ -325,7 +339,8 @@
             app:layout_constraintStart_toEndOf="@+id/buttonNum1"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonComma" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum3"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonNum3"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="3"
             android:layout_width="wrap_content"
@@ -337,7 +352,8 @@
             app:layout_constraintStart_toEndOf="@+id/buttonNum2"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonEqual" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonSubstraction"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonSubstraction"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="@string/button_substraction"
             android:layout_width="wrap_content"
@@ -350,7 +366,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonNum3"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonAddition" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
 
 
     <Button
@@ -363,9 +379,10 @@
             android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toEndOf="@+id/buttonNum0"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonEqual"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonEqual"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="0"
             android:layout_width="wrap_content"
@@ -374,10 +391,11 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonComma"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonComma"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="="
             android:layout_width="wrap_content"
@@ -388,9 +406,10 @@
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toEndOf="@+id/buttonComma"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonAddition"/>
+            app:layout_constraintEnd_toStartOf="@+id/buttonAddition"
+            android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="+"
             android:layout_width="wrap_content"
@@ -401,9 +420,9 @@
             android:textColor="@android:color/holo_blue_dark"
             android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toEndOf="@+id/buttonEqual"
-            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp" android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
 
 
 </android.support.constraint.ConstraintLayout>

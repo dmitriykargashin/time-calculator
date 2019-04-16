@@ -96,7 +96,7 @@ class LexicalAnalyzer(var stringExrpession: String) {
                 return Token(type = TokenType.DIVIDE, position = currentPosition)
             }
             stringExrpession[currentPosition] == TokenType.MULTIPLY.value[0] -> {
-                return Token(type =  TokenType.MULTIPLY, position =  currentPosition)
+                return Token(type = TokenType.MULTIPLY, position = currentPosition)
             }
             else -> return Token(type = TokenType.ERROR, position = currentPosition)
         }
@@ -105,7 +105,7 @@ class LexicalAnalyzer(var stringExrpession: String) {
 
     private fun findCurrentLetterToken(): Token {
         when {
-            stringExrpession.startsWith( TokenType.YEAR.value, currentPosition) -> {
+            stringExrpession.startsWith(TokenType.YEAR.value, currentPosition) -> {
                 return Token(type = TokenType.YEAR, position = currentPosition)
             }
 
@@ -113,15 +113,15 @@ class LexicalAnalyzer(var stringExrpession: String) {
                 return Token(type = TokenType.MONTH, position = currentPosition)
             }
 
-            stringExrpession.startsWith( TokenType.WEEK.value, currentPosition) -> {
+            stringExrpession.startsWith(TokenType.WEEK.value, currentPosition) -> {
                 return Token(type = TokenType.WEEK, position = currentPosition)
             }
 
-            stringExrpession.startsWith( TokenType.DAY.value, currentPosition) -> {
+            stringExrpession.startsWith(TokenType.DAY.value, currentPosition) -> {
                 return Token(type = TokenType.DAY, position = currentPosition)
             }
 
-            stringExrpession.startsWith( TokenType.HOUR.value, currentPosition) -> {
+            stringExrpession.startsWith(TokenType.HOUR.value, currentPosition) -> {
                 return Token(type = TokenType.HOUR, position = currentPosition)
             }
 
@@ -129,11 +129,11 @@ class LexicalAnalyzer(var stringExrpession: String) {
                 return Token(type = TokenType.MINUTE, position = currentPosition)
             }
 
-            stringExrpession.startsWith( TokenType.SECOND.value, currentPosition) -> {
+            stringExrpession.startsWith(TokenType.SECOND.value, currentPosition) -> {
                 return Token(type = TokenType.SECOND, position = currentPosition)
             }
 
-            stringExrpession.startsWith( TokenType.MSECOND.value, currentPosition) -> {
+            stringExrpession.startsWith(TokenType.MSECOND.value, currentPosition) -> {
                 return Token(type = TokenType.MSECOND, position = currentPosition)
             }
 
