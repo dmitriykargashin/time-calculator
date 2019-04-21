@@ -53,16 +53,16 @@ abstract class CalculatorOfTime {
 
             //
 
-            /*   if (isSimpleArithmeticExpression(tokensToEvaluate))
-                   return evaluateSimpleArithmeticExpression(tokensToEvaluate)
-               else {*/
-            val tokensWithParentheses = setParenthesesToExpression(tokensToEvaluate)
-            val tokensinMsecs = convertExpressionToMsecs(tokensWithParentheses)
-            val evaluatedToken = evaluateSimpleArithmeticExpression(tokensinMsecs)
+            if (isSimpleArithmeticExpression(tokensToEvaluate))
+                return evaluateSimpleArithmeticExpression(tokensToEvaluate)
+            else {
+                val tokensWithParentheses = setParenthesesToExpression(tokensToEvaluate)
+                val tokensinMsecs = convertExpressionToMsecs(tokensWithParentheses)
+                val evaluatedToken = evaluateSimpleArithmeticExpression(tokensinMsecs)
 
-            //  return convertExpressionInMsecsToType(evaluatedToken[0], TokenType.HOUR)
-            return convertExpressionInMsecsToNearest(evaluatedToken[0])
-            //  }
+                //  return convertExpressionInMsecsToType(evaluatedToken[0], TokenType.HOUR)
+                return convertExpressionInMsecsToNearest(evaluatedToken[0])
+            }
 
             /*  for (token in tokensinMsecs) {
               when (token.type) {
@@ -78,7 +78,7 @@ abstract class CalculatorOfTime {
 
 
             val txt = tokensToEvaluate.toString()
-            Log.i("TAG", txt)
+            //   Log.i("TAG", txt)
 
             // Create an Expression (A class from exp4j library)
             val expression = ExpressionBuilder(txt).build()
