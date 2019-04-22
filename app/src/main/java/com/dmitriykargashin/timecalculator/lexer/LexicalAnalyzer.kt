@@ -14,15 +14,15 @@ import java.util.regex.Pattern
 class LexicalAnalyzer(var stringExrpession: String) {
 
     // as result list of tokens
-    val listOfTokens: Tokens = Tokens() //MutableList<Token> = ArrayList()
-    var currentPosition: Int = 0
-    val stringExrpessionLength: Int = stringExrpession.length
+    val listOfTokens = Tokens() //MutableList<Token> = ArrayList()
+    var currentPosition = 0
+    var stringExrpessionLength = 0
 
 
     fun analyze(): Tokens {
         // removes spaces
         stringExrpession = stringExrpession.removeAllSpaces()
-
+        stringExrpessionLength = stringExrpession.length
         startAnalyze()
         //stringExrpession.indexOf("Month")
 

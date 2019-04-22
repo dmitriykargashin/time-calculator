@@ -124,11 +124,10 @@ abstract class CalculatorOfTime {
             for (token in tokensToEvaluate) {
                 when (token.type) {
                     TokenType.MSECOND, TokenType.SECOND, TokenType.HOUR, TokenType.MINUTE, TokenType.DAY, TokenType.WEEK, TokenType.YEAR -> return false
-                    else -> return true
 
                 }
             }
-            return false
+            return true
         }
 
         private fun convertExpressionToMsecs(tokensToConvert: Tokens): Tokens {
