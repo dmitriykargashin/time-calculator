@@ -9,7 +9,7 @@ package com.dmitriykargashin.timecalculator.lexer
 import kotlin.math.roundToLong
 
 
-class Token(val type: TokenType, var strRepresentation: String = "", val position: Int) {
+class Token(val type: TokenType, var strRepresentation: String = "") {
 
     init {
         if (type == TokenType.NUMBER) { // here we'll remove .0 from integer
@@ -21,7 +21,7 @@ class Token(val type: TokenType, var strRepresentation: String = "", val positio
         }
     }
 
-    constructor (type: TokenType, position: Int) : this(type, type.value, position)
+    constructor (type: TokenType) : this(type, type.value)
 
 
     fun length(): Int {

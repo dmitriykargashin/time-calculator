@@ -4,14 +4,9 @@
 
 package com.dmitriykargashin.timecalculator.calculator
 
-import android.util.Log
-import com.dmitriykargashin.timecalculator.extension.removeAllSpaces
-import com.dmitriykargashin.timecalculator.extension.removeHTML
-import com.dmitriykargashin.timecalculator.lexer.LexicalAnalyzer
 import com.dmitriykargashin.timecalculator.lexer.Token
 import com.dmitriykargashin.timecalculator.lexer.TokenType
 import com.dmitriykargashin.timecalculator.lexer.Tokens
-import kotlinx.android.synthetic.main.activity_main.*
 import net.objecthunter.exp4j.ExpressionBuilder
 
 
@@ -88,7 +83,7 @@ abstract class CalculatorOfTime {
 
                 // we'll return result as one NUMBER token
                 val resultTokens = Tokens()
-                resultTokens.add(Token(TokenType.NUMBER, result.toString(), 0))
+                resultTokens.add(Token(TokenType.NUMBER, result.toString()))
 
                 return resultTokens
 
@@ -138,89 +133,81 @@ abstract class CalculatorOfTime {
                     // main idea is to convert all time strings to "multiply on it's representation of one unit in Msecs"
 
                     TokenType.SECOND -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(Token(TokenType.MULTIPLY))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
-                                MILLISECONDS_IN_SECOND.toString(),
-                                0
+                                MILLISECONDS_IN_SECOND.toString()
                             )
                         )
                     }
                     TokenType.MINUTE -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(Token(TokenType.MULTIPLY))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
-                                MILLISECONDS_IN_MINUTE.toString(),
-                                0
+                                MILLISECONDS_IN_MINUTE.toString()
                             )
                         )
                     }
 
                     TokenType.HOUR -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(Token(TokenType.MULTIPLY))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
-                                MILLISECONDS_IN_HOUR.toString(),
-                                0
+                                MILLISECONDS_IN_HOUR.toString()
                             )
                         )
                     }
 
                     TokenType.DAY -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(Token(TokenType.MULTIPLY))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
-                                MILLISECONDS_IN_DAY.toString(),
-                                0
+                                MILLISECONDS_IN_DAY.toString()
                             )
                         )
                     }
 
                     TokenType.WEEK -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(Token(TokenType.MULTIPLY))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
-                                MILLISECONDS_IN_WEEK.toString(),
-                                0
+                                MILLISECONDS_IN_WEEK.toString()
                             )
                         )
                     }
 
 
                     TokenType.MONTH -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(Token(TokenType.MULTIPLY))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
-                                MILLISECONDS_IN_MONTH.toString(),
-                                0
+                                MILLISECONDS_IN_MONTH.toString()
                             )
                         )
                     }
 
                     TokenType.YEAR -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY, 0))
+                        convertedTokens.add(Token(TokenType.MULTIPLY))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
-                                MILLISECONDS_IN_YEAR.toString(),
-                                0
+                                MILLISECONDS_IN_YEAR.toString()
                             )
                         )
                     }
 
                     TokenType.NUMBER -> {
-                        convertedTokens.add(Token(TokenType.PLUS, 0))
+                        convertedTokens.add(Token(TokenType.PLUS))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
-                                token.strRepresentation,
-                                token.position
+                                token.strRepresentation
                             )
                         )
                     }
@@ -228,8 +215,7 @@ abstract class CalculatorOfTime {
                     TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS, TokenType.PARENTHESES_RIGHT, TokenType.PARENTHESES_LEFT -> {
                         convertedTokens.add(
                             Token(
-                                token.type,
-                                token.position
+                                token.type
                             )
                         )
                     }
@@ -250,8 +236,7 @@ abstract class CalculatorOfTime {
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_SECOND).toString(),
-                            0
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_SECOND).toString()
                         )
                     )
                 }
@@ -259,8 +244,7 @@ abstract class CalculatorOfTime {
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_MINUTE).toString(),
-                            0
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_MINUTE).toString()
                         )
                     )
                 }
@@ -269,8 +253,7 @@ abstract class CalculatorOfTime {
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_HOUR).toString(),
-                            0
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_HOUR).toString()
                         )
                     )
                 }
@@ -279,8 +262,7 @@ abstract class CalculatorOfTime {
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_DAY).toString(),
-                            0
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_DAY).toString()
                         )
                     )
                 }
@@ -289,8 +271,7 @@ abstract class CalculatorOfTime {
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_WEEK).toString(),
-                            0
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_WEEK).toString()
                         )
                     )
                 }
@@ -300,8 +281,7 @@ abstract class CalculatorOfTime {
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_MONTH).toString(),
-                            0
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_MONTH).toString()
                         )
                     )
                 }
@@ -310,14 +290,13 @@ abstract class CalculatorOfTime {
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_YEAR).toString(),
-                            0
+                            (token.strRepresentation.toDouble() / MILLISECONDS_IN_YEAR).toString()
                         )
                     )
                 }
 
             }
-            convertedTokens.add(Token(type, 0))
+            convertedTokens.add(Token(type))
             return convertedTokens
         }
 
@@ -353,42 +332,42 @@ abstract class CalculatorOfTime {
                 (valueOfToken - (years * MILLISECONDS_IN_YEAR + months * MILLISECONDS_IN_MONTH + weeks * MILLISECONDS_IN_WEEK + days * MILLISECONDS_IN_DAY + hours * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE + seconds * MILLISECONDS_IN_SECOND)).toInt()
 
             if (years != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, years.toString(), 0))
-                convertedTokens.add(Token(TokenType.YEAR, 0))
+                convertedTokens.add(Token(TokenType.NUMBER, years.toString()))
+                convertedTokens.add(Token(TokenType.YEAR))
             }
 
 
             if (months != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, months.toString(), 0))
-                convertedTokens.add(Token(TokenType.MONTH, 0))
+                convertedTokens.add(Token(TokenType.NUMBER, months.toString()))
+                convertedTokens.add(Token(TokenType.MONTH))
             }
 
             if (weeks != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, weeks.toString(), 0))
-                convertedTokens.add(Token(TokenType.WEEK, 0))
+                convertedTokens.add(Token(TokenType.NUMBER, weeks.toString()))
+                convertedTokens.add(Token(TokenType.WEEK))
             }
             if (days != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, days.toString(), 0))
-                convertedTokens.add(Token(TokenType.DAY, 0))
+                convertedTokens.add(Token(TokenType.NUMBER, days.toString()))
+                convertedTokens.add(Token(TokenType.DAY))
             }
             if (hours != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, hours.toString(), 0))
-                convertedTokens.add(Token(TokenType.HOUR, 0))
+                convertedTokens.add(Token(TokenType.NUMBER, hours.toString()))
+                convertedTokens.add(Token(TokenType.HOUR))
             }
 
             if (minutes != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, minutes.toString(), 0))
-                convertedTokens.add(Token(TokenType.MINUTE, 0))
+                convertedTokens.add(Token(TokenType.NUMBER, minutes.toString()))
+                convertedTokens.add(Token(TokenType.MINUTE))
             }
 
             if (seconds != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, seconds.toString(), 0))
-                convertedTokens.add(Token(TokenType.SECOND, 0))
+                convertedTokens.add(Token(TokenType.NUMBER, seconds.toString()))
+                convertedTokens.add(Token(TokenType.SECOND))
             }
 
             if (mseconds != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, mseconds.toString(), 0))
-                convertedTokens.add(Token(TokenType.MSECOND, 0))
+                convertedTokens.add(Token(TokenType.NUMBER, mseconds.toString()))
+                convertedTokens.add(Token(TokenType.MSECOND))
             }
             return convertedTokens
         }
@@ -401,21 +380,21 @@ abstract class CalculatorOfTime {
                 when (token.type) {
                     TokenType.NUMBER -> {
                         if (!isParenthesesBegins) {
-                            tokensWithParentheses.add(Token(TokenType.PARENTHESES_LEFT, 0))
+                            tokensWithParentheses.add(Token(TokenType.PARENTHESES_LEFT))
                             isParenthesesBegins = true
                         }
                     }
                     TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS -> {
 
-                        tokensWithParentheses.add(Token(TokenType.PARENTHESES_RIGHT, 0))
+                        tokensWithParentheses.add(Token(TokenType.PARENTHESES_RIGHT))
                         isParenthesesBegins = false
 
                     }
                 }
-                tokensWithParentheses.add(Token(token.type, token.strRepresentation, token.position))
+                tokensWithParentheses.add(Token(token.type, token.strRepresentation))
 
             }
-            tokensWithParentheses.add(Token(TokenType.PARENTHESES_RIGHT, 0))
+            tokensWithParentheses.add(Token(TokenType.PARENTHESES_RIGHT))
             return tokensWithParentheses
         }
 

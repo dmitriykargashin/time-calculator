@@ -21,7 +21,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.TypeSafeDiagnosingMatcher
 
 
-
+// function for checking equality of Tokens Object instances
 fun isEqualTo(expectedTokens: Tokens) = object : TypeSafeDiagnosingMatcher<Tokens>() {
     override fun describeTo(description: Description) {
         description.appendText("$expectedTokens")
@@ -112,16 +112,14 @@ class WhenCalculateExpression {
         val listOfExpectedTokens = Tokens()
 
         with(listOfExpectedTokens) {
-            add(Token(TokenType.NUMBER, "5", 0))
-            add(Token(TokenType.HOUR, 0))
-            add(Token(TokenType.NUMBER, "10", 0))
-            add(Token(TokenType.MINUTE, 0))
+            add(Token(TokenType.NUMBER, "5"))
+            add(Token(TokenType.HOUR))
+            add(Token(TokenType.NUMBER, "10"))
+            add(Token(TokenType.MINUTE))
         }
 
 
         val stringExpression ="10 Minute + 5 Hour"
-           // "10 ${TokenType.MINUTE.value} ${TokenType.PLUS.value.addStartAndEndSpace()}5 ${TokenType.HOUR.value}"
-
 
         val listOfResultTokens = CalculateExpression(stringExpression)
 
@@ -134,14 +132,14 @@ class WhenCalculateExpression {
         val listOfExpectedTokens = Tokens()
 
         with(listOfExpectedTokens) {
-            add(Token(TokenType.NUMBER, "4", 0))
-            add(Token(TokenType.HOUR, 0))
-            add(Token(TokenType.NUMBER, "50", 0))
-            add(Token(TokenType.MINUTE, 0))
+            add(Token(TokenType.NUMBER, "4"))
+            add(Token(TokenType.HOUR))
+            add(Token(TokenType.NUMBER, "50"))
+            add(Token(TokenType.MINUTE))
         }
 
 
-        val stringExpression ="5 Hour ${TokenType.MINUS.value} 10 Minute"
+        val stringExpression ="5 Hour-10 Minute"
 
         val listOfResultTokens = CalculateExpression(stringExpression)
 

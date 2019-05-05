@@ -24,8 +24,6 @@ class LexicalAnalyzer(var stringExrpession: String) {
         stringExrpession = stringExrpession.removeAllSpaces()
         stringExrpessionLength = stringExrpession.length
         startAnalyze()
-        //stringExrpession.indexOf("Month")
-
         return listOfTokens
     }
 
@@ -46,17 +44,17 @@ class LexicalAnalyzer(var stringExrpession: String) {
     fun isLetter(x: Char): Boolean = x.isLetter()
 
     //Finding out that current symbol is operator
-    fun isOperator(x: Char): Boolean = x.equals(TokenType.PLUS.value[0]) or x.equals(TokenType.MINUS.value[0]) or
-            x.equals(TokenType.MULTIPLY.value[0]) or x.equals(TokenType.DIVIDE.value[0])
+    fun isOperator(x: Char): Boolean = (x == TokenType.PLUS.value[0]) or (x == TokenType.MINUS.value[0]) or
+            (x == TokenType.MULTIPLY.value[0]) or (x == TokenType.DIVIDE.value[0]) or (x == '-') or (x == '/') or (x == '*') or (x == '+')
 
     //Finding out that current symbol is dot
-    fun isDot(x: Char): Boolean = x.equals('.')
+    fun isDot(x: Char): Boolean = x == '.'
 
 
     // finding full token body from current position
     fun findCurrentFullToken(): Token {
         // In Kotlin we dont need BUILDER Pattern!
-        var findedToken = Token(type = TokenType.ERROR, position = currentPosition)
+        var findedToken = Token(type = TokenType.ERROR)
 
         if (currentPosition <= stringExrpessionLength) {
 
@@ -86,19 +84,19 @@ class LexicalAnalyzer(var stringExrpession: String) {
 
     private fun findCurrentOperatorToken(): Token {
         when {
-            stringExrpession[currentPosition] == TokenType.PLUS.value[0] -> {
-                return Token(type = TokenType.PLUS, position = currentPosition)
+            (stringExrpession[currentPosition] == TokenType.PLUS.value[0]) or (stringExrpession[currentPosition] == '+') -> {
+                return Token(type = TokenType.PLUS)
             }
-            stringExrpession[currentPosition] == TokenType.MINUS.value[0] -> {
-                return Token(type = TokenType.MINUS, position = currentPosition)
+            (stringExrpession[currentPosition] == TokenType.MINUS.value[0]) or (stringExrpession[currentPosition] == '-') -> {
+                return Token(type = TokenType.MINUS)
             }
-            stringExrpession[currentPosition] == TokenType.DIVIDE.value[0] -> {
-                return Token(type = TokenType.DIVIDE, position = currentPosition)
+            (stringExrpession[currentPosition] == TokenType.DIVIDE.value[0]) or (stringExrpession[currentPosition] == '/') -> {
+                return Token(type = TokenType.DIVIDE)
             }
-            stringExrpession[currentPosition] == TokenType.MULTIPLY.value[0] -> {
-                return Token(type = TokenType.MULTIPLY, position = currentPosition)
+            (stringExrpession[currentPosition] == TokenType.MULTIPLY.value[0]) or (stringExrpession[currentPosition] == '*') -> {
+                return Token(type = TokenType.MULTIPLY)
             }
-            else -> return Token(type = TokenType.ERROR, position = currentPosition)
+            else -> return Token(type = TokenType.ERROR)
         }
 
     }
@@ -106,38 +104,38 @@ class LexicalAnalyzer(var stringExrpession: String) {
     private fun findCurrentLetterToken(): Token {
         when {
             stringExrpession.startsWith(TokenType.YEAR.value, currentPosition) -> {
-                return Token(type = TokenType.YEAR, position = currentPosition)
+                return Token(type = TokenType.YEAR)
             }
 
             stringExrpession.startsWith(TokenType.MONTH.value, currentPosition) -> {
-                return Token(type = TokenType.MONTH, position = currentPosition)
+                return Token(type = TokenType.MONTH)
             }
 
             stringExrpession.startsWith(TokenType.WEEK.value, currentPosition) -> {
-                return Token(type = TokenType.WEEK, position = currentPosition)
+                return Token(type = TokenType.WEEK)
             }
 
             stringExrpession.startsWith(TokenType.DAY.value, currentPosition) -> {
-                return Token(type = TokenType.DAY, position = currentPosition)
+                return Token(type = TokenType.DAY)
             }
 
             stringExrpession.startsWith(TokenType.HOUR.value, currentPosition) -> {
-                return Token(type = TokenType.HOUR, position = currentPosition)
+                return Token(type = TokenType.HOUR)
             }
 
             stringExrpession.startsWith(TokenType.MINUTE.value, currentPosition) -> {
-                return Token(type = TokenType.MINUTE, position = currentPosition)
+                return Token(type = TokenType.MINUTE)
             }
 
             stringExrpession.startsWith(TokenType.SECOND.value, currentPosition) -> {
-                return Token(type = TokenType.SECOND, position = currentPosition)
+                return Token(type = TokenType.SECOND)
             }
 
             stringExrpession.startsWith(TokenType.MSECOND.value, currentPosition) -> {
-                return Token(type = TokenType.MSECOND, position = currentPosition)
+                return Token(type = TokenType.MSECOND)
             }
 
-            else -> return Token(type = TokenType.ERROR, position = currentPosition)
+            else -> return Token(type = TokenType.ERROR)
         }
     }
 
@@ -149,7 +147,7 @@ class LexicalAnalyzer(var stringExrpession: String) {
 
         m.find(currentPosition)
 
-        return Token(type = TokenType.NUMBER, strRepresentation = m.group(), position = currentPosition)
+        return Token(type = TokenType.NUMBER, strRepresentation = m.group())
 
     }
 
