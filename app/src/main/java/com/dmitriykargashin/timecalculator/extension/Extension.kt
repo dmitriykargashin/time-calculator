@@ -9,6 +9,8 @@ import android.text.TextUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 
+
+
 fun String.toHTMLWithColor(): Spanned {
 
 

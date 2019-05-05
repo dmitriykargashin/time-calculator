@@ -19,6 +19,7 @@ import org.junit.Test
 import org.hamcrest.MatcherAssert.assertThat
 
 import org.hamcrest.TypeSafeDiagnosingMatcher
+import org.junit.Ignore
 
 
 // function for checking equality of Tokens Object instances
@@ -45,8 +46,7 @@ fun isEqualTo(expectedTokens: Tokens) = object : TypeSafeDiagnosingMatcher<Token
 
 class WhenCalculateExpression {
     private fun CalculateExpression(stringExpression: String): Tokens {
-        val lexicalAnalyzer = LexicalAnalyzer(stringExpression)
-        val listOfTokens = lexicalAnalyzer.analyze()
+        val listOfTokens = LexicalAnalyzer.analyze(stringExpression)
 
         return CalculatorOfTime.evaluate(listOfTokens)
     }
@@ -88,7 +88,7 @@ class WhenCalculateExpression {
     @Test
     fun Calculate_Expr_10Minute_plus_5Hour_Equals_5Hour10Minute() {
         val listOfResultTokens =
-            CalculateExpression("10 ${TokenType.MINUTE.value} ${TokenType.PLUS.value.addStartAndEndSpace()}5 ${TokenType.HOUR.value}")
+            CalculateExpression("10 Minute+ 5 Hour")
         Assert.assertEquals(3, listOfResultTokens.lastIndex)
         Assert.assertEquals("5", listOfResultTokens[0].strRepresentation)
         Assert.assertEquals(TokenType.HOUR.value, listOfResultTokens[1].type.value)
@@ -138,7 +138,7 @@ class WhenCalculateExpression {
             add(Token(TokenType.MINUTE))
         }
 
-
+    //    listOfExpectedTokens= LexicalAnalyzer.
         val stringExpression ="5 Hour-10 Minute"
 
         val listOfResultTokens = CalculateExpression(stringExpression)

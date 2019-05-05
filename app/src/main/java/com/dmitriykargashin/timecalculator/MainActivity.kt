@@ -157,8 +157,7 @@ class MainActivity : AppCompatActivity() {
         // coroutines because we need only last result
         scope.launch {
 
-            val lexicalAnalyzer = LexicalAnalyzer(expressionString)
-            val listOfTokens = lexicalAnalyzer.analyze()
+            val listOfTokens = LexicalAnalyzer.analyze(expressionString)
 
             val listOfResultTokens = CalculatorOfTime.evaluate(listOfTokens)
 
