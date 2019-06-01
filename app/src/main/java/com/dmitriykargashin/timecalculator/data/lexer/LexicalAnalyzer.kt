@@ -1,12 +1,13 @@
 /*
  * Copyright (c) 2019. Dmitriy Kargashin
- *
- * Uses for Lexical analyze for string expression
  */
 
-package com.dmitriykargashin.timecalculator.lexer
+package com.dmitriykargashin.timecalculator.data.lexer
 
-import com.dmitriykargashin.timecalculator.extension.removeAllSpaces
+import com.dmitriykargashin.timecalculator.data.tokens.Token
+import com.dmitriykargashin.timecalculator.data.tokens.TokenType
+import com.dmitriykargashin.timecalculator.data.tokens.Tokens
+import com.dmitriykargashin.timecalculator.internal.extension.removeAllSpaces
 
 import java.util.regex.Pattern
 
@@ -29,14 +30,20 @@ abstract class LexicalAnalyzer {
             val expression = stringexpression.removeAllSpaces()
             expressionLength = expression.length
 
-            return startAnalyze(expression)
+            return startAnalyze(
+                expression
+            )
         }
 
         private fun startAnalyze(expression: String): Tokens {
             val resultTokens = Tokens()
             var currentPosition = 0
             while (currentPosition < expressionLength) {
-                val tmpToken = findCurrentFullToken(expression, currentPosition)
+                val tmpToken =
+                    findCurrentFullToken(
+                        expression,
+                        currentPosition
+                    )
                 resultTokens.add(tmpToken)
                 currentPosition += tmpToken.length()
             }
@@ -60,25 +67,42 @@ abstract class LexicalAnalyzer {
         // finding full token body from current position
         fun findCurrentFullToken(expression: String, currentPosition: Int): Token {
             // In Kotlin we dont need BUILDER Pattern!
-            var findedToken = Token(type = TokenType.ERROR)
+            var findedToken =
+                Token(type = TokenType.ERROR)
 
             if (currentPosition <= expressionLength) {
 
                 when {
                     isDigit((expression[currentPosition])) -> {
-                        findedToken = findCurrentDigitalToken(expression, currentPosition)
+                        findedToken =
+                            findCurrentDigitalToken(
+                                expression,
+                                currentPosition
+                            )
                     }
 
                     isLetter((expression[currentPosition])) -> {
-                        findedToken = findCurrentLetterToken(expression, currentPosition)
+                        findedToken =
+                            findCurrentLetterToken(
+                                expression,
+                                currentPosition
+                            )
                     }
 
                     isOperator((expression[currentPosition])) -> {
-                        findedToken = findCurrentOperatorToken(expression, currentPosition)
+                        findedToken =
+                            findCurrentOperatorToken(
+                                expression,
+                                currentPosition
+                            )
                     }
 
                     isDot((expression[currentPosition])) -> {
-                        findedToken = findCurrentDigitalToken(expression, currentPosition)
+                        findedToken =
+                            findCurrentDigitalToken(
+                                expression,
+                                currentPosition
+                            )
                     }
 
                 }
@@ -153,7 +177,10 @@ abstract class LexicalAnalyzer {
 
             m.find(currentPosition)
 
-            return Token(type = TokenType.NUMBER, strRepresentation = m.group())
+            return Token(
+                type = TokenType.NUMBER,
+                strRepresentation = m.group()
+            )
 
         }
 

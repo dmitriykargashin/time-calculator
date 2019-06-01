@@ -1,10 +1,8 @@
 /*
  * Copyright (c) 2019. Dmitriy Kargashin
- *
- * Token class
  */
 
-package com.dmitriykargashin.timecalculator.lexer
+package com.dmitriykargashin.timecalculator.data.tokens
 
 import kotlin.math.roundToLong
 
@@ -12,7 +10,7 @@ import kotlin.math.roundToLong
 class Token(val type: TokenType, var strRepresentation: String = "") {
 
     init {
-        if (type == TokenType.NUMBER) { // here we'll remove .0 from integer
+        if (type == TokenType.NUMBER) { // here we'll remove .0 from string representation of integer
             val tmpDouble = strRepresentation.toDouble()
             val tmpInt = tmpDouble.roundToLong()
 

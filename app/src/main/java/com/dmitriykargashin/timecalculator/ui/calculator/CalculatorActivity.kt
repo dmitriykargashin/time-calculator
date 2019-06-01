@@ -1,26 +1,29 @@
-package com.dmitriykargashin.timecalculator
+/*
+ * Copyright (c) 2019. Dmitriy Kargashin
+ */
+
+package com.dmitriykargashin.timecalculator.ui.calculator
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import com.dmitriykargashin.timecalculator.extension.addStartAndEndSpace
+import com.dmitriykargashin.timecalculator.R
+import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-import com.dmitriykargashin.timecalculator.extension.toHTMLWithColor
-import com.dmitriykargashin.timecalculator.lexer.TokenType
+import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithColor
+import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 
-import com.dmitriykargashin.timecalculator.calculator.CalculatorOfTime
-import com.dmitriykargashin.timecalculator.extension.removeAllSpaces
-import com.dmitriykargashin.timecalculator.extension.removeHTML
-import com.dmitriykargashin.timecalculator.lexer.LexicalAnalyzer
-import com.dmitriykargashin.timecalculator.lexer.Tokens
+import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
+import com.dmitriykargashin.timecalculator.internal.extension.removeAllSpaces
+import com.dmitriykargashin.timecalculator.internal.extension.removeHTML
+import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
+import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
-import kotlin.coroutines.coroutineContext
 
 
-class MainActivity : AppCompatActivity() {
+class CalculatorActivity : AppCompatActivity() {
 
     protected val job = SupervisorJob() // the instance of a Job for this activity
 

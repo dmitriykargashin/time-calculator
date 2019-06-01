@@ -1,4 +1,8 @@
-package com.dmitriykargashin.timecalculator.lexer
+/*
+ * Copyright (c) 2019. Dmitriy Kargashin
+ */
+
+package com.dmitriykargashin.timecalculator.data.tokens
 
 
 sealed class TokenType {

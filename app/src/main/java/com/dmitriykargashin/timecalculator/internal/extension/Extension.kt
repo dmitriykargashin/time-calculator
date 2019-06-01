@@ -1,14 +1,11 @@
 @file:JvmName("ExtensionsUtils")
 
-package com.dmitriykargashin.timecalculator.extension
+package com.dmitriykargashin.timecalculator.internal.extension
 
 
 import android.text.Html
 import android.text.Spanned
 import android.text.TextUtils
-import kotlinx.android.synthetic.main.activity_main.*
-
-
 
 
 fun String.toHTMLWithColor(): Spanned {

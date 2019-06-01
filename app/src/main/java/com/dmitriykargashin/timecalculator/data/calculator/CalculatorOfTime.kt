@@ -2,11 +2,11 @@
  * Copyright (c) 2019. Dmitriy Kargashin
  */
 
-package com.dmitriykargashin.timecalculator.calculator
+package com.dmitriykargashin.timecalculator.data.calculator
 
-import com.dmitriykargashin.timecalculator.lexer.Token
-import com.dmitriykargashin.timecalculator.lexer.TokenType
-import com.dmitriykargashin.timecalculator.lexer.Tokens
+import com.dmitriykargashin.timecalculator.data.tokens.Token
+import com.dmitriykargashin.timecalculator.data.tokens.TokenType
+import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import net.objecthunter.exp4j.ExpressionBuilder
 
 
@@ -83,7 +83,12 @@ abstract class CalculatorOfTime {
 
                 // we'll return result as one NUMBER token
                 val resultTokens = Tokens()
-                resultTokens.add(Token(TokenType.NUMBER, result.toString()))
+                resultTokens.add(
+                    Token(
+                        TokenType.NUMBER,
+                        result.toString()
+                    )
+                )
 
                 return resultTokens
 
@@ -226,7 +231,7 @@ abstract class CalculatorOfTime {
         }
 
 
-        // here we convert result expression to specified type
+        // here we are converting result expression to specified type
         private fun convertExpressionInMsecsToType(token: Token, type: TokenType): Tokens {
             val convertedTokens = Tokens()
             when (type) {
@@ -332,41 +337,81 @@ abstract class CalculatorOfTime {
                 (valueOfToken - (years * MILLISECONDS_IN_YEAR + months * MILLISECONDS_IN_MONTH + weeks * MILLISECONDS_IN_WEEK + days * MILLISECONDS_IN_DAY + hours * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE + seconds * MILLISECONDS_IN_SECOND)).toInt()
 
             if (years != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, years.toString()))
+                convertedTokens.add(
+                    Token(
+                        TokenType.NUMBER,
+                        years.toString()
+                    )
+                )
                 convertedTokens.add(Token(TokenType.YEAR))
             }
 
 
             if (months != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, months.toString()))
+                convertedTokens.add(
+                    Token(
+                        TokenType.NUMBER,
+                        months.toString()
+                    )
+                )
                 convertedTokens.add(Token(TokenType.MONTH))
             }
 
             if (weeks != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, weeks.toString()))
+                convertedTokens.add(
+                    Token(
+                        TokenType.NUMBER,
+                        weeks.toString()
+                    )
+                )
                 convertedTokens.add(Token(TokenType.WEEK))
             }
             if (days != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, days.toString()))
+                convertedTokens.add(
+                    Token(
+                        TokenType.NUMBER,
+                        days.toString()
+                    )
+                )
                 convertedTokens.add(Token(TokenType.DAY))
             }
             if (hours != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, hours.toString()))
+                convertedTokens.add(
+                    Token(
+                        TokenType.NUMBER,
+                        hours.toString()
+                    )
+                )
                 convertedTokens.add(Token(TokenType.HOUR))
             }
 
             if (minutes != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, minutes.toString()))
+                convertedTokens.add(
+                    Token(
+                        TokenType.NUMBER,
+                        minutes.toString()
+                    )
+                )
                 convertedTokens.add(Token(TokenType.MINUTE))
             }
 
             if (seconds != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, seconds.toString()))
+                convertedTokens.add(
+                    Token(
+                        TokenType.NUMBER,
+                        seconds.toString()
+                    )
+                )
                 convertedTokens.add(Token(TokenType.SECOND))
             }
 
             if (mseconds != 0) {
-                convertedTokens.add(Token(TokenType.NUMBER, mseconds.toString()))
+                convertedTokens.add(
+                    Token(
+                        TokenType.NUMBER,
+                        mseconds.toString()
+                    )
+                )
                 convertedTokens.add(Token(TokenType.MSECOND))
             }
             return convertedTokens
@@ -380,7 +425,11 @@ abstract class CalculatorOfTime {
                 when (token.type) {
                     TokenType.NUMBER -> {
                         if (!isParenthesesBegins) {
-                            tokensWithParentheses.add(Token(TokenType.PARENTHESES_LEFT))
+                            tokensWithParentheses.add(
+                                Token(
+                                    TokenType.PARENTHESES_LEFT
+                                )
+                            )
                             isParenthesesBegins = true
                         }
                     }
@@ -391,7 +440,12 @@ abstract class CalculatorOfTime {
 
                     }
                 }
-                tokensWithParentheses.add(Token(token.type, token.strRepresentation))
+                tokensWithParentheses.add(
+                    Token(
+                        token.type,
+                        token.strRepresentation
+                    )
+                )
 
             }
             tokensWithParentheses.add(Token(TokenType.PARENTHESES_RIGHT))
