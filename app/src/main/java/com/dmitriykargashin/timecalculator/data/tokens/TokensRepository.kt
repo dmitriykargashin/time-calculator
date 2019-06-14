@@ -4,17 +4,26 @@
 
 package com.dmitriykargashin.timecalculator.data.tokens
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 
 
 class TokensRepository {
 
-    private val tokens:Tokens= Tokens()
+
+    private val tokensList = mutableListOf<Token>()
+    private val tokens = MutableLiveData<List<Token>>()
+
+    init {
+        tokens.value = tokensList
+    }
 
     fun addToken(token: Token) {
+        tokensList.add(token)
+        tokens.value = tokensList
+    }
 
-        tokens.add(token)    }
-
-    fun getTokens() = tokens
+    fun getTokens() = tokens as LiveData<List<Token>>
 
 
     companion object {

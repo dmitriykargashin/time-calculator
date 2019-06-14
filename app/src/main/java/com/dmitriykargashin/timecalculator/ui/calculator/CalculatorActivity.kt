@@ -4,8 +4,11 @@
 
 package com.dmitriykargashin.timecalculator.ui.calculator
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.text.SpannableString
 import android.widget.TextView
 import com.dmitriykargashin.timecalculator.R
 import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
@@ -20,6 +23,7 @@ import com.dmitriykargashin.timecalculator.internal.extension.removeAllSpaces
 import com.dmitriykargashin.timecalculator.internal.extension.removeHTML
 import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
+import com.dmitriykargashin.timecalculator.utilites.InjectorUtils
 import kotlinx.coroutines.*
 
 
@@ -39,113 +43,129 @@ class CalculatorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initButtonListeners()
+        initUI()
 
     }
 
-    private fun initButtonListeners() {
+    private fun initUI() {
+
+        val factory = InjectorUtils.provideCalculatorViewModelFactory()
+        val viewModel = ViewModelProviders.of(this, factory)
+            .get(CalculatorViewModel::class.java)
+
+        viewModel.getTokens().observe(
+            this,
+            Observer {
+                /*tokens ->
+                               val stringBuilder = StringBuilder()
+                               tokens. forEach{ quote ->
+                                   stringBuilder.append("$quote\n\n")
+                               }
+                               textView_quotes.text = stringBuilder.toString()
+               */
+                // calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            }
+        )
+
+        viewModel.getExpression().observe(
+            this,
+            Observer {
+                tvExpressionField.text = it
+
+            }
+        )
+
         //nums
         buttonNum1.setOnClickListener {
-            tvExpressionField.append("1")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+
+            viewModel.addToExpression("1")
         }
         buttonNum2.setOnClickListener {
-            tvExpressionField.append("2")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression("2")
+
         }
         buttonNum3.setOnClickListener {
-            tvExpressionField.append("3")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression("3")
+
         }
         buttonNum4.setOnClickListener {
-            tvExpressionField.append("4")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression("4")
+
         }
         buttonNum5.setOnClickListener {
-            tvExpressionField.append("5")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression("5")
+
         }
         buttonNum6.setOnClickListener {
-            tvExpressionField.append("6")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression("6")
         }
         buttonNum7.setOnClickListener {
-            tvExpressionField.append("7")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression("7")
         }
         buttonNum8.setOnClickListener {
-            tvExpressionField.append("8")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression("8")
         }
         buttonNum9.setOnClickListener {
-            tvExpressionField.append("9")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression("9")
         }
         buttonNum0.setOnClickListener {
-            tvExpressionField.append("0")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression("0")
+
         }
         buttonComma.setOnClickListener {
-            tvExpressionField.append(".")
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression(".")
+
         }
 
         /// times
         buttonYear.setOnClickListener {
-            //todo https://stackoverflow.com/questions/37904739/html-fromhtml-deprecated-in-android-n
-            //   tvResult.append(" Year ".toHTMLWithColor())
-            tvExpressionField.append(TokenType.YEAR.value.addStartAndEndSpace().toHTMLWithColor())
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+
+            viewModel.addToExpression(TokenType.YEAR)
         }
         buttonMonth.setOnClickListener {
-            tvExpressionField.append(TokenType.MONTH.value.addStartAndEndSpace().toHTMLWithColor())
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression(TokenType.MONTH)
+
         }
         buttonWeek.setOnClickListener {
-            tvExpressionField.append(TokenType.WEEK.value.addStartAndEndSpace().toHTMLWithColor())
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression(TokenType.WEEK)
+
         }
         buttonDay.setOnClickListener {
-            tvExpressionField.append(TokenType.DAY.value.addStartAndEndSpace().toHTMLWithColor())
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression(TokenType.DAY)
         }
         buttonHour.setOnClickListener {
-            tvExpressionField.append(TokenType.HOUR.value.addStartAndEndSpace().toHTMLWithColor())
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression(TokenType.HOUR)
         }
         buttonMinute.setOnClickListener {
-            tvExpressionField.append(TokenType.MINUTE.value.addStartAndEndSpace().toHTMLWithColor())
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression(TokenType.MINUTE)
         }
         buttonSecond.setOnClickListener {
-            tvExpressionField.append(TokenType.SECOND.value.addStartAndEndSpace().toHTMLWithColor())
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression(TokenType.SECOND)
         }
         buttonMsec.setOnClickListener {
-            tvExpressionField.append(TokenType.MSECOND.value.addStartAndEndSpace().toHTMLWithColor())
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+            viewModel.addToExpression(TokenType.MSECOND)
         }
 
         ///operations
         buttonMultiply.setOnClickListener {
-            tvExpressionField.append(TokenType.MULTIPLY.value.addStartAndEndSpace())
-            //  tvResult.append(" \u00D7 ")
+            viewModel.addToExpression(TokenType.MULTIPLY)
+
         }
         buttonDivide.setOnClickListener {
-            tvExpressionField.append(TokenType.DIVIDE.value.addStartAndEndSpace())
-            //  tvResult.append(" \u00F7 ")
+            viewModel.addToExpression(TokenType.DIVIDE)
+
         }
         buttonSubstraction.setOnClickListener {
-            tvExpressionField.append(TokenType.MINUS.value.addStartAndEndSpace())
-            //   tvResult.append(" \u2212 ")
+            viewModel.addToExpression(TokenType.MINUS)
+
         }
         buttonAddition.setOnClickListener {
-            tvExpressionField.append(TokenType.PLUS.value.addStartAndEndSpace())
-            //tvResult.append(" + ")
+            viewModel.addToExpression(TokenType.PLUS)
+
         }
 
         buttonClear.setOnClickListener {
-            tvExpressionField.text = ""
+            viewModel.setExpression(SpannableString(""))
         }
 
         buttonEqual.setOnClickListener {

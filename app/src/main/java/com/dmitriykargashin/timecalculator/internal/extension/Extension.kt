@@ -3,16 +3,23 @@
 package com.dmitriykargashin.timecalculator.internal.extension
 
 
-import android.text.Html
-import android.text.Spanned
+import android.graphics.Color
+
+
+import android.text.SpannableString
+
 import android.text.TextUtils
 
 
-fun String.toHTMLWithColor(): Spanned {
+
+fun String.toHTMLWithColor(): SpannableString {
 
 
 //todo how to get color from colors.xml?
-    return Html.fromHtml("<small><small><font color='#33691e'>$this</font></small></small>")
+
+    return spannable { size(0.7f, color(Color.parseColor("#33691e"), this)) }
+
+
 }
 
 
