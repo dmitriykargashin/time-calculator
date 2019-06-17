@@ -6,13 +6,14 @@ package com.dmitriykargashin.timecalculator.data.tokens
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 
 
 class TokensRepository {
 
 
-    private val tokensList = mutableListOf<Token>()
-    private val tokens = MutableLiveData<List<Token>>()
+    private var tokensList = Tokens()
+    private val tokens = MutableLiveData<Tokens>()
 
     init {
         tokens.value = tokensList
@@ -23,7 +24,15 @@ class TokensRepository {
         tokens.value = tokensList
     }
 
-    fun getTokens() = tokens as LiveData<List<Token>>
+    fun getTokens() = tokens as LiveData<Tokens>
+
+    fun setTokens(newTokens: Tokens) {
+
+        tokensList = newTokens
+    //    Log.i("TAG", tokensList.toString())
+        tokens.postValue(tokensList) // for executing in background thread
+      //  Log.i("TAG", tokensList.toString())
+    }
 
 
     companion object {

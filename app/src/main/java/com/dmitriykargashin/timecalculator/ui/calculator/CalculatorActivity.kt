@@ -29,14 +29,10 @@ import kotlinx.coroutines.*
 
 class CalculatorActivity : AppCompatActivity() {
 
-    protected val job = SupervisorJob() // the instance of a Job for this activity
-
-    val scope = CoroutineScope(Dispatchers.IO + job)
-    //  val coroutineContext = Dispatchers.Main.immediate + job
 
     override fun onDestroy() {
         super.onDestroy()
-        scope.coroutineContext.cancelChildren() // cancel the job when activity is destroyed
+        //      scope.coroutineContext.cancelChildren() // cancel the job when activity is destroyed
     }
 
 
@@ -56,6 +52,8 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.getTokens().observe(
             this,
             Observer {
+
+                tvOnlineResult.text = it?.toSpannableString()
                 /*tokens ->
                                val stringBuilder = StringBuilder()
                                tokens. forEach{ quote ->
@@ -169,46 +167,13 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         buttonEqual.setOnClickListener {
-            calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
+
+            // calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
 
         }
     }
 
 
-    private fun calculateAndPrintResult(expressionString: String) {
-        scope.coroutineContext.cancelChildren() // here we cancel all previous
-        // coroutines because we need only last result
-        scope.launch {
-
-            val listOfTokens = LexicalAnalyzer.analyze(expressionString)
-
-            val listOfResultTokens = CalculatorOfTime.evaluate(listOfTokens)
-
-            withContext(Dispatchers.Main) {
-                tvOnlineResult.text = ""
-                convertEvaluatedTokensToFormattedString(tvOnlineResult, listOfResultTokens)
-            }
-
-
-        }
-
-
-    }
-
-
-    private fun convertEvaluatedTokensToFormattedString(textView: TextView, listOfResultTokens: Tokens) {
-
-
-        for (token in listOfResultTokens) {
-            when (token.type) {
-                TokenType.NUMBER ->
-                    textView.append(token.strRepresentation)
-
-                TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
-                    textView.append(token.strRepresentation.addStartAndEndSpace().toHTMLWithColor())
-            }
-        }
-        //      Log.i("TAG", textView.text.toString())
-
-    }
 }
+
+

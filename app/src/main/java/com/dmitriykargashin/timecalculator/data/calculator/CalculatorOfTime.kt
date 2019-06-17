@@ -4,6 +4,7 @@
 
 package com.dmitriykargashin.timecalculator.data.calculator
 
+import android.util.Log
 import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
@@ -73,7 +74,7 @@ abstract class CalculatorOfTime {
 
 
             val txt = tokensToEvaluate.toString()
-            //   Log.i("TAG", txt)
+               Log.i("TAG", txt)
 
             // Create an Expression (A class from exp4j library)
             val expression = ExpressionBuilder(txt).build()
