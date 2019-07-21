@@ -17,31 +17,7 @@ abstract class CalculatorOfTime {
     companion object {
 
 
-        private val MILLISECONDS_IN_SECOND = 1000
-        private val SECONDS_IN_MINUTE = 60
-        private val MINUTES_IN_HOUR = 60
-        private val HOURS_IN_DAY = 24
-        private val DAYS_IN_WEEK = 7
-        private val DAYS_IN_MONTH = 30
-        private val DAYS_IN_YEAR = 365
 
-        private val MILLISECONDS_IN_YEAR =
-            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong() * HOURS_IN_DAY.toLong() * DAYS_IN_YEAR.toLong()
-
-        private val MILLISECONDS_IN_MONTH =
-            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong() * HOURS_IN_DAY.toLong() * DAYS_IN_MONTH.toLong()
-
-        private val MILLISECONDS_IN_WEEK =
-            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong() * HOURS_IN_DAY.toLong() * DAYS_IN_WEEK.toLong()
-
-        private val MILLISECONDS_IN_DAY =
-            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong() * HOURS_IN_DAY.toLong()
-
-        private val MILLISECONDS_IN_HOUR =
-            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong() * MINUTES_IN_HOUR.toLong()
-
-        private val MILLISECONDS_IN_MINUTE =
-            MILLISECONDS_IN_SECOND.toLong() * SECONDS_IN_MINUTE.toLong()
 
 
         fun evaluate(tokensToEvaluate: Tokens): Tokens {

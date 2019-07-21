@@ -5,7 +5,6 @@
 package com.dmitriykargashin.timecalculator.data.tokens
 
 import android.text.SpannableString
-import android.util.Log
 import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
 import com.dmitriykargashin.timecalculator.internal.extension.plus
 import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithColor
@@ -23,14 +22,13 @@ class Tokens : ArrayList<Token>() {
                 else -> token.strRepresentation
             }
 
-
         }
         return tokensString
     }
 
     fun toSpannableString(): SpannableString {
         var spanString = SpannableString("")
-        Log.i("TAG", spanString.toString())
+
         for (token in this) {
             when (token.type) {
                 TokenType.NUMBER ->
@@ -40,8 +38,7 @@ class Tokens : ArrayList<Token>() {
                     spanString = spanString + token.strRepresentation.addStartAndEndSpace().toHTMLWithColor()
             }
         }
-        //      Log.i("TAG", textView.text.toString())
-        Log.i("TAG", spanString.toString())
+
         return spanString
     }
 }

@@ -22,10 +22,13 @@ class CalculatorViewModel(
     private val expressionRepository: ExpressionRepository,
     private val tokensRepository: TokensRepository
 ) : ViewModel() {
+
     //for corooutunes
     protected val job = SupervisorJob() // the instance of a Job for this activity
     val scope = CoroutineScope(Dispatchers.IO + job)
 ///
+
+
 
     fun getTokens() = tokensRepository.getTokens()
 
@@ -67,9 +70,7 @@ class CalculatorViewModel(
 
             withContext(Dispatchers.Main) {
                 tokensRepository.setTokens(tokensResult)
-                //   tokensRepository.setTokens(tokensResult)
-                //    tvOnlineResult.text = ""
-                //    convertEvaluatedTokensToFormattedString(tvOnlineResult, listOfResultTokens)
+
             }
 
 

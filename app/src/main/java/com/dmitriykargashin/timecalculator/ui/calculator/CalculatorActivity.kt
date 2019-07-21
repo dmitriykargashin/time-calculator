@@ -8,6 +8,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.system.Os.read
 import android.text.SpannableString
 import android.widget.TextView
 import com.dmitriykargashin.timecalculator.R
@@ -44,6 +45,8 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+           
+
 
         val factory = InjectorUtils.provideCalculatorViewModelFactory()
         val viewModel = ViewModelProviders.of(this, factory)
