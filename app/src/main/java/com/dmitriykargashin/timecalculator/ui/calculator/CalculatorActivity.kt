@@ -45,7 +45,7 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-           
+
 
 
         val factory = InjectorUtils.provideCalculatorViewModelFactory()
@@ -166,7 +166,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         buttonClear.setOnClickListener {
-            viewModel.setExpression(SpannableString(""))
+            viewModel.setExpression("")
         }
 
         buttonEqual.setOnClickListener {

@@ -32,10 +32,10 @@ class Tokens : ArrayList<Token>() {
         for (token in this) {
             when (token.type) {
                 TokenType.NUMBER ->
-                    spanString = spanString + (token.strRepresentation)
+                    spanString += token.strRepresentation
 
                 TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
-                    spanString = spanString + token.strRepresentation.addStartAndEndSpace().toHTMLWithColor()
+                    spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithColor()
             }
         }
 

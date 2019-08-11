@@ -29,12 +29,11 @@ class CalculatorViewModel(
 ///
 
 
-
     fun getTokens() = tokensRepository.getTokens()
 
     fun addToken(token: Token) = tokensRepository.addToken(token)
 
-    fun setExpression(expression: SpannableString) {
+    fun setExpression(expression: String) {
         expressionRepository.setExpression(expression)
         evaluateExpression()
     }
@@ -49,7 +48,7 @@ class CalculatorViewModel(
             TokenType.PLUS, TokenType.MINUS, TokenType.DIVIDE, TokenType.MULTIPLY ->
                 expressionRepository.addToExpression(element.value.addStartAndEndSpace()) // when we add operators dont need to evaluate
             else -> {
-                expressionRepository.addToExpression(element.value.addStartAndEndSpace().toHTMLWithColor())
+                expressionRepository.addToExpression(element.value.addStartAndEndSpace())
                 evaluateExpression()
             }
         }
@@ -60,6 +59,7 @@ class CalculatorViewModel(
 
 
     private fun evaluateExpression() {
+        //viewModelScope
         scope.coroutineContext.cancelChildren() // here we cancel all previous
         // coroutines because we need only last result
 

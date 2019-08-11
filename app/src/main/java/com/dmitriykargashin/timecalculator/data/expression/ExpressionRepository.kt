@@ -13,28 +13,39 @@ import android.text.TextUtils
 class ExpressionRepository {
 
 
-    private val expression = MutableLiveData<SpannableString>()
+    private val expression = MutableLiveData<String>()
 
     init {
-        expression.value= SpannableString("")
+        expression.value = ""
     }
 
-    fun setExpression(expressionString: SpannableString) {
+    fun setExpression(expressionString: String) {
 
         expression.value = expressionString
     }
 
-    fun addToExpression(expressionString: SpannableString) {
-
-        expression.value =  SpannableString(TextUtils.concat(expression.value, expressionString))
+    fun addToExpression(expressionString: String) {
+        if (noErrorsInExpression(expressionString)) expression.value =
+            expression.value + expressionString
     }
 
+
+/*
     fun addToExpression(expressionString: String) {
 
-        expression.value =  SpannableString(TextUtils.concat(expression.value, expressionString))
+        if (noErrorsInExpression(expressionString)) expression.value =
+            SpannableString(TextUtils.concat(expression.value, expressionString))
+    }
+*/
+
+
+    private fun noErrorsInExpression(expressionToAdd: String): Boolean {
+//here we should check all future errors when we will add the new expression to existing expression
+
+        return true
     }
 
-    fun getExpression() = expression as LiveData<SpannableString>
+    fun getExpression() = expression as LiveData<String>
 
 
     companion object {

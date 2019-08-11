@@ -18,8 +18,6 @@ abstract class CalculatorOfTime {
 
 
 
-
-
         fun evaluate(tokensToEvaluate: Tokens): Tokens {
 
 
