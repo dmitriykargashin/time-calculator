@@ -4,12 +4,12 @@
 
 package com.dmitriykargashin.timecalculator
 
-import android.arch.core.executor.ArchTaskExecutor
-import android.arch.core.executor.TaskExecutor
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.arch.core.executor.ArchTaskExecutor
+import androidx.arch.core.executor.TaskExecutor
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.text.SpannableString
 import android.util.Log
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType

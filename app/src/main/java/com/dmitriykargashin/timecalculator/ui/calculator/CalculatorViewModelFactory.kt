@@ -4,8 +4,8 @@
 
 package com.dmitriykargashin.timecalculator.ui.calculator
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.dmitriykargashin.timecalculator.data.expression.ExpressionRepository
 import com.dmitriykargashin.timecalculator.data.tokens.TokensRepository
 

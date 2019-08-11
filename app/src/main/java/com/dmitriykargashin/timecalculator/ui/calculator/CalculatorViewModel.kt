@@ -4,7 +4,7 @@
 
 package com.dmitriykargashin.timecalculator.ui.calculator
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import android.text.SpannableString
 import android.text.Spanned
 import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
