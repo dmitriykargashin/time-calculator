@@ -42,8 +42,14 @@ class Tokens : ArrayList<Token>() {
         return spanString
     }
 
- /*
-    fun lastToken() = {
-        this.last()
-    }*/
+    // here we check whether the set of tokens is a simple arithmetic expression
+    fun isSimpleArithmeticExpression(): Boolean {
+        for (token in this) {
+            when (token.type) {
+                TokenType.MSECOND, TokenType.SECOND, TokenType.HOUR, TokenType.MINUTE, TokenType.DAY, TokenType.WEEK, TokenType.YEAR -> return false
+
+            }
+        }
+        return true
+    }
 }

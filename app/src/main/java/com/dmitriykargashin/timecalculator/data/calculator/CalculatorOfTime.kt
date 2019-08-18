@@ -23,7 +23,7 @@ abstract class CalculatorOfTime {
 
             //
 
-            if (isSimpleArithmeticExpression(tokensToEvaluate))
+            if (tokensToEvaluate.isSimpleArithmeticExpression())
                 return evaluateSimpleArithmeticExpression(tokensToEvaluate)
             else {
                 val tokensWithParentheses = setParenthesesToExpression(tokensToEvaluate)
@@ -44,14 +44,18 @@ abstract class CalculatorOfTime {
             val txt = tokensToEvaluate.toString()
                Log.i("TAG", txt)
 
+            val resultTokens = Tokens()
+            if (txt=="") return resultTokens // expression is empty so return empty Tokens list
+
             // Create an Expression (A class from exp4j library)
-            val expression = ExpressionBuilder(txt).build()
+
             try {
+                val expression = ExpressionBuilder(txt).build()
                 // Calculate the result and display
                 val result = expression.evaluate()
 
                 // we'll return result as one NUMBER token
-                val resultTokens = Tokens()
+
                 resultTokens.add(
                     Token(
                         TokenType.NUMBER,
@@ -65,7 +69,7 @@ abstract class CalculatorOfTime {
                 //     lastDot = true // Result contains a dot
             } catch (ex: IllegalArgumentException)
             {
-                val resultTokens = Tokens()
+             //   val resultTokens = Tokens()
                 resultTokens.add(
                     Token(
                         TokenType.ERROR,
@@ -80,16 +84,7 @@ abstract class CalculatorOfTime {
         }
 
 
-        // here we check whether the expression is a simple arithmetic expression
-        fun isSimpleArithmeticExpression(tokensToEvaluate: Tokens): Boolean {
-            for (token in tokensToEvaluate) {
-                when (token.type) {
-                    TokenType.MSECOND, TokenType.SECOND, TokenType.HOUR, TokenType.MINUTE, TokenType.DAY, TokenType.WEEK, TokenType.YEAR -> return false
 
-                }
-            }
-            return true
-        }
 
         private fun convertExpressionToMsecs(tokensToConvert: Tokens): Tokens {
             var convertedTokens = Tokens()

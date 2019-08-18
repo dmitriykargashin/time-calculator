@@ -19,13 +19,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithGreenColor
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 
-import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
-import com.dmitriykargashin.timecalculator.internal.extension.removeAllSpaces
-import com.dmitriykargashin.timecalculator.internal.extension.removeHTML
-import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
-import com.dmitriykargashin.timecalculator.data.tokens.Tokens
+
 import com.dmitriykargashin.timecalculator.utilites.InjectorUtils
-import kotlinx.coroutines.*
+
 
 
 class CalculatorActivity : AppCompatActivity() {
@@ -166,7 +162,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         buttonClear.setOnClickListener {
-            viewModel.setExpression("")
+            viewModel.clearAll()
         }
 
         buttonEqual.setOnClickListener {

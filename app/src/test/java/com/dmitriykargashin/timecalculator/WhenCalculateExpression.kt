@@ -51,6 +51,19 @@ class WhenCalculateExpression {
         return CalculatorOfTime.evaluate(listOfTokens)
     }
 
+
+    @Test
+    fun `Calculate Empty expression`() {
+
+        val expressionForCalculate = ""
+        val listOfExpectedTokens = "".toTokens()
+
+        val listOfActualTokens = CalculateExpression(expressionForCalculate)
+
+        assertThat(listOfActualTokens, isEqualTo(listOfExpectedTokens))
+    }
+
+
     @Test
     fun Calculate_Expr_0_plus_10_Equals_10() {
         val listOfResultTokens = CalculateExpression("0${TokenType.PLUS.value.addStartAndEndSpace()}10")

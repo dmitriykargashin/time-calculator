@@ -39,17 +39,20 @@ class CalculatorViewModel(
     fun addToken(token: Token) = tokensRepository.addToken(token)
 
     fun setExpression(expression: String) {
-        expressionRepository.setExpression(expression)
-        viewModelScope.coroutineContext.cancelChildren()
-        viewModelScope.launch { evaluateExpression() }
+       // if (
+            expressionRepository.setExpression(expression)//) {
+       //     viewModelScope.coroutineContext.cancelChildren()
+         //   viewModelScope.launch { evaluateExpression() }
+      //  }
     }
 
     fun addToExpression(element: String) {
-        expressionRepository.addToExpression(element)
-        viewModelScope.coroutineContext.cancelChildren()
-        viewModelScope.launch {
+        if (expressionRepository.addToExpression(element)) {
+            viewModelScope.coroutineContext.cancelChildren()
+            viewModelScope.launch {
 
-            evaluateExpression()
+                evaluateExpression()
+            }
         }
     }
 
@@ -58,9 +61,11 @@ class CalculatorViewModel(
             TokenType.PLUS, TokenType.MINUS, TokenType.DIVIDE, TokenType.MULTIPLY ->
                 expressionRepository.addToExpression(element.value.addStartAndEndSpace()) // when we add operators dont need to evaluate
             else -> {
-                viewModelScope.coroutineContext.cancelChildren()
-                expressionRepository.addToExpression(element.value.addStartAndEndSpace())
-                viewModelScope.launch { evaluateExpression() }
+
+                if (expressionRepository.addToExpression(element.value.addStartAndEndSpace())) {
+                    viewModelScope.coroutineContext.cancelChildren()
+                    viewModelScope.launch { evaluateExpression() }
+                }
             }
         }
 
@@ -85,6 +90,12 @@ class CalculatorViewModel(
         val listOfTokens = LexicalAnalyzer.analyze(expr)
         //   delay(1000)
         return CalculatorOfTime.evaluate(listOfTokens)
+
+    }
+
+    fun clearAll() {
+        tokensRepository.setTokens(Tokens())
+        expressionRepository.setExpression("")
 
     }
 

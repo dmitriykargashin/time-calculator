@@ -19,13 +19,20 @@ class ExpressionRepository {
 
     fun setExpression(expressionString: String) {
 
-        expression.value = expressionString
+   //     expression.value = expressionString
+
+
+            expression.value = expressionString
+
     }
 
-    fun addToExpression(expressionString: String) {
-        if (! isErrorsInExpression(expressionString,expression.value!!))// if error we wont add it to expression
+    fun addToExpression(expressionString: String): Boolean {
+        return if (!isErrorsInExpression(expressionString, expression.value!!))// if error we wont add it to expression
+        {
             expression.value =
-            expression.value + expressionString
+                expression.value + expressionString
+            true
+        } else false
     }
 
 
@@ -36,8 +43,6 @@ class ExpressionRepository {
             SpannableString(TextUtils.concat(expression.value, expressionString))
     }
 */
-
-
 
 
     fun getExpression() = expression as LiveData<String>

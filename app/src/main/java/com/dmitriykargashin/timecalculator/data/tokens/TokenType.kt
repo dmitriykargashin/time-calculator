@@ -73,5 +73,6 @@ sealed class TokenType {
     }
 
     fun isOperator() = run { this == PLUS || this == MINUS || this == DIVIDE || this == MULTIPLY }
+    fun isTimeKeyword() = run { this == YEAR || this == WEEK || this == MONTH || this == DAY  || this == HOUR ||  this == MINUTE ||this == SECOND || this == MSECOND }
 
 }
