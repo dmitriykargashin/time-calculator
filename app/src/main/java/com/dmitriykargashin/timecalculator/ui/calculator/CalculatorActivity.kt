@@ -16,7 +16,7 @@ import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpac
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithColor
+import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithGreenColor
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 
 import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime

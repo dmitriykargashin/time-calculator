@@ -34,12 +34,6 @@ abstract class CalculatorOfTime {
                 return convertExpressionInMsecsToNearest(evaluatedToken[0])
             }
 
-            /*  for (token in tokensinMsecs) {
-              when (token.type) {
-                  TokenType.
-              }
-          }*/
-            //      return tokensToEvaluate
 
         }
 
@@ -69,28 +63,20 @@ abstract class CalculatorOfTime {
 
                 // txtInput.text = result.toString()
                 //     lastDot = true // Result contains a dot
-            } catch (ex: ArithmeticException) {
-                // Display an error message
-                //    txtInput.text = "Error"
-                //    stateError = true
-                //    lastNumeric = false
-            }
-            /*
+            } catch (ex: IllegalArgumentException)
+            {
+                val resultTokens = Tokens()
+                resultTokens.add(
+                    Token(
+                        TokenType.ERROR,
+                        "ERROR"
+                    )
+                )
+                Log.i("TAG", "ERROR")
+                return resultTokens
 
-        var term: Long
-        for (token in tokensToEvaluate) {
-            when (token.type) {
-
-                TokenType.NUMBER -> term = token.strRepresentation.toLong()
-                TokenType.PLUS
             }
 
-
-            return tokensToEvaluate
-
-
-*/
-            return tokensToEvaluate
         }
 
 

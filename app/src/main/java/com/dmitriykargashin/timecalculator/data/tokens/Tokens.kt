@@ -5,9 +5,7 @@
 package com.dmitriykargashin.timecalculator.data.tokens
 
 import android.text.SpannableString
-import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
-import com.dmitriykargashin.timecalculator.internal.extension.plus
-import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithColor
+import com.dmitriykargashin.timecalculator.internal.extension.*
 
 class Tokens : ArrayList<Token>() {
     override fun toString(): String {
@@ -34,8 +32,10 @@ class Tokens : ArrayList<Token>() {
                 TokenType.NUMBER ->
                     spanString += token.strRepresentation
 
-                TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
-                    spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithColor()
+                 TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
+                    spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithGreenColor()
+
+                TokenType.ERROR->  spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithRedColor()
             }
         }
 

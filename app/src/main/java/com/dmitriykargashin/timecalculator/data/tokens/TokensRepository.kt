@@ -31,6 +31,8 @@ class TokensRepository {
         tokensList = newTokens
     //    Log.i("TAG", tokensList.toString())
         tokens.postValue(tokensList) // for executing in background thread
+     //  tokens.setValue(tokensList) // for immediately set
+   //     emit()
       //  Log.i("TAG", tokensList.toString())
     }
 

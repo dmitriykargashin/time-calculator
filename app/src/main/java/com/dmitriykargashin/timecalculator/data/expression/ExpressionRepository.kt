@@ -6,8 +6,6 @@ package com.dmitriykargashin.timecalculator.data.expression
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import android.text.SpannableString
-import android.text.TextUtils
 
 
 class ExpressionRepository {
@@ -25,7 +23,8 @@ class ExpressionRepository {
     }
 
     fun addToExpression(expressionString: String) {
-        if (noErrorsInExpression(expressionString)) expression.value =
+        if (noErrorsInExpression(expressionString,expression.value!!))// if error we wont add it to expression
+            expression.value =
             expression.value + expressionString
     }
 
@@ -39,11 +38,7 @@ class ExpressionRepository {
 */
 
 
-    private fun noErrorsInExpression(expressionToAdd: String): Boolean {
-//here we should check all future errors when we will add the new expression to existing expression
 
-        return true
-    }
 
     fun getExpression() = expression as LiveData<String>
 

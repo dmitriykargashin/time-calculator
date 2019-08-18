@@ -12,7 +12,7 @@ import android.text.TextUtils
 
 
 
-fun String.toHTMLWithColor(): SpannableString {
+fun String.toHTMLWithGreenColor(): SpannableString {
 
 
 //todo how to get color from colors.xml?
@@ -22,6 +22,15 @@ fun String.toHTMLWithColor(): SpannableString {
 
 }
 
+fun String.toHTMLWithRedColor(): SpannableString {
+
+
+//todo how to get color from colors.xml?
+
+    return spannable { size(0.7f, color(Color.parseColor("RED"), this)) }
+
+
+}
 
 fun String.removeHTML(): String {
     val spanned = this
