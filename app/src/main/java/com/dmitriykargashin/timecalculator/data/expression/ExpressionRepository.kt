@@ -23,7 +23,7 @@ class ExpressionRepository {
     }
 
     fun addToExpression(expressionString: String) {
-        if (noErrorsInExpression(expressionString,expression.value!!))// if error we wont add it to expression
+        if (! isErrorsInExpression(expressionString,expression.value!!))// if error we wont add it to expression
             expression.value =
             expression.value + expressionString
     }

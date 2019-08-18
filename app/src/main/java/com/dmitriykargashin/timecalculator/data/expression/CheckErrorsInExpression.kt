@@ -4,13 +4,24 @@
 
 package com.dmitriykargashin.timecalculator.data.expression
 
-import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
+import com.dmitriykargashin.timecalculator.data.tokens.TokenType
+import com.dmitriykargashin.timecalculator.internal.extension.toTokens
 
-fun noErrorsInExpression(expressionToAdd: String, expression: String): Boolean {
+fun isErrorsInExpression(expressionForAdd: String, expression: String): Boolean {
 //here we should check all future errors when we will add the new expression to existing expression
-    val expressionTokens = LexicalAnalyzer.analyze(expression)
-    val expressionToAddTokens = LexicalAnalyzer.analyze(expressionToAdd)
+    if (expression.isEmpty()) return false
+
+    val expressionTokens = expression.toTokens()
+    val expressionForAddTokens = expressionForAdd.toTokens()
 
 
-    return true
+   val lastTokenInExpression= expressionTokens.last()
+   val lastTokenInExpressionForAdd= expressionForAddTokens.last()
+
+
+    if (lastTokenInExpression.type.isOperator() &&  lastTokenInExpressionForAdd.type.isOperator() )
+        return true
+
+
+    return false
 }

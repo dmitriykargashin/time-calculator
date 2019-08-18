@@ -72,4 +72,6 @@ sealed class TokenType {
         override val value = "ERROR"
     }
 
+    fun isOperator() = run { this == PLUS || this == MINUS || this == DIVIDE || this == MULTIPLY }
+
 }

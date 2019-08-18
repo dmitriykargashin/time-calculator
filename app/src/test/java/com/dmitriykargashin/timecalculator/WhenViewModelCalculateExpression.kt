@@ -14,7 +14,8 @@ import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
 import com.dmitriykargashin.timecalculator.internal.extension.spannable
-import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithColor
+import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithGreenColor
+import com.dmitriykargashin.timecalculator.internal.extension.toTokens
 import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorActivity
 import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorViewModel
 import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorViewModelFactory

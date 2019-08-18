@@ -9,8 +9,14 @@ import android.graphics.Color
 import android.text.SpannableString
 
 import android.text.TextUtils
+import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
+import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 
 
+// this is cool Kotlin feature - extension of standard classes!!
+fun String.toTokens(): Tokens {
+    return LexicalAnalyzer.analyze(this)
+}
 
 fun String.toHTMLWithGreenColor(): SpannableString {
 

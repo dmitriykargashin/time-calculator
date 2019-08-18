@@ -41,4 +41,9 @@ class Tokens : ArrayList<Token>() {
 
         return spanString
     }
+
+ /*
+    fun lastToken() = {
+        this.last()
+    }*/
 }
