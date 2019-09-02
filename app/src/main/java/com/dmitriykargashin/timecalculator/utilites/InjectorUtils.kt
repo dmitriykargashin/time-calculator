@@ -4,8 +4,8 @@
 
 package com.dmitriykargashin.timecalculator.utilites
 
-import com.dmitriykargashin.timecalculator.data.expression.ExpressionRepository
-import com.dmitriykargashin.timecalculator.data.tokens.TokensRepository
+import com.dmitriykargashin.timecalculator.data.repository.ExpressionRepository
+import com.dmitriykargashin.timecalculator.data.repository.TokensRepository
 import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorViewModelFactory
 
 object InjectorUtils {

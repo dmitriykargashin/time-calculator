@@ -61,7 +61,7 @@ abstract class LexicalAnalyzer {
                 (x == TokenType.MULTIPLY.value[0]) or (x == TokenType.DIVIDE.value[0]) or (x == '-') or (x == '/') or (x == '*') or (x == '+')
 
         //Finding out that current symbol is dot
-        fun isDot(x: Char): Boolean = x == '.'
+   //     fun isDot(x: Char): Boolean = x == '.'
 
 
         // finding full token body from current position
@@ -97,13 +97,13 @@ abstract class LexicalAnalyzer {
                             )
                     }
 
-                    isDot((expression[currentPosition])) -> {
+                 /*   isDot((expression[currentPosition])) -> {
                         findedToken =
                             findCurrentDigitalToken(
                                 expression,
                                 currentPosition
                             )
-                    }
+                    }*/
 
                 }
 

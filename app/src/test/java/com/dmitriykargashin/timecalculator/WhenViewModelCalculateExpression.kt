@@ -12,10 +12,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
-import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
-import com.dmitriykargashin.timecalculator.internal.extension.spannable
-import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithGreenColor
-import com.dmitriykargashin.timecalculator.internal.extension.toTokens
+import com.dmitriykargashin.timecalculator.internal.extension.*
 import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorActivity
 import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorViewModel
 import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorViewModelFactory
@@ -111,7 +108,7 @@ class WhenViewModelCalculateExpression {
     @Test
     fun Calculate_Expr_0_plus_10_Equals_10() = runBlockingTest {
         val listOfExpectedTokens = "0".toTokens()
-        viewModel.addToExpression("0")
+        viewModel.addToExpression("0".toToken())
         advanceTimeBy(5_000)
         val listOfActualToken = viewModel.getTokens().value
         advanceTimeBy(5_000)

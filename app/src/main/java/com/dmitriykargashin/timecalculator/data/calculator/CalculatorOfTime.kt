@@ -9,13 +9,14 @@ import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import net.objecthunter.exp4j.ExpressionBuilder
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 
 abstract class CalculatorOfTime {
 
 
     companion object {
-
 
 
         fun evaluate(tokensToEvaluate: Tokens): Tokens {
@@ -42,24 +43,33 @@ abstract class CalculatorOfTime {
 
 
             val txt = tokensToEvaluate.toString()
-               Log.i("TAG", txt)
+//            Log.i("evaluate", txt)
 
             val resultTokens = Tokens()
-            if (txt=="") return resultTokens // expression is empty so return empty Tokens list
+            if (txt == "") return resultTokens // expression is empty so return empty Tokens list
 
             // Create an Expression (A class from exp4j library)
 
             try {
                 val expression = ExpressionBuilder(txt).build()
-                // Calculate the result and display
+                // Calculate the result
                 val result = expression.evaluate()
 
                 // we'll return result as one NUMBER token
 
+                val fmt = NumberFormat.getInstance()
+                fmt.setGroupingUsed(false)
+                fmt.setMaximumIntegerDigits(999)
+                fmt.setMaximumFractionDigits(999)
+                val resultAsString = fmt.format(result)
+
+
+//                Log.i("result", result.toString())
                 resultTokens.add(
                     Token(
                         TokenType.NUMBER,
-                        result.toString()
+                        resultAsString
+                        /*result.toString()*/
                     )
                 )
 
@@ -67,23 +77,20 @@ abstract class CalculatorOfTime {
 
                 // txtInput.text = result.toString()
                 //     lastDot = true // Result contains a dot
-            } catch (ex: IllegalArgumentException)
-            {
-             //   val resultTokens = Tokens()
+            } catch (ex: Exception) {
+                //   val resultTokens = Tokens()
                 resultTokens.add(
                     Token(
                         TokenType.ERROR,
                         "ERROR"
                     )
                 )
-                Log.i("TAG", "ERROR")
+                Log.i("TAG", "Catch ERROR")
                 return resultTokens
 
             }
 
         }
-
-
 
 
         private fun convertExpressionToMsecs(tokensToConvert: Tokens): Tokens {

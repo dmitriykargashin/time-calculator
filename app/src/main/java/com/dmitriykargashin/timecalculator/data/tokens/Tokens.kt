@@ -35,6 +35,9 @@ class Tokens : ArrayList<Token>() {
                  TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
                     spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithGreenColor()
 
+                TokenType.MULTIPLY, TokenType.PLUS, TokenType.DIVIDE, TokenType.MINUS ->
+                    spanString += token.strRepresentation.addStartAndEndSpace()
+
                 TokenType.ERROR->  spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithRedColor()
             }
         }
@@ -46,7 +49,7 @@ class Tokens : ArrayList<Token>() {
     fun isSimpleArithmeticExpression(): Boolean {
         for (token in this) {
             when (token.type) {
-                TokenType.MSECOND, TokenType.SECOND, TokenType.HOUR, TokenType.MINUTE, TokenType.DAY, TokenType.WEEK, TokenType.YEAR -> return false
+                TokenType.MSECOND, TokenType.SECOND, TokenType.HOUR, TokenType.MINUTE, TokenType.DAY, TokenType.WEEK, TokenType.MONTH, TokenType.YEAR -> return false
 
             }
         }

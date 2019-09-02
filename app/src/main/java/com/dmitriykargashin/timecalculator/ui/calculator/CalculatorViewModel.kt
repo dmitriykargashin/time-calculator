@@ -7,15 +7,12 @@ package com.dmitriykargashin.timecalculator.ui.calculator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
-import com.dmitriykargashin.timecalculator.data.expression.ExpressionRepository
-import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
+import com.dmitriykargashin.timecalculator.data.repository.ExpressionRepository
 import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
-import com.dmitriykargashin.timecalculator.data.tokens.TokensRepository
-import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
+import com.dmitriykargashin.timecalculator.data.repository.TokensRepository
 import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
 
 class CalculatorViewModel(
     private val expressionRepository: ExpressionRepository,
@@ -38,31 +35,32 @@ class CalculatorViewModel(
 
     fun addToken(token: Token) = tokensRepository.addToken(token)
 
-    fun setExpression(expression: String) {
+   /* fun setExpression(expression: String) {
        // if (
             expressionRepository.setExpression(expression)//) {
        //     viewModelScope.coroutineContext.cancelChildren()
          //   viewModelScope.launch { evaluateExpression() }
       //  }
-    }
+    }*/
 
-    fun addToExpression(element: String) {
-        if (expressionRepository.addToExpression(element)) {
+   /* fun addToExpression(element: String) {
+
+        if (expressionRepository.addToExpression(element)  ) {
             viewModelScope.coroutineContext.cancelChildren()
             viewModelScope.launch {
 
                 evaluateExpression()
             }
         }
-    }
+    }*/
 
-    fun addToExpression(element: TokenType) {
-        when (element) {
+    fun addToExpression(element: Token) {
+        when (element.type) {
             TokenType.PLUS, TokenType.MINUS, TokenType.DIVIDE, TokenType.MULTIPLY ->
-                expressionRepository.addToExpression(element.value.addStartAndEndSpace()) // when we add operators dont need to evaluate
+                expressionRepository.addToExpression(element) // when we add operators dont need to evaluate
             else -> {
 
-                if (expressionRepository.addToExpression(element.value.addStartAndEndSpace())) {
+                if (expressionRepository.addToExpression(element)) {
                     viewModelScope.coroutineContext.cancelChildren()
                     viewModelScope.launch { evaluateExpression() }
                 }
@@ -78,7 +76,7 @@ class CalculatorViewModel(
     private suspend fun evaluateExpression() {
 
         val resulTokens = withContext(Dispatchers.Default) {
-            analyzeAndCalculateExpression(getExpression().value.toString())
+            CalculatorOfTime.evaluate(getExpression().value!!/*.toString()*/)
         }
         tokensRepository.setTokens(resulTokens)
 
@@ -86,16 +84,16 @@ class CalculatorViewModel(
     }
 
 
-    private fun analyzeAndCalculateExpression(expr: String): Tokens {
-        val listOfTokens = LexicalAnalyzer.analyze(expr)
+  /*  private fun analyzeAndCalculateExpression(expr: Tokens): Tokens {
+    //    val listOfTokens = LexicalAnalyzer.analyze(expr)
         //   delay(1000)
         return CalculatorOfTime.evaluate(listOfTokens)
 
-    }
+    }*/
 
     fun clearAll() {
         tokensRepository.setTokens(Tokens())
-        expressionRepository.setExpression("")
+      //  expressionRepository.setExpression("")
 
     }
 

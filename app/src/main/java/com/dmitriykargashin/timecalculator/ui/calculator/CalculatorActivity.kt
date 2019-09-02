@@ -4,6 +4,7 @@
 
 package com.dmitriykargashin.timecalculator.ui.calculator
 
+import android.media.session.MediaSession
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import android.system.Os.read
 import android.text.SpannableString
 import android.widget.TextView
 import com.dmitriykargashin.timecalculator.R
+import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -67,7 +69,7 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.getExpression().observe(
             this,
             Observer {
-                tvExpressionField.text = it
+                tvExpressionField.text = it.toSpannableString()
 
             }
         )
@@ -75,89 +77,89 @@ class CalculatorActivity : AppCompatActivity() {
         //nums
         buttonNum1.setOnClickListener {
 
-            viewModel.addToExpression("1")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "1"))
         }
         buttonNum2.setOnClickListener {
-            viewModel.addToExpression("2")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation ="2"))
 
         }
         buttonNum3.setOnClickListener {
-            viewModel.addToExpression("3")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation ="3"))
 
         }
         buttonNum4.setOnClickListener {
-            viewModel.addToExpression("4")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation ="4"))
 
         }
         buttonNum5.setOnClickListener {
-            viewModel.addToExpression("5")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation ="5"))
 
         }
         buttonNum6.setOnClickListener {
-            viewModel.addToExpression("6")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation ="6"))
         }
         buttonNum7.setOnClickListener {
-            viewModel.addToExpression("7")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation ="7"))
         }
         buttonNum8.setOnClickListener {
-            viewModel.addToExpression("8")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation ="8"))
         }
         buttonNum9.setOnClickListener {
-            viewModel.addToExpression("9")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation ="9"))
         }
         buttonNum0.setOnClickListener {
-            viewModel.addToExpression("0")
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation ="0"))
 
         }
         buttonComma.setOnClickListener {
-            viewModel.addToExpression(".")
+            viewModel.addToExpression(Token(type = TokenType.DOT))
 
         }
 
         /// times
         buttonYear.setOnClickListener {
 
-            viewModel.addToExpression(TokenType.YEAR)
+            viewModel.addToExpression(Token(type = TokenType.YEAR))
         }
         buttonMonth.setOnClickListener {
-            viewModel.addToExpression(TokenType.MONTH)
+            viewModel.addToExpression(Token(type = TokenType.MONTH))
 
         }
         buttonWeek.setOnClickListener {
-            viewModel.addToExpression(TokenType.WEEK)
+            viewModel.addToExpression(Token(type = TokenType.WEEK))
 
         }
         buttonDay.setOnClickListener {
-            viewModel.addToExpression(TokenType.DAY)
+            viewModel.addToExpression(Token(type = TokenType.DAY))
         }
         buttonHour.setOnClickListener {
-            viewModel.addToExpression(TokenType.HOUR)
+            viewModel.addToExpression(Token(type = TokenType.HOUR))
         }
         buttonMinute.setOnClickListener {
-            viewModel.addToExpression(TokenType.MINUTE)
+            viewModel.addToExpression(Token(type = TokenType.MINUTE))
         }
         buttonSecond.setOnClickListener {
-            viewModel.addToExpression(TokenType.SECOND)
+            viewModel.addToExpression(Token(type = TokenType.SECOND))
         }
         buttonMsec.setOnClickListener {
-            viewModel.addToExpression(TokenType.MSECOND)
+            viewModel.addToExpression(Token(type = TokenType.MSECOND))
         }
 
         ///operations
         buttonMultiply.setOnClickListener {
-            viewModel.addToExpression(TokenType.MULTIPLY)
+            viewModel.addToExpression(Token(type = TokenType.MULTIPLY))
 
         }
         buttonDivide.setOnClickListener {
-            viewModel.addToExpression(TokenType.DIVIDE)
+            viewModel.addToExpression(Token(type = TokenType.DIVIDE))
 
         }
         buttonSubstraction.setOnClickListener {
-            viewModel.addToExpression(TokenType.MINUS)
+            viewModel.addToExpression(Token(type = TokenType.MINUS))
 
         }
         buttonAddition.setOnClickListener {
-            viewModel.addToExpression(TokenType.PLUS)
+            viewModel.addToExpression(Token(type = TokenType.PLUS))
 
         }
 

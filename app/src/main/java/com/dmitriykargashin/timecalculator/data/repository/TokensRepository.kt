@@ -2,11 +2,13 @@
  * Copyright (c) 2019. Dmitriy Kargashin
  */
 
-package com.dmitriykargashin.timecalculator.data.tokens
+package com.dmitriykargashin.timecalculator.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import android.util.Log
+import com.dmitriykargashin.timecalculator.data.tokens.Token
+import com.dmitriykargashin.timecalculator.data.tokens.TokenType
+import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 
 
 class TokensRepository {
@@ -20,8 +22,10 @@ class TokensRepository {
     }
 
     fun addToken(token: Token) {
-        tokensList.add(token)
-        tokens.value = tokensList
+
+            tokensList.add(token)
+            tokens.value = tokensList
+
     }
 
     fun getTokens() = tokens as LiveData<Tokens>
@@ -29,11 +33,11 @@ class TokensRepository {
     fun setTokens(newTokens: Tokens) {
 
         tokensList = newTokens
-    //    Log.i("TAG", tokensList.toString())
+        //    Log.i("TAG", tokensList.toString())
         tokens.postValue(tokensList) // for executing in background thread
-     //  tokens.setValue(tokensList) // for immediately set
-   //     emit()
-      //  Log.i("TAG", tokensList.toString())
+        //  tokens.setValue(tokensList) // for immediately set
+        //     emit()
+        //  Log.i("TAG", tokensList.toString())
     }
 
 
@@ -49,7 +53,8 @@ class TokensRepository {
             instance ?: synchronized(this) {
                 // If it's still not instantiated, finally create an object
                 // also set the "instance" property to be the currently created one
-                instance ?: TokensRepository().also { instance = it }
+                instance
+                    ?: TokensRepository().also { instance = it }
             }
     }
 }
