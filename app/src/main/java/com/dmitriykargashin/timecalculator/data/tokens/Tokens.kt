@@ -45,6 +45,25 @@ class Tokens : ArrayList<Token>() {
         return spanString
     }
 
+    fun toLightSpannableString(): SpannableString {
+        var spanString = SpannableString("")
+
+        for (token in this) {
+            when (token.type) {
+                TokenType.NUMBER ->
+                    spanString += token.strRepresentation.toHTMLWithGrayColor()
+
+                TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
+                    spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithLightGreenColor()
+                TokenType.MULTIPLY, TokenType.PLUS, TokenType.DIVIDE, TokenType.MINUS ->
+                    spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithGrayColor()
+
+                TokenType.ERROR->  spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithRedColor()
+            }
+        }
+
+        return spanString
+    }
     // here we check whether the set of tokens is a simple arithmetic expression
     fun isSimpleArithmeticExpression(): Boolean {
         for (token in this) {

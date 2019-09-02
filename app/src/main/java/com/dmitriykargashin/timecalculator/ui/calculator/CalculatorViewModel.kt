@@ -93,6 +93,7 @@ class CalculatorViewModel(
 
     fun clearAll() {
         tokensRepository.setTokens(Tokens())
+        expressionRepository.setTokens(Tokens())
       //  expressionRepository.setExpression("")
 
     }

@@ -54,7 +54,7 @@ class CalculatorActivity : AppCompatActivity() {
             this,
             Observer {
 
-                tvOnlineResult.text = it?.toSpannableString()
+                tvOnlineResult.text = it?.toLightSpannableString()
                 /*tokens ->
                                val stringBuilder = StringBuilder()
                                tokens. forEach{ quote ->

@@ -27,7 +27,8 @@
             android:scrollbarAlwaysDrawVerticalTrack="true" android:fadingEdge="vertical"
             android:fadingEdgeLength="12dp" app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_chainStyle="packed" android:paddingStart="10dp" android:focusable="true"
-    />
+            app:autoSizeMaxTextSize="64sp" app:autoSizeMinTextSize="30sp" app:autoSizeStepGranularity="4sp"
+            app:autoSizeTextType="uniform"/>
 
 
     <TextView
