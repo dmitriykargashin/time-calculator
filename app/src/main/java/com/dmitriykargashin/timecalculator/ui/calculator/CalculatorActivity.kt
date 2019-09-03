@@ -4,25 +4,31 @@
 
 package com.dmitriykargashin.timecalculator.ui.calculator
 
-import android.media.session.MediaSession
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.system.Os.read
-import android.text.SpannableString
-import android.widget.TextView
-import com.dmitriykargashin.timecalculator.R
+
 import com.dmitriykargashin.timecalculator.data.tokens.Token
-import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithGreenColor
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 
 
 import com.dmitriykargashin.timecalculator.utilites.InjectorUtils
+
+import android.text.method.ScrollingMovementMethod
+import com.dmitriykargashin.timecalculator.R
+import android.opengl.ETC1.getHeight
+import android.text.Layout
+import android.text.Selection
+import android.text.Editable
+
+
+
+
+
 
 
 
@@ -55,6 +61,7 @@ class CalculatorActivity : AppCompatActivity() {
             Observer {
 
                 tvOnlineResult.text = it?.toLightSpannableString()
+
                 /*tokens ->
                                val stringBuilder = StringBuilder()
                                tokens. forEach{ quote ->
@@ -70,7 +77,18 @@ class CalculatorActivity : AppCompatActivity() {
             this,
             Observer {
                 tvExpressionField.text = it.toSpannableString()
+               tvExpressionField.movementMethod = ScrollingMovementMethod()
+               // tvExpressionField.setTextIsSelectable(true)
 
+                /*val layout = tvExpressionField.getLayout()
+                if (layout != null) {
+                    val scrollDelta = (layout!!.getLineBottom(tvExpressionField.getLineCount() - 1)
+                            - tvExpressionField.getScrollY() - tvExpressionField.getHeight())
+                    if (scrollDelta > 0)
+                        tvExpressionField.scrollBy(0, scrollDelta)
+                }*/
+
+               // tvExpressionField.scroll
             }
         )
 
@@ -163,12 +181,16 @@ class CalculatorActivity : AppCompatActivity() {
 
         }
 
-        buttonClear.setOnClickListener {
-            viewModel.clearAll()
+        buttonDelete.setOnClickListener {
+            viewModel.clearOneLastSymbol()
         }
 
+        buttonDelete.setOnLongClickListener {
+            viewModel.clearAll()
+            true
+        }
         buttonEqual.setOnClickListener {
-
+            viewModel.sendResultToExpression()
             // calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
 
         }

@@ -41,9 +41,22 @@ abstract class CalculatorOfTime {
 
         private fun evaluateSimpleArithmeticExpression(tokensToEvaluate: Tokens): Tokens {
 
+            Log.i("evaluate before", tokensToEvaluate.toString())
+
+//if we have trailing operator in expression we need to delete it
+            if (tokensToEvaluate.lastIndex >= 0 && tokensToEvaluate.last().type.isOperator()) {
+                tokensToEvaluate.removeLastToken()
+            }
+
+            if (tokensToEvaluate.lastIndex >= 1 && tokensToEvaluate.last().type == TokenType.PARENTHESES_RIGHT
+                && tokensToEvaluate.elementAt(tokensToEvaluate.lastIndex - 1).type.isOperator())
+             {
+                tokensToEvaluate.removeLastToken().removeLastToken()
+            }
+
 
             val txt = tokensToEvaluate.toString()
-//            Log.i("evaluate", txt)
+            Log.i("evaluate", txt)
 
             val resultTokens = Tokens()
             if (txt == "") return resultTokens // expression is empty so return empty Tokens list

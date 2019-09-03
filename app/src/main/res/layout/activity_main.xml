@@ -10,96 +10,56 @@
 
     <TextView
             android:layout_width="0dp"
-            android:layout_height="0dp" android:id="@+id/tvExpressionField"
-            android:fontFamily="@font/googlesans_regular" android:textSize="36sp"
-            android:gravity="bottom|right"
-            android:textColor="#272727" android:background="@android:color/white"
-            android:paddingEnd="10dp" android:paddingLeft="10dp" android:paddingTop="10dp"
-            android:scrollbars="vertical"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.0"
-            android:scrollbarAlwaysDrawVerticalTrack="true" android:fadingEdge="vertical"
-            android:fadingEdgeLength="12dp" android:textIsSelectable="true" app:autoSizeTextType="uniform"
-            app:autoSizeMinTextSize="30sp" app:autoSizeMaxTextSize="64sp" app:autoSizeStepGranularity="4sp"/>
-
-
-    <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/tvOnlineResult"
-            android:gravity="bottom|right"
+            android:layout_height="90dp" android:id="@+id/tvOnlineResult"
+            android:gravity="center_vertical|end"
             android:textSize="30sp"
             android:paddingLeft="10dp"
             android:textColor="@android:color/black"
-            android:fontFamily="@font/googlesans_regular" android:paddingTop="20dp"
+            android:fontFamily="@font/googlesans_regular" android:paddingTop="0dp"
             android:background="@android:color/white" android:textStyle="bold" android:paddingEnd="10dp"
-            android:singleLine="true"
-            android:scrollbarAlwaysDrawHorizontalTrack="true" android:scrollbars="horizontal"
+            android:singleLine="false"
+            app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:textIsSelectable="true" android:ellipsize="none"
+            android:enabled="true" android:clickable="false" android:cursorVisible="true"
+            app:autoSizeMaxTextSize="46sp" app:autoSizeMinTextSize="30sp"
+            app:autoSizeStepGranularity="1sp" app:autoSizeTextType="uniform"
+            app:layout_constraintHorizontal_bias="0.0" android:scrollbarStyle="outsideInset"
+            android:scrollbars="vertical"/>
 
+    <Button
+            android:text="OPTIMIZED"
+            android:layout_width="wrap_content"
+            android:layout_height="20sp"
+            android:id="@+id/buttonFormats2"
+            android:background="?selectableItemBackgroundBorderless"
+            android:textSize="16sp" android:capitalize="none"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textAllCaps="true" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult" android:textStyle="bold" android:gravity="start"/>
     <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/tvSpaceWithShadowOnly"
             android:background="@drawable/text_view_shadow" android:textSize="8sp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonClear"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+    />
 
 
-    <Button
-            android:text="Clear"
+    <ImageButton
+            android:text="Del"
             android:layout_width="wrap_content"
-            android:layout_height="58dp" android:id="@+id/buttonClear"
+            android:layout_height="41sp" android:id="@+id/buttonDelete"
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textColor="@android:color/black" android:textSize="18sp"
-            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
-            android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonYear" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNoAds"
-            android:background="?selectableItemBackgroundBorderless"/>
-    <Button
-            android:text="No Ads"
-            android:layout_width="wrap_content"
-            android:layout_height="58dp" android:id="@+id/buttonNoAds"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textColor="@android:color/black" android:textSize="18sp"
+            android:textColor="@android:color/holo_blue_dark" android:textSize="18sp"
             android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
             android:fontFamily="@font/googlesans_regular"
             android:background="?selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toTopOf="@+id/buttonMonth" app:layout_constraintStart_toEndOf="@+id/buttonClear"
-            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonHistory"
-    />
-    <Button
-            android:text="History"
-            android:layout_width="wrap_content"
-            android:layout_height="58dp" android:id="@+id/buttonHistory"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textColor="@android:color/black" android:textSize="16sp"
-            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
-            android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonNoAds"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonWeek" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/button6" android:background="?selectableItemBackgroundBorderless"/>
-    <Button
-            android:text="Del"
-            android:layout_width="wrap_content"
-            android:layout_height="58dp" android:id="@+id/button6"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textColor="@android:color/black" android:textSize="18sp"
-            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
-            android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonHistory"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonDay" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
+            android:src="@drawable/ic_action_delete"
+            app:layout_constraintBottom_toTopOf="@+id/buttonDivide"
+            android:layout_marginEnd="22dp" app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <Button
@@ -110,11 +70,10 @@
             android:textColor="@color/colorNums" android:textSize="18sp"
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonHour"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonMonth"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonMonth"/>
     <Button
             android:text="Month"
             android:layout_width="wrap_content"
@@ -123,10 +82,9 @@
             android:textColor="@color/colorNums" android:textSize="18sp"
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonYear" android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonMinute"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonWeek"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintTop_toTopOf="@+id/guideline" app:layout_constraintStart_toEndOf="@+id/buttonYear"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonWeek"/>
     <Button
             android:text="Week"
             android:layout_width="wrap_content"
@@ -135,11 +93,9 @@
             android:textColor="@color/colorNums" android:textSize="18sp"
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonMonth"
-            android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonSecond"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonDay"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintTop_toTopOf="@+id/guideline" app:layout_constraintStart_toEndOf="@+id/buttonMonth"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonDay"/>
     <Button
             android:text="Day"
             android:layout_width="wrap_content"
@@ -148,10 +104,9 @@
             android:textColor="@color/colorNums" android:textSize="18sp"
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonWeek"
-            android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonMsec"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintTop_toTopOf="@+id/guideline" app:layout_constraintStart_toEndOf="@+id/buttonWeek"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <Button
@@ -162,11 +117,10 @@
             android:textColor="@color/colorNums" android:textSize="18sp"
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonNum7"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonMinute"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintTop_toBottomOf="@+id/buttonYear" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonMinute"
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
             android:text="Minute"
             android:layout_width="wrap_content"
@@ -175,11 +129,10 @@
             android:textColor="@color/colorNums" android:textSize="18sp"
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintBottom_toTopOf="@+id/buttonNum8"
-            app:layout_constraintStart_toEndOf="@+id/buttonHour"
-            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonSecond"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintTop_toBottomOf="@+id/buttonMonth" app:layout_constraintStart_toEndOf="@+id/buttonHour"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonSecond"
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
             android:text="Second"
             android:layout_width="wrap_content"
@@ -188,11 +141,11 @@
             android:textColor="@color/colorNums" android:textSize="18sp"
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonMinute"
-            android:layout_marginStart="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonNum9"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonMsec"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintTop_toBottomOf="@+id/buttonWeek"
+            app:layout_constraintStart_toEndOf="@+id/buttonMinute" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/buttonMsec" android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
             android:text="Msec"
             android:layout_width="wrap_content"
@@ -201,10 +154,10 @@
             android:textColor="@color/colorNums" android:textSize="18sp"
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonSecond"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonDivide" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintTop_toBottomOf="@+id/buttonDay" app:layout_constraintStart_toEndOf="@+id/buttonSecond"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"/>
 
 
     <Button
@@ -215,10 +168,9 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            android:background="?selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum4" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum8"
-            android:background="?selectableItemBackgroundBorderless"/>
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonNum8"/>
     <Button
             android:text="8"
             android:layout_width="wrap_content"
@@ -227,12 +179,9 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonNum7"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonNum5"
-            app:layout_constraintHorizontal_chainStyle="packed" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum9"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum5" app:layout_constraintStart_toEndOf="@+id/buttonNum7"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonNum9"/>
     <Button
             android:text="9"
             android:layout_width="wrap_content"
@@ -241,24 +190,23 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonNum8"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonNum6" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonDivide"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum6"
+            app:layout_constraintEnd_toStartOf="@id/guideline2" app:layout_constraintStart_toEndOf="@+id/buttonNum8"
+            app:layout_constraintHorizontal_bias="0.5"/>
     <Button
             android:text="@string/button_divide"
             android:layout_width="wrap_content"
-            android:layout_height="58dp" android:id="@+id/buttonDivide"
+            android:layout_height="45sp" android:id="@+id/buttonDivide"
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textSize="36sp"
-            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
+            android:textSize="30sp"
+            android:padding="0dp"
             android:textColor="@android:color/holo_blue_dark"
             android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintBottom_toTopOf="@+id/buttonMultiply"
-            app:layout_constraintStart_toEndOf="@+id/buttonNum9" android:layout_marginStart="8dp"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            android:lineSpacingExtra="36sp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonMultiply" android:layout_marginEnd="22dp"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <Button
@@ -269,11 +217,10 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            android:layout_marginStart="8dp"
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/buttonNum1" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum5"
-            android:background="?selectableItemBackgroundBorderless"/>
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonNum5"/>
     <Button
             android:text="5"
             android:layout_width="wrap_content"
@@ -282,11 +229,10 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonNum4"
-            android:layout_marginStart="8dp"
+            android:background="?selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum2"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonNum6"
-            android:background="?selectableItemBackgroundBorderless"/>
+            app:layout_constraintStart_toEndOf="@+id/buttonNum4"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonNum6"/>
     <Button
             android:text="6"
             android:layout_width="wrap_content"
@@ -296,24 +242,22 @@
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
             android:textAllCaps="false"
+            android:background="?selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum3"
             app:layout_constraintStart_toEndOf="@+id/buttonNum5"
-            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonMultiply"
-            android:background="?selectableItemBackgroundBorderless"/>
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@id/guideline2"/>
     <Button
             android:text="@string/button_multiply"
             android:layout_width="wrap_content"
-            android:layout_height="58dp" android:id="@+id/buttonMultiply"
+            android:layout_height="45sp" android:id="@+id/buttonMultiply"
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textSize="36sp"
+            android:textSize="30sp"
             android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
             android:textColor="@android:color/holo_blue_dark"
             android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonNum6"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonSubstraction" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSubstraction"
+            android:layout_marginEnd="22dp" app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <Button
@@ -324,11 +268,10 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNum0"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonNum0" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum2"
-            android:background="?selectableItemBackgroundBorderless"/>
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonNum2"/>
     <Button
             android:text="2"
             android:layout_width="wrap_content"
@@ -337,11 +280,10 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/buttonComma"
             app:layout_constraintStart_toEndOf="@+id/buttonNum1"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonComma" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonNum3"
-            android:background="?selectableItemBackgroundBorderless"/>
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonNum3"/>
     <Button
             android:text="3"
             android:layout_width="wrap_content"
@@ -350,24 +292,22 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/buttonEqual"
             app:layout_constraintStart_toEndOf="@+id/buttonNum2"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonEqual" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonSubstraction"
-            android:background="?selectableItemBackgroundBorderless"/>
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@id/guideline2"/>
     <Button
             android:text="@string/button_substraction"
             android:layout_width="wrap_content"
-            android:layout_height="59dp" android:id="@+id/buttonSubstraction"
+            android:layout_height="45sp" android:id="@+id/buttonSubstraction"
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textSize="36sp"
+            android:textSize="30sp"
             android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
             android:textColor="@android:color/holo_blue_dark"
             android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonNum3"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonAddition" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/buttonAddition"
+            android:layout_marginEnd="22dp" app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <Button
@@ -378,12 +318,10 @@
             android:textColor="@android:color/black" android:textSize="36sp"
             android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
             android:fontFamily="@font/googlesans_regular"
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintStart_toEndOf="@+id/buttonNum0"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonEqual"
-            android:background="?selectableItemBackgroundBorderless"/>
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonEqual"/>
     <Button
             android:text="0"
             android:layout_width="wrap_content"
@@ -392,11 +330,10 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
-            android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonComma"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/buttonComma"/>
     <Button
             android:text="="
             android:layout_width="wrap_content"
@@ -405,25 +342,67 @@
             android:textSize="36sp"
             android:textColor="@android:color/black" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintStart_toEndOf="@+id/buttonComma"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/buttonAddition"
-            android:background="?selectableItemBackgroundBorderless"/>
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@id/guideline2"/>
     <Button
             android:text="+"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/buttonAddition"
+            android:layout_height="45sp" android:id="@+id/buttonAddition"
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textSize="36sp"
+            android:textSize="30sp"
             android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
             android:textColor="@android:color/holo_blue_dark"
             android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonEqual"
-            android:layout_marginStart="8dp" android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent" android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="22dp"/>
+    <Button
+            android:text="ANY"
+            android:layout_width="wrap_content"
+            android:layout_height="20sp"
+            android:id="@+id/buttonFormats"
+            android:background="?selectableItemBackgroundBorderless"
+            android:textSize="16sp" android:capitalize="none"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textAllCaps="true" android:fontFamily="@font/googlesans_regular"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvExpressionField" android:textStyle="bold"
+            android:gravity="start"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline"
+                                                android:orientation="horizontal"
+                                                app:layout_constraintGuide_percent="0.7921875"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline2"
+                                                android:orientation="vertical"
+                                                app:layout_constraintGuide_percent="0.7638889"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline3"
+                                                android:orientation="horizontal"
+                                                app:layout_constraintGuide_percent="0.44"/>
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/tvExpressionField"
+            android:fontFamily="@font/googlesans_regular" android:textSize="64sp"
+            android:gravity="bottom|right"
+            android:textColor="#272727" android:background="@android:color/white"
+            android:paddingEnd="10dp" android:paddingLeft="10dp" android:paddingTop="0dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:fadingEdgeLength="12dp" app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="30sp" app:autoSizeMaxTextSize="64sp" app:autoSizeStepGranularity="2sp"
+            android:ellipsize="marquee"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            android:scrollbars="vertical"
+            android:elegantTextHeight="true" android:enabled="true"
+            android:scrollbarStyle="outsideInset" android:layout_gravity="fill"
+            android:textIsSelectable="true"
+            app:layout_constraintTop_toBottomOf="@+id/buttonFormats"
+            app:layout_constraintBottom_toTopOf="@+id/buttonFormats2" android:layout_marginBottom="8dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,10 +23,12 @@ class TokensRepository {
 
     fun addToken(token: Token) {
 
-            tokensList.add(token)
-            tokens.value = tokensList
+        tokensList.add(token)
+        tokens.value = tokensList
 
     }
+
+    fun length(): Int = tokensList.lastIndex + 1
 
     fun getTokens() = tokens as LiveData<Tokens>
 

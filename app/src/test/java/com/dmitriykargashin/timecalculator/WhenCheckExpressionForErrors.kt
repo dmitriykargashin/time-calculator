@@ -374,6 +374,15 @@ class WhenCheckExpressionForErrors {
         assert(!isErrorsInExpression (expressionToAdd, expression))
     }
 
+   /* @Test
+    fun `Check expression for NUMBER +  DOT `() {
+
+        val expression = "5 + ".toTokens()
+        val expressionToAdd = ".".toToken()
+
+        assert(isErrorsInExpression (expressionToAdd, expression))
+    }
+*/
     @Test
     fun `Check NOT ERROR expression for NUMBER and Year Keyword`() {
 

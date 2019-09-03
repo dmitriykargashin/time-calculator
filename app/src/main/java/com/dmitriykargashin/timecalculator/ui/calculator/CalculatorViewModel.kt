@@ -35,37 +35,37 @@ class CalculatorViewModel(
 
     fun addToken(token: Token) = tokensRepository.addToken(token)
 
-   /* fun setExpression(expression: String) {
-       // if (
-            expressionRepository.setExpression(expression)//) {
-       //     viewModelScope.coroutineContext.cancelChildren()
-         //   viewModelScope.launch { evaluateExpression() }
-      //  }
-    }*/
+    /* fun setExpression(expression: String) {
+        // if (
+             expressionRepository.setExpression(expression)//) {
+        //     viewModelScope.coroutineContext.cancelChildren()
+          //   viewModelScope.launch { evaluateExpression() }
+       //  }
+     }*/
 
-   /* fun addToExpression(element: String) {
+    /* fun addToExpression(element: String) {
 
-        if (expressionRepository.addToExpression(element)  ) {
-            viewModelScope.coroutineContext.cancelChildren()
-            viewModelScope.launch {
+         if (expressionRepository.addToExpression(element)  ) {
+             viewModelScope.coroutineContext.cancelChildren()
+             viewModelScope.launch {
 
-                evaluateExpression()
-            }
-        }
-    }*/
+                 evaluateExpression()
+             }
+         }
+     }*/
 
     fun addToExpression(element: Token) {
-        when (element.type) {
-            TokenType.PLUS, TokenType.MINUS, TokenType.DIVIDE, TokenType.MULTIPLY ->
-                expressionRepository.addToExpression(element) // when we add operators dont need to evaluate
-            else -> {
-
-                if (expressionRepository.addToExpression(element)) {
-                    viewModelScope.coroutineContext.cancelChildren()
-                    viewModelScope.launch { evaluateExpression() }
-                }
-            }
+        /* when (element.type) {
+             TokenType.PLUS, TokenType.MINUS, TokenType.DIVIDE, TokenType.MULTIPLY ->
+                 expressionRepository.addToExpression(element) // when we add operators dont need to evaluate
+             else -> {
+ */
+        if (expressionRepository.addToExpression(element)) {
+            viewModelScope.coroutineContext.cancelChildren()
+            viewModelScope.launch { evaluateExpression() }
         }
+        //   }
+        //  }
 
 
     }
@@ -84,19 +84,34 @@ class CalculatorViewModel(
     }
 
 
-  /*  private fun analyzeAndCalculateExpression(expr: Tokens): Tokens {
-    //    val listOfTokens = LexicalAnalyzer.analyze(expr)
-        //   delay(1000)
-        return CalculatorOfTime.evaluate(listOfTokens)
+    /*  private fun analyzeAndCalculateExpression(expr: Tokens): Tokens {
+      //    val listOfTokens = LexicalAnalyzer.analyze(expr)
+          //   delay(1000)
+          return CalculatorOfTime.evaluate(listOfTokens)
 
-    }*/
+      }*/
 
     fun clearAll() {
         tokensRepository.setTokens(Tokens())
         expressionRepository.setTokens(Tokens())
-      //  expressionRepository.setExpression("")
+        //  expressionRepository.setExpression("")
 
     }
+
+    fun clearOneLastSymbol() {
+        if (expressionRepository.deleteLastTokenOrSymbol()) {
+            //if true then recalculate
+            viewModelScope.coroutineContext.cancelChildren()
+            viewModelScope.launch { evaluateExpression() }
+        }
+    }
+
+    fun sendResultToExpression() {
+        if (tokensRepository.length() > 0) {
+            expressionRepository.setTokens(tokensRepository.getTokens().value!!)
+            tokensRepository.setTokens(Tokens())
+        }
+      }
 
 /* private fun convertEvaluatedTokensToSpannedString(textView: TextView, listOfResultTokens: Tokens) {
 

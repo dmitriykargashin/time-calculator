@@ -16,12 +16,14 @@ fun isErrorsInExpression(expressionForAdd: Token, expression: Tokens): Boolean {
     // if (expression.isEmpty() &&) return false
 
 
-  //  val expressionTokens = expression
- //   val expressionForAddTokens = expressionForAdd
+    //  val expressionTokens = expression
+    //   val expressionForAddTokens = expressionForAdd
 
 
-  //  val lastTokenInExpressionForAdd = expressionForAddTokens.last()
+    //  val lastTokenInExpressionForAdd = expressionForAddTokens.last()
     // no need to check further if we add number to empty expression
+
+
     if (expression.isEmpty() && expressionForAdd.type == TokenType.NUMBER) return false
 
 
@@ -36,6 +38,9 @@ fun isErrorsInExpression(expressionForAdd: Token, expression: Tokens): Boolean {
     if (lastTokenInExpression.type.isOperator() && expressionForAdd.type.isOperator())
         return true
 
+    // check for dot after operators
+    if (lastTokenInExpression.type.isOperator() && expressionForAdd.type == TokenType.DOT)
+        return true
 
 // check for operator and time keyword in row
     if (lastTokenInExpression.type.isOperator()

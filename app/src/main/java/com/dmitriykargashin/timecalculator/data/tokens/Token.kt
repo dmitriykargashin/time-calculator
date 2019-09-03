@@ -5,8 +5,6 @@
 package com.dmitriykargashin.timecalculator.data.tokens
 
 //import android.util.Log
-import android.util.Log
-import kotlin.math.roundToLong
 
 
 class Token(val type: TokenType, var strRepresentation: String = "") {
@@ -37,6 +35,15 @@ class Token(val type: TokenType, var strRepresentation: String = "") {
 
     fun mergeNumberToNumber(token: Token) {
         strRepresentation += token.strRepresentation
+    }
+
+    fun deleteOneLastSymbolInNumber() {
+        if (type == TokenType.NUMBER) {
+            if (length()>0) {
+                strRepresentation=strRepresentation.dropLast(1)
+            }
+
+        }
     }
 
 }

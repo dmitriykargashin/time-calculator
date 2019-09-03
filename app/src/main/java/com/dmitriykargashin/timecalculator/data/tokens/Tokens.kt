@@ -32,13 +32,13 @@ class Tokens : ArrayList<Token>() {
                 TokenType.NUMBER ->
                     spanString += token.strRepresentation
 
-                 TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
+                TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
                     spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithGreenColor()
 
                 TokenType.MULTIPLY, TokenType.PLUS, TokenType.DIVIDE, TokenType.MINUS ->
                     spanString += token.strRepresentation.addStartAndEndSpace()
 
-                TokenType.ERROR->  spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithRedColor()
+                TokenType.ERROR -> spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithRedColor()
             }
         }
 
@@ -58,12 +58,13 @@ class Tokens : ArrayList<Token>() {
                 TokenType.MULTIPLY, TokenType.PLUS, TokenType.DIVIDE, TokenType.MINUS ->
                     spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithGrayColor()
 
-                TokenType.ERROR->  spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithRedColor()
+                TokenType.ERROR -> spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithRedColor()
             }
         }
 
         return spanString
     }
+
     // here we check whether the set of tokens is a simple arithmetic expression
     fun isSimpleArithmeticExpression(): Boolean {
         for (token in this) {
@@ -73,5 +74,10 @@ class Tokens : ArrayList<Token>() {
             }
         }
         return true
+    }
+
+    fun removeLastToken(): Tokens {
+        this.removeAt(this.lastIndex)
+        return this
     }
 }

@@ -21,8 +21,19 @@ class ExpressionRepository {
     }
 
     fun addToExpression(tokenForAdd: Token): Boolean {
+
+        when (tokenForAdd.type) {
+            TokenType.PLUS, TokenType.MINUS, TokenType.DIVIDE, TokenType.MULTIPLY -> {
+                tryToAddToExpression(tokenForAdd) // when we add operators dont need to evaluate
+                return false
+            }
+
+        }
+
         // if was entered DOT then we add the DOT to previous NUMBER if it exists
         // return the function means we need to evaluate expression
+
+
         if (tokenForAdd.type == TokenType.DOT || tokenForAdd.type == TokenType.NUMBER) {
             if (tokensList.isNotEmpty() && tokensList.last().type == TokenType.NUMBER) {
                 if (tokenForAdd.type == TokenType.DOT) {
@@ -36,17 +47,17 @@ class ExpressionRepository {
                 }
 
             } else {
-               return tryToAddToExpression(tokenForAdd)
+                return tryToAddToExpression(tokenForAdd)
 
             }
         } else {
             return tryToAddToExpression(tokenForAdd)
         }
 
-      //  return true
+        //  return true
     }
 
-    private fun tryToAddToExpression (tokenForAdd: Token): Boolean {
+    private fun tryToAddToExpression(tokenForAdd: Token): Boolean {
 
         if (!isErrorsInExpression(tokenForAdd, tokensList))// if error we wont add it to expression
         {
@@ -60,7 +71,6 @@ class ExpressionRepository {
 
         }
 
-
     }
 
     fun getExpression() = tokens as LiveData<Tokens>
@@ -73,6 +83,21 @@ class ExpressionRepository {
         //  tokens.setValue(tokensList) // for immediately set
         //     emit()
         //  Log.i("TAG", tokensList.toString())
+    }
+
+    fun deleteLastTokenOrSymbol(): Boolean {
+        return if (tokensList.lastIndex >= 0) {
+            val lastToken = tokensList.last()
+            if (lastToken.type != TokenType.NUMBER) tokensList.removeLastToken()
+            else {
+                lastToken.deleteOneLastSymbolInNumber()
+                if (lastToken.strRepresentation == "") tokensList.removeLastToken()
+            }
+            //  tokens.postValue(tokensList)
+            tokens.value = tokensList
+
+            true//!(tokensList.lastIndex >= 0 && tokensList.last().type.isOperator())
+        } else false
     }
 
 
