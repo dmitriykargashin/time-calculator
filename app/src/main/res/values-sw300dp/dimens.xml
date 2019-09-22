@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2019. Dmitriy Kargashin
+  --><resources>
+    <dimen name="buttons_num_size">16.9sp</dimen>
+    <dimen name="buttons_time_size">15sp</dimen>
+    <dimen name="buttons_operators_size">18.7sp</dimen>
+    <dimen name="margin_16_size">15dp</dimen>
+    <dimen name="margin_8_size">7.5dp</dimen>
+</resources>

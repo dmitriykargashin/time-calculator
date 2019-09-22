@@ -28,7 +28,7 @@ fun isErrorsInExpression(expressionForAdd: Token, expression: Tokens): Boolean {
 
 
 
-    if (expression.isEmpty() && (expressionForAdd.type.isTimeKeyword() || expressionForAdd.type.isOperator()))
+    if (expression.isEmpty() && (expressionForAdd.type.isTimeKeyword() || expressionForAdd.type.isOperator() || expressionForAdd.type==TokenType.DOT))
         return true
 
     val lastTokenInExpression = expression.last()

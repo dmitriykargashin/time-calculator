@@ -4,6 +4,7 @@
 
 package com.dmitriykargashin.timecalculator.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dmitriykargashin.timecalculator.data.expression.isErrorsInExpression
@@ -86,14 +87,20 @@ class ExpressionRepository {
     }
 
     fun deleteLastTokenOrSymbol(): Boolean {
+  //      Log.i("TAG", "Expression Before delete ${tokensList.toSpannableString()}")
+//       Log.i("TAG", "Entered for delete ${tokensList.last().strRepresentation}")
         return if (tokensList.lastIndex >= 0) {
             val lastToken = tokensList.last()
-            if (lastToken.type != TokenType.NUMBER) tokensList.removeLastToken()
-            else {
+            if (lastToken.type != TokenType.NUMBER) {
+         //       Log.i("TAG", "Entered for delete TOKEN ${lastToken.strRepresentation}")
+                tokensList.removeLastToken()
+            } else {
+         //       Log.i("TAG", "Entered for delete symbol in NUMBER ${lastToken.strRepresentation}")
                 lastToken.deleteOneLastSymbolInNumber()
                 if (lastToken.strRepresentation == "") tokensList.removeLastToken()
             }
             //  tokens.postValue(tokensList)
+       //     Log.i("TAG", "Result After delete ${tokensList.toSpannableString()}")
             tokens.value = tokensList
 
             true//!(tokensList.lastIndex >= 0 && tokensList.last().type.isOperator())

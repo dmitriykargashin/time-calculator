@@ -21,13 +21,13 @@ abstract class CalculatorOfTime {
 
         fun evaluate(tokensToEvaluate: Tokens): Tokens {
 
-
+            val clonedTokensToEvaluate = tokensToEvaluate.clone()
             //
 
-            if (tokensToEvaluate.isSimpleArithmeticExpression())
-                return evaluateSimpleArithmeticExpression(tokensToEvaluate)
+            if (clonedTokensToEvaluate.isSimpleArithmeticExpression())
+                return evaluateSimpleArithmeticExpression(clonedTokensToEvaluate)
             else {
-                val tokensWithParentheses = setParenthesesToExpression(tokensToEvaluate)
+                val tokensWithParentheses = setParenthesesToExpression(clonedTokensToEvaluate)
                 val tokensinMsecs = convertExpressionToMsecs(tokensWithParentheses)
                 val evaluatedToken = evaluateSimpleArithmeticExpression(tokensinMsecs)
 

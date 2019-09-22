@@ -14,25 +14,6 @@
 
     <TextView
             android:layout_width="0dp"
-            android:layout_height="0dp" android:id="@+id/tvExpressionField"
-            android:fontFamily="@font/googlesans_regular" android:textSize="30sp"
-            android:gravity="bottom|end"
-            android:textColor="@android:color/black" android:background="@android:color/white"
-            android:paddingEnd="10dp" android:paddingTop="10dp"
-            android:scrollbars="vertical"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent" android:clickable="true"
-            app:layout_constraintVertical_bias="0.64"
-            android:scrollbarAlwaysDrawVerticalTrack="true" android:fadingEdge="vertical"
-            android:fadingEdgeLength="12dp" app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_chainStyle="packed" android:paddingStart="10dp" android:focusable="true"
-            app:autoSizeMaxTextSize="64sp" app:autoSizeMinTextSize="30sp" app:autoSizeStepGranularity="4sp"
-            app:autoSizeTextType="uniform"/>
-
-
-    <TextView
-            android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/tvOnlineResult"
             android:gravity="bottom|end"
             android:textSize="24sp"
@@ -43,7 +24,7 @@
             android:scrollbarAlwaysDrawHorizontalTrack="true" android:scrollbars="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/tvExpressionField"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0" android:paddingStart="10dp" android:clickable="true"
             android:focusable="true"/>
 
@@ -53,7 +34,6 @@
             android:background="@drawable/text_view_shadow" android:textSize="0sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/buttonDelete"
             app:layout_constraintTop_toBottomOf="@+id/tvOnlineResult" app:layout_constraintHorizontal_bias="0.0"/>
 
 
@@ -67,44 +47,8 @@
             android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toEndOf="@+id/buttonMonth"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonNoAds"
-            android:background="?selectableItemBackgroundBorderless" android:src="@drawable/ic_action_delete"/>
-    <Button
-            android:text="No Ads"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/buttonNoAds"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textColor="@android:color/black" android:textSize="18sp"
-            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
-            android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonDay"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonHistory"
-            android:background="?selectableItemBackgroundBorderless"/>
-    <Button
-            android:text="History"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/buttonHistory"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textColor="@android:color/black" android:textSize="16sp"
-            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
-            android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonMinute"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonD"
-            android:background="?selectableItemBackgroundBorderless" android:layout_marginBottom="8dp"/>
-    <Button
-            android:text="Del"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/buttonDelete"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textColor="@android:color/black" android:textSize="18sp"
-            android:paddingLeft="0dp" android:paddingRight="0dp" android:padding="0dp"
-            android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toEndOf="@+id/buttonMsec"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
-            android:background="?selectableItemBackgroundBorderless" app:layout_constraintHorizontal_bias="0.863"/>
+            android:background="?selectableItemBackgroundBorderless" android:src="@drawable/ic_backspace_black_24dp"
+            android:layout_marginRight="8dp"/>
 
 
     <Button
@@ -128,7 +72,7 @@
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
             app:layout_constraintBottom_toTopOf="@+id/buttonDay"
-            app:layout_constraintStart_toEndOf="@+id/buttonYear" app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
+            app:layout_constraintStart_toEndOf="@+id/buttonYear"
             android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="Week"
@@ -150,7 +94,7 @@
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
             app:layout_constraintBottom_toTopOf="@+id/buttonMinute"
-            app:layout_constraintStart_toEndOf="@+id/buttonWeek" app:layout_constraintEnd_toStartOf="@+id/buttonNoAds"
+            app:layout_constraintStart_toEndOf="@+id/buttonWeek"
             android:background="?selectableItemBackgroundBorderless"/>
 
 
@@ -175,7 +119,7 @@
             android:textAllCaps="false" android:paddingLeft="0dp" android:paddingRight="0dp"
             android:padding="0dp" android:fontFamily="@font/googlesans_regular"
             app:layout_constraintBottom_toTopOf="@+id/buttonMsec"
-            app:layout_constraintStart_toEndOf="@+id/buttonHour" app:layout_constraintEnd_toStartOf="@+id/buttonHistory"
+            app:layout_constraintStart_toEndOf="@+id/buttonHour"
             android:background="?selectableItemBackgroundBorderless"/>
     <Button
             android:text="Second"
@@ -200,7 +144,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonSecond"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonDelete" android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless"/>
 
 
     <Button
@@ -215,7 +159,7 @@
             android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toStartOf="@+id/buttonNum8"
             app:layout_constraintHorizontal_chainStyle="spread"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless" android:layout_marginLeft="8dp"/>
     <Button
             android:text="8"
             android:layout_width="wrap_content"
@@ -268,7 +212,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum1" app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toStartOf="@+id/buttonNum5"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless" android:layout_marginLeft="8dp"/>
     <Button
             android:text="5"
             android:layout_width="wrap_content"
@@ -322,7 +266,7 @@
             android:layout_marginStart="8dp"
             app:layout_constraintEnd_toStartOf="@+id/buttonNum2"
             app:layout_constraintBottom_toTopOf="@+id/buttonNum0"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless" android:layout_marginLeft="8dp"/>
     <Button
             android:text="2"
             android:layout_width="wrap_content"
@@ -389,7 +333,7 @@
             android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toStartOf="@+id/buttonComma"
             app:layout_constraintHorizontal_chainStyle="spread"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?selectableItemBackgroundBorderless" android:layout_marginLeft="8dp"/>
     <Button
             android:text="="
             android:layout_width="wrap_content"

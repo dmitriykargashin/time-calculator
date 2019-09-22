@@ -4,6 +4,7 @@
 
 package com.dmitriykargashin.timecalculator.ui.calculator
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
@@ -100,6 +101,7 @@ class CalculatorViewModel(
 
     fun clearOneLastSymbol() {
         if (expressionRepository.deleteLastTokenOrSymbol()) {
+            Log.i("TAG", "AfterPress cleared ${expressionRepository.getExpression().value?.toSpannableString()}")
             //if true then recalculate
             viewModelScope.coroutineContext.cancelChildren()
             viewModelScope.launch { evaluateExpression() }

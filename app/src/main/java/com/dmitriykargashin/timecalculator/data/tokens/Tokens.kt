@@ -7,7 +7,17 @@ package com.dmitriykargashin.timecalculator.data.tokens
 import android.text.SpannableString
 import com.dmitriykargashin.timecalculator.internal.extension.*
 
-class Tokens : ArrayList<Token>() {
+class Tokens : ArrayList<Token>(), Cloneable {
+
+    override fun clone(): Tokens {
+        val newTokens = Tokens()
+
+        for (token in this) {
+            newTokens.add(Token(type =token.type, strRepresentation = token.strRepresentation ))
+        }
+        return newTokens
+    }
+
     override fun toString(): String {
         var tokensString = ""
         for (token: Token in this) {

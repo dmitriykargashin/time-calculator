@@ -5,14 +5,25 @@
 package com.dmitriykargashin.timecalculator
 
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.dmitriykargashin.timecalculator.data.expression.isErrorAfterCheckForPoint
 import com.dmitriykargashin.timecalculator.data.expression.isErrorsInExpression
+import com.dmitriykargashin.timecalculator.data.repository.ExpressionRepository
 import com.dmitriykargashin.timecalculator.internal.extension.toToken
 import com.dmitriykargashin.timecalculator.internal.extension.toTokens
+import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorViewModel
+import com.dmitriykargashin.timecalculator.utilites.InjectorUtils
+import org.hamcrest.MatcherAssert
+import org.junit.Rule
 
 import org.junit.Test
 
 class WhenCheckExpressionForErrors {
+
+
+    @get:Rule
+    val rule = InstantTaskExecutorRule()
+
 
     @Test
     fun `Check expression for double PLUS`() {
@@ -63,24 +74,25 @@ class WhenCheckExpressionForErrors {
         assert(isErrorsInExpression(expressionToAdd, expression))
 
     }
+
     @Test
     fun `Check expression for double OPERATORS * and +`() {
 
         val expression = "0*".toTokens()
         val expressionToAdd = "+".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
-
+        assert(isErrorsInExpression(expressionToAdd, expression))
 
 
     }
+
     @Test
     fun `Check expression for double OPERATORS * and -`() {
 
         val expression = "0*".toTokens()
         val expressionToAdd = "-".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -89,7 +101,7 @@ class WhenCheckExpressionForErrors {
         val expression = "0-".toTokens()
         val expressionToAdd = "+".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -98,7 +110,7 @@ class WhenCheckExpressionForErrors {
         val expression = "0-".toTokens()
         val expressionToAdd = "/".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -107,7 +119,7 @@ class WhenCheckExpressionForErrors {
         val expression = "0-".toTokens()
         val expressionToAdd = "*".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -116,7 +128,7 @@ class WhenCheckExpressionForErrors {
         val expression = "0+".toTokens()
         val expressionToAdd = "-".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -125,15 +137,16 @@ class WhenCheckExpressionForErrors {
         val expression = "0+".toTokens()
         val expressionToAdd = "*".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
+
     @Test
     fun `Check expression for double OPERATORS + and div`() {
 
         val expression = "0+".toTokens()
         val expressionToAdd = "/".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -142,7 +155,7 @@ class WhenCheckExpressionForErrors {
         val expression = "0/".toTokens()
         val expressionToAdd = "-".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -151,7 +164,7 @@ class WhenCheckExpressionForErrors {
         val expression = "0/".toTokens()
         val expressionToAdd = "+".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -160,8 +173,9 @@ class WhenCheckExpressionForErrors {
         val expression = "0/".toTokens()
         val expressionToAdd = "*".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
+
     ////////////// checks for TimeOperators
     @Test
     fun `Check expression for double TIME KEYWORDS YEAR and YEAR`() {
@@ -169,15 +183,16 @@ class WhenCheckExpressionForErrors {
         val expression = "0 Year".toTokens()
         val expressionToAdd = "Year".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
+
     @Test
     fun `Check expression for double TIME KEYWORDS MONTH and MONTH`() {
 
         val expression = "0 Month".toTokens()
         val expressionToAdd = "Month".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -186,23 +201,25 @@ class WhenCheckExpressionForErrors {
         val expression = "0 Week".toTokens()
         val expressionToAdd = "Week".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
+
     @Test
     fun `Check expression for double TIME KEYWORDS DAY and DAY`() {
 
         val expression = "0 Day".toTokens()
         val expressionToAdd = "Day".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
+
     @Test
     fun `Check expression for double TIME KEYWORDS HOUR and HOUR`() {
 
         val expression = "0 Hour".toTokens()
         val expressionToAdd = "Hour".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -211,24 +228,27 @@ class WhenCheckExpressionForErrors {
         val expression = "0 Minute".toTokens()
         val expressionToAdd = "Minute".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
+
     @Test
     fun `Check expression for double TIME KEYWORDS SECOND0 and SECOND`() {
 
         val expression = "0 Second".toTokens()
         val expressionToAdd = "Second".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
+
     @Test
     fun `Check expression for double TIME KEYWORDS MSecond and MSecond`() {
 
         val expression = "0 Hour".toTokens()
         val expressionToAdd = "Hour".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
+
     ////another logic tests
     @Test
     fun `Check expression for dividing on NUMBER with TIME OPERATOR`() {
@@ -236,7 +256,7 @@ class WhenCheckExpressionForErrors {
         val expression = "10 Hour / 2".toTokens()
         val expressionToAdd = "Hour".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -245,7 +265,7 @@ class WhenCheckExpressionForErrors {
         val expression = "10 Hour * 2".toTokens()
         val expressionToAdd = "Hour".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -254,7 +274,7 @@ class WhenCheckExpressionForErrors {
         val expression = "10  / 2".toTokens()
         val expressionToAdd = "Hour".toToken()
 
-        assert(!isErrorsInExpression (expressionToAdd, expression))
+        assert(!isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -263,7 +283,7 @@ class WhenCheckExpressionForErrors {
         val expression = "10  * 2".toTokens()
         val expressionToAdd = "Hour".toToken()
 
-        assert(!isErrorsInExpression (expressionToAdd, expression))
+        assert(!isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -272,7 +292,7 @@ class WhenCheckExpressionForErrors {
         val expression = "10 Hour + 2".toTokens()
         val expressionToAdd = "Hour".toToken()
 
-        assert(!isErrorsInExpression (expressionToAdd, expression))
+        assert(!isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -281,7 +301,7 @@ class WhenCheckExpressionForErrors {
         val expression = "10 Hour - 2".toTokens()
         val expressionToAdd = "Hour".toToken()
 
-        assert(!isErrorsInExpression (expressionToAdd, expression))
+        assert(!isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -290,7 +310,7 @@ class WhenCheckExpressionForErrors {
         val expression = "".toTokens()
         val expressionToAdd = "+".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -299,7 +319,7 @@ class WhenCheckExpressionForErrors {
         val expression = "".toTokens()
         val expressionToAdd = "-".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -308,7 +328,7 @@ class WhenCheckExpressionForErrors {
         val expression = "".toTokens()
         val expressionToAdd = "*".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -317,7 +337,7 @@ class WhenCheckExpressionForErrors {
         val expression = "".toTokens()
         val expressionToAdd = "/".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -326,7 +346,7 @@ class WhenCheckExpressionForErrors {
         val expression = "0/".toTokens()
         val expressionToAdd = "Year".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -335,7 +355,7 @@ class WhenCheckExpressionForErrors {
         val expression = "".toTokens()
         val expressionToAdd = "Year".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -344,7 +364,7 @@ class WhenCheckExpressionForErrors {
         val expression = "5".toTokens()
         val expressionToAdd = "*".toToken()
 
-        assert(!isErrorsInExpression (expressionToAdd, expression))
+        assert(!isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -353,7 +373,7 @@ class WhenCheckExpressionForErrors {
         val expression = "5 Year".toTokens()
         val expressionToAdd = "+".toToken()
 
-        assert(!isErrorsInExpression (expressionToAdd, expression))
+        assert(!isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -362,7 +382,7 @@ class WhenCheckExpressionForErrors {
         val expression = "5 Year *".toTokens()
         val expressionToAdd = "Year".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
+        assert(isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -371,25 +391,25 @@ class WhenCheckExpressionForErrors {
         val expression = "5 ".toTokens()
         val expressionToAdd = "Month".toToken()
 
-        assert(!isErrorsInExpression (expressionToAdd, expression))
+        assert(!isErrorsInExpression(expressionToAdd, expression))
     }
 
-   /* @Test
-    fun `Check expression for NUMBER +  DOT `() {
+    /* @Test
+     fun `Check expression for NUMBER +  DOT `() {
 
-        val expression = "5 + ".toTokens()
-        val expressionToAdd = ".".toToken()
+         val expression = "5 + ".toTokens()
+         val expressionToAdd = ".".toToken()
 
-        assert(isErrorsInExpression (expressionToAdd, expression))
-    }
-*/
+         assert(isErrorsInExpression (expressionToAdd, expression))
+     }
+ */
     @Test
     fun `Check NOT ERROR expression for NUMBER and Year Keyword`() {
 
         val expression = "5 ".toTokens()
         val expressionToAdd = "Year".toToken()
 
-        assert(!isErrorsInExpression (expressionToAdd, expression))
+        assert(!isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
@@ -398,27 +418,63 @@ class WhenCheckExpressionForErrors {
         val expression = "5".toTokens()
         val expressionToAdd = ".".toToken()
 
-        assert(!isErrorsInExpression (expressionToAdd, expression))
-    }
-
-  /*  @Test
-    fun `Check double of float point()`() {
-
-        val expression = "5.".toTokens()
-        val expressionToAdd = ".".toToken()
-
-        assert(isErrorAfterCheckForPoint (expressionToAdd, expression))
+        assert(!isErrorsInExpression(expressionToAdd, expression))
     }
 
     @Test
-    fun `Check float point after Month()`() {
+    fun `Check for Delete symbol 55-2 result 55-`() {
+     //   val factory = InjectorUtils.provideCalculatorViewModelFactory()
 
-        val expression = "5 Month".toTokens()
-        val expressionToAdd = ".".toToken()
+        //     viewModel = CalculatorViewModel(factory.expressionRepository, factory.tokensRepository)
+        // factory.expressionRepository.addToExpression("55".toToken())
+        val expressionRepository = ExpressionRepository()
+        expressionRepository.setTokens("55-2".toTokens())
 
-        assert(isErrorAfterCheckForPoint (expressionToAdd, expression))
+        //  val expression =
+        //     val expressionToAdd = ".".toToken()
+        expressionRepository.deleteLastTokenOrSymbol()
+        val listOfActualTokens = expressionRepository.getExpression().value
+        val listOfExpectedTokens = "55-".toTokens()
+        MatcherAssert.assertThat(listOfActualTokens, isEqualTo(listOfExpectedTokens))
     }
 
-*/
+
+    @Test
+    fun `Check for TWICE Delete symbol 55-2 result 55`() {
+        //   val factory = InjectorUtils.provideCalculatorViewModelFactory()
+
+        //     viewModel = CalculatorViewModel(factory.expressionRepository, factory.tokensRepository)
+        // factory.expressionRepository.addToExpression("55".toToken())
+        val expressionRepository = ExpressionRepository()
+        expressionRepository.setTokens("55-2".toTokens())
+
+        //  val expression =
+        //     val expressionToAdd = ".".toToken()
+        expressionRepository.deleteLastTokenOrSymbol()
+        expressionRepository.deleteLastTokenOrSymbol()
+
+        val listOfActualTokens = expressionRepository.getExpression().value
+        val listOfExpectedTokens = "55".toTokens()
+        MatcherAssert.assertThat(listOfActualTokens, isEqualTo(listOfExpectedTokens))
+    }
+    /*  @Test
+      fun `Check double of float point()`() {
+
+          val expression = "5.".toTokens()
+          val expressionToAdd = ".".toToken()
+
+          assert(isErrorAfterCheckForPoint (expressionToAdd, expression))
+      }
+
+      @Test
+      fun `Check float point after Month()`() {
+
+          val expression = "5 Month".toTokens()
+          val expressionToAdd = ".".toToken()
+
+          assert(isErrorAfterCheckForPoint (expressionToAdd, expression))
+      }
+
+  */
 }
 

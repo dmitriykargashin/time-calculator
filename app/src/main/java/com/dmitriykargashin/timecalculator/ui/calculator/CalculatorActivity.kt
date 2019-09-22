@@ -24,12 +24,8 @@ import android.opengl.ETC1.getHeight
 import android.text.Layout
 import android.text.Selection
 import android.text.Editable
-
-
-
-
-
-
+import android.text.LoginFilter
+import android.util.Log
 
 
 class CalculatorActivity : AppCompatActivity() {
@@ -183,6 +179,7 @@ class CalculatorActivity : AppCompatActivity() {
 
         buttonDelete.setOnClickListener {
             viewModel.clearOneLastSymbol()
+            Log.i("TAG","pressed delete")
         }
 
         buttonDelete.setOnLongClickListener {
