@@ -7,4 +7,9 @@
     <dimen name="buttons_operators_size">31.2sp</dimen>
     <dimen name="margin_16_size">25dp</dimen>
     <dimen name="margin_8_size">12.5dp</dimen>
+    <dimen name="result_output_height">93.8dp</dimen>
+    <dimen name="result_output_mintextsize">25sp</dimen>
+    <dimen name="result_output_maxtextsize">78.1sp</dimen>
+     <dimen name="result_expression_mintextsize">37.5sp</dimen>
+    <dimen name="result_expression_maxtextsize">100sp</dimen>
 </resources>
