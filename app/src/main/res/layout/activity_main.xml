@@ -16,7 +16,7 @@
             android:paddingLeft="@dimen/margin_16_size"
             android:textColor="@android:color/black"
             android:fontFamily="@font/googlesans_regular"
-            android:background="@android:color/white" android:textStyle="bold"
+            android:textStyle="bold"
             android:paddingEnd="@dimen/margin_16_size"
             android:singleLine="false"
             app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly" app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +27,8 @@
             app:autoSizeStepGranularity="1sp" app:autoSizeTextType="uniform"
             app:layout_constraintHorizontal_bias="0.0" android:scrollbarStyle="outsideInset"
             android:scrollbars="vertical" android:paddingRight="@dimen/margin_16_size"
-            app:autoSizeMaxTextSize="@dimen/result_output_maxtextsize"/>
+            app:autoSizeMaxTextSize="@dimen/result_output_maxtextsize"
+            android:background="@android:color/white"/>
 
     <Button
             android:text="OPTIMIZED"
@@ -45,10 +46,10 @@
     <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/tvSpaceWithShadowOnly"
-            android:background="@drawable/text_view_shadow" android:textSize="8sp"
+            android:background="@drawable/text_view_shadow"
             app:layout_constraintBottom_toTopOf="@id/buttonNum8"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-    />
+            android:includeFontPadding="false" android:textSize="1sp"/>
 
 
     <ImageButton
@@ -404,7 +405,7 @@
             android:layout_height="0dp" android:id="@+id/tvExpressionField"
             android:fontFamily="@font/googlesans_regular" android:textSize="@dimen/result_expression_maxtextsize"
             android:gravity="bottom|right"
-            android:textColor="#272727" android:background="@android:color/white"
+            android:textColor="#272727"
             android:paddingEnd="@dimen/margin_16_size" android:paddingLeft="@dimen/margin_16_size"
             android:paddingTop="@dimen/margin_8_size"
             android:scrollbarAlwaysDrawVerticalTrack="true"
@@ -422,7 +423,17 @@
             app:layout_constraintBottom_toTopOf="@+id/buttonFormats2"
             android:paddingRight="@dimen/margin_16_size"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" android:minHeight="@dimen/result_expression_mintextsize"/>
+            app:layout_constraintVertical_bias="0.0" android:minHeight="@dimen/result_expression_mintextsize"
+            android:background="@android:color/white"/>
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/tvFakeForClear"
+            app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
+            app:layout_constraintTop_toTopOf="@+id/tvExpressionField"
+            app:layout_constraintEnd_toEndOf="@+id/tvExpressionField"
+            app:layout_constraintStart_toStartOf="@+id/tvExpressionField"
+            android:visibility="gone" android:background="@android:color/holo_blue_dark"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

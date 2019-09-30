@@ -425,4 +425,15 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="@dimen/margin_16_size"
             app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult" android:textStyle="bold" android:gravity="start"
             android:layout_marginLeft="@dimen/margin_16_size" android:minHeight="0dp"/>
+
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/tvFakeForClear"
+            app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
+            app:layout_constraintTop_toTopOf="@+id/tvExpressionField"
+            app:layout_constraintEnd_toEndOf="@+id/tvExpressionField"
+            app:layout_constraintStart_toStartOf="@+id/tvExpressionField"
+            android:visibility="gone" android:background="@android:color/holo_blue_dark"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

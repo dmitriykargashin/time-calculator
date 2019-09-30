@@ -74,6 +74,10 @@ class CalculatorViewModel(
     fun getExpression() = expressionRepository.getExpression()
 
 
+    fun isExpressionEmpty():Boolean {
+        return expressionRepository.getExpression().value.isNullOrEmpty()
+    }
+
     private suspend fun evaluateExpression() {
 
         val resulTokens = withContext(Dispatchers.Default) {
