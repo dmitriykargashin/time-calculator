@@ -5,6 +5,7 @@
 package com.dmitriykargashin.timecalculator.utilites
 
 import com.dmitriykargashin.timecalculator.data.repository.ExpressionRepository
+import com.dmitriykargashin.timecalculator.data.repository.ResultFormatsRepository
 import com.dmitriykargashin.timecalculator.data.repository.TokensRepository
 import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorViewModelFactory
 
@@ -15,6 +16,7 @@ object InjectorUtils {
         // The whole dependency tree is constructed right here, in one place
         val tokensRepository = TokensRepository.getInstance()
         val expressionRepository = ExpressionRepository.getInstance()
-        return CalculatorViewModelFactory(expressionRepository, tokensRepository)
+        val resultFormatsRepository = ResultFormatsRepository.getInstance()
+        return CalculatorViewModelFactory(expressionRepository, tokensRepository,resultFormatsRepository)
     }
 }

@@ -12,4 +12,5 @@
     <dimen name="result_output_maxtextsize">50sp</dimen>
      <dimen name="result_expression_mintextsize">24sp</dimen>
     <dimen name="result_expression_maxtextsize">64sp</dimen>
+
 </resources>

@@ -9,15 +9,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
 import com.dmitriykargashin.timecalculator.data.repository.ExpressionRepository
+import com.dmitriykargashin.timecalculator.data.repository.ResultFormatsRepository
 import com.dmitriykargashin.timecalculator.data.tokens.Token
-import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.data.repository.TokensRepository
+import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormat
 import kotlinx.coroutines.*
 
 class CalculatorViewModel(
     private val expressionRepository: ExpressionRepository,
-    private val tokensRepository: TokensRepository
+    private val tokensRepository: TokensRepository,
+    private val resultFormatsRepository: ResultFormatsRepository
 ) : ViewModel() {
 
     //for corooutunes
@@ -33,6 +35,9 @@ class CalculatorViewModel(
           get() = job + Dispatchers.Main
   */
     fun getTokens() = tokensRepository.getTokens()
+    fun getResultFormats() = resultFormatsRepository.getResultFormats()
+
+    fun addToresultFormats(resultFormat: ResultFormat) = resultFormatsRepository.addResultFormat(resultFormat)
 
     fun addToken(token: Token) = tokensRepository.addToken(token)
 

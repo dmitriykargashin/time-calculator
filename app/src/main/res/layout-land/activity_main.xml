@@ -2,6 +2,14 @@
 <!--
   ~ Copyright (c) 2019. Dmitriy Kargashin
   -->
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.calculator.CalculatorActivity" tools:orientation="vertical"
+        tools:layout_editor_absoluteY="25dp" android:background="@android:color/white"
+        android:id="@+id/commonConstraintLayout" tools:visibility="visible">
 
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -386,7 +394,7 @@
             android:textIsSelectable="true"
             android:paddingRight="@dimen/margin_16_size"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/buttonFormats2"
+            app:layout_constraintBottom_toTopOf="@+id/buttonFormats"
             app:autoSizeMinTextSize="@dimen/result_expression_mintextsize"
             android:minHeight="@dimen/result_expression_mintextsize" app:layout_constraintVertical_bias="0.0"/>
 
@@ -412,19 +420,23 @@
             app:layout_constraintHorizontal_bias="0.0" android:scrollbarStyle="outsideInset"
             android:scrollbars="vertical" android:paddingRight="@dimen/margin_16_size"/>
 
-    <Button
-            android:text="OPTIMIZED"
+    <com.google.android.material.button.MaterialButton
+            android:text="Hour Minute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonFormats2"
-            android:background="?selectableItemBackgroundBorderless"
+            android:id="@+id/buttonFormats"
+            android:theme="@style/Theme.MaterialComponents"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:strokeColor="#304FFE"
+            app:strokeWidth="1dp"
             android:textSize="@dimen/buttons_time_size"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textAllCaps="true" android:fontFamily="@font/googlesans_regular"
+            android:textColor="#304FFE"
+            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="@dimen/margin_16_size"
-            app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult" android:textStyle="bold" android:gravity="start"
-            android:layout_marginLeft="@dimen/margin_16_size" android:minHeight="0dp"/>
+            app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult" android:textStyle="bold"
+            android:gravity="start"
+            android:layout_marginLeft="@dimen/margin_16_size" android:minHeight="0dp" app:cornerRadius="5dp"
+            app:elevation="1dp" android:textAllCaps="false"/>
 
     <TextView
             android:layout_width="0dp"
@@ -436,4 +448,6 @@
             app:layout_constraintStart_toStartOf="@+id/tvExpressionField"
             android:visibility="gone" android:background="@android:color/holo_blue_dark"/>
 
+</androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/view_formats" android:visibility="gone" android:id="@+id/formatsLayout"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
