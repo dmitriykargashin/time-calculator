@@ -29,11 +29,10 @@ import android.view.ViewAnimationUtils
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.view_formats.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormat
-import com.dmitriykargashin.timecalculator.internal.extension.toTokens
 import kotlin.math.hypot
 
 
@@ -41,11 +40,16 @@ class CalculatorActivity : AppCompatActivity() {
 
     private val lastTouchDownXY = IntArray(2) //coordinates of last touch
 
+
+
+    lateinit var  factory: CalculatorViewModelFactory
+    lateinit var  viewModel: CalculatorViewModel
+
+
     override fun onDestroy() {
         super.onDestroy()
         //      scope.coroutineContext.cancelChildren() // cancel the job when activity is destroyed
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,26 +61,27 @@ class CalculatorActivity : AppCompatActivity() {
     private fun initUI() {
 
 
-        val factory = InjectorUtils.provideCalculatorViewModelFactory()
-        val viewModel = ViewModelProviders.of(this, factory)
+         factory = InjectorUtils.provideCalculatorViewModelFactory()
+         viewModel = ViewModelProviders.of(this, factory)
             .get(CalculatorViewModel::class.java)
 
 
         val linearLayoutManager = LinearLayoutManager(
-            this, RecyclerView.VERTICAL,false)
+            this, RecyclerView.VERTICAL, false
+        )
         rvFormatsToChoose.layoutManager = linearLayoutManager
-
-        val rf=ResultFormat("Hour Minute".toTokens(),"10 Hour 20 Minute".toTokens())
-        val rf2=ResultFormat("Year Week".toTokens(),"4 Year 2 Week 4 Year 2 Week 4 Year 2 Week 4 Year 2 Week".toTokens())
-        val rf3=ResultFormat("Hour".toTokens(),"1.5 Hour".toTokens())
-        viewModel.addToresultFormats(rf)
-        viewModel.addToresultFormats(rf2)
-        viewModel.addToresultFormats(rf3)
 
 
         // Observe the model
-        viewModel.getResultFormats().observe(this, Observer{
+        viewModel.getResultFormats().observe(this, Observer {
             rvFormatsToChoose.adapter = RvAdapterResultFormats(it)
+        })
+
+        viewModel.getIsFormatsLayoutVisible().observe(this, Observer {
+            if (it)
+                formatsLayout.visibility = View.VISIBLE
+            else
+                formatsLayout.visibility = View.GONE
         })
 
 
@@ -117,10 +122,7 @@ class CalculatorActivity : AppCompatActivity() {
         )
 
 
-       toolbarInitalize()
-
-
-
+        toolbarInitalize()
 
 
         //nums
@@ -227,12 +229,15 @@ class CalculatorActivity : AppCompatActivity() {
                 val location = IntArray(2)
                 buttonFormats.getLocationOnScreen(location)
 
-                val x =  location[0] + buttonFormats.width / 2
+                val x = location[0] + buttonFormats.width / 2
                 val y = location[1] + buttonFormats.height / 2
 
                 val startRadius = 0
                 val endRadius =
-                    hypot(commonConstraintLayout.width.toDouble(), commonConstraintLayout.height.toDouble())
+                    hypot(
+                        commonConstraintLayout.width.toDouble(),
+                        commonConstraintLayout.height.toDouble()
+                    )
                         .toInt()
 
                 val anim =
@@ -244,26 +249,26 @@ class CalculatorActivity : AppCompatActivity() {
                         endRadius.toFloat()
                     ).apply {
                         interpolator = AccelerateDecelerateInterpolator()
-                        duration = 600}
+                        duration = 600
+                    }
                 // make the view invisible when the animation is done
                 anim.addListener(object : AnimatorListenerAdapter() {
 
                     override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
-             //           mainConstraintLayout.visibility = View.GONE
+                        //           mainConstraintLayout.visibility = View.GONE
 
-                       // viewModel.clearAll()
+                        // viewModel.clearAll()
                     }
                 })
                 formatsLayout.visibility = View.VISIBLE
+                viewModel.setIsFormatsLayoutVisible(true)
                 anim.start()
 
 
-
-
-            }
-            else {
+            } else {
                 formatsLayout.visibility = View.VISIBLE
+                viewModel.setIsFormatsLayoutVisible(true)
             }
         }
 
@@ -272,47 +277,51 @@ class CalculatorActivity : AppCompatActivity() {
             if (!viewModel.isExpressionEmpty()) {
 
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 
-                //  forceRippleAnimation(tvOnlineResult)
+                    //  forceRippleAnimation(tvOnlineResult)
 
-                val location = IntArray(2)
-                buttonDelete.getLocationOnScreen(location)
+                    val location = IntArray(2)
+                    buttonDelete.getLocationOnScreen(location)
 
-                val x = location[0] + buttonDelete.width / 2
-                val y = tvOnlineResult.getBottom()
+                    val x = location[0] + buttonDelete.width / 2
+                    val y = tvOnlineResult.getBottom()
 
-                val startRadius = 0
-                val endRadius =
-                    Math.hypot(tvExpressionField.getWidth().toDouble(), tvExpressionField.getHeight().toDouble())
-                        .toInt()
+                    val startRadius = 0
+                    val endRadius =
+                        Math.hypot(
+                            tvExpressionField.getWidth().toDouble(),
+                            tvExpressionField.getHeight().toDouble()
+                        )
+                            .toInt()
 
-                val anim =
-                    ViewAnimationUtils.createCircularReveal(
-                        tvFakeForClear,
-                        x,
-                        y,
-                        startRadius.toFloat(),
-                        endRadius.toFloat()
-                    ).apply {
-                        interpolator = AccelerateDecelerateInterpolator()
-                        duration = 300}
-                // make the view invisible when the animation is done
-                anim.addListener(object : AnimatorListenerAdapter() {
+                    val anim =
+                        ViewAnimationUtils.createCircularReveal(
+                            tvFakeForClear,
+                            x,
+                            y,
+                            startRadius.toFloat(),
+                            endRadius.toFloat()
+                        ).apply {
+                            interpolator = AccelerateDecelerateInterpolator()
+                            duration = 300
+                        }
+                    // make the view invisible when the animation is done
+                    anim.addListener(object : AnimatorListenerAdapter() {
 
-                    override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-                        tvFakeForClear.visibility = View.GONE
-                        viewModel.clearAll()
-                    }
-                })
-                tvFakeForClear.visibility = View.VISIBLE
-                anim.start()
+                        override fun onAnimationEnd(animation: Animator) {
+                            super.onAnimationEnd(animation)
+                            tvFakeForClear.visibility = View.GONE
+                            viewModel.clearAll()
+                        }
+                    })
+                    tvFakeForClear.visibility = View.VISIBLE
+                    anim.start()
 
-            } else
-                viewModel.clearAll()
-        }
+                } else
+                    viewModel.clearAll()
+            }
             true
         }
 
@@ -322,6 +331,10 @@ class CalculatorActivity : AppCompatActivity() {
             // calculateAndPrintResult(tvExpressionField.text.toString().removeHTML().removeAllSpaces())
 
         }
+
+
+
+
     }
 
     private fun toolbarInitalize() {
@@ -330,14 +343,15 @@ class CalculatorActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 
-
-
                 val x = 10
                 val y = 10
 
                 val endRadius = 0
-                val startRadius  =
-                    hypot(commonConstraintLayout.width.toDouble(), commonConstraintLayout.height.toDouble())
+                val startRadius =
+                    hypot(
+                        commonConstraintLayout.width.toDouble(),
+                        commonConstraintLayout.height.toDouble()
+                    )
                         .toInt()
 
                 val anim =
@@ -349,7 +363,8 @@ class CalculatorActivity : AppCompatActivity() {
                         endRadius.toFloat()
                     ).apply {
                         interpolator = AccelerateDecelerateInterpolator()
-                        duration = 450}
+                        duration = 450
+                    }
                 // make the view invisible when the animation is done
                 anim.addListener(object : AnimatorListenerAdapter() {
 
@@ -357,18 +372,18 @@ class CalculatorActivity : AppCompatActivity() {
                         super.onAnimationEnd(animation)
 
                         formatsLayout.visibility = View.GONE
-
-                      //  viewModel.clearAll()
+                        viewModel.setIsFormatsLayoutVisible(false)
+                        //  viewModel.clearAll()
                     }
                 })
-         //       formatsLayout = View.GONE
+                //       formatsLayout = View.GONE
 
 
                 anim.start()
 
-            }
-            else {
+            } else {
                 formatsLayout.visibility = View.GONE
+                viewModel.setIsFormatsLayoutVisible(false)
             }
 
 
@@ -378,28 +393,26 @@ class CalculatorActivity : AppCompatActivity() {
         }
     }
 
+    /*  override fun onTouchEvent(event: MotionEvent?): Boolean {
+          if (event?.actionMasked == MotionEvent.ACTION_UP) {
+              lastTouchDownXY[0] = event.x.toInt()
+              lastTouchDownXY[1] = event.y.toInt()
+              Log.i("TAG", "onLongClick: x = {$event.x}, y = {$event.y}")
+
+          }
+          return super.onTouchEvent(event)
+      }*/
 
 
-  /*  override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (event?.actionMasked == MotionEvent.ACTION_UP) {
-            lastTouchDownXY[0] = event.x.toInt()
-            lastTouchDownXY[1] = event.y.toInt()
-            Log.i("TAG", "onLongClick: x = {$event.x}, y = {$event.y}")
+    /*  var clickListener: View.OnClickListener = View.OnClickListener {
+          // retrieve the stored coordinates
+          val x = lastTouchDownXY[0]
+          val y = lastTouchDownXY[1]
 
-        }
-        return super.onTouchEvent(event)
-    }*/
+          // use the coordinates for whatever
 
-
-  /*  var clickListener: View.OnClickListener = View.OnClickListener {
-        // retrieve the stored coordinates
-        val x = lastTouchDownXY[0]
-        val y = lastTouchDownXY[1]
-
-        // use the coordinates for whatever
-
-        Log.i("TAG", "onLongClick: x = $x, y = $y")
-    }*/
+          Log.i("TAG", "onLongClick: x = $x, y = $y")
+      }*/
 
 /*
     protected fun forceRippleAnimation(view: View) {

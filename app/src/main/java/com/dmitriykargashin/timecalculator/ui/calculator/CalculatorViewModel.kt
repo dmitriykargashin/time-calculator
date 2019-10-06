@@ -5,6 +5,8 @@
 package com.dmitriykargashin.timecalculator.ui.calculator
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
@@ -14,51 +16,44 @@ import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.data.repository.TokensRepository
 import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormat
+import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormats
 import kotlinx.coroutines.*
 
 class CalculatorViewModel(
     private val expressionRepository: ExpressionRepository,
     private val tokensRepository: TokensRepository,
     private val resultFormatsRepository: ResultFormatsRepository
+
+
 ) : ViewModel() {
 
-    //for corooutunes
-    //   protected val job = SupervisorJob() // the instance of a Job for this activity
-    //   val scopeIO = CoroutineScope(Dispatchers.IO + job)
-    //  val scopeIO = CoroutineScope(Dispatchers.Default)
-    // val scopeUI = viewModelScope //.. CoroutineScope(Dispatchers.Main)
-///
+
+    private var isInFormatsChooseModeRepository: Boolean =
+        false // for controlling whenever opened format chooser view or not
+
+    private val isInFormatsChooseMode = MutableLiveData<Boolean>()
 
 
-    /*  private val job = Job()
-      override val coroutineContext: CoroutineContext
-          get() = job + Dispatchers.Main
-  */
+    init {
+        isInFormatsChooseMode.value = isInFormatsChooseModeRepository
+    }
+
     fun getTokens() = tokensRepository.getTokens()
+
     fun getResultFormats() = resultFormatsRepository.getResultFormats()
 
-    fun addToresultFormats(resultFormat: ResultFormat) = resultFormatsRepository.addResultFormat(resultFormat)
+    fun addToresultFormats(resultFormat: ResultFormat) =
+        resultFormatsRepository.addResultFormat(resultFormat)
 
     fun addToken(token: Token) = tokensRepository.addToken(token)
 
-    /* fun setExpression(expression: String) {
-        // if (
-             expressionRepository.setExpression(expression)//) {
-        //     viewModelScope.coroutineContext.cancelChildren()
-          //   viewModelScope.launch { evaluateExpression() }
-       //  }
-     }*/
+    fun getIsFormatsLayoutVisible() = isInFormatsChooseMode as LiveData<Boolean>
 
-    /* fun addToExpression(element: String) {
+    fun setIsFormatsLayoutVisible(visible: Boolean) {
+        isInFormatsChooseModeRepository = visible
+        isInFormatsChooseMode.value = isInFormatsChooseModeRepository
+    }
 
-         if (expressionRepository.addToExpression(element)  ) {
-             viewModelScope.coroutineContext.cancelChildren()
-             viewModelScope.launch {
-
-                 evaluateExpression()
-             }
-         }
-     }*/
 
     fun addToExpression(element: Token) {
         /* when (element.type) {
@@ -79,7 +74,7 @@ class CalculatorViewModel(
     fun getExpression() = expressionRepository.getExpression()
 
 
-    fun isExpressionEmpty():Boolean {
+    fun isExpressionEmpty(): Boolean {
         return expressionRepository.getExpression().value.isNullOrEmpty()
     }
 
@@ -110,7 +105,10 @@ class CalculatorViewModel(
 
     fun clearOneLastSymbol() {
         if (expressionRepository.deleteLastTokenOrSymbol()) {
-            Log.i("TAG", "AfterPress cleared ${expressionRepository.getExpression().value?.toSpannableString()}")
+            Log.i(
+                "TAG",
+                "AfterPress cleared ${expressionRepository.getExpression().value?.toSpannableString()}"
+            )
             //if true then recalculate
             viewModelScope.coroutineContext.cancelChildren()
             viewModelScope.launch { evaluateExpression() }
@@ -122,7 +120,7 @@ class CalculatorViewModel(
             expressionRepository.setTokens(tokensRepository.getTokens().value!!)
             tokensRepository.setTokens(Tokens())
         }
-      }
+    }
 
 /* private fun convertEvaluatedTokensToSpannedString(textView: TextView, listOfResultTokens: Tokens) {
 

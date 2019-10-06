@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormat
 import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormats
+import com.dmitriykargashin.timecalculator.internal.extension.toTokens
 
 class ResultFormatsRepository {
 
@@ -39,6 +40,14 @@ class ResultFormatsRepository {
         //  Log.i("TAG", tokensList.toString())
     }
 
+    private fun fillRepository() {
+        val rf=ResultFormat("Hour Minute".toTokens(),"10 Hour 20 Minute".toTokens())
+        val rf2=ResultFormat("Year Week".toTokens(),"4 Year 2 Week 4 Year 2 Week 4 Year 2 Week 4 Year 2 Week".toTokens())
+        val rf3=ResultFormat("Hour".toTokens(),"1.5 Hour".toTokens())
+        addResultFormat(rf)
+        addResultFormat(rf2)
+        addResultFormat(rf3)
+    }
 
     companion object {
         // @Volatile - Writes to this property are immediately visible to other threads
@@ -53,7 +62,12 @@ class ResultFormatsRepository {
                 // If it's still not instantiated, finally create an object
                 // also set the "instance" property to be the currently created one
                 instance
-                    ?: ResultFormatsRepository().also { instance = it }
+                    ?: ResultFormatsRepository().also {
+                        //fiil list only once
+                        it.fillRepository()
+
+                        instance = it
+                    }
             }
     }
 }
