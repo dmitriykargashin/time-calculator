@@ -29,7 +29,6 @@ import android.view.ViewAnimationUtils
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.view_formats.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,9 +40,8 @@ class CalculatorActivity : AppCompatActivity() {
     private val lastTouchDownXY = IntArray(2) //coordinates of last touch
 
 
-
-    lateinit var  factory: CalculatorViewModelFactory
-    lateinit var  viewModel: CalculatorViewModel
+    lateinit var factory: CalculatorViewModelFactory
+    lateinit var viewModel: CalculatorViewModel
 
 
     override fun onDestroy() {
@@ -54,15 +52,22 @@ class CalculatorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         initUI()
 
+    }
+
+
+    override fun onBackPressed() {
+        if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout()
+        else moveTaskToBack(true)
     }
 
     private fun initUI() {
 
 
-         factory = InjectorUtils.provideCalculatorViewModelFactory()
-         viewModel = ViewModelProviders.of(this, factory)
+        factory = InjectorUtils.provideCalculatorViewModelFactory()
+        viewModel = ViewModelProviders.of(this, factory)
             .get(CalculatorViewModel::class.java)
 
 
@@ -333,63 +338,65 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
 
-
-
     }
 
     private fun toolbarInitalize() {
         toolbar.setNavigationOnClickListener {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-
-                val x = 10
-                val y = 10
-
-                val endRadius = 0
-                val startRadius =
-                    hypot(
-                        commonConstraintLayout.width.toDouble(),
-                        commonConstraintLayout.height.toDouble()
-                    )
-                        .toInt()
-
-                val anim =
-                    ViewAnimationUtils.createCircularReveal(
-                        formatsLayout,
-                        x,
-                        y,
-                        startRadius.toFloat(),
-                        endRadius.toFloat()
-                    ).apply {
-                        interpolator = AccelerateDecelerateInterpolator()
-                        duration = 450
-                    }
-                // make the view invisible when the animation is done
-                anim.addListener(object : AnimatorListenerAdapter() {
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-
-                        formatsLayout.visibility = View.GONE
-                        viewModel.setIsFormatsLayoutVisible(false)
-                        //  viewModel.clearAll()
-                    }
-                })
-                //       formatsLayout = View.GONE
-
-
-                anim.start()
-
-            } else {
-                formatsLayout.visibility = View.GONE
-                viewModel.setIsFormatsLayoutVisible(false)
-            }
+            closeFormatsLayout()
 
 
             // back button pressed
 
 
+        }
+    }
+
+    private fun closeFormatsLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+            val x = 10
+            val y = 10
+
+            val endRadius = 0
+            val startRadius =
+                hypot(
+                    commonConstraintLayout.width.toDouble(),
+                    commonConstraintLayout.height.toDouble()
+                )
+                    .toInt()
+
+            val anim =
+                ViewAnimationUtils.createCircularReveal(
+                    formatsLayout,
+                    x,
+                    y,
+                    startRadius.toFloat(),
+                    endRadius.toFloat()
+                ).apply {
+                    interpolator = AccelerateDecelerateInterpolator()
+                    duration = 450
+                }
+            // make the view invisible when the animation is done
+            anim.addListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+
+                    formatsLayout.visibility = View.GONE
+                    viewModel.setIsFormatsLayoutVisible(false)
+                    //  viewModel.clearAll()
+                }
+            })
+            //       formatsLayout = View.GONE
+
+
+            anim.start()
+
+        } else {
+            formatsLayout.visibility = View.GONE
+            viewModel.setIsFormatsLayoutVisible(false)
         }
     }
 
