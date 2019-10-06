@@ -27,7 +27,6 @@
                 android:textStyle="bold"
                 android:paddingEnd="@dimen/margin_16_size"
                 android:singleLine="false"
-                app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:textIsSelectable="true" android:ellipsize="none"
@@ -37,7 +36,8 @@
                 app:layout_constraintHorizontal_bias="0.0" android:scrollbarStyle="outsideInset"
                 android:scrollbars="vertical" android:paddingRight="@dimen/margin_16_size"
                 app:autoSizeMaxTextSize="@dimen/result_output_maxtextsize"
-                android:background="@android:color/white"/>
+                android:background="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"/>
 
         <com.google.android.material.button.MaterialButton
                 android:text="Hour Minute"
@@ -60,9 +60,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" android:id="@+id/tvSpaceWithShadowOnly"
                 android:background="@drawable/text_view_shadow"
-                app:layout_constraintBottom_toTopOf="@id/buttonNum8"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                android:includeFontPadding="false" android:textSize="1sp"/>
+                android:includeFontPadding="false" android:textSize="8sp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonNum8"
+        />
 
 
         <ImageButton
