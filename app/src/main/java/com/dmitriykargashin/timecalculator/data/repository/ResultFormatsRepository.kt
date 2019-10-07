@@ -41,12 +41,86 @@ class ResultFormatsRepository {
     }
 
     private fun fillRepository() {
-        val rf=ResultFormat("Hour Minute".toTokens(),"10 Hour 20 Minute".toTokens())
-        val rf2=ResultFormat("Year Week".toTokens(),"4 Year 2 Week 4 Year 2 Week 4 Year 2 Week 4 Year 2 Week".toTokens())
-        val rf3=ResultFormat("Hour".toTokens(),"1.5 Hour".toTokens())
-        addResultFormat(rf)
-        addResultFormat(rf2)
-        addResultFormat(rf3)
+
+
+        addResultFormat(ResultFormat("Year".toTokens(), "1 Year".toTokens()))
+        addResultFormat(ResultFormat("Year Month".toTokens(), "1 Year 2 Month".toTokens()))
+        addResultFormat(
+            ResultFormat(
+                "Year Month Day".toTokens(),
+                "1 Year 2 Month 3 Day".toTokens()
+            )
+        )
+        addResultFormat(
+            ResultFormat(
+                "Year Month Day Minute".toTokens(),
+                "1 Year 2 Month 3 Day 4 Minute".toTokens()
+            )
+        )
+
+        addResultFormat(ResultFormat("Month".toTokens(), "1 Month".toTokens()))
+        addResultFormat(ResultFormat("Month Day".toTokens(), "Month Day".toTokens()))
+        addResultFormat(
+            ResultFormat(
+                "Month Day Hour".toTokens(),
+                "1 Month 2 Day 3 Hour".toTokens()
+            )
+        )
+        addResultFormat(
+            ResultFormat(
+                "Month Day Hour Minute".toTokens(),
+                "1 Month 2 Day 3 Hour 4 Minute".toTokens()
+            )
+        )
+        addResultFormat(
+            ResultFormat(
+                "Month Day Hour Minute Second".toTokens(),
+                "1 Month 2 Day 3 Hour 4 Minute 5 Second".toTokens()
+            )
+        )
+        addResultFormat(ResultFormat("Month Week".toTokens(), "1 Month 2 Week".toTokens()))
+
+        addResultFormat(ResultFormat("Week".toTokens(), "1 Week".toTokens()))
+        addResultFormat(ResultFormat("Week Day".toTokens(), "1 Week 2 Day".toTokens()))
+
+        addResultFormat(ResultFormat("Day".toTokens(), "1 Day".toTokens()))
+        addResultFormat(ResultFormat("Day Hour".toTokens(), "1 Day 1 Hour".toTokens()))
+        addResultFormat(
+            ResultFormat(
+                "Day Hour Minute".toTokens(),
+                "1 Day 2 Hour 3 Minute".toTokens()
+            )
+        )
+        addResultFormat(
+            ResultFormat(
+                "Day Hour Minute Second".toTokens(),
+                "1 Day 2 Hour 3 Minute 4 Second".toTokens()
+            )
+        )
+
+        addResultFormat(ResultFormat("Hour".toTokens(), "1 Hour".toTokens()))
+        addResultFormat(ResultFormat("Hour Minute".toTokens(), "1 Hour 2 Minute".toTokens()))
+        addResultFormat(
+            ResultFormat(
+                "Hour Minute Second".toTokens(),
+                "1 Hour 2 Minute 3 Second".toTokens()
+            )
+        )
+
+        addResultFormat(ResultFormat("Minute".toTokens(), "1 Minute".toTokens()))
+        addResultFormat(ResultFormat("Minute Second".toTokens(), "1 Minute 2 Second".toTokens()))
+
+        addResultFormat(ResultFormat("Second".toTokens(), "1 Second".toTokens()))
+
+
+        addResultFormat(
+            ResultFormat(
+                "Year Month Week Day Hour Minute Second MSecond".toTokens(),
+                "1 Year 2 Month 3 Week 4 Day 5 Hour 6 Minute 7 Second 8 MSecond".toTokens()
+            )
+        )
+
+
     }
 
     companion object {
