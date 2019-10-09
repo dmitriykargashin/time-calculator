@@ -28,6 +28,7 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import kotlinx.android.synthetic.main.view_formats.*
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -80,6 +81,7 @@ class CalculatorActivity : AppCompatActivity() {
         // Observe the model
         viewModel.getResultFormats().observe(this, Observer {
             rvFormatsToChoose.adapter = RvAdapterResultFormats(it)
+            Log.d ("TAG","change")
         })
 
         viewModel.getIsFormatsLayoutVisible().observe(this, Observer {
@@ -90,7 +92,7 @@ class CalculatorActivity : AppCompatActivity() {
         })
 
 
-        viewModel.getTokens().observe(
+        viewModel.getResultTokens().observe(
             this,
             Observer {
 
@@ -225,7 +227,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         buttonFormats.setOnClickListener {
-
+            viewModel.UpdateResultFormats()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 

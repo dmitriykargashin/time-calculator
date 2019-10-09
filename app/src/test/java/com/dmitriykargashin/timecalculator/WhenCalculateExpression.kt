@@ -5,12 +5,16 @@
 package com.dmitriykargashin.timecalculator
 
 
-import com.dmitriykargashin.timecalculator.calculator.CalculatorOfTime
-import com.dmitriykargashin.timecalculator.extension.addStartAndEndSpace
-import com.dmitriykargashin.timecalculator.lexer.LexicalAnalyzer
-import com.dmitriykargashin.timecalculator.lexer.Token
-import com.dmitriykargashin.timecalculator.lexer.TokenType
-import com.dmitriykargashin.timecalculator.lexer.Tokens
+
+import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
+import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
+import com.dmitriykargashin.timecalculator.data.tokens.Token
+import com.dmitriykargashin.timecalculator.data.tokens.TokenType
+import com.dmitriykargashin.timecalculator.data.tokens.Tokens
+
+import com.dmitriykargashin.timecalculator.internal.extension.addStartAndEndSpace
+import com.dmitriykargashin.timecalculator.internal.extension.toTokens
+
 
 
 import org.hamcrest.Description
@@ -19,7 +23,6 @@ import org.junit.Test
 import org.hamcrest.MatcherAssert.assertThat
 
 import org.hamcrest.TypeSafeDiagnosingMatcher
-import org.junit.Ignore
 
 
 // function for checking equality of Tokens Object instances

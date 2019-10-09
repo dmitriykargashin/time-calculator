@@ -8,7 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormat
 import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormats
+import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.internal.extension.toTokens
+import com.dmitriykargashin.timecalculator.utilites.TimeConverter
 
 class ResultFormatsRepository {
 
@@ -28,7 +30,19 @@ class ResultFormatsRepository {
 
     fun length(): Int = resultFormatsList.lastIndex + 1
 
+
     fun getResultFormats() = resultFormats as LiveData<ResultFormats>
+
+
+    fun updateFormatsWithPreview(resultTokens: Tokens) {
+
+        for (resultFormatElement in resultFormatsList) {
+
+            resultFormatElement.convertedResultTokens = TimeConverter.convertTokensToTokensWithFormat(resultTokens, resultFormatElement.formatTokens)
+        }
+
+        resultFormats.value = resultFormatsList
+    }
 
     fun setTokens(newResultFormats: ResultFormats) {
 

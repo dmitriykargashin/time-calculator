@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.text.SpannableString
 
 import android.text.TextUtils
+import com.dmitriykargashin.timecalculator.utilites.TimeConverter
 import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
 import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
@@ -21,6 +22,15 @@ fun String.toTokens(): Tokens {
 fun String.toToken(): Token {
     return LexicalAnalyzer.analyze(this).last()
 }
+
+
+fun String.toTokenInMSec(): Token {
+    val tempTokens= LexicalAnalyzer.analyze(this)
+
+    return TimeConverter.convertTokensToMScecToken(tempTokens)
+
+}
+
 
 fun String.toHTMLWithGreenColor(): SpannableString {
 

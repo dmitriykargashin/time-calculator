@@ -6,5 +6,5 @@ package com.dmitriykargashin.timecalculator.data.resultFormat
 
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 
-class ResultFormat(val formatTokens: Tokens, val convertedResultTokens:Tokens) {
+class ResultFormat(val formatTokens: Tokens, var convertedResultTokens:Tokens) {
 }
