@@ -12,8 +12,6 @@
         android:id="@+id/commonConstraintLayout" tools:visibility="visible">
 
 <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity" tools:orientation="vertical"
@@ -421,22 +419,32 @@
             android:scrollbars="vertical" android:paddingRight="@dimen/margin_16_size"/>
 
     <com.google.android.material.button.MaterialButton
-            android:text="Hour Minute"
+            android:id="@+id/buttonFormats"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonFormats"
-            android:theme="@style/Theme.MaterialComponents"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            app:strokeColor="#304FFE"
-            app:strokeWidth="1dp"
-            android:textSize="@dimen/buttons_time_size"
-            android:textColor="#304FFE"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="@dimen/margin_16_size"
+            android:layout_marginEnd="537dp"
+            android:layout_marginRight="@dimen/margin_16_size"
             android:fontFamily="@font/googlesans_regular"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="@dimen/margin_16_size"
-            app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult" android:textStyle="bold"
             android:gravity="start"
-            android:layout_marginLeft="@dimen/margin_16_size" android:minHeight="0dp" app:cornerRadius="5dp"
-            app:elevation="1dp" android:textAllCaps="false"/>
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="Hour Minute"
+            android:textAllCaps="false"
+            android:textColor="#304FFE"
+            android:textSize="@dimen/buttons_time_size"
+            android:textStyle="bold"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cornerRadius="5dp"
+            app:elevation="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="#304FFE"
+            app:strokeWidth="1dp" />
 
     <TextView
             android:layout_width="0dp"

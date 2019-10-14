@@ -2,13 +2,14 @@
 
 
 <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/formatsConstraintLayout"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.calculator.CalculatorActivity" tools:orientation="vertical"
         tools:layout_editor_absoluteY="25dp" android:background="@android:color/white"
-        android:id="@+id/formatsConstraintLayout">
+       >
 
 
     <androidx.appcompat.widget.Toolbar

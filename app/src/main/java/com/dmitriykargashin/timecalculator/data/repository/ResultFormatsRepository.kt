@@ -11,20 +11,26 @@ import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormats
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.internal.extension.toTokens
 import com.dmitriykargashin.timecalculator.utilites.TimeConverter
+import java.text.FieldPosition
 
 class ResultFormatsRepository {
 
     private var resultFormatsList = ResultFormats()
     private val resultFormats = MutableLiveData<ResultFormats>()
+    private lateinit var selectedResFormat: ResultFormat
+    private val selectedResultFormats = MutableLiveData<ResultFormat>()
+
 
     init {
         resultFormats.value = resultFormatsList
+       // selectedResultFormats.value = selectedResFormat
     }
 
-    fun addResultFormat(resultFormat: ResultFormat) {
+    fun addResultFormat(resultFormat: ResultFormat): ResultFormat {
 
         resultFormatsList.add(resultFormat)
         resultFormats.value = resultFormatsList
+        return resultFormat
 
     }
 
@@ -33,12 +39,35 @@ class ResultFormatsRepository {
 
     fun getResultFormats() = resultFormats as LiveData<ResultFormats>
 
+    fun getSelectedFormat() = selectedResultFormats as LiveData<ResultFormat> /*: LiveData<ResultFormat> {
+        for (resformat in resultFormatsList) {
+            if (resformat.isSelected) {
+                selectedResFormat = resformat
+                selectedResultFormats.value = selectedResFormat
+
+            }
+        }
+        resultFormats.value = resultFormatsList
+        return selectedResultFormats
+    }*/
+
+    fun setSelectedFormat(position: Int): LiveData<ResultFormat> {
+
+        selectedResFormat = resultFormatsList.setSelection(position)
+        selectedResultFormats.value = selectedResFormat
+      //  resultFormats.value = resultFormatsList
+        return selectedResultFormats
+    }
 
     fun updateFormatsWithPreview(resultTokens: Tokens) {
 
         for (resultFormatElement in resultFormatsList) {
 
-            resultFormatElement.convertedResultTokens = TimeConverter.convertTokensToTokensWithFormat(resultTokens, resultFormatElement.formatTokens)
+            resultFormatElement.convertedResultTokens =
+                TimeConverter.convertTokensToTokensWithFormat(
+                    resultTokens,
+                    resultFormatElement.formatTokens
+                )
         }
 
         resultFormats.value = resultFormatsList
@@ -130,10 +159,13 @@ class ResultFormatsRepository {
         addResultFormat(
             ResultFormat(
                 "Year Month Week Day Hour Minute Second MSecond".toTokens(),
-                "1 Year 2 Month 3 Week 4 Day 5 Hour 6 Minute 7 Second 8 MSecond".toTokens()
-            )
-        )
+                "1 Year 2 Month 3 Week 4 Day 5 Hour 6 Minute 7 Second 8 MSecond".toTokens(),
+                "All Units"
 
+            )
+        ).isSelected = true
+        selectedResFormat = resultFormatsList.getSelectedResulFormat()
+        selectedResultFormats.value = selectedResFormat
 
     }
 
@@ -153,6 +185,7 @@ class ResultFormatsRepository {
                     ?: ResultFormatsRepository().also {
                         //fiil list only once
                         it.fillRepository()
+
 
                         instance = it
                     }

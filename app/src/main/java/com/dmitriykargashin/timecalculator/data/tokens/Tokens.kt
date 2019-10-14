@@ -34,6 +34,22 @@ class Tokens : ArrayList<Token>(), Cloneable {
         return tokensString
     }
 
+    fun toStringWithSpaces(): String {
+        var tokensString = ""
+        for (token: Token in this) {
+
+            tokensString += when (token.type) {
+                TokenType.PLUS -> " +"
+                TokenType.MINUS -> " -"
+                TokenType.DIVIDE -> " /"
+                TokenType.MULTIPLY -> " *"
+                else -> " "+token.strRepresentation
+            }
+
+        }
+        return  tokensString.trim()
+    }
+
     fun toSpannableString(): SpannableString {
         var spanString = SpannableString("")
 

@@ -123,6 +123,9 @@ class CalculatorViewModel(
         resultFormatsRepository.updateFormatsWithPreview(getResultTokens().value!!)
     }
 
+    fun getSelectedFormat() = resultFormatsRepository.getSelectedFormat()
+    fun setSelectedFormat(position:Int) = resultFormatsRepository.setSelectedFormat(position)
+
 /* private fun convertEvaluatedTokensToSpannedString(textView: TextView, listOfResultTokens: Tokens) {
 
 

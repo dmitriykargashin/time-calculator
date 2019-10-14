@@ -19,11 +19,11 @@ import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.utilites.InjectorUtils
 
 import android.text.method.ScrollingMovementMethod
-import com.dmitriykargashin.timecalculator.R
+
 
 import android.os.Build
 
-
+import com.dmitriykargashin.timecalculator.R
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.animation.Animator
@@ -33,12 +33,12 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import kotlinx.android.synthetic.main.view_formats.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithLightGreenColor
 import kotlin.math.hypot
+import android.view.MotionEvent
 
 
 class CalculatorActivity : AppCompatActivity() {
-
-    private val lastTouchDownXY = IntArray(2) //coordinates of last touch
 
 
     lateinit var factory: CalculatorViewModelFactory
@@ -60,7 +60,7 @@ class CalculatorActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout()
+        if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout(10, 10)
         else moveTaskToBack(true)
     }
 
@@ -80,8 +80,8 @@ class CalculatorActivity : AppCompatActivity() {
 
         // Observe the model
         viewModel.getResultFormats().observe(this, Observer {
-            rvFormatsToChoose.adapter = RvAdapterResultFormats(it)
-            Log.d ("TAG","change")
+            rvFormatsToChoose.adapter = RvAdapterResultFormats(viewModel)
+            Log.d("TAG", "changeFormat")
         })
 
         viewModel.getIsFormatsLayoutVisible().observe(this, Observer {
@@ -92,11 +92,28 @@ class CalculatorActivity : AppCompatActivity() {
         })
 
 
+        viewModel.getSelectedFormat().observe(this, Observer {
+
+            Log.d("TAG", "changeFormat click")
+
+            buttonFormats.text = it.textPresentationOfTokens.toHTMLWithLightGreenColor()
+
+            val touchPointX = commonConstraintLayout.width / 2
+            val touchPointY = commonConstraintLayout.height / 2
+
+            if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout(
+                touchPointX,
+                touchPointY
+            )
+
+
+        })
+
         viewModel.getResultTokens().observe(
             this,
             Observer {
 
-                tvOnlineResult.text = it?.toSpannableString()
+                tvOnlineResult.text = it?.toLightSpannableString()
 
                 /*tokens ->
                                val stringBuilder = StringBuilder()
@@ -345,21 +362,24 @@ class CalculatorActivity : AppCompatActivity() {
     private fun toolbarInitalize() {
         toolbar.setNavigationOnClickListener {
 
-            closeFormatsLayout()
+            closeFormatsLayout(10, 10)
 
 
             // back button pressed
 
-
         }
+
+
+
+
     }
 
-    private fun closeFormatsLayout() {
+    private fun closeFormatsLayout(x: Int, y: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 
-            val x = 10
-            val y = 10
+            /*  val x = 10
+              val y = 10*/
 
             val endRadius = 0
             val startRadius =

@@ -740,7 +740,7 @@ abstract class TimeConverter {
 
 
             }
-            return reminderInMsecResult
+            return reminderInMsecResult.setScale(4, RoundingMode.HALF_EVEN).stripTrailingZeros()
 
         }
 

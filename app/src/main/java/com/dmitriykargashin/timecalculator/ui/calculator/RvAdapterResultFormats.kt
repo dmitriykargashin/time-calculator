@@ -9,11 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dmitriykargashin.timecalculator.R
-import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormats
+import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithGreenColor
 import kotlinx.android.synthetic.main.card_view_formats.view.*
 
 
-class RvAdapterResultFormats(val formatsResult: ResultFormats) :
+class RvAdapterResultFormats(val viewModel: CalculatorViewModel) :
     RecyclerView.Adapter<RvAdapterResultFormats.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
@@ -25,12 +25,23 @@ class RvAdapterResultFormats(val formatsResult: ResultFormats) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.id.text = formatsResult[position].formatTokens.toSpannableString()
-        holder.name.text = formatsResult[position].convertedResultTokens.toLightSpannableString()
+        holder.id.text =
+            viewModel.getResultFormats().value!![position].textPresentationOfTokens.toHTMLWithGreenColor()
+        holder.name.text =
+            viewModel.getResultFormats().value!![position].convertedResultTokens.toLightSpannableString()
+
+
+        holder.cardView.setOnClickListener {
+            viewModel.setSelectedFormat(position)
+
+        //   holder.name.text = holder.name.text.toString()
+
+
+        }
     }
 
     override fun getItemCount(): Int {
-        return formatsResult.size
+        return viewModel.getResultFormats().value!!.size
     }
 
     override fun getItemId(position: Int): Long {
@@ -41,8 +52,14 @@ class RvAdapterResultFormats(val formatsResult: ResultFormats) :
         return super.getItemViewType(position)
     }
 
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val id = itemView.tvFormat
         val name = itemView.tvResultFormat
+        val cardView=itemView.materialCardView
+
+
     }
+
+
 }
