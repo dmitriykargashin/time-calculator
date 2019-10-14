@@ -34,7 +34,7 @@ class RvAdapterResultFormats(val viewModel: CalculatorViewModel) :
         holder.cardView.setOnClickListener {
             viewModel.setSelectedFormat(position)
 
-        //   holder.name.text = holder.name.text.toString()
+            //   holder.name.text = holder.name.text.toString()
 
 
         }
@@ -44,19 +44,11 @@ class RvAdapterResultFormats(val viewModel: CalculatorViewModel) :
         return viewModel.getResultFormats().value!!.size
     }
 
-    override fun getItemId(position: Int): Long {
-        return super.getItemId(position)
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-    }
-
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val id = itemView.tvFormat
         val name = itemView.tvResultFormat
-        val cardView=itemView.materialCardView
+        val cardView = itemView.materialCardView
 
 
     }

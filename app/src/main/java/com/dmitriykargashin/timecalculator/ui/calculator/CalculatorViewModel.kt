@@ -18,6 +18,7 @@ import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.data.repository.TokensRepository
 import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormat
 import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormats
+import com.dmitriykargashin.timecalculator.utilites.TimeConverter
 import kotlinx.coroutines.*
 
 class CalculatorViewModel(
@@ -41,11 +42,10 @@ class CalculatorViewModel(
 
     }
 
-    fun getResultTokens() = tokensRepository.getTokens()
+    fun getResultTokens()=tokensRepository.getTokens()
+
 
     fun getResultFormats() = resultFormatsRepository.getResultFormats()
-
-
 
 
 
@@ -83,10 +83,14 @@ class CalculatorViewModel(
 
     private suspend fun evaluateExpression() {
 
-        val resulTokens = withContext(Dispatchers.Default) {
+        val evaluatedTokens = withContext(Dispatchers.Default) {
             CalculatorOfTime.evaluate(getExpression().value!!/*.toString()*/)
+
         }
-        tokensRepository.setTokens(resulTokens)
+        val resultTokens =  TimeConverter.convertTokensToTokensWithFormat(
+            evaluatedTokens, resultFormatsRepository.getSelectedFormat().value!!.formatTokens)
+
+        tokensRepository.setTokens(resultTokens)
 
 
     }
@@ -124,7 +128,23 @@ class CalculatorViewModel(
     }
 
     fun getSelectedFormat() = resultFormatsRepository.getSelectedFormat()
-    fun setSelectedFormat(position:Int) = resultFormatsRepository.setSelectedFormat(position)
+
+
+
+    fun setSelectedFormat(position:Int): LiveData<ResultFormat> {
+
+        val selectedFormat = resultFormatsRepository.setSelectedFormat(position)
+
+        // here we need to update result of expression to desired format
+
+        val resultConvertedTokens =  TimeConverter.convertTokensToTokensWithFormat(
+            getResultTokens().value!!, resultFormatsRepository.getSelectedFormat().value!!.formatTokens)
+        tokensRepository.setTokens(resultConvertedTokens)
+
+        return selectedFormat
+
+
+    }
 
 /* private fun convertEvaluatedTokensToSpannedString(textView: TextView, listOfResultTokens: Tokens) {
 

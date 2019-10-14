@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithLightGreenColor
 import kotlin.math.hypot
 import android.view.MotionEvent
+import kotlinx.android.synthetic.main.card_view_formats.*
 
 
 class CalculatorActivity : AppCompatActivity() {
@@ -310,13 +311,13 @@ class CalculatorActivity : AppCompatActivity() {
                     buttonDelete.getLocationOnScreen(location)
 
                     val x = location[0] + buttonDelete.width / 2
-                    val y = tvOnlineResult.getBottom()
+                    val y = tvOnlineResult.bottom
 
                     val startRadius = 0
                     val endRadius =
                         Math.hypot(
-                            tvExpressionField.getWidth().toDouble(),
-                            tvExpressionField.getHeight().toDouble()
+                            tvExpressionField.width.toDouble(),
+                            tvExpressionField.height.toDouble()+tvOnlineResult.height.toDouble()+buttonFormats.height.toDouble()
                         )
                             .toInt()
 
@@ -329,7 +330,7 @@ class CalculatorActivity : AppCompatActivity() {
                             endRadius.toFloat()
                         ).apply {
                             interpolator = AccelerateDecelerateInterpolator()
-                            duration = 300
+                            duration = 400
                         }
                     // make the view invisible when the animation is done
                     anim.addListener(object : AnimatorListenerAdapter() {

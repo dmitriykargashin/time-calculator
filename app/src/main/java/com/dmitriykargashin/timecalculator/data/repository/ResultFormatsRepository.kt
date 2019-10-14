@@ -142,7 +142,7 @@ class ResultFormatsRepository {
         )
 
         addResultFormat(ResultFormat("Hour".toTokens(), "1 Hour".toTokens()))
-        addResultFormat(ResultFormat("Hour Minute".toTokens(), "1 Hour 2 Minute".toTokens()))
+        addResultFormat(ResultFormat("Hour Minute".toTokens(), "1 Hour 2 Minute".toTokens())).isSelected = true
         addResultFormat(
             ResultFormat(
                 "Hour Minute Second".toTokens(),
@@ -163,7 +163,7 @@ class ResultFormatsRepository {
                 "All Units"
 
             )
-        ).isSelected = true
+        )
         selectedResFormat = resultFormatsList.getSelectedResulFormat()
         selectedResultFormats.value = selectedResFormat
 
