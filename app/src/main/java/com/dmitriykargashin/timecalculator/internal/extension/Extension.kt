@@ -10,7 +10,7 @@ import android.text.SpannableString
 
 import android.text.TextUtils
 import com.dmitriykargashin.timecalculator.utilites.TimeConverter
-import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
+import com.dmitriykargashin.timecalculator.engine.lexer.LexicalAnalyzer
 import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 

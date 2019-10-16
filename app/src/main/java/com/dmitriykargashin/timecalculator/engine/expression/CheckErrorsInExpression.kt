@@ -2,14 +2,12 @@
  * Copyright (c) 2019. Dmitriy Kargashin
  */
 
-package com.dmitriykargashin.timecalculator.data.expression
+package com.dmitriykargashin.timecalculator.engine.expression
 
 
-import android.util.Log
 import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
-import com.dmitriykargashin.timecalculator.internal.extension.toTokens
 
 fun isErrorsInExpression(expressionForAdd: Token, expression: Tokens): Boolean {
 //here we should check all future errors when we will add the new expression to existing expression

@@ -2,7 +2,7 @@
  * Copyright (c) 2019. Dmitriy Kargashin
  */
 
-package com.dmitriykargashin.timecalculator.data.calculator
+package com.dmitriykargashin.timecalculator.engine.calculator
 
 import android.util.Log
 import com.dmitriykargashin.timecalculator.data.tokens.Token
@@ -66,18 +66,18 @@ abstract class CalculatorOfTime {
             try {
                 val expression = ExpressionBuilder(txt).build()
                 // Calculate the result
-                val result = expression.evaluate()
+                val result = expression.evaluate().toBigDecimal()
 
                 // we'll return result as one NUMBER token
 
-                val fmt = NumberFormat.getInstance()
-                fmt.setGroupingUsed(false)
-                fmt.setMaximumIntegerDigits(999)
-                fmt.setMaximumFractionDigits(999)
-                val resultAsString = fmt.format(result)
+             /*   val fmt = NumberFormat.getInstance()
+                fmt.isGroupingUsed = false
+                fmt.maximumIntegerDigits = 999
+                fmt.maximumFractionDigits = 999
+                val resultAsString = fmt.format(result)*/
+                val resultAsString=result.toString()
 
-
-//                Log.i("result", result.toString())
+                Log.i("result", result.toString())
                 resultTokens.add(
                     Token(
                         TokenType.NUMBER,

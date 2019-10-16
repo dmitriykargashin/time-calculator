@@ -6,13 +6,10 @@ package com.dmitriykargashin.timecalculator
 
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.dmitriykargashin.timecalculator.data.expression.isErrorAfterCheckForPoint
-import com.dmitriykargashin.timecalculator.data.expression.isErrorsInExpression
+import com.dmitriykargashin.timecalculator.engine.expression.isErrorsInExpression
 import com.dmitriykargashin.timecalculator.data.repository.ExpressionRepository
 import com.dmitriykargashin.timecalculator.internal.extension.toToken
 import com.dmitriykargashin.timecalculator.internal.extension.toTokens
-import com.dmitriykargashin.timecalculator.ui.calculator.CalculatorViewModel
-import com.dmitriykargashin.timecalculator.utilites.InjectorUtils
 import org.hamcrest.MatcherAssert
 import org.junit.Rule
 

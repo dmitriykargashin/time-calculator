@@ -4,10 +4,9 @@
 
 package com.dmitriykargashin.timecalculator.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.dmitriykargashin.timecalculator.data.expression.isErrorsInExpression
+import com.dmitriykargashin.timecalculator.engine.expression.isErrorsInExpression
 import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens

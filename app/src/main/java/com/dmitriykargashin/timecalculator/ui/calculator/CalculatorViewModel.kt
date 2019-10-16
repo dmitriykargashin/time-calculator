@@ -7,17 +7,15 @@ package com.dmitriykargashin.timecalculator.ui.calculator
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
+import com.dmitriykargashin.timecalculator.engine.calculator.CalculatorOfTime
 import com.dmitriykargashin.timecalculator.data.repository.ExpressionRepository
 import com.dmitriykargashin.timecalculator.data.repository.ResultFormatsRepository
 import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.data.repository.TokensRepository
 import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormat
-import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormats
 import com.dmitriykargashin.timecalculator.utilites.TimeConverter
 import kotlinx.coroutines.*
 

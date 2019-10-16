@@ -2,7 +2,7 @@
  * Copyright (c) 2019. Dmitriy Kargashin
  */
 
-package com.dmitriykargashin.timecalculator.data.lexer
+package com.dmitriykargashin.timecalculator.engine.lexer
 
 import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType

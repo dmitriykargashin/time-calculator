@@ -6,8 +6,8 @@ package com.dmitriykargashin.timecalculator
 
 
 
-import com.dmitriykargashin.timecalculator.data.calculator.CalculatorOfTime
-import com.dmitriykargashin.timecalculator.data.lexer.LexicalAnalyzer
+import com.dmitriykargashin.timecalculator.engine.calculator.CalculatorOfTime
+import com.dmitriykargashin.timecalculator.engine.lexer.LexicalAnalyzer
 import com.dmitriykargashin.timecalculator.data.tokens.Token
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens

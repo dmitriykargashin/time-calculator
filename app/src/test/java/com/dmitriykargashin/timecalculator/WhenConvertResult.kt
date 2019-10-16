@@ -15,7 +15,7 @@ import org.junit.Test
 class WhenConvertResult {
     @Test
     fun `Convert Result 10 Year to 10 Year`() {
-        val listOfExpectedTokens = "10.0 Year".toTokens()
+        val listOfExpectedTokens = "10 Year".toTokens()
         val forConvertInMsec = "10 Year".toTokenInMSec()
 
         val listOfResultTokens =
@@ -39,7 +39,7 @@ class WhenConvertResult {
 
     @Test
     fun `Convert Result 12 Month to 360 Day`() {
-        val listOfExpectedTokens = "360.0 Day".toTokens()
+        val listOfExpectedTokens = "360 Day".toTokens()
         val forConvertInMsec = "12 Month".toTokenInMSec()
 
         val listOfResultTokens =
@@ -200,6 +200,33 @@ class WhenConvertResult {
         val forConvertInTokens = "13.1 Day".toTokens()
         val formatResult = "Month ".toTokens()
         val listOfExpectedTokens = "0.4367Month".toTokens()
+
+        val listOfResultTokens =
+            TimeConverter.convertTokensToTokensWithFormat(forConvertInTokens, formatResult)
+
+        MatcherAssert.assertThat(listOfResultTokens, isEqualTo(listOfExpectedTokens))
+
+    }
+
+
+    @Test
+    fun `Convert Result 240000Msec to Minute`() {
+        val forConvertInTokens = "235000 Second".toTokens()
+        val formatResult = "Hour Minute ".toTokens()
+        val listOfExpectedTokens = "65 Hour 16.6667 Minute".toTokens()
+
+        val listOfResultTokens =
+            TimeConverter.convertTokensToTokensWithFormat(forConvertInTokens, formatResult)
+
+        MatcherAssert.assertThat(listOfResultTokens, isEqualTo(listOfExpectedTokens))
+
+    }
+
+    @Test
+    fun `Convert Result 240000Msec to Day Hour Minute Second`() {
+        val forConvertInTokens = "62 Minute".toTokens()
+        val formatResult = "Day Hour Minute Second ".toTokens()
+        val listOfExpectedTokens = "1 Hour 2 Minute".toTokens()
 
         val listOfResultTokens =
             TimeConverter.convertTokensToTokensWithFormat(forConvertInTokens, formatResult)
