@@ -32,7 +32,7 @@ abstract class CalculatorOfTime {
                 val evaluatedToken = evaluateSimpleArithmeticExpression(tokensinMsecs)
 
                 //  return convertExpressionInMsecsToType(evaluatedToken[0], TokenType.HOUR)
-                return TimeConverter.convertExpressionInMsecsToNearest(evaluatedToken[0])
+                return evaluatedToken//TimeConverter.convertExpressionInMsecsToNearest(evaluatedToken[0])
             }
 
 
@@ -86,6 +86,12 @@ abstract class CalculatorOfTime {
                     )
                 )
 
+                resultTokens.add(
+                    Token(
+                        TokenType.MSECOND
+
+                    )
+                )
                 return resultTokens
 
                 // txtInput.text = result.toString()
