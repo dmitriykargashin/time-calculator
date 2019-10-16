@@ -34,9 +34,22 @@ import kotlinx.android.synthetic.main.view_formats.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithLightGreenColor
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+
 import kotlin.math.hypot
-import android.view.MotionEvent
-import kotlinx.android.synthetic.main.card_view_formats.*
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class CalculatorActivity : AppCompatActivity() {
@@ -44,6 +57,7 @@ class CalculatorActivity : AppCompatActivity() {
 
     lateinit var factory: CalculatorViewModelFactory
     lateinit var viewModel: CalculatorViewModel
+    private val TAG = "MainActivity"
 
 
     override fun onDestroy() {
@@ -54,6 +68,11 @@ class CalculatorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        MobileAds.initialize(this)
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
 
         initUI()
 
