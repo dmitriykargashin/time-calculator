@@ -505,7 +505,7 @@
                 android:layout_height="@dimen/result_output_height"
                 android:background="@android:color/white"
                 android:clickable="false"
-                android:cursorVisible="true"
+                android:cursorVisible="false"
                 android:ellipsize="none"
                 android:enabled="true"
                 android:fontFamily="@font/googlesans_regular"
