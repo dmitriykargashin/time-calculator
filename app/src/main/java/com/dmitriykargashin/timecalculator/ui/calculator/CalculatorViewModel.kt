@@ -121,7 +121,7 @@ class CalculatorViewModel(
         }
     }
 
-    fun UpdateResultFormats() {
+    fun updateResultFormats() {
         resultFormatsRepository.updateFormatsWithPreview(getResultTokens().value!!)
     }
 

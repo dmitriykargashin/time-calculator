@@ -40,24 +40,12 @@ import com.google.android.gms.ads.MobileAds
 import kotlin.math.hypot
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 class CalculatorActivity : AppCompatActivity() {
 
 
     lateinit var factory: CalculatorViewModelFactory
     lateinit var viewModel: CalculatorViewModel
-    private val TAG = "MainActivity"
+    //  private val TAG = "MainActivity"
 
 
     override fun onDestroy() {
@@ -116,16 +104,18 @@ class CalculatorActivity : AppCompatActivity() {
 
             Log.d("TAG", "changeFormat click")
 
-            buttonFormats.text = it.textPresentationOfTokens.toHTMLWithLightGreenColor()
+   buttonFormats.text = it.textPresentationOfTokens.toHTMLWithLightGreenColor()
 
-            val touchPointX = commonConstraintLayout.width / 2
-            val touchPointY = commonConstraintLayout.height / 2
+               val touchPointX = commonConstraintLayout.width / 2
+               val touchPointY = commonConstraintLayout.height / 2
 
-            if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout(
-                touchPointX,
-                touchPointY
-            )
-
+               if (formatsLayout.isAttachedToWindow && viewModel.getIsFormatsLayoutVisible().value!!) {
+                   Log.d("TAG", "changeFormat click ${formatsLayout.visibility == View.VISIBLE}")
+                   closeFormatsLayout(
+                       touchPointX,
+                       touchPointY
+                   )
+               }
 
         })
 
@@ -264,7 +254,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         buttonFormats.setOnClickListener {
-            viewModel.UpdateResultFormats()
+            viewModel.updateResultFormats()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 
@@ -305,14 +295,16 @@ class CalculatorActivity : AppCompatActivity() {
                         // viewModel.clearAll()
                     }
                 })
-                formatsLayout.visibility = View.VISIBLE
                 viewModel.setIsFormatsLayoutVisible(true)
+                formatsLayout.visibility = View.VISIBLE
+
                 anim.start()
 
 
             } else {
-                formatsLayout.visibility = View.VISIBLE
                 viewModel.setIsFormatsLayoutVisible(true)
+                formatsLayout.visibility = View.VISIBLE
+
             }
         }
 
@@ -336,7 +328,7 @@ class CalculatorActivity : AppCompatActivity() {
                     val endRadius =
                         Math.hypot(
                             tvExpressionField.width.toDouble(),
-                            tvExpressionField.height.toDouble()+tvOnlineResult.height.toDouble()+buttonFormats.height.toDouble()
+                            tvExpressionField.height.toDouble() + tvOnlineResult.height.toDouble() + buttonFormats.height.toDouble()
                         )
                             .toInt()
 
@@ -390,8 +382,6 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
 
-
-
     }
 
     private fun closeFormatsLayout(x: Int, y: Int) {
@@ -425,9 +415,9 @@ class CalculatorActivity : AppCompatActivity() {
 
                 override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
-
-                    formatsLayout.visibility = View.GONE
                     viewModel.setIsFormatsLayoutVisible(false)
+                    formatsLayout.visibility = View.GONE
+
                     //  viewModel.clearAll()
                 }
             })
@@ -437,8 +427,9 @@ class CalculatorActivity : AppCompatActivity() {
             anim.start()
 
         } else {
-            formatsLayout.visibility = View.GONE
             viewModel.setIsFormatsLayoutVisible(false)
+            formatsLayout.visibility = View.GONE
+
         }
     }
 

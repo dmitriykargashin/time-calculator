@@ -36,7 +36,7 @@ fun isEqualTo(expectedTokens: Tokens) = object : TypeSafeDiagnosingMatcher<Token
         if (tokens.size != expectedTokens.size) isMatches = false
         else
             for ((index, value) in tokens.withIndex()) {
-                if (!value.strRepresentation.equals(expectedTokens[index].strRepresentation)) {
+                if (value.strRepresentation != expectedTokens[index].strRepresentation) {
                     isMatches = false
                 }
             }
