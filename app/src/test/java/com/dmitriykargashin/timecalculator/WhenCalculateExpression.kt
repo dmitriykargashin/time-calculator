@@ -48,7 +48,7 @@ fun isEqualTo(expectedTokens: Tokens) = object : TypeSafeDiagnosingMatcher<Token
 
 
 class WhenCalculateExpression {
-    private fun CalculateExpression(stringExpression: String): Tokens {
+    private fun calculateExpression(stringExpression: String): Tokens {
         val listOfTokens = LexicalAnalyzer.analyze(stringExpression)
 
         return CalculatorOfTime.evaluate(listOfTokens)
@@ -61,15 +61,15 @@ class WhenCalculateExpression {
         val expressionForCalculate = ""
         val listOfExpectedTokens = "".toTokens()
 
-        val listOfActualTokens = CalculateExpression(expressionForCalculate)
+        val listOfActualTokens = calculateExpression(expressionForCalculate)
 
         assertThat(listOfActualTokens, isEqualTo(listOfExpectedTokens))
     }
 
 
     @Test
-    fun Calculate_Expr_0_plus_10_Equals_10() {
-        val listOfResultTokens = CalculateExpression("0${TokenType.PLUS.value.addStartAndEndSpace()}10")
+    fun calculate_Expr_0_plus_10_Equals_10() {
+        val listOfResultTokens = calculateExpression("0${TokenType.PLUS.value.addStartAndEndSpace()}10")
 
         Assert.assertEquals(0, listOfResultTokens.lastIndex)
         Assert.assertEquals("10", listOfResultTokens[0].strRepresentation)
@@ -77,16 +77,16 @@ class WhenCalculateExpression {
 
 
     @Test
-    fun Calculate_Expr_0_minus_10_Equals_minus10() {
-        val listOfResultTokens = CalculateExpression("0${TokenType.MINUS.value.addStartAndEndSpace()}10")
+    fun calculate_Expr_0_minus_10_Equals_minus10() {
+        val listOfResultTokens = calculateExpression("0${TokenType.MINUS.value.addStartAndEndSpace()}10")
 
         Assert.assertEquals(0, listOfResultTokens.lastIndex)
         Assert.assertEquals("-10", listOfResultTokens[0].strRepresentation)
     }
 
     @Test
-    fun Calculate_Expr_0_multiply_10_Equals_0() {
-        val listOfResultTokens = CalculateExpression("0${TokenType.MULTIPLY.value.addStartAndEndSpace()}10")
+    fun calculate_Expr_0_multiply_10_Equals_0() {
+        val listOfResultTokens = calculateExpression("0${TokenType.MULTIPLY.value.addStartAndEndSpace()}10")
 
         Assert.assertEquals(0, listOfResultTokens.lastIndex)
         Assert.assertEquals("0", listOfResultTokens[0].strRepresentation)
@@ -94,17 +94,17 @@ class WhenCalculateExpression {
 
     @Test
 
-    fun Calculate_Expr_0_divide_10_Equals_0() {
-        val listOfResultTokens = CalculateExpression("0${TokenType.DIVIDE.value.addStartAndEndSpace()}10")
+    fun calculate_Expr_0_divide_10_Equals_0() {
+        val listOfResultTokens = calculateExpression("0${TokenType.DIVIDE.value.addStartAndEndSpace()}10")
 
         Assert.assertEquals(0, listOfResultTokens.lastIndex)
         Assert.assertEquals("0", listOfResultTokens[0].strRepresentation)
     }
 
     @Test
-    fun Calculate_Expr_10Minute_plus_5Hour_Equals_5Hour10Minute() {
+    fun calculate_Expr_10Minute_plus_5Hour_Equals_5Hour10Minute() {
         val listOfResultTokens =
-            CalculateExpression("10 Minute+ 5 Hour")
+            calculateExpression("10 Minute+ 5 Hour")
         Assert.assertEquals(3, listOfResultTokens.lastIndex)
         Assert.assertEquals("5", listOfResultTokens[0].strRepresentation)
         Assert.assertEquals(TokenType.HOUR.value, listOfResultTokens[1].type.value)
@@ -113,9 +113,9 @@ class WhenCalculateExpression {
     }
 
     @Test
-    fun Calculate_Expr_10Minute_multiply_5_Equals_50Minute() {
+    fun calculate_Expr_10Minute_multiply_5_Equals_50Minute() {
         val listOfResultTokens =
-            CalculateExpression("10 ${TokenType.MINUTE.value} ${TokenType.MULTIPLY.value.addStartAndEndSpace()}5")
+            calculateExpression("10 ${TokenType.MINUTE.value} ${TokenType.MULTIPLY.value.addStartAndEndSpace()}5")
 
         Assert.assertEquals(1, listOfResultTokens.lastIndex)
         Assert.assertEquals("50", listOfResultTokens[0].strRepresentation)
@@ -124,7 +124,7 @@ class WhenCalculateExpression {
     }
 
     @Test
-    fun Calculate_Expr_10Minute_plus_5Hour_Equals_5Hour10Minute_a() {
+    fun calculate_Expr_10Minute_plus_5Hour_Equals_5Hour10Minute_a() {
         val listOfExpectedTokens = Tokens()
 
         with(listOfExpectedTokens) {
@@ -137,14 +137,14 @@ class WhenCalculateExpression {
 
         val stringExpression ="10 Minute + 5 Hour"
 
-        val listOfResultTokens = CalculateExpression(stringExpression)
+        val listOfResultTokens = calculateExpression(stringExpression)
 
         assertThat(listOfResultTokens, isEqualTo(listOfExpectedTokens))
 
     }
 
     @Test
-    fun Calculate_Expr_5Hour_Minus_10_Minute_Equals_4Hour50Minute() {
+    fun calculate_Expr_5Hour_Minus_10_Minute_Equals_4Hour50Minute() {
         val listOfExpectedTokens = Tokens()
 
         with(listOfExpectedTokens) {
@@ -157,7 +157,7 @@ class WhenCalculateExpression {
     //    listOfExpectedTokens= LexicalAnalyzer.
         val stringExpression ="5 Hour-10 Minute"
 
-        val listOfResultTokens = CalculateExpression(stringExpression)
+        val listOfResultTokens = calculateExpression(stringExpression)
 
         assertThat(listOfResultTokens, isEqualTo(listOfExpectedTokens))
 

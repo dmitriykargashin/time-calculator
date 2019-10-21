@@ -16,11 +16,11 @@ sealed class TokenType {
         override val value = "−"
     }
 
-    object PARENTHESES_LEFT : TokenType() {
+    object PARENTHESESLEFT : TokenType() {
         override val value = "("
     }
 
-    object PARENTHESES_RIGHT : TokenType() {
+    object PARENTHESESRIGHT : TokenType() {
         override val value = ")"
     }
 

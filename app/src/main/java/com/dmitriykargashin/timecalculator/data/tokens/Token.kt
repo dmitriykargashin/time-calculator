@@ -10,14 +10,14 @@ package com.dmitriykargashin.timecalculator.data.tokens
 class Token(val type: TokenType, var strRepresentation: String = "") {
 
     init {
-        if (type == TokenType.NUMBER) { // here we'll remove .0 from string representation of integer
-        /*    Log.i("TAG", "NUMBER: $strRepresentation")
+       /* if (type == TokenType.NUMBER) { // here we'll remove .0 from string representation of integer
+        *//*    Log.i("TAG", "NUMBER: $strRepresentation")
             val tmpDouble = strRepresentation.toDouble()
             val tmpInt = tmpDouble.roundToLong()
 
-            if (tmpDouble == tmpInt.toDouble()) strRepresentation = tmpInt.toString()*/
+            if (tmpDouble == tmpInt.toDouble()) strRepresentation = tmpInt.toString()*//*
 //            Log.i("TAG", "NUMBER2: $strRepresentation")
-        }
+        }*/
     }
 
     constructor (type: TokenType) : this(type, type.value)

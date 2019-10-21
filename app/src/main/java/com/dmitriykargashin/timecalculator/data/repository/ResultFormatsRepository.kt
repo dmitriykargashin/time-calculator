@@ -11,7 +11,6 @@ import com.dmitriykargashin.timecalculator.data.resultFormat.ResultFormats
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.internal.extension.toTokens
 import com.dmitriykargashin.timecalculator.utilites.TimeConverter
-import java.text.FieldPosition
 
 class ResultFormatsRepository {
 

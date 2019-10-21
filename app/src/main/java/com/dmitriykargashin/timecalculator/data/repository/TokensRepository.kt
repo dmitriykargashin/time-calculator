@@ -7,9 +7,7 @@ package com.dmitriykargashin.timecalculator.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dmitriykargashin.timecalculator.data.tokens.Token
-import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
-import com.dmitriykargashin.timecalculator.utilites.TimeConverter
 
 
 class TokensRepository {

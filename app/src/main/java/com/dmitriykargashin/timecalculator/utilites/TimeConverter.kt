@@ -136,7 +136,7 @@ abstract class TimeConverter {
 
 
         fun convertExpressionToMsecs(tokensToConvert: Tokens): Tokens {
-            var convertedTokens = Tokens()
+            val convertedTokens = Tokens()
 
             for (token in tokensToConvert) {
                 when (token.type) {
@@ -222,7 +222,7 @@ abstract class TimeConverter {
                         )
                     }
 
-                    TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS, TokenType.PARENTHESES_RIGHT, TokenType.PARENTHESES_LEFT -> {
+                    TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS, TokenType.PARENTHESESRIGHT, TokenType.PARENTHESESLEFT -> {
                         convertedTokens.add(
                             Token(
                                 token.type
@@ -321,7 +321,7 @@ abstract class TimeConverter {
         }
 
 
-        fun convertMsecsToMSecsInType(mSecToConvert: BigDecimal, type: TokenType): BigDecimal {
+        private fun convertMsecsToMSecsInType(mSecToConvert: BigDecimal, type: TokenType): BigDecimal {
             var result = ZERO
             when (type) {
 
@@ -434,7 +434,7 @@ abstract class TimeConverter {
         }
 
 
-        fun convertTokensToMScec(tokens: Tokens): BigDecimal {
+        private fun convertTokensToMScec(tokens: Tokens): BigDecimal {
 
             var multipliedResult = ZERO
             var currentNumber = ZERO
@@ -507,7 +507,7 @@ abstract class TimeConverter {
         }
 
 
-        fun convertPartOfUnitToMScec(partOfUnit: BigDecimal, type: TokenType): BigDecimal {
+        private fun convertPartOfUnitToMScec(partOfUnit: BigDecimal, type: TokenType): BigDecimal {
 
             var multipliedResult = ZERO
 
@@ -780,13 +780,12 @@ abstract class TimeConverter {
                     endResult.add(Token(type))
                 }
 
-                if (reminderFromFullNumber.compareTo(ZERO) != 0) {
+                reminderInMsecResult = if (reminderFromFullNumber.compareTo(ZERO) != 0) {
 
-                    reminderInMsecResult =
-                        convertPartOfUnitToMScec(reminderFromFullNumber, type)
+                    convertPartOfUnitToMScec(reminderFromFullNumber, type)
 
 
-                } else reminderInMsecResult = ZERO
+                } else ZERO
 
 
             }

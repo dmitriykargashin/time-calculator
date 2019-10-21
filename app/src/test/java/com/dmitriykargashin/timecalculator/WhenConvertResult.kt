@@ -4,11 +4,10 @@
 
 package com.dmitriykargashin.timecalculator
 
-import com.dmitriykargashin.timecalculator.utilites.TimeConverter
 import com.dmitriykargashin.timecalculator.data.tokens.TokenType
-import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.internal.extension.toTokenInMSec
 import com.dmitriykargashin.timecalculator.internal.extension.toTokens
+import com.dmitriykargashin.timecalculator.utilites.TimeConverter
 import org.hamcrest.MatcherAssert
 import org.junit.Test
 

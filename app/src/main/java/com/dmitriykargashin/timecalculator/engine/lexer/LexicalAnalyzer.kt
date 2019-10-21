@@ -20,7 +20,7 @@ abstract class LexicalAnalyzer {
         // as result list of tokens
         //   val listOfTokens = Tokens()
 
-        var expressionLength = 0
+        private var expressionLength = 0
         //   var expression = ""
 
 
@@ -51,13 +51,13 @@ abstract class LexicalAnalyzer {
         }
 
         //Finding out that current symbol is digit
-        fun isDigit(x: Char): Boolean = x.isDigit()
+        private fun isDigit(x: Char): Boolean = x.isDigit()
 
         //Finding out that current symbol is letter
-        fun isLetter(x: Char): Boolean = x.isLetter()
+        private fun isLetter(x: Char): Boolean = x.isLetter()
 
         //Finding out that current symbol is operator
-        fun isOperator(x: Char): Boolean = (x == TokenType.PLUS.value[0]) or (x == TokenType.MINUS.value[0]) or
+        private fun isOperator(x: Char): Boolean = (x == TokenType.PLUS.value[0]) or (x == TokenType.MINUS.value[0]) or
                 (x == TokenType.MULTIPLY.value[0]) or (x == TokenType.DIVIDE.value[0]) or (x == '-') or (x == '/') or (x == '*') or (x == '+')
 
         //Finding out that current symbol is dot
@@ -65,7 +65,7 @@ abstract class LexicalAnalyzer {
 
 
         // finding full token body from current position
-        fun findCurrentFullToken(expression: String, currentPosition: Int): Token {
+        private fun findCurrentFullToken(expression: String, currentPosition: Int): Token {
             // In Kotlin we dont need BUILDER Pattern!
             var findedToken =
                 Token(type = TokenType.ERROR)
@@ -113,20 +113,20 @@ abstract class LexicalAnalyzer {
         }
 
         private fun findCurrentOperatorToken(expression: String, currentPosition: Int): Token {
-            when {
+            return when {
                 (expression[currentPosition] == TokenType.PLUS.value[0]) or (expression[currentPosition] == '+') -> {
-                    return Token(type = TokenType.PLUS)
+                    Token(type = TokenType.PLUS)
                 }
                 (expression[currentPosition] == TokenType.MINUS.value[0]) or (expression[currentPosition] == '-') -> {
-                    return Token(type = TokenType.MINUS)
+                    Token(type = TokenType.MINUS)
                 }
                 (expression[currentPosition] == TokenType.DIVIDE.value[0]) or (expression[currentPosition] == '/') -> {
-                    return Token(type = TokenType.DIVIDE)
+                    Token(type = TokenType.DIVIDE)
                 }
                 (expression[currentPosition] == TokenType.MULTIPLY.value[0]) or (expression[currentPosition] == '*') -> {
-                    return Token(type = TokenType.MULTIPLY)
+                    Token(type = TokenType.MULTIPLY)
                 }
-                else -> return Token(type = TokenType.ERROR)
+                else -> Token(type = TokenType.ERROR)
             }
 
         }

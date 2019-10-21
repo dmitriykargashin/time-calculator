@@ -11,9 +11,9 @@ import com.dmitriykargashin.timecalculator.data.repository.ResultFormatsReposito
 import com.dmitriykargashin.timecalculator.data.repository.TokensRepository
 
 class CalculatorViewModelFactory(
-    val expressionRepository: ExpressionRepository,
-    val tokensRepository: TokensRepository,
-    val resultFormatsRepository: ResultFormatsRepository
+    private val expressionRepository: ExpressionRepository,
+    private val tokensRepository: TokensRepository,
+    private val resultFormatsRepository: ResultFormatsRepository
 ) :
     ViewModelProvider.NewInstanceFactory() {
 

@@ -43,13 +43,27 @@ import kotlin.math.hypot
 class CalculatorActivity : AppCompatActivity() {
 
 
-    lateinit var factory: CalculatorViewModelFactory
+    private lateinit var factory: CalculatorViewModelFactory
     lateinit var viewModel: CalculatorViewModel
     //  private val TAG = "MainActivity"
 
+    // Called when leaving the activity
+    public override fun onPause() {
+        adView.pause()
+        super.onPause()
+    }
 
-    override fun onDestroy() = super.onDestroy()
-    //      scope.coroutineContext.cancelChildren() // cancel the job when activity is destroyed
+    // Called when returning to the activity
+    public override fun onResume() {
+        super.onResume()
+        adView.resume()
+    }
+
+    // Called before the activity is destroyed
+    public override fun onDestroy() {
+        adView.destroy()
+        super.onDestroy()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +71,9 @@ class CalculatorActivity : AppCompatActivity() {
 
 
         MobileAds.initialize(this)
-        val adRequest = AdRequest.Builder().build()
+        val adRequest = AdRequest.Builder().
+            addTestDevice("C38113ED0332D64C52D625B7ED43DDED").
+            build()
         adView.loadAd(adRequest)
 
         initUI()
@@ -284,7 +300,7 @@ class CalculatorActivity : AppCompatActivity() {
                         duration = 600
                     }
                 // make the view invisible when the animation is done
-                anim.addListener(object : AnimatorListenerAdapter() {
+            /*    anim.addListener(object : AnimatorListenerAdapter() {
 
                     override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
@@ -292,7 +308,7 @@ class CalculatorActivity : AppCompatActivity() {
 
                         // viewModel.clearAll()
                     }
-                })
+                })*/
                 viewModel.setIsFormatsLayoutVisible(true)
                 formatsLayout.visibility = View.VISIBLE
 
@@ -324,7 +340,7 @@ class CalculatorActivity : AppCompatActivity() {
 
                     val startRadius = 0
                     val endRadius =
-                        Math.hypot(
+                        hypot(
                             tvExpressionField.width.toDouble(),
                             tvExpressionField.height.toDouble() + tvOnlineResult.height.toDouble() + buttonFormats.height.toDouble()
                         )

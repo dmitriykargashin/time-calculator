@@ -4,8 +4,6 @@
 
 package com.dmitriykargashin.timecalculator.data.resultFormat
 
-import com.dmitriykargashin.timecalculator.internal.extension.toTokens
-
 class ResultFormats : ArrayList<ResultFormat>() {
 
    // var selectedResFormat = getSelectedResulFormat()

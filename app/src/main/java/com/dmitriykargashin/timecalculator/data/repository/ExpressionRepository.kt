@@ -35,19 +35,19 @@ class ExpressionRepository {
 
 
         if (tokenForAdd.type == TokenType.DOT || tokenForAdd.type == TokenType.NUMBER) {
-            if (tokensList.isNotEmpty() && tokensList.last().type == TokenType.NUMBER) {
+            return if (tokensList.isNotEmpty() && tokensList.last().type == TokenType.NUMBER) {
                 if (tokenForAdd.type == TokenType.DOT) {
                     tokensList.last().addDotToNumber()
                     tokens.value = tokensList
-                    return false
+                    false
                 } else {
                     tokensList.last().mergeNumberToNumber(tokenForAdd)
                     tokens.value = tokensList
-                    return true
+                    true
                 }
 
             } else {
-                return tryToAddToExpression(tokenForAdd)
+                tryToAddToExpression(tokenForAdd)
 
             }
         } else {
@@ -59,15 +59,15 @@ class ExpressionRepository {
 
     private fun tryToAddToExpression(tokenForAdd: Token): Boolean {
 
-        if (!isErrorsInExpression(tokenForAdd, tokensList))// if error we wont add it to expression
+        return if (!isErrorsInExpression(tokenForAdd, tokensList))// if error we wont add it to expression
         {
             tokensList.add(tokenForAdd)
             tokens.value = tokensList
-            return true
+             true
         } else {
             //  if (expressionString == ".") expression.value = expression.value + expressionString
 
-            return false
+             false
 
         }
 

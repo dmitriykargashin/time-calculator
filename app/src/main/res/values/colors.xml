@@ -3,8 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorNums">#33691e</color>
-    <color name="colorOperators">#777777</color>
-    <color name="colorTimeBtns">#888888</color>
+    <color name="colorNums">@android:color/black</color>
+    <color name="colorOperators">@android:color/holo_blue_dark</color>
+    <color name="colorTimeBtns">#33691e</color>
 
 </resources>

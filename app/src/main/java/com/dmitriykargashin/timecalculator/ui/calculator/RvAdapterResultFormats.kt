@@ -7,13 +7,15 @@ package com.dmitriykargashin.timecalculator.ui.calculator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dmitriykargashin.timecalculator.R
 import com.dmitriykargashin.timecalculator.internal.extension.toHTMLWithGreenColor
+import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.card_view_formats.view.*
 
 
-class RvAdapterResultFormats(val viewModel: CalculatorViewModel) :
+class RvAdapterResultFormats(private val viewModel: CalculatorViewModel) :
     RecyclerView.Adapter<RvAdapterResultFormats.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
@@ -46,9 +48,9 @@ class RvAdapterResultFormats(val viewModel: CalculatorViewModel) :
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val id = itemView.tvFormat
-        val name = itemView.tvResultFormat
-        val cardView = itemView.materialCardView
+        val id =  itemView.tvFormat as TextView
+        val name = itemView.tvResultFormat as TextView
+        val cardView = itemView.materialCardView as MaterialCardView
 
 
     }

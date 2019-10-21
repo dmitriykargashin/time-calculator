@@ -10,7 +10,6 @@ import com.dmitriykargashin.timecalculator.data.tokens.TokenType
 import com.dmitriykargashin.timecalculator.data.tokens.Tokens
 import com.dmitriykargashin.timecalculator.utilites.TimeConverter
 import net.objecthunter.exp4j.ExpressionBuilder
-import java.text.NumberFormat
 
 
 abstract class CalculatorOfTime {
@@ -24,15 +23,14 @@ abstract class CalculatorOfTime {
             val clonedTokensToEvaluate = tokensToEvaluate.clone()
             //
 
-            if (clonedTokensToEvaluate.isSimpleArithmeticExpression())
-                return evaluateSimpleArithmeticExpression(clonedTokensToEvaluate)
+            return if (clonedTokensToEvaluate.isSimpleArithmeticExpression())
+                evaluateSimpleArithmeticExpression(clonedTokensToEvaluate)
             else {
                 val tokensWithParentheses = setParenthesesToExpression(clonedTokensToEvaluate)
                 val tokensinMsecs = TimeConverter.convertExpressionToMsecs(tokensWithParentheses)
-                val evaluatedToken = evaluateSimpleArithmeticExpression(tokensinMsecs)
 
                 //  return convertExpressionInMsecsToType(evaluatedToken[0], TokenType.HOUR)
-                return evaluatedToken//TimeConverter.convertExpressionInMsecsToNearest(evaluatedToken[0])
+                evaluateSimpleArithmeticExpression(tokensinMsecs)//TimeConverter.convertExpressionInMsecsToNearest(evaluatedToken[0])
             }
 
 
@@ -48,7 +46,7 @@ abstract class CalculatorOfTime {
                 tokensToEvaluate.removeLastToken()
             }
 
-            if (tokensToEvaluate.lastIndex >= 1 && tokensToEvaluate.last().type == TokenType.PARENTHESES_RIGHT
+            if (tokensToEvaluate.lastIndex >= 1 && tokensToEvaluate.last().type == TokenType.PARENTHESESRIGHT
                 && tokensToEvaluate.elementAt(tokensToEvaluate.lastIndex - 1).type.isOperator())
              {
                 tokensToEvaluate.removeLastToken().removeLastToken()
@@ -124,7 +122,7 @@ abstract class CalculatorOfTime {
                         if (!isParenthesesBegins) {
                             tokensWithParentheses.add(
                                 Token(
-                                    TokenType.PARENTHESES_LEFT
+                                    TokenType.PARENTHESESLEFT
                                 )
                             )
                             isParenthesesBegins = true
@@ -132,7 +130,7 @@ abstract class CalculatorOfTime {
                     }
                     TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS -> {
 
-                        tokensWithParentheses.add(Token(TokenType.PARENTHESES_RIGHT))
+                        tokensWithParentheses.add(Token(TokenType.PARENTHESESRIGHT))
                         isParenthesesBegins = false
 
                     }
@@ -145,7 +143,7 @@ abstract class CalculatorOfTime {
                 )
 
             }
-            tokensWithParentheses.add(Token(TokenType.PARENTHESES_RIGHT))
+            tokensWithParentheses.add(Token(TokenType.PARENTHESESRIGHT))
             return tokensWithParentheses
         }
 
