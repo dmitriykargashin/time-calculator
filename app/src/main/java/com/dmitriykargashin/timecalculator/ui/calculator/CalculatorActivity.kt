@@ -48,10 +48,8 @@ class CalculatorActivity : AppCompatActivity() {
     //  private val TAG = "MainActivity"
 
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //      scope.coroutineContext.cancelChildren() // cancel the job when activity is destroyed
-    }
+    override fun onDestroy() = super.onDestroy()
+    //      scope.coroutineContext.cancelChildren() // cancel the job when activity is destroyed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

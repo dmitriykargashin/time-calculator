@@ -33,6 +33,8 @@ class CalculatorViewModel(
 
     private val isInFormatsChooseMode = MutableLiveData<Boolean>()
 
+    private var tempResultInMsec=Tokens()
+
 
     init {
         isInFormatsChooseMode.value = isInFormatsChooseModeRepository
@@ -40,11 +42,10 @@ class CalculatorViewModel(
 
     }
 
-    fun getResultTokens()=tokensRepository.getTokens()
+    fun getResultTokens() = tokensRepository.getTokens()
 
 
     fun getResultFormats() = resultFormatsRepository.getResultFormats()
-
 
 
     fun addToresultFormats(resultFormat: ResultFormat) =
@@ -81,18 +82,18 @@ class CalculatorViewModel(
 
     private suspend fun evaluateExpression() {
 
-        val evaluatedTokens = withContext(Dispatchers.Default) {
+        tempResultInMsec = withContext(Dispatchers.Default) {
             CalculatorOfTime.evaluate(getExpression().value!!/*.toString()*/)
 
         }
-        val resultTokens =  TimeConverter.convertTokensToTokensWithFormat(
-            evaluatedTokens, resultFormatsRepository.getSelectedFormat().value!!.formatTokens)
+        val resultTokens = TimeConverter.convertTokensToTokensWithFormat(
+            tempResultInMsec, resultFormatsRepository.getSelectedFormat().value!!.formatTokens
+        )
 
         tokensRepository.setTokens(resultTokens)
 
 
     }
-
 
 
     fun clearAll() {
@@ -122,21 +123,22 @@ class CalculatorViewModel(
     }
 
     fun updateResultFormats() {
-        resultFormatsRepository.updateFormatsWithPreview(getResultTokens().value!!)
+        resultFormatsRepository.updateFormatsWithPreview(tempResultInMsec)
     }
 
     fun getSelectedFormat() = resultFormatsRepository.getSelectedFormat()
 
 
-
-    fun setSelectedFormat(position:Int): LiveData<ResultFormat> {
+    fun setSelectedFormat(position: Int): LiveData<ResultFormat> {
 
         val selectedFormat = resultFormatsRepository.setSelectedFormat(position)
 
         // here we need to update result of expression to desired format
 
-        val resultConvertedTokens =  TimeConverter.convertTokensToTokensWithFormat(
-            getResultTokens().value!!, resultFormatsRepository.getSelectedFormat().value!!.formatTokens)
+        val resultConvertedTokens = TimeConverter.convertTokensToTokensWithFormat(
+            tempResultInMsec,
+            resultFormatsRepository.getSelectedFormat().value!!.formatTokens
+        )
         tokensRepository.setTokens(resultConvertedTokens)
 
         return selectedFormat
