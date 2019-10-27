@@ -6,6 +6,8 @@ package com.dmitriykargashin.cardamontimecalculator.data.tokens
 
 import android.text.SpannableString
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.*
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
 
 class Tokens : ArrayList<Token>(), Cloneable {
 
@@ -13,7 +15,7 @@ class Tokens : ArrayList<Token>(), Cloneable {
         val newTokens = Tokens()
 
         for (token in this) {
-            newTokens.add(Token(type =token.type, strRepresentation = token.strRepresentation ))
+            newTokens.add(Token(type = token.type, strRepresentation = token.strRepresentation))
         }
         return newTokens
     }
@@ -43,11 +45,11 @@ class Tokens : ArrayList<Token>(), Cloneable {
                 TokenType.MINUS -> " -"
                 TokenType.DIVIDE -> " /"
                 TokenType.MULTIPLY -> " *"
-                else -> " "+token.strRepresentation
+                else -> " " + token.strRepresentation
             }
 
         }
-        return  tokensString.trim()
+        return tokensString.trim()
     }
 
     fun toSpannableString(): SpannableString {
@@ -59,12 +61,14 @@ class Tokens : ArrayList<Token>(), Cloneable {
                     spanString += token.strRepresentation
 
                 TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
-                    spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithGreenColor()
+                    spanString += token.strRepresentation.addStartAndEndSpace()
+                        .toHTMLWithGreenColor()
 
                 TokenType.MULTIPLY, TokenType.PLUS, TokenType.DIVIDE, TokenType.MINUS ->
                     spanString += token.strRepresentation.addStartAndEndSpace()
 
-                TokenType.ERROR -> spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithRedColor()
+                TokenType.ERROR -> spanString += token.strRepresentation.addStartAndEndSpace()
+                    .toHTMLWithRedColor()
             }
         }
 
@@ -80,11 +84,14 @@ class Tokens : ArrayList<Token>(), Cloneable {
                     spanString += token.strRepresentation.toHTMLWithGrayColor()
 
                 TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
-                    spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithLightGreenColor()
+                    spanString += token.strRepresentation.addStartAndEndSpace()
+                        .toHTMLWithLightGreenColor()
                 TokenType.MULTIPLY, TokenType.PLUS, TokenType.DIVIDE, TokenType.MINUS ->
-                    spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithGrayColor()
+                    spanString += token.strRepresentation.addStartAndEndSpace()
+                        .toHTMLWithGrayColor()
 
-                TokenType.ERROR -> spanString += token.strRepresentation.addStartAndEndSpace().toHTMLWithRedColor()
+                TokenType.ERROR -> spanString += token.strRepresentation.addStartAndEndSpace()
+                    .toHTMLWithRedColor()
             }
         }
 
@@ -106,4 +113,17 @@ class Tokens : ArrayList<Token>(), Cloneable {
         this.removeAt(this.lastIndex)
         return this
     }
+
+    fun findLastNearestOperatorToken(): Token? {
+        var i = this.size - 1
+
+        while (i >= 0) {
+            if (this[i].type.isOperator()) return this[i]
+            i--
+        }
+
+        return null
+    }
+
+
 }

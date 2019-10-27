@@ -26,7 +26,7 @@ class WhenConvertResult {
 
     @Test
     fun `Convert Result 1 Year to 12 Month`() {
-        val listOfExpectedTokens = "12.166666666666666 Month".toTokens()
+        val listOfExpectedTokens = "12 Month".toTokens()
         val forConvertInMsec = "1 Year".toTokenInMSec()
 
         val listOfResultTokens =

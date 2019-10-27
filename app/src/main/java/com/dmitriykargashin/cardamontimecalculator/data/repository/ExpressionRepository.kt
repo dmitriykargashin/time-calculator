@@ -16,8 +16,10 @@ class ExpressionRepository {
     private var tokensList = Tokens()
     private val tokens = MutableLiveData<Tokens>()
 
+
     init {
         tokens.value = tokensList
+
     }
 
     fun addToExpression(tokenForAdd: Token): Boolean {
@@ -28,14 +30,22 @@ class ExpressionRepository {
                 return false
             }
 
+
         }
 
         // if was entered DOT then we add the DOT to previous NUMBER if it exists
         // return the function means we need to evaluate expression
 
+        var lastToken: Token? = null //it can be null
+
+        if (tokensList.isNotEmpty()) lastToken = tokensList.last()
+
+        val lastOperator = tokensList.findLastNearestOperatorToken()
+
+
 
         if (tokenForAdd.type == TokenType.DOT || tokenForAdd.type == TokenType.NUMBER) {
-            return if (tokensList.isNotEmpty() && tokensList.last().type == TokenType.NUMBER) {
+            return if (lastToken != null && lastToken.type == TokenType.NUMBER) {
                 if (tokenForAdd.type == TokenType.DOT) {
                     tokensList.last().addDotToNumber()
                     tokens.value = tokensList
@@ -43,11 +53,16 @@ class ExpressionRepository {
                 } else {
                     tokensList.last().mergeNumberToNumber(tokenForAdd)
                     tokens.value = tokensList
-                    true
+
+                    //return result. if it's only number, then we dont need to evaluate
+                    lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
                 }
 
             } else {
+
                 tryToAddToExpression(tokenForAdd)
+                return lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+
 
             }
         } else {
@@ -59,15 +74,19 @@ class ExpressionRepository {
 
     private fun tryToAddToExpression(tokenForAdd: Token): Boolean {
 
-        return if (!isErrorsInExpression(tokenForAdd, tokensList))// if error we wont add it to expression
+        return if (!isErrorsInExpression(
+                tokenForAdd,
+                tokensList
+            )
+        )// if error we wont add it to expression
         {
             tokensList.add(tokenForAdd)
             tokens.value = tokensList
-             true
+            true
         } else {
             //  if (expressionString == ".") expression.value = expression.value + expressionString
 
-             false
+            false
 
         }
 
@@ -86,23 +105,28 @@ class ExpressionRepository {
     }
 
     fun deleteLastTokenOrSymbol(): Boolean {
-  //      Log.i("TAG", "Expression Before delete ${tokensList.toSpannableString()}")
+        //      Log.i("TAG", "Expression Before delete ${tokensList.toSpannableString()}")
 //       Log.i("TAG", "Entered for delete ${tokensList.last().strRepresentation}")
+
+        val lastOperator = tokensList.findLastNearestOperatorToken()
+
         return if (tokensList.lastIndex >= 0) {
             val lastToken = tokensList.last()
             if (lastToken.type != TokenType.NUMBER) {
-         //       Log.i("TAG", "Entered for delete TOKEN ${lastToken.strRepresentation}")
+                //       Log.i("TAG", "Entered for delete TOKEN ${lastToken.strRepresentation}")
                 tokensList.removeLastToken()
+
             } else {
-         //       Log.i("TAG", "Entered for delete symbol in NUMBER ${lastToken.strRepresentation}")
+                //       Log.i("TAG", "Entered for delete symbol in NUMBER ${lastToken.strRepresentation}")
                 lastToken.deleteOneLastSymbolInNumber()
                 if (lastToken.strRepresentation == "") tokensList.removeLastToken()
+
             }
             //  tokens.postValue(tokensList)
-       //     Log.i("TAG", "Result After delete ${tokensList.toSpannableString()}")
+            //     Log.i("TAG", "Result After delete ${tokensList.toSpannableString()}")
             tokens.value = tokensList
-
-            true//!(tokensList.lastIndex >= 0 && tokensList.last().type.isOperator())
+            lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+            //true//!(tokensList.lastIndex >= 0 && tokensList.last().type.isOperator())
         } else false
     }
 
