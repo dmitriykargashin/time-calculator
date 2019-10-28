@@ -32,6 +32,14 @@ fun isErrorsInExpression(expressionForAdd: Token, expression: Tokens): Boolean {
     val lastTokenInExpression = expression.last()
 
 
+
+// check for add operator after number wo time unit
+    if (lastTokenInExpression.type== TokenType.NUMBER
+        && (expressionForAdd.type == TokenType.PLUS || expressionForAdd.type == TokenType.MINUS)
+    )
+        return true
+
+
 // check for double operators
     if (lastTokenInExpression.type.isOperator() && expressionForAdd.type.isOperator())
         return true

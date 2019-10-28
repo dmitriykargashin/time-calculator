@@ -41,7 +41,7 @@ class ExpressionRepository {
         if (tokensList.isNotEmpty()) lastToken = tokensList.last()
 
         val lastOperator = tokensList.findLastNearestOperatorToken()
-
+        val tokenBeforeLastOperator = tokensList.findTokenBeforeLastNearestOperatorToken()
 
 
         if (tokenForAdd.type == TokenType.DOT || tokenForAdd.type == TokenType.NUMBER) {
@@ -55,13 +55,18 @@ class ExpressionRepository {
                     tokens.value = tokensList
 
                     //return result. if it's only number, then we dont need to evaluate
+
+
                     lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+                            && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type!=TokenType.NUMBER
+
                 }
 
             } else {
 
                 tryToAddToExpression(tokenForAdd)
                 return lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+                        && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type!=TokenType.NUMBER
 
 
             }
@@ -109,6 +114,7 @@ class ExpressionRepository {
 //       Log.i("TAG", "Entered for delete ${tokensList.last().strRepresentation}")
 
         val lastOperator = tokensList.findLastNearestOperatorToken()
+        val tokenBeforeLastOperator = tokensList.findTokenBeforeLastNearestOperatorToken()
 
         return if (tokensList.lastIndex >= 0) {
             val lastToken = tokensList.last()
@@ -125,7 +131,11 @@ class ExpressionRepository {
             //  tokens.postValue(tokensList)
             //     Log.i("TAG", "Result After delete ${tokensList.toSpannableString()}")
             tokens.value = tokensList
+
             lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+                    && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type!=TokenType.NUMBER
+
+          //  lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
             //true//!(tokensList.lastIndex >= 0 && tokensList.last().type.isOperator())
         } else false
     }

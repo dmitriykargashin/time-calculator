@@ -125,5 +125,19 @@ class Tokens : ArrayList<Token>(), Cloneable {
         return null
     }
 
+    fun findTokenBeforeLastNearestOperatorToken(): Token? {
+        var i = this.size - 1
+
+        while (i >= 0) {
+            if (this[i].type.isOperator()) {
+                return if (i > 0)
+                    this[i - 1]
+                else null
+            }
+            i--
+        }
+
+        return null
+    }
 
 }
