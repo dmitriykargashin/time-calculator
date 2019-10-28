@@ -64,7 +64,7 @@ class WhenConvertResult {
 
     @Test
     fun `Convert Result 12,5 Month to 1,0273972602739727 Year`() {
-        val listOfExpectedTokens = "1.0273972602739727 Year".toTokens()
+        val listOfExpectedTokens = "1.0 Year".toTokens()
         val forConvertInMsec = "12.5 Month".toTokenInMSec()
 
         val listOfResultTokens =
@@ -158,7 +158,7 @@ class WhenConvertResult {
     fun `Convert Result 2,12 Day to Month`() {
         val forConvertInTokens = "2.12222222 Day".toTokens()
         val formatResult = "Month".toTokens()
-        val listOfExpectedTokens = "0.0707 Month".toTokens()
+        val listOfExpectedTokens = "0.0707407Month".toTokens()
 
         val listOfResultTokens =
             TimeConverter.convertTokensToTokensWithFormat(forConvertInTokens, formatResult)
@@ -185,7 +185,7 @@ class WhenConvertResult {
     fun `Convert Result 12 Day to Year Month Day Minute Second`() {
         val forConvertInTokens = "0.1 Day".toTokens()
         val formatResult = "Year Month Day Hour Minute Second".toTokens()
-        val listOfExpectedTokens = "0.0707 Month".toTokens()
+        val listOfExpectedTokens = "2Hour24Minute".toTokens()
 
         val listOfResultTokens =
             TimeConverter.convertTokensToTokensWithFormat(forConvertInTokens, formatResult)
@@ -198,7 +198,7 @@ class WhenConvertResult {
     fun `Convert Result 12 Day to Month`() {
         val forConvertInTokens = "13.1 Day".toTokens()
         val formatResult = "Month ".toTokens()
-        val listOfExpectedTokens = "0.4367Month".toTokens()
+        val listOfExpectedTokens = "0.4366667Month".toTokens()
 
         val listOfResultTokens =
             TimeConverter.convertTokensToTokensWithFormat(forConvertInTokens, formatResult)
@@ -212,7 +212,7 @@ class WhenConvertResult {
     fun `Convert Result 240000Msec to Minute`() {
         val forConvertInTokens = "235000 Second".toTokens()
         val formatResult = "Hour Minute ".toTokens()
-        val listOfExpectedTokens = "65 Hour 16.6667 Minute".toTokens()
+        val listOfExpectedTokens = "65 Hour 16.6666667Minute".toTokens()
 
         val listOfResultTokens =
             TimeConverter.convertTokensToTokensWithFormat(forConvertInTokens, formatResult)
