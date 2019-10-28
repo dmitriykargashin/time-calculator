@@ -71,11 +71,10 @@ class CalculatorActivity : AppCompatActivity() {
 
 
         MobileAds.initialize(this)
-        val adRequest = AdRequest.Builder().
-            addTestDevice("C38113ED0332D64C52D625B7ED43DDED").
-            build()
+        val adRequest =
+            AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
         adView.loadAd(adRequest)
-        adView.visibility=View.GONE
+        // adView.visibility=View.GONE
         initUI()
 
     }
@@ -118,18 +117,18 @@ class CalculatorActivity : AppCompatActivity() {
 
             Log.d("TAG", "changeFormat click")
 
-   buttonFormats.text = it.textPresentationOfTokens.toHTMLWithLightGreenColor()
+            buttonFormats.text = it.textPresentationOfTokens.toHTMLWithLightGreenColor()
 
-               val touchPointX = commonConstraintLayout.width / 2
-               val touchPointY = commonConstraintLayout.height / 2
+            val touchPointX = commonConstraintLayout.width / 2
+            val touchPointY = commonConstraintLayout.height / 2
 
-               if (formatsLayout.isAttachedToWindow && viewModel.getIsFormatsLayoutVisible().value!!) {
-                   Log.d("TAG", "changeFormat click ${formatsLayout.visibility == View.VISIBLE}")
-                   closeFormatsLayout(
-                       touchPointX,
-                       touchPointY
-                   )
-               }
+            if (formatsLayout.isAttachedToWindow && viewModel.getIsFormatsLayoutVisible().value!!) {
+                Log.d("TAG", "changeFormat click ${formatsLayout.visibility == View.VISIBLE}")
+                closeFormatsLayout(
+                    touchPointX,
+                    touchPointY
+                )
+            }
 
         })
 
@@ -300,15 +299,15 @@ class CalculatorActivity : AppCompatActivity() {
                         duration = 600
                     }
                 // make the view invisible when the animation is done
-            /*    anim.addListener(object : AnimatorListenerAdapter() {
+                /*    anim.addListener(object : AnimatorListenerAdapter() {
 
-                    override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-                        //           mainConstraintLayout.visibility = View.GONE
+                        override fun onAnimationEnd(animation: Animator) {
+                            super.onAnimationEnd(animation)
+                            //           mainConstraintLayout.visibility = View.GONE
 
-                        // viewModel.clearAll()
-                    }
-                })*/
+                            // viewModel.clearAll()
+                        }
+                    })*/
                 viewModel.setIsFormatsLayoutVisible(true)
                 formatsLayout.visibility = View.VISIBLE
 
