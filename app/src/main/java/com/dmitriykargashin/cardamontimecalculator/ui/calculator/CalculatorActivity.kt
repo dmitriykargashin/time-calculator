@@ -77,7 +77,7 @@ class CalculatorActivity : AppCompatActivity() {
                 AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
             adView.loadAd(adRequest)
 
-        } else adView.visibility=View.GONE
+        } else adView.visibility = View.GONE
 
         initUI()
 
