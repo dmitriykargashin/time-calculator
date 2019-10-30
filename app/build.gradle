@@ -14,6 +14,28 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    flavorDimensions "version"
+    productFlavors {
+        free {
+            applicationId "com.dmitriykargashin.cardamontimecalculator"
+            minSdkVersion 19
+            targetSdkVersion 29
+            versionCode 3
+            versionName "1.0.1"
+            buildConfigField "boolean", "PRO_VERSION", "false"
+
+
+        }
+        pro {
+            applicationId "com.dmitriykargashin.cardamontimecalculator.pro"
+            minSdkVersion 19
+            targetSdkVersion 29
+            versionCode 3
+            versionName "1.0.1"
+            buildConfigField "boolean", "PRO_VERSION", "true"
+        }
+    }
+
 
     bundle {
         language {

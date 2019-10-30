@@ -33,6 +33,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import kotlinx.android.synthetic.main.view_formats.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dmitriykargashin.cardamontimecalculator.BuildConfig
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithLightGreenColor
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
@@ -69,15 +70,21 @@ class CalculatorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (!isPaidVersion()) {
 
-        MobileAds.initialize(this)
-        val adRequest =
-            AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
-        adView.loadAd(adRequest)
-        // adView.visibility=View.GONE
+            MobileAds.initialize(this)
+            val adRequest =
+                AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
+            adView.loadAd(adRequest)
+
+        } else adView.visibility=View.GONE
+
         initUI()
 
     }
+
+
+    fun isPaidVersion() = BuildConfig.PRO_VERSION
 
 
     override fun onBackPressed() {
@@ -446,26 +453,26 @@ class CalculatorActivity : AppCompatActivity() {
         }
     }
 
-    /*  override fun onTouchEvent(event: MotionEvent?): Boolean {
-          if (event?.actionMasked == MotionEvent.ACTION_UP) {
-              lastTouchDownXY[0] = event.x.toInt()
-              lastTouchDownXY[1] = event.y.toInt()
-              Log.i("TAG", "onLongClick: x = {$event.x}, y = {$event.y}")
+/*  override fun onTouchEvent(event: MotionEvent?): Boolean {
+      if (event?.actionMasked == MotionEvent.ACTION_UP) {
+          lastTouchDownXY[0] = event.x.toInt()
+          lastTouchDownXY[1] = event.y.toInt()
+          Log.i("TAG", "onLongClick: x = {$event.x}, y = {$event.y}")
 
-          }
-          return super.onTouchEvent(event)
-      }*/
+      }
+      return super.onTouchEvent(event)
+  }*/
 
 
-    /*  var clickListener: View.OnClickListener = View.OnClickListener {
-          // retrieve the stored coordinates
-          val x = lastTouchDownXY[0]
-          val y = lastTouchDownXY[1]
+/*  var clickListener: View.OnClickListener = View.OnClickListener {
+      // retrieve the stored coordinates
+      val x = lastTouchDownXY[0]
+      val y = lastTouchDownXY[1]
 
-          // use the coordinates for whatever
+      // use the coordinates for whatever
 
-          Log.i("TAG", "onLongClick: x = $x, y = $y")
-      }*/
+      Log.i("TAG", "onLongClick: x = $x, y = $y")
+  }*/
 
 /*
     protected fun forceRippleAnimation(view: View) {
