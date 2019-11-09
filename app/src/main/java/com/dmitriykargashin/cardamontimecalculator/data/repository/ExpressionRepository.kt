@@ -42,6 +42,8 @@ class ExpressionRepository {
 
         val lastOperator = tokensList.findLastNearestOperatorToken()
         val tokenBeforeLastOperator = tokensList.findTokenBeforeLastNearestOperatorToken()
+        val lastTokenBeforeTokenBeforeLastOperator =
+            tokensList.findTokenBeforeTokenBeforeLastNearestOperatorToken()
 
 
         if (tokenForAdd.type == TokenType.DOT || tokenForAdd.type == TokenType.NUMBER) {
@@ -56,18 +58,30 @@ class ExpressionRepository {
 
                     //return result. if it's only number, then we dont need to evaluate
 
-
-                    lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
-                            && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type!=TokenType.NUMBER
+                    tokensList.isLastExpressionBlockHasTimeKeyword() &&
+                            ((lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+                                    && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type != TokenType.NUMBER)
+                                    ||
+                                    (lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+                                            && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type == TokenType.NUMBER
+                                            && lastTokenBeforeTokenBeforeLastOperator != null && (lastTokenBeforeTokenBeforeLastOperator.type == TokenType.DIVIDE || lastTokenBeforeTokenBeforeLastOperator.type == TokenType.MULTIPLY))
+                                    )
 
                 }
 
             } else {
 
                 tryToAddToExpression(tokenForAdd)
-                return lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
-                        && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type!=TokenType.NUMBER
+                return tokensList.isLastExpressionBlockHasTimeKeyword() &&
+                        (
 
+                                (lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+                                        && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type != TokenType.NUMBER)
+                                        ||
+                                        (lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+                                                && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type == TokenType.NUMBER
+                                                && lastTokenBeforeTokenBeforeLastOperator != null && (lastTokenBeforeTokenBeforeLastOperator.type == TokenType.DIVIDE || lastTokenBeforeTokenBeforeLastOperator.type == TokenType.MULTIPLY))
+                                )
 
             }
         } else {
@@ -133,9 +147,9 @@ class ExpressionRepository {
             tokens.value = tokensList
 
             lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
-                    && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type!=TokenType.NUMBER
+                    && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type != TokenType.NUMBER
 
-          //  lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
+            //  lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
             //true//!(tokensList.lastIndex >= 0 && tokensList.last().type.isOperator())
         } else false
     }

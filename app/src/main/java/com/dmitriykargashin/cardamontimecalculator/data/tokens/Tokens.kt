@@ -7,6 +7,7 @@ package com.dmitriykargashin.cardamontimecalculator.data.tokens
 import android.text.SpannableString
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.*
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.util.Log
 
 
 class Tokens : ArrayList<Token>(), Cloneable {
@@ -140,4 +141,38 @@ class Tokens : ArrayList<Token>(), Cloneable {
         return null
     }
 
+    fun findTokenBeforeTokenBeforeLastNearestOperatorToken(): Token? {
+        var i = this.size - 1
+
+        while (i >= 0) {
+            if (this[i].type.isOperator()) {
+                return if (i > 1)
+                    this[i - 2]
+                else null
+            }
+            i--
+        }
+
+        return null
+    }
+
+
+    fun isLastExpressionBlockHasTimeKeyword(): Boolean {
+
+        var i = this.size - 1
+//here i'll find starting index of last block for searching time keyword
+        while (i >= 0) {
+            if (this[i].type == TokenType.PLUS || this[i].type == TokenType.MINUS) break
+            i--
+        }
+
+        Log.d("Tag I", i.toString())
+        if (i < 0) i = 0
+        while (i <= this.size - 1) {
+            if (this[i].type.isTimeKeyword()) return true
+            i++
+        }
+
+        return false
+    }
 }

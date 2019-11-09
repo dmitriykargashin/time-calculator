@@ -26,16 +26,17 @@ fun isErrorsInExpression(expressionForAdd: Token, expression: Tokens): Boolean {
 
 
 
-    if (expression.isEmpty() && (expressionForAdd.type.isTimeKeyword() || expressionForAdd.type.isOperator() || expressionForAdd.type==TokenType.DOT))
+    if (expression.isEmpty() && (expressionForAdd.type.isTimeKeyword() || expressionForAdd.type.isOperator() || expressionForAdd.type == TokenType.DOT))
         return true
 
     val lastTokenInExpression = expression.last()
-
+    val isLastExpressionBlockHasTimeKeyword = expression.isLastExpressionBlockHasTimeKeyword()
 
 
 // check for add operator after number wo time unit
-    if (lastTokenInExpression.type== TokenType.NUMBER
+    if (lastTokenInExpression.type == TokenType.NUMBER
         && (expressionForAdd.type == TokenType.PLUS || expressionForAdd.type == TokenType.MINUS)
+        && !isLastExpressionBlockHasTimeKeyword
     )
         return true
 
@@ -61,7 +62,8 @@ fun isErrorsInExpression(expressionForAdd: Token, expression: Tokens): Boolean {
     // check for divide or multiply on number with time keyword
     if (expression.size > 1) {
         val preLastTokenInExpression = expression[expression.size - 2]
-        if (!expression.isSimpleArithmeticExpression() &&
+        if (//!expression.isSimpleArithmeticExpression() &&
+            isLastExpressionBlockHasTimeKeyword &&
             (preLastTokenInExpression.type == TokenType.MULTIPLY || preLastTokenInExpression.type == TokenType.DIVIDE)
             && expressionForAdd.type.isTimeKeyword()
         )
