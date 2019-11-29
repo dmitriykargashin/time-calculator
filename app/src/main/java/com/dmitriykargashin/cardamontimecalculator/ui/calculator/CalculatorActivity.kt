@@ -23,7 +23,7 @@ import android.text.method.ScrollingMovementMethod
 
 import android.os.Build
 
-import com.dmitriykargashin.cardamontimecalculator.R
+
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.animation.Animator
@@ -38,15 +38,29 @@ import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWith
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 
+
 import kotlin.math.hypot
 
 
-class CalculatorActivity : AppCompatActivity() {
+import com.dmitriykargashin.cardamontimecalculator.R
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.android.billingclient.api.*
+import com.dmitriykargashin.cardamontimecalculator.internal.extension.logger
+
+
+class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     private lateinit var factory: CalculatorViewModelFactory
     lateinit var viewModel: CalculatorViewModel
-    //  private val TAG = "MainActivity"
+    private val TAG = "CalculatorActivity"
+
+
+    lateinit private var billingClient: BillingClient
+    private val skuList = listOf("remove_ads")
+
 
     // Called when leaving the activity
     public override fun onPause() {
@@ -69,6 +83,10 @@ class CalculatorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        logger("Start Setup Billing")
+
+        setupBillingClient()
+
 
         if (!isPaidVersion()) {
 
@@ -76,6 +94,7 @@ class CalculatorActivity : AppCompatActivity() {
             val adRequest =
                 AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
             adView.loadAd(adRequest)
+
 
         } else adView.visibility = View.GONE
 
@@ -91,6 +110,100 @@ class CalculatorActivity : AppCompatActivity() {
         if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout(10, 10)
         else moveTaskToBack(true)
     }
+
+
+    private fun setupBillingClient() {
+        logger("Start Setup Billing")
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener(this)
+            .build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    logger("Setup Billing Done")
+                    loadAllSKUs()
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                    logger("Failed")
+
+            }
+        })
+
+    }
+
+
+    private fun loadAllSKUs() = if (billingClient.isReady) {
+        val params = SkuDetailsParams
+            .newBuilder()
+            .setSkusList(skuList)
+            .setType(BillingClient.SkuType.INAPP)
+            .build()
+        billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+            // Process the result.
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList.isNotEmpty()) {
+                for (skuDetails in skuDetailsList) {
+                    if (skuDetails.sku == "test_product_one")
+                        removeads.setOnClickListener {
+                            val billingFlowParams = BillingFlowParams
+                                .newBuilder()
+                                .setSkuDetails(skuDetails)
+                                .build()
+                            billingClient.launchBillingFlow(this, billingFlowParams)
+                        }
+                }
+            }
+          //  logger(skuDetailsList.get(0).description)
+
+        }
+
+    } else {
+        println("Billing Client not ready")
+    }
+
+
+    override fun onPurchasesUpdated(
+        billingResult: BillingResult?,
+        purchases: MutableList<Purchase>?
+    ) {
+        if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (purchase in purchases) {
+                acknowledgePurchase(purchase.purchaseToken)
+
+            }
+        } else if (billingResult?.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+            // Handle an error caused by a user cancelling the purchase flow.
+            logger("User Cancelled")
+            logger(billingResult?.debugMessage.toString())
+
+
+        } else {
+            logger(billingResult?.debugMessage.toString())
+            // Handle any other error codes.
+        }
+    }
+
+
+    private fun acknowledgePurchase(purchaseToken: String) {
+        val params = AcknowledgePurchaseParams.newBuilder()
+            .setPurchaseToken(purchaseToken)
+            .build()
+        billingClient.acknowledgePurchase(params) { billingResult ->
+            val responseCode = billingResult.responseCode
+            val debugMessage = billingResult.debugMessage
+            logger(debugMessage)
+            logger(responseCode)
+        }
+    }
+
+
+
+
 
     private fun initUI() {
 
@@ -177,6 +290,7 @@ class CalculatorActivity : AppCompatActivity() {
 
 
         toolbarInitalize()
+        fabInitalize()
 
 
         //nums
@@ -390,6 +504,148 @@ class CalculatorActivity : AppCompatActivity() {
 
 
     }
+
+    private fun fabInitalize() {
+        init(removeads)
+        init(rateApp)
+        init(tvRemoveAds)
+        init(tvRateApp)
+
+
+
+        fab.setOnClickListener {
+
+            if (!fab.isExpanded) {
+                fadeIn()
+                showIn(removeads, -removeads.height.toFloat())
+                showIn(tvRemoveAds, -removeads.height.toFloat())
+                showIn(rateApp, -rateApp.height.toFloat())
+                showIn(tvRateApp, -rateApp.height.toFloat())
+                fab.isExpanded = true
+                fab.setImageResource(R.drawable.ic_close_white_24dp)
+            } else {
+                fadeOut()
+                showOut(removeads, -removeads.height.toFloat())
+                showOut(tvRemoveAds, -removeads.height.toFloat())
+                showOut(rateApp, -rateApp.height.toFloat())
+                showOut(tvRateApp, -rateApp.height.toFloat())
+                fab.isExpanded = false
+                fab.setImageResource(R.drawable.ic_menu_white_24dp)
+
+            }
+
+
+            //  dimmedBackground.visibility = View.VISIBLE
+            /*if (fab.isExpanded()) {//make the background visible
+
+            } else {//make the background invisible
+                dimmedBackground.visibility = View.GONE
+            }*/
+
+        }
+
+    }
+
+
+    //crossfade animation for background
+    private fun fadeIn() {
+        dimmedBackground.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                .alpha(1f)
+                .setDuration(100)
+                .setListener(null)
+        }
+        // Animate the loading view to 0% opacity. After the animation ends,
+        // set its visibility to GONE as an optimization step (it won't
+        /*     // participate in layout passes, etc.)
+         dimmedBackground.animate()
+                 .alpha(0f)
+                 .setDuration(1)
+                 .setListener(object : AnimatorListenerAdapter() {
+                     override fun onAnimationEnd(animation: Animator) {
+                         dimmedBackground.visibility = View.VISIBLE
+                     }
+                 })*/
+    }
+
+
+    private fun fadeOut() {
+        dimmedBackground.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            //   alpha = 0f
+            // visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                .alpha(0f)
+                .setDuration(100)
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        dimmedBackground.visibility = View.GONE
+                    }
+                })
+        }
+        // Animate the loading view to 0% opacity. After the animation ends,
+        // set its visibility to GONE as an optimization step (it won't
+        /*     // participate in layout passes, etc.)
+         dimmedBackground.animate()
+                 .alpha(0f)
+                 .setDuration(1)
+                 .setListener(object : AnimatorListenerAdapter() {
+                     override fun onAnimationEnd(animation: Animator) {
+                         dimmedBackground.visibility = View.VISIBLE
+                     }
+                 })*/
+    }
+
+
+    fun showIn(v: View, startPosition: Float) {
+        v.visibility = View.VISIBLE
+        v.alpha = 0f
+        v.translationY = startPosition
+        v.animate()
+            .setDuration(200)
+            .translationY(0f)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                }
+            })
+            .alpha(1f)
+            .start()
+    }
+
+    fun showOut(v: View, endPosition: Float) {
+        v.visibility = View.VISIBLE
+        v.alpha = 1f
+        v.translationY = 0f
+        v.animate()
+            .setDuration(200)
+            .translationY(endPosition)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    v.visibility = View.GONE
+                    super.onAnimationEnd(animation)
+                }
+            }).alpha(0f)
+            .start()
+    }
+
+    fun init(v: View) {
+        v.visibility = View.INVISIBLE
+        //v.translationY = -v.height.toFloat()
+        //  v.alpha = 0f
+    }
+
 
     private fun toolbarInitalize() {
         toolbar.setNavigationOnClickListener {

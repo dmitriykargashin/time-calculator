@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.dmitriykargashin.cardamontimecalculator">
 
+
+
     <application
 
             android:allowBackup="true"

@@ -3,12 +3,14 @@
 package com.dmitriykargashin.cardamontimecalculator.internal.extension
 
 
+import android.app.Activity
 import android.graphics.Color
 
 
 import android.text.SpannableString
 
 import android.text.TextUtils
+import android.util.Log
 import com.dmitriykargashin.cardamontimecalculator.utilites.TimeConverter
 import com.dmitriykargashin.cardamontimecalculator.engine.lexer.LexicalAnalyzer
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.Token
@@ -86,4 +88,12 @@ fun String.addStartAndEndSpace(): String {
 
 fun String.removeAllSpaces(): String {
     return  this.replace(" ","")
+}
+
+internal fun Activity.logger(message: String) {
+    Log.d(this.localClassName, message)
+}
+
+internal fun Activity.logger(message: Int) {
+    Log.d(this.localClassName, message.toString())
 }

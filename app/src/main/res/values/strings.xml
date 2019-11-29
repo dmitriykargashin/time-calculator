@@ -5,4 +5,7 @@
     <string name="button_substraction">&#8211;</string>
     <string name="button_addition">+</string>
     <string name="banner_ad_unit_id">ca-app-pub-1503550792620709/2350324800</string>
+    <string name="settings">Setting</string>
+    <string name="removeads">Remove Ads</string>
+    <string name="ratetheapp">Rate the App</string>
 </resources>

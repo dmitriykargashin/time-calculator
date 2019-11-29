@@ -580,6 +580,8 @@
                 android:textColor="#272727"
                 android:textIsSelectable="true"
                 android:textSize="@dimen/result_expression_maxtextsize"
+                ads:layout_constraintHorizontal_bias="0.0"
+                ads:layout_constraintVertical_bias="1.0"
                 app:autoSizeMaxTextSize="@dimen/result_expression_maxtextsize"
                 app:autoSizeMinTextSize="@dimen/result_expression_mintextsize"
                 app:autoSizeStepGranularity="2sp"
@@ -588,7 +590,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+               />
+
+
 
         <TextView
                 android:id="@+id/tvFakeForClear"
@@ -601,8 +605,114 @@
                 app:layout_constraintStart_toStartOf="@+id/tvExpressionField"
                 app:layout_constraintTop_toTopOf="@+id/tvExpressionField" />
 
+        <include
+                android:id="@+id/dimmedBackground"
+                layout="@layout/dimmed_background"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                ads:layout_constraintHorizontal_bias="0.0"
+                ads:layout_constraintVertical_bias="0.0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:contentDescription="@string/settings"
+                android:src="@drawable/ic_menu_white_24dp"
+                ads:backgroundTint="@color/colorTimeBtns"
+                ads:elevation="6dp"
+                ads:fabSize="mini"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toTopOf="parent"
+                ads:useCompatPadding="false" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/removeads"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:contentDescription="@string/removeads"
+                android:src="@drawable/ic_remove_ads_green_24dp"
+                ads:backgroundTint="@android:color/white"
+                ads:borderWidth="0.5dp"
+                ads:elevation="4dp"
+                ads:fabCustomSize="31dp"
+                ads:fabSize="mini"
+                ads:layout_constraintEnd_toEndOf="@+id/fab"
+                ads:layout_constraintStart_toStartOf="@+id/fab"
+                ads:layout_constraintTop_toBottomOf="@+id/fab"
+                ads:useCompatPadding="false" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/rateApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:contentDescription="@string/ratetheapp"
+                android:src="@drawable/ic_star_green_24dp"
+                ads:backgroundTint="@android:color/white"
+                ads:elevation="8dp"
+                ads:fabCustomSize="31dp"
+                ads:fabSize="mini"
+                ads:layout_constraintEnd_toEndOf="@+id/fab"
+                ads:layout_constraintStart_toStartOf="@+id/fab"
+                ads:layout_constraintTop_toBottomOf="@+id/removeads"
+                ads:useCompatPadding="false" />
+
+        <TextView
+                android:id="@+id/tvRateApp"
+                style="@style/Widget.AppCompat.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/rounded_corner"
+                android:elevation="4dp"
+                android:fontFamily="@font/googlesans_regular"
+                android:labelFor="@id/rateApp"
+                android:paddingStart="@dimen/margin_8_size"
+                android:paddingEnd="@dimen/margin_8_size"
+                android:text="Rate the App"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                ads:layout_constraintBottom_toBottomOf="@+id/rateApp"
+                ads:layout_constraintStart_toEndOf="@+id/rateApp"
+                ads:layout_constraintTop_toTopOf="@+id/rateApp" />
+
+        <TextView
+                android:id="@+id/tvRemoveAds"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/rounded_corner"
+                android:elevation="4dp"
+                android:fontFamily="@font/googlesans_regular"
+                android:paddingStart="@dimen/margin_8_size"
+                android:paddingEnd="@dimen/margin_8_size"
+                android:text="Remove Ads"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                ads:layout_constraintBottom_toBottomOf="@+id/removeads"
+                ads:layout_constraintStart_toEndOf="@+id/removeads"
+                ads:layout_constraintTop_toTopOf="@+id/removeads" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
     <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
@@ -612,12 +722,17 @@
             android:layout_centerHorizontal="true"
 
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            ads:adUnitId="@string/banner_ad_unit_id"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
     </com.google.android.gms.ads.AdView>
+
+
+
+
+
 
     <include
             android:id="@+id/formatsLayout"
@@ -629,6 +744,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
