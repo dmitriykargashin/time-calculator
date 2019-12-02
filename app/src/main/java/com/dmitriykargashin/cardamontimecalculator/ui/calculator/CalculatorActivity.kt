@@ -4,50 +4,34 @@
 
 package com.dmitriykargashin.cardamontimecalculator.ui.calculator
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 
-import com.dmitriykargashin.cardamontimecalculator.data.tokens.Token
-import kotlinx.android.synthetic.main.activity_main.*
-
-
-import com.dmitriykargashin.cardamontimecalculator.data.tokens.TokenType
-
-
-import com.dmitriykargashin.cardamontimecalculator.utilites.InjectorUtils
-
-import android.text.method.ScrollingMovementMethod
-
-
-import android.os.Build
-
-
-import android.view.View
-import android.view.ViewAnimationUtils
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.os.Build
+import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateDecelerateInterpolator
-import kotlinx.android.synthetic.main.view_formats.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.billingclient.api.*
 import com.dmitriykargashin.cardamontimecalculator.BuildConfig
+import com.dmitriykargashin.cardamontimecalculator.R
+import com.dmitriykargashin.cardamontimecalculator.data.tokens.Token
+import com.dmitriykargashin.cardamontimecalculator.data.tokens.TokenType
+import com.dmitriykargashin.cardamontimecalculator.internal.extension.logger
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithLightGreenColor
+import com.dmitriykargashin.cardamontimecalculator.utilites.InjectorUtils
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-
-
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_formats.*
 import kotlin.math.hypot
-
-
-import com.dmitriykargashin.cardamontimecalculator.R
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import com.android.billingclient.api.*
-import com.dmitriykargashin.cardamontimecalculator.internal.extension.logger
 
 
 class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -57,26 +41,37 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     lateinit var viewModel: CalculatorViewModel
     private val TAG = "CalculatorActivity"
 
+    private var isRemoveAdsPurchased = false
 
-    lateinit private var billingClient: BillingClient
+    private lateinit var billingClient: BillingClient
     private val skuList = listOf("remove_ads")
 
 
     // Called when leaving the activity
     public override fun onPause() {
-        adView.pause()
+
         super.onPause()
+        if (!isPaidVersion() && !isRemoveAdsPurchased) {
+            adView.pause()
+        }
+
     }
 
     // Called when returning to the activity
     public override fun onResume() {
         super.onResume()
-        adView.resume()
+        checkPurchases()
+
+        if (!isPaidVersion() && !isRemoveAdsPurchased) {
+            adView.resume()
+        }
     }
 
     // Called before the activity is destroyed
     public override fun onDestroy() {
-        adView.destroy()
+        if (!isPaidVersion() && !isRemoveAdsPurchased) {
+            adView.destroy()
+        }
         super.onDestroy()
     }
 
@@ -85,15 +80,18 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         setContentView(R.layout.activity_main)
         logger("Start Setup Billing")
 
-        setupBillingClient()
 
+        //   checkPurchases()
 
         if (!isPaidVersion()) {
 
-            MobileAds.initialize(this)
-            val adRequest =
-                AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
-            adView.loadAd(adRequest)
+            setupBillingClient()
+            logger("end Setup Billing")
+
+            /* MobileAds.initialize(this)
+              val adRequest =
+                  AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
+              adView.loadAd(adRequest)*/
 
 
         } else adView.visibility = View.GONE
@@ -103,7 +101,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
 
-    fun isPaidVersion() = BuildConfig.PRO_VERSION
+    private fun isPaidVersion() = BuildConfig.PRO_VERSION
 
 
     override fun onBackPressed() {
@@ -124,13 +122,14 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     // The BillingClient is ready. You can query purchases here.
                     logger("Setup Billing Done")
                     loadAllSKUs()
+                    checkPurchases()
                 }
             }
 
             override fun onBillingServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-                    logger("Failed")
+                logger("Failed")
 
             }
         })
@@ -148,8 +147,11 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             // Process the result.
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList.isNotEmpty()) {
                 for (skuDetails in skuDetailsList) {
-                    if (skuDetails.sku == "test_product_one")
+                    if (skuDetails.sku == "remove_ads")
+
                         removeads.setOnClickListener {
+                            logger("press button to buy")
+                            fadeOutFABs()
                             val billingFlowParams = BillingFlowParams
                                 .newBuilder()
                                 .setSkuDetails(skuDetails)
@@ -158,12 +160,12 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         }
                 }
             }
-          //  logger(skuDetailsList.get(0).description)
+            //  logger(skuDetailsList.get(0).description)
 
         }
 
     } else {
-        println("Billing Client not ready")
+        logger("Billing Client not ready")
     }
 
 
@@ -174,17 +176,22 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
                 acknowledgePurchase(purchase.purchaseToken)
+                handlePurchase(purchase)
 
             }
         } else if (billingResult?.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             // Handle an error caused by a user cancelling the purchase flow.
             logger("User Cancelled")
-            logger(billingResult?.debugMessage.toString())
+            logger(billingResult.debugMessage.toString())
 
 
         } else {
+            logger("other error")
             logger(billingResult?.debugMessage.toString())
-            // Handle any other error codes.
+
+            /*          Snackbar.make(commonConstraintLayout, billingResult?.debugMessage.toString()+". Please wait", Snackbar.LENGTH_SHORT)
+                          .show()
+                      // Handle any other error codes.*/
         }
     }
 
@@ -198,11 +205,100 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             val debugMessage = billingResult.debugMessage
             logger(debugMessage)
             logger(responseCode)
+
+
         }
     }
 
 
+    private fun checkPurchases() {
+        val purchasesResult: Purchase.PurchasesResult =
+            billingClient.queryPurchases(BillingClient.SkuType.INAPP)
+        val purchasesList = purchasesResult.purchasesList
 
+        if (!purchasesList.isNullOrEmpty()) {
+            for (purchase in purchasesList) {
+                handlePurchase(purchase)
+            }
+
+
+        } else {// user dont have any purchase
+
+            logger("start AD init")
+            MobileAds.initialize(this)
+            val adRequest =
+                AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
+            adView.loadAd(adRequest)
+            logger("end AD init")
+
+        }
+
+        logger("Purchases checked")
+    }
+
+    private fun handlePurchase(purchase: Purchase) {
+         //test case use only! removes test purchase
+         /*  val consumeParams =
+               ConsumeParams.newBuilder()
+                   .setPurchaseToken(purchase.purchaseToken)
+                   .setDeveloperPayload(purchase.developerPayload)
+                   .build()
+
+           billingClient.consumeAsync(consumeParams) { billingResult, outToken ->
+               if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                   // Handle the success of the consume operation.
+                   // For example, increase the number of coins inside the user's basket.
+               }
+           }
+           return*/
+        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+            if (purchase.sku == "remove_ads") {
+                removeAds()
+// Grant the item to the user, and then acknowledge the purchase
+            }
+
+
+        } else {
+// here i start show ads, if not purchased.
+
+
+            if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
+                // Here you can confirm to the user that they've started the pending
+                // purchase, and to complete it, they should follow instructions that
+                // are given to them. You can also choose to remind the user in the
+                // future to complete the purchase if you detect that it is still
+                // pending.
+
+
+                logger("Purchase pending")
+
+
+                //test case use only! removes test purchase
+                /*   val consumeParams =
+                       ConsumeParams.newBuilder()
+                           .setPurchaseToken(purchase.purchaseToken)
+                           .setDeveloperPayload(purchase.developerPayload)
+                           .build()
+
+                   billingClient.consumeAsync(consumeParams) { billingResult, outToken ->
+                       if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                           // Handle the success of the consume operation.
+                           // For example, increase the number of coins inside the user's basket.
+                       }
+                   }
+       */
+            }
+        }
+    }
+
+    private fun removeAds() {
+        isRemoveAdsPurchased = true
+        adView.visibility = View.GONE
+        removeads.visibility = View.GONE
+        tvRemoveAds.visibility = View.GONE
+
+        logger("Purchase applied. ads removed")
+    }
 
 
     private fun initUI() {
@@ -506,8 +602,10 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun fabInitalize() {
-        init(removeads)
-        init(rateApp)
+        if (!isRemoveAdsPurchased) {
+            init(removeads)
+            init(rateApp)
+        }
         init(tvRemoveAds)
         init(tvRateApp)
 
@@ -516,22 +614,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         fab.setOnClickListener {
 
             if (!fab.isExpanded) {
-                fadeIn()
-                showIn(removeads, -removeads.height.toFloat())
-                showIn(tvRemoveAds, -removeads.height.toFloat())
-                showIn(rateApp, -rateApp.height.toFloat())
-                showIn(tvRateApp, -rateApp.height.toFloat())
-                fab.isExpanded = true
-                fab.setImageResource(R.drawable.ic_close_white_24dp)
+                fadeInFABs()
             } else {
-                fadeOut()
-                showOut(removeads, -removeads.height.toFloat())
-                showOut(tvRemoveAds, -removeads.height.toFloat())
-                showOut(rateApp, -rateApp.height.toFloat())
-                showOut(tvRateApp, -rateApp.height.toFloat())
-                fab.isExpanded = false
-                fab.setImageResource(R.drawable.ic_menu_white_24dp)
-
+                fadeOutFABs()
             }
 
 
@@ -544,6 +629,40 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         }
 
+
+
+        dimmedBackground.setOnClickListener {
+            fadeOutFABs()
+        }
+
+
+    }
+
+
+    private fun fadeInFABs() {
+        fadeIn()
+        if (!isRemoveAdsPurchased) {
+            showIn(removeads, -removeads.height.toFloat())
+            showIn(tvRemoveAds, -removeads.height.toFloat())
+        }
+        showIn(rateApp, -rateApp.height.toFloat())
+        showIn(tvRateApp, -rateApp.height.toFloat())
+        fab.isExpanded = true
+        fab.setImageResource(R.drawable.ic_close_white_24dp)
+    }
+
+
+    private fun fadeOutFABs() {
+
+        fadeOut()
+        if (!isRemoveAdsPurchased) {
+            showOut(removeads, -removeads.height.toFloat())
+            showOut(tvRemoveAds, -removeads.height.toFloat())
+        }
+        showOut(rateApp, -rateApp.height.toFloat())
+        showOut(tvRateApp, -rateApp.height.toFloat())
+        fab.isExpanded = false
+        fab.setImageResource(R.drawable.ic_menu_white_24dp)
     }
 
 
@@ -608,7 +727,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
 
-    fun showIn(v: View, startPosition: Float) {
+    private fun showIn(v: View, startPosition: Float) {
         v.visibility = View.VISIBLE
         v.alpha = 0f
         v.translationY = startPosition
@@ -624,7 +743,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .start()
     }
 
-    fun showOut(v: View, endPosition: Float) {
+    private fun showOut(v: View, endPosition: Float) {
         v.visibility = View.VISIBLE
         v.alpha = 1f
         v.translationY = 0f
@@ -640,7 +759,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .start()
     }
 
-    fun init(v: View) {
+    private fun init(v: View) {
         v.visibility = View.INVISIBLE
         //v.translationY = -v.height.toFloat()
         //  v.alpha = 0f

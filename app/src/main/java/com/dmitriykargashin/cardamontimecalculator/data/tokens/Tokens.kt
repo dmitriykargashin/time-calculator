@@ -5,9 +5,8 @@
 package com.dmitriykargashin.cardamontimecalculator.data.tokens
 
 import android.text.SpannableString
-import com.dmitriykargashin.cardamontimecalculator.internal.extension.*
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.util.Log
+import com.dmitriykargashin.cardamontimecalculator.internal.extension.*
 
 
 class Tokens : ArrayList<Token>(), Cloneable {

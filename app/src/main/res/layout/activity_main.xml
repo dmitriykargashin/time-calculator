@@ -23,7 +23,8 @@
             tools:context=".ui.calculator.CalculatorActivity"
             tools:layout_editor_absoluteX="0dp"
             tools:orientation="vertical"
-
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
             >
 
         <TextView
@@ -31,9 +32,8 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/result_output_height"
                 android:background="@android:color/white"
-                android:clickable="false"
+
                 android:ellipsize="none"
-                android:enabled="true"
                 android:fontFamily="@font/googlesans_regular"
                 android:gravity="center_vertical|end"
                 android:paddingLeft="@dimen/margin_16_size"
@@ -589,9 +589,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/buttonFormats"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-               />
-
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -627,50 +625,50 @@
                 android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:contentDescription="@string/settings"
+                android:focusable="true"
                 android:src="@drawable/ic_menu_white_24dp"
                 ads:backgroundTint="@color/colorTimeBtns"
                 ads:elevation="6dp"
                 ads:fabSize="mini"
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toTopOf="parent"
-                ads:useCompatPadding="false" />
+                app:tint="@null" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/removeads"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:contentDescription="@string/removeads"
+                android:focusable="true"
                 android:src="@drawable/ic_remove_ads_green_24dp"
                 ads:backgroundTint="@android:color/white"
-                ads:borderWidth="0.5dp"
                 ads:elevation="4dp"
-                ads:fabCustomSize="31dp"
                 ads:fabSize="mini"
                 ads:layout_constraintEnd_toEndOf="@+id/fab"
                 ads:layout_constraintStart_toStartOf="@+id/fab"
-                ads:layout_constraintTop_toBottomOf="@+id/fab"
-                ads:useCompatPadding="false" />
+                ads:layout_constraintTop_toBottomOf="@+id/rateApp"
+                app:tint="@null" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/rateApp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:contentDescription="@string/ratetheapp"
+                android:focusable="true"
                 android:src="@drawable/ic_star_green_24dp"
                 ads:backgroundTint="@android:color/white"
-                ads:elevation="8dp"
-                ads:fabCustomSize="31dp"
+                ads:elevation="4dp"
                 ads:fabSize="mini"
                 ads:layout_constraintEnd_toEndOf="@+id/fab"
                 ads:layout_constraintStart_toStartOf="@+id/fab"
-                ads:layout_constraintTop_toBottomOf="@+id/removeads"
-                ads:useCompatPadding="false" />
+                ads:layout_constraintTop_toBottomOf="@+id/fab"
+                app:tint="@null" />
 
         <TextView
                 android:id="@+id/tvRateApp"
@@ -679,13 +677,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/rounded_corner"
-                android:elevation="4dp"
+                android:elevation="2dp"
                 android:fontFamily="@font/googlesans_regular"
                 android:labelFor="@id/rateApp"
                 android:paddingStart="@dimen/margin_8_size"
                 android:paddingEnd="@dimen/margin_8_size"
                 android:text="Rate the App"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorTimeBtns"
                 android:textStyle="bold"
                 ads:layout_constraintBottom_toBottomOf="@+id/rateApp"
                 ads:layout_constraintStart_toEndOf="@+id/rateApp"
@@ -697,21 +695,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/rounded_corner"
-                android:elevation="4dp"
+                android:elevation="2dp"
                 android:fontFamily="@font/googlesans_regular"
                 android:paddingStart="@dimen/margin_8_size"
                 android:paddingEnd="@dimen/margin_8_size"
                 android:text="Remove Ads"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorTimeBtns"
                 android:textStyle="bold"
                 ads:layout_constraintBottom_toBottomOf="@+id/removeads"
                 ads:layout_constraintStart_toEndOf="@+id/removeads"
                 ads:layout_constraintTop_toTopOf="@+id/removeads" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 
     <com.google.android.gms.ads.AdView
@@ -730,10 +725,6 @@
     </com.google.android.gms.ads.AdView>
 
 
-
-
-
-
     <include
             android:id="@+id/formatsLayout"
             layout="@layout/view_formats"
@@ -744,8 +735,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
