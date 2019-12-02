@@ -94,6 +94,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     implementation 'com.android.billingclient:billing:2.0.3'
+    implementation 'com.github.hotchemi:android-rate:1.0.1'
 
 
     // debugImplementation because LeakCanary should only run in debug builds.

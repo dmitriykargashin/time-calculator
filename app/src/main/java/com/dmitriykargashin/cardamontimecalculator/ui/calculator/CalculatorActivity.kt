@@ -29,9 +29,17 @@ import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWith
 import com.dmitriykargashin.cardamontimecalculator.utilites.InjectorUtils
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import hotchemi.android.rate.AppRate
+import hotchemi.android.rate.OnClickButtonListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_formats.*
 import kotlin.math.hypot
+
+import hotchemi.android.rate.StoreType
+import android.content.Intent
+import android.content.ActivityNotFoundException
+import android.net.Uri
+import com.google.android.material.snackbar.Snackbar
 
 
 class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -97,9 +105,50 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         } else adView.visibility = View.GONE
 
         initUI()
+        setupRateMe()
 
     }
 
+    private fun setupRateMe() {
+        AppRate.with(this)
+            .setStoreType(StoreType.GOOGLEPLAY) //default is Google, other option is Amazon
+            .setInstallDays(10) // default 10, 0 means install day.
+            .setLaunchTimes(10) // default 10 times.
+            .setRemindInterval(2) // default 1 day.
+            .setShowLaterButton(true) // default true.
+            .setDebug(false) // default false.
+            .setCancelable(false) // default false.
+            .setOnClickButtonListener {
+                if (it == 0) rateMeOnGooglePlay() // 0 index of rate me button
+            }
+
+            .setMessage(R.string.new_rate_dialog_message)
+
+            .monitor()
+
+        AppRate.showRateDialogIfMeetsConditions(this)
+
+    }
+
+
+    fun rateMeOnGooglePlay() {
+        try {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=$packageName")
+                )
+            )
+        } catch (e: ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=$packageName")
+                )
+            )
+        }
+
+    }
 
     private fun isPaidVersion() = BuildConfig.PRO_VERSION
 
@@ -189,7 +238,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             logger("other error")
             logger(billingResult?.debugMessage.toString())
 
-            /*          Snackbar.make(commonConstraintLayout, billingResult?.debugMessage.toString()+". Please wait", Snackbar.LENGTH_SHORT)
+            Snackbar.make(commonConstraintLayout, "Purchase is pending. Please wait", Snackbar.LENGTH_SHORT)
                           .show()
                       // Handle any other error codes.*/
         }
@@ -224,12 +273,12 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         } else {// user dont have any purchase
 
-            logger("start AD init")
+
             MobileAds.initialize(this)
             val adRequest =
                 AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
             adView.loadAd(adRequest)
-            logger("end AD init")
+
 
         }
 
@@ -237,20 +286,20 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun handlePurchase(purchase: Purchase) {
-         //test case use only! removes test purchase
-         /*  val consumeParams =
-               ConsumeParams.newBuilder()
-                   .setPurchaseToken(purchase.purchaseToken)
-                   .setDeveloperPayload(purchase.developerPayload)
-                   .build()
+        //test case use only! removes test purchase
+        /*  val consumeParams =
+              ConsumeParams.newBuilder()
+                  .setPurchaseToken(purchase.purchaseToken)
+                  .setDeveloperPayload(purchase.developerPayload)
+                  .build()
 
-           billingClient.consumeAsync(consumeParams) { billingResult, outToken ->
-               if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                   // Handle the success of the consume operation.
-                   // For example, increase the number of coins inside the user's basket.
-               }
-           }
-           return*/
+          billingClient.consumeAsync(consumeParams) { billingResult, outToken ->
+              if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                  // Handle the success of the consume operation.
+                  // For example, increase the number of coins inside the user's basket.
+              }
+          }
+          return*/
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             if (purchase.sku == "remove_ads") {
                 removeAds()
@@ -633,6 +682,13 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         dimmedBackground.setOnClickListener {
             fadeOutFABs()
+        }
+
+
+        rateApp.setOnClickListener {
+            fadeOutFABs()
+            rateMeOnGooglePlay()
+
         }
 
 
