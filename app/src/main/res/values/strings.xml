@@ -11,6 +11,10 @@
 
 
     <string name="new_rate_dialog_message">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thanks for your support!</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="rate_the_app">Rate the App</string>
+    <string name="feedback">Send feedback</string>
 
 
 </resources>

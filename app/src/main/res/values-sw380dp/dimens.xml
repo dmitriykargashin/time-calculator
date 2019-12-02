@@ -12,4 +12,5 @@
     <dimen name="result_output_maxtextsize">59.4sp</dimen>
      <dimen name="result_expression_mintextsize">28.5sp</dimen>
     <dimen name="result_expression_maxtextsize">76sp</dimen>
+    <dimen name="fab_margin">4dp</dimen>
 </resources>

@@ -30,7 +30,6 @@ import com.dmitriykargashin.cardamontimecalculator.utilites.InjectorUtils
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import hotchemi.android.rate.AppRate
-import hotchemi.android.rate.OnClickButtonListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_formats.*
 import kotlin.math.hypot
@@ -238,9 +237,13 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             logger("other error")
             logger(billingResult?.debugMessage.toString())
 
-            Snackbar.make(commonConstraintLayout, "Purchase is pending. Please wait", Snackbar.LENGTH_SHORT)
-                          .show()
-                      // Handle any other error codes.*/
+            Snackbar.make(
+                commonConstraintLayout,
+                "Purchase is pending. Please wait",
+                Snackbar.LENGTH_SHORT
+            )
+                .show()
+            // Handle any other error codes.*/
         }
     }
 
@@ -653,10 +656,15 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private fun fabInitalize() {
         if (!isRemoveAdsPurchased) {
             init(removeads)
-            init(rateApp)
+            init(tvRemoveAds)
+
+
         }
-        init(tvRemoveAds)
+        init(rateApp)
         init(tvRateApp)
+
+        init(feedback)
+        init(tvFeedback)
 
 
 
@@ -691,6 +699,29 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         }
 
+        feedback.setOnClickListener {
+            fadeOutFABs()
+            sendFeedback()
+
+        }
+
+
+    }
+
+    private fun sendFeedback() {
+
+
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:") // only email apps should handle this
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("dmitrii.kargashin@cardamon.org"))
+            //intent.setData(Uri.parse("mailto:dmitrii.kargashin@cardamon.org"))
+            putExtra(Intent.EXTRA_SUBJECT, "Feedback Time Calculator Cardamon ${BuildConfig.VERSION_CODE}")
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+
+
 
     }
 
@@ -703,6 +734,10 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
         showIn(rateApp, -rateApp.height.toFloat())
         showIn(tvRateApp, -rateApp.height.toFloat())
+        showIn(feedback, -feedback.height.toFloat())
+        showIn(tvFeedback, -feedback.height.toFloat())
+
+
         fab.isExpanded = true
         fab.setImageResource(R.drawable.ic_close_white_24dp)
     }
@@ -717,6 +752,10 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
         showOut(rateApp, -rateApp.height.toFloat())
         showOut(tvRateApp, -rateApp.height.toFloat())
+        showOut(feedback, -feedback.height.toFloat())
+        showOut(tvFeedback, -feedback.height.toFloat())
+
+
         fab.isExpanded = false
         fab.setImageResource(R.drawable.ic_menu_white_24dp)
     }
