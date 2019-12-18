@@ -4,6 +4,7 @@
 
 package com.dmitriykargashin.cardamontimecalculator.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dmitriykargashin.cardamontimecalculator.engine.expression.isErrorsInExpression
@@ -33,7 +34,7 @@ class ExpressionRepository {
 
         }
 
-        // if was entered DOT then we add the DOT to previous NUMBER if it exists
+        // if was enter DOT then we add the DOT to previous NUMBER if it exists
         // return the function means we need to evaluate expression
 
         var lastToken: Token? = null //it can be null
@@ -124,14 +125,19 @@ class ExpressionRepository {
     }
 
     fun deleteLastTokenOrSymbol(): Boolean {
-        //      Log.i("TAG", "Expression Before delete ${tokensList.toSpannableString()}")
-//       Log.i("TAG", "Entered for delete ${tokensList.last().strRepresentation}")
+      //  Log.i("TAG", "Expression Before delete ${tokensList.toSpannableString()}")
+//        Log.i("TAG", "Entered for delete ${tokensList.last().strRepresentation}")
 
-        val lastOperator = tokensList.findLastNearestOperatorToken()
-        val tokenBeforeLastOperator = tokensList.findTokenBeforeLastNearestOperatorToken()
+        var lastOperator = tokensList.findLastNearestOperatorToken()
+        var tokenBeforeLastOperator = tokensList.findTokenBeforeLastNearestOperatorToken()
 
-        return if (tokensList.lastIndex >= 0) {
-            val lastToken = tokensList.last()
+        var lastToken: Token? = null //it can be null
+
+        if (tokensList.isNotEmpty()) lastToken = tokensList.last()
+
+
+        return if (lastToken != null) {
+            //  var lastToken = tokensList.last()
             if (lastToken.type != TokenType.NUMBER) {
                 //       Log.i("TAG", "Entered for delete TOKEN ${lastToken.strRepresentation}")
                 tokensList.removeLastToken()
@@ -146,11 +152,13 @@ class ExpressionRepository {
             //     Log.i("TAG", "Result After delete ${tokensList.toSpannableString()}")
             tokens.value = tokensList
 
-            lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
-                    && tokenBeforeLastOperator != null && tokenBeforeLastOperator.type != TokenType.NUMBER
+            var newLastToken: Token? = null
 
-            //  lastOperator != null && (lastOperator.type == TokenType.DIVIDE || lastOperator.type == TokenType.MULTIPLY)
-            //true//!(tokensList.lastIndex >= 0 && tokensList.last().type.isOperator())
+            if (tokensList.isNotEmpty()) newLastToken = tokensList.last()
+
+                 tokensList.isLastExpressionBlockHasTimeKeyword()
+                    || (newLastToken!=null && newLastToken.type != TokenType.NUMBER)
+
         } else false
     }
 
