@@ -20,8 +20,8 @@ android {
             applicationId "com.dmitriykargashin.cardamontimecalculator"
             minSdkVersion 19
             targetSdkVersion 29
-            versionCode 11
-            versionName "1.0.8"
+            versionCode 12
+            versionName "1.0.9"
             buildConfigField "boolean", "PRO_VERSION", "false"
 
 
@@ -95,6 +95,7 @@ dependencies {
 
     implementation 'com.android.billingclient:billing:2.0.3'
     implementation 'com.github.hotchemi:android-rate:1.0.1'
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
 
 
     // debugImplementation because LeakCanary should only run in debug builds.
