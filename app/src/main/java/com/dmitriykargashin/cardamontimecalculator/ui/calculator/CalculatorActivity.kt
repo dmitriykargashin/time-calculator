@@ -37,8 +37,14 @@ import kotlin.math.hypot
 import hotchemi.android.rate.StoreType
 import android.content.Intent
 import android.content.ActivityNotFoundException
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Base64
 import com.google.android.material.snackbar.Snackbar
+import com.facebook.FacebookSdk
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 
 class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -85,7 +91,28 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        logger("Start Setup Billing")
+
+
+     /*   try {
+            val info = getPackageManager().getPackageInfo(
+                getPackageName(),
+                PackageManager.GET_SIGNATURES
+            );
+            for (signature in info.signatures) {
+                var messageDigest = MessageDigest.getInstance ("SHA")
+                messageDigest.update(signature.toByteArray())
+                Log.d("KeyHash:", Base64.encodeToString(messageDigest.digest(), Base64.DEFAULT))
+            }
+        } catch (e:PackageManager.NameNotFoundException) {
+
+        }
+        catch(e:NoSuchAlgorithmException) {
+
+        }
+
+
+
+        logger("Start Setup Billing")*/
 
 
         //   checkPurchases()
