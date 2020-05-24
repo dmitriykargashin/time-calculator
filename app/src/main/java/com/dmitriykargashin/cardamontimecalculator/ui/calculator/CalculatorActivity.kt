@@ -37,12 +37,16 @@ import kotlin.math.hypot
 import hotchemi.android.rate.StoreType
 import android.content.Intent
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Base64
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import com.google.android.material.snackbar.Snackbar
 import com.facebook.FacebookSdk
+import kotlinx.android.synthetic.main.view_per.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -617,6 +621,66 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
 
+
+        buttonPer.setOnClickListener {
+            viewModel.updateResultFormats()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+                //  forceRippleAnimation(tvOnlineResult)
+
+                val location = IntArray(2)
+                buttonPer.getLocationOnScreen(location)
+
+                val x = location[0] + buttonPer.width / 2
+                val y = location[1] + buttonPer.height / 2
+
+                val startRadius = 0
+                val endRadius =
+                    hypot(
+                        commonConstraintLayout.width.toDouble(),
+                        commonConstraintLayout.height.toDouble()
+                    )
+                        .toInt()
+
+                val anim =
+                    ViewAnimationUtils.createCircularReveal(
+                        perLayout,
+                        x,
+                        y,
+                        startRadius.toFloat(),
+                        endRadius.toFloat()
+                    ).apply {
+                        interpolator = AccelerateDecelerateInterpolator()
+                        duration = 600
+                    }
+                // make the view invisible when the animation is done
+                /*    anim.addListener(object : AnimatorListenerAdapter() {
+
+                        override fun onAnimationEnd(animation: Animator) {
+                            super.onAnimationEnd(animation)
+                            //           mainConstraintLayout.visibility = View.GONE
+
+                            // viewModel.clearAll()
+                        }
+                    })*/
+             ///////////////////   viewModel.setIsFormatsLayoutVisible(true)
+                perLayout.visibility = View.VISIBLE
+
+                anim.start()
+
+
+            } else {
+              /////////////////  viewModel.setIsFormatsLayoutVisible(true)
+                perLayout.visibility = View.VISIBLE
+
+            }
+        }
+
+
+
+
+
         buttonDelete.setOnLongClickListener {
 
             if (!viewModel.isExpressionEmpty()) {
@@ -889,6 +953,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     private fun toolbarInitalize() {
+        buttonPer.text = buttonPer.text.toString().toHTMLWithLightGreenColor()
+
+
         toolbar.setNavigationOnClickListener {
 
             closeFormatsLayout(10, 10)
@@ -898,8 +965,28 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         }
 
+        toolbarPer.setNavigationOnClickListener {
+
+            closePerLayout(10, 10)
+
+
+            // back button pressed
+
+        }
+
 
     }
+
+
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
 
     private fun closeFormatsLayout(x: Int, y: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -946,6 +1033,56 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         } else {
             viewModel.setIsFormatsLayoutVisible(false)
             formatsLayout.visibility = View.GONE
+
+        }
+    }
+
+
+    private fun closePerLayout(x: Int, y: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+            /*  val x = 10
+              val y = 10*/
+
+            val endRadius = 0
+            val startRadius =
+                hypot(
+                    commonConstraintLayout.width.toDouble(),
+                    commonConstraintLayout.height.toDouble()
+                )
+                    .toInt()
+
+            val anim =
+                ViewAnimationUtils.createCircularReveal(
+                    perLayout,
+                    x,
+                    y,
+                    startRadius.toFloat(),
+                    endRadius.toFloat()
+                ).apply {
+                    interpolator = AccelerateDecelerateInterpolator()
+                    duration = 450
+                }
+            // make the view invisible when the animation is done
+            anim.addListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                  /////  viewModel.setIsFormatsLayoutVisible(false)
+                    perLayout.visibility = View.GONE
+
+                    //  viewModel.clearAll()
+                }
+            })
+            //       formatsLayout = View.GONE
+
+
+            anim.start()
+
+        } else {
+           ////// viewModel.setIsFormatsLayoutVisible(false)
+            perLayout.visibility = View.GONE
 
         }
     }

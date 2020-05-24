@@ -15,13 +15,13 @@ import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.card_view_formats.view.*
 
 
-class RvAdapterResultFormats(private val viewModel: CalculatorViewModel) :
-    RecyclerView.Adapter<RvAdapterResultFormats.ViewHolder>() {
+class RvAdapterPer(private val viewModel: CalculatorViewModel) :
+    RecyclerView.Adapter<RvAdapterPer.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : ViewHolder {
         val v: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.card_view_formats, parent, false)
+            .inflate(R.layout.card_view_per, parent, false)
         return ViewHolder(v)
     }
 
