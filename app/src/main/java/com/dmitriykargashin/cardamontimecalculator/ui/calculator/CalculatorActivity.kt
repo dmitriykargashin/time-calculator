@@ -395,7 +395,12 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         val linearLayoutManager = LinearLayoutManager(
             this, RecyclerView.VERTICAL, false
         )
+
+        val linearLayoutManager2 = LinearLayoutManager(
+            this, RecyclerView.VERTICAL, false
+        )
         rvFormatsToChoose.layoutManager = linearLayoutManager
+        rvPer.layoutManager = linearLayoutManager2
 
 
         // Observe the model
@@ -436,6 +441,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             Observer {
 
                 tvOnlineResult.text = it?.toLightSpannableString()
+                rvPer.adapter = RvAdapterPer(viewModel)
 
                 /*tokens ->
                                val stringBuilder = StringBuilder()
