@@ -41,8 +41,12 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.opengl.Visibility
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
 import android.view.MotionEvent
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.google.android.material.snackbar.Snackbar
 import com.facebook.FacebookSdk
@@ -410,6 +414,19 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             Log.d("TAG", "changeFormat")
         })
 
+
+        viewModel.getPerUnits().observe(this, Observer {
+            rvPer.adapter = RvAdapterPer(viewModel)
+
+//            etUnit.text.append   (it?.unitName)
+//            etUnitAmount.text.append (it?.amount?.stripTrailingZeros().toString())
+
+//            etUnit.setText(it?.unitName)
+//            etUnitAmount.setText(it?.amount?.stripTrailingZeros().toString())
+
+            //Log.d("TAG", "changeFormat")
+        })
+
         viewModel.getIsFormatsLayoutVisible().observe(this, Observer {
             if (it)
                 formatsLayout.visibility = View.VISIBLE
@@ -454,7 +471,6 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                 // add result to ViewPer view
                 labelTimeIntervalAmount.text = it?.toSpannableString()
-
 
 
                 /*tokens ->
@@ -762,6 +778,100 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
 
+
+
+        etUnitAmount.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                // Call your code here
+                //   viewModel.updateSettingsForPerUnits(etUnitAmount.text.toString().toBigDecimal(),etUnit.text.toString())
+                hideKeyboard()
+                true
+            }
+            false
+        }
+
+        etUnit.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                // Call your code here
+                //viewModel.updateSettingsForPerUnits(etUnitAmount.text.toString().toBigDecimal(),etUnit.text.toString())
+                hideKeyboard()
+
+
+                true
+            }
+            false
+        }
+
+//        viewModel.getPerUnits().observe(
+//            this,
+//            Observer {
+//                rvPer.refreshDrawableState()
+//
+//            }
+//        )
+
+
+        toolbarInitalize()
+        fabInitalize()
+
+
+        etUnitAmount.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                //  viewModel.updateSettingsForPerUnits(s.toString().toBigDecimal(),etUnit.text.toString())
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if (s.length > 0 && !etUnit.text.isEmpty()) {
+                    viewModel.updateSettingsForPerUnits(
+                        s.toString().toBigDecimal(),
+                        etUnit.text.toString()
+                    )
+                      rvPer.visibility = View.VISIBLE
+                } else rvPer.visibility = View.INVISIBLE
+            }
+        })
+
+        etUnit.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                //    viewModel.updateSettingsForPerUnits(etUnitAmount.text.toString().toBigDecimal(),s.toString())
+
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if (s.length > 0 && !etUnitAmount.text.isEmpty()) {
+                    viewModel.updateSettingsForPerUnits(
+                        etUnitAmount.text.toString().toBigDecimal(), s.toString()
+                    )
+
+                   // if (!etUnitAmount.text.isEmpty())
+                        rvPer.visibility = View.VISIBLE
+
+                } else
+                    rvPer.visibility = View.INVISIBLE
+            }
+        })
+
+
     }
 
     private fun fabInitalize() {
@@ -992,11 +1102,15 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        hideKeyboard()
+        return super.dispatchTouchEvent(ev)
+    }
+
+    private fun hideKeyboard() {
         if (currentFocus != null) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
         }
-        return super.dispatchTouchEvent(ev)
     }
 
 

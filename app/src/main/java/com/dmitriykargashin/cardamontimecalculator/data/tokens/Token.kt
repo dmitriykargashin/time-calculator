@@ -10,8 +10,8 @@ package com.dmitriykargashin.cardamontimecalculator.data.tokens
 class Token(val type: TokenType, var strRepresentation: String = "") {
 
     init {
-       /* if (type == TokenType.NUMBER) { // here we'll remove .0 from string representation of integer
-        *//*    Log.i("TAG", "NUMBER: $strRepresentation")
+        /* if (type == TokenType.NUMBER) { // here we'll remove .0 from string representation of integer
+         *//*    Log.i("TAG", "NUMBER: $strRepresentation")
             val tmpDouble = strRepresentation.toDouble()
             val tmpInt = tmpDouble.roundToLong()
 
@@ -23,9 +23,9 @@ class Token(val type: TokenType, var strRepresentation: String = "") {
     constructor (type: TokenType) : this(type, type.value)
 
     fun addDotToNumber() {
-      //  Log.i("TAG", "NUMBER DOT: $strRepresentation")
+        //  Log.i("TAG", "NUMBER DOT: $strRepresentation")
         if (!strRepresentation.contains(".")) strRepresentation += "."
-     //   Log.i("TAG", "NUMBER DOT: $strRepresentation")
+        //   Log.i("TAG", "NUMBER DOT: $strRepresentation")
     }
 
 
@@ -39,11 +39,19 @@ class Token(val type: TokenType, var strRepresentation: String = "") {
 
     fun deleteOneLastSymbolInNumber() {
         if (type == TokenType.NUMBER) {
-            if (length()>0) {
-                strRepresentation=strRepresentation.dropLast(1)
+            if (length() > 0) {
+                strRepresentation = strRepresentation.dropLast(1)
             }
 
         }
+    }
+
+
+    fun toTokens(): Tokens {
+        val a = Tokens()
+        a.add(this)
+        return a
+
     }
 
 }

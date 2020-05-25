@@ -4,13 +4,15 @@
 
 package com.dmitriykargashin.cardamontimecalculator.ui.calculator
 
+import android.graphics.Color
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dmitriykargashin.cardamontimecalculator.R
-import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithGreenColor
+import com.dmitriykargashin.cardamontimecalculator.internal.extension.*
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.card_view_formats.view.*
 import java.math.RoundingMode
@@ -30,11 +32,31 @@ class RvAdapterPer(private val viewModel: CalculatorViewModel) :
 
         val perUnit = viewModel.getPerUnits().value!![position]
         val perUnits = viewModel.getPerUnits().value!!
+        val header =
+            SpannableString(perUnits.amount.toString() + " " + perUnits.unitName + " per") + spannable {
+                size(
+                    1.0f, color(
+                        Color.parseColor("#33691e"), " " + perUnit.timeUnit.strRepresentation
+                    )
+                )
+            } + SpannableString(" in the interval")
 
-        holder.id.text =
-            perUnits.amount.toString() + " " + perUnits.unitName + " per " + perUnit.timeUnit.strRepresentation.toHTMLWithGreenColor() +" in the interval"
-        holder.name.text =
-            perUnit.unitsPer_Result.setScale(2, RoundingMode.HALF_UP).toPlainString() + " "+ perUnits.unitName
+        holder.id.text = header
+
+
+
+        val rslt = SpannableString(
+            perUnit.unitsPer_Result.setScale(16, RoundingMode.HALF_UP).stripTrailingZeros()
+                .toPlainString()
+        ) + spannable {
+            size(
+                0.7f, color(
+                    Color.parseColor("#33691e"), " " + perUnits.unitName
+                )
+            )
+        }
+
+        holder.name.text = rslt
 
 
 //        holder.cardView.setOnClickListener {

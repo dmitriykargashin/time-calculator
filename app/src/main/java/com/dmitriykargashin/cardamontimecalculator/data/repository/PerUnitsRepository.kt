@@ -4,6 +4,7 @@
 
 package com.dmitriykargashin.cardamontimecalculator.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dmitriykargashin.cardamontimecalculator.data.perUnit.PerUnit
@@ -15,6 +16,7 @@ import com.dmitriykargashin.cardamontimecalculator.internal.extension.toToken
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.toTokens
 import com.dmitriykargashin.cardamontimecalculator.utilites.TimeConverter
 import java.math.BigDecimal
+import kotlin.math.log
 
 class PerUnitsRepository {
     // default values
@@ -53,21 +55,16 @@ class PerUnitsRepository {
 
         for (perUnitElement in perUnitsList) {
 
-            val units = TimeConverter.convertExpressionInMsecsToType(
-                resultTokens[0],
-                perUnitElement.timeUnit.type
+
+            val units = TimeConverter.convertTokensToTokensWithFormat(
+                resultTokens,
+                perUnitElement.timeUnit.toTokens()
             )
 
-            perUnitElement.unitsPer_Result =
+                    perUnitElement.unitsPer_Result =
                 perUnitsList.amount * units[0].strRepresentation.toBigDecimal()
 
-//            resultTokens.
 //
-//            resultFormatElement.convertedResultTokens =
-//                TimeConverter.convertTokensToTokensWithFormat(
-//                    resultTokens,
-//                    resultFormatElement.formatTokens
-//                )
         }
 
         perUnits.value = perUnitsList

@@ -146,7 +146,7 @@ class CalculatorViewModel(
 
 
     fun updatePerUnits() {
-        updateSettingsForPerUnits(30.toBigDecimal(),"RUB")
+       // updateSettingsForPerUnits(30.toBigDecimal(),"RUB")
         perUnitsRepository.updatePerUnitsWithPreview(tempResultInMsec)
 
     }
@@ -154,7 +154,7 @@ class CalculatorViewModel(
 
     fun updateSettingsForPerUnits(amount: BigDecimal, unitName: String) {
         perUnitsRepository. setParams(amount,unitName,tokensRepository.getTokens().value!!)
-
+        perUnitsRepository.updatePerUnitsWithPreview(tempResultInMsec)
     }
 
     fun getSelectedFormat() = resultFormatsRepository.getSelectedFormat()
