@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitriykargashin.cardamontimecalculator.engine.calculator.CalculatorOfTime
 import com.dmitriykargashin.cardamontimecalculator.data.repository.ExpressionRepository
+import com.dmitriykargashin.cardamontimecalculator.data.repository.PerUnitsRepository
 import com.dmitriykargashin.cardamontimecalculator.data.repository.ResultFormatsRepository
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.Token
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.Tokens
@@ -18,11 +19,13 @@ import com.dmitriykargashin.cardamontimecalculator.data.repository.TokensReposit
 import com.dmitriykargashin.cardamontimecalculator.data.resultFormat.ResultFormat
 import com.dmitriykargashin.cardamontimecalculator.utilites.TimeConverter
 import kotlinx.coroutines.*
+import java.math.BigDecimal
 
 class CalculatorViewModel(
     private val expressionRepository: ExpressionRepository,
     private val tokensRepository: TokensRepository,
-    private val resultFormatsRepository: ResultFormatsRepository
+    private val resultFormatsRepository: ResultFormatsRepository,
+    private val perUnitsRepository: PerUnitsRepository
 
 
 ) : ViewModel() {
@@ -33,11 +36,17 @@ class CalculatorViewModel(
 
     private val isInFormatsChooseMode = MutableLiveData<Boolean>()
 
-    private var tempResultInMsec=Tokens()
+    private var isInPerViewModeRepository: Boolean =
+        false // for controlling whenever opened per view or not
+
+    private val isInPerViewMode = MutableLiveData<Boolean>()
+
+    private var tempResultInMsec = Tokens()
 
 
     init {
         isInFormatsChooseMode.value = isInFormatsChooseModeRepository
+        isInPerViewMode.value = isInPerViewModeRepository
 
 
     }
@@ -47,6 +56,8 @@ class CalculatorViewModel(
 
     fun getResultFormats() = resultFormatsRepository.getResultFormats()
 
+    fun getPerUnits() = perUnitsRepository.getPerUnits()
+
 
     fun addToresultFormats(resultFormat: ResultFormat) =
         resultFormatsRepository.addResultFormat(resultFormat)
@@ -55,11 +66,18 @@ class CalculatorViewModel(
 
     fun getIsFormatsLayoutVisible() = isInFormatsChooseMode as LiveData<Boolean>
 
+    fun getIsPerLayoutVisible() = isInPerViewMode as LiveData<Boolean>
+
     fun setIsFormatsLayoutVisible(visible: Boolean) {
         isInFormatsChooseModeRepository = visible
         isInFormatsChooseMode.value = isInFormatsChooseModeRepository
     }
 
+
+    fun setIsPerLayoutVisible(visible: Boolean) {
+        isInPerViewModeRepository = visible
+        isInPerViewMode.value = isInPerViewModeRepository
+    }
 
     fun addToExpression(element: Token) {
 
@@ -92,7 +110,6 @@ class CalculatorViewModel(
 
         tokensRepository.setTokens(resultTokens)
 
-
     }
 
 
@@ -124,6 +141,20 @@ class CalculatorViewModel(
 
     fun updateResultFormats() {
         resultFormatsRepository.updateFormatsWithPreview(tempResultInMsec)
+    }
+
+
+
+    fun updatePerUnits() {
+        updateSettingsForPerUnits(30.toBigDecimal(),"RUB")
+        perUnitsRepository.updatePerUnitsWithPreview(tempResultInMsec)
+
+    }
+
+
+    fun updateSettingsForPerUnits(amount: BigDecimal, unitName: String) {
+        perUnitsRepository. setParams(amount,unitName,tokensRepository.getTokens().value!!)
+
     }
 
     fun getSelectedFormat() = resultFormatsRepository.getSelectedFormat()

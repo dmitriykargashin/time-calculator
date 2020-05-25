@@ -5,6 +5,7 @@
 package com.dmitriykargashin.cardamontimecalculator.utilites
 
 import com.dmitriykargashin.cardamontimecalculator.data.repository.ExpressionRepository
+import com.dmitriykargashin.cardamontimecalculator.data.repository.PerUnitsRepository
 import com.dmitriykargashin.cardamontimecalculator.data.repository.ResultFormatsRepository
 import com.dmitriykargashin.cardamontimecalculator.data.repository.TokensRepository
 import com.dmitriykargashin.cardamontimecalculator.ui.calculator.CalculatorViewModelFactory
@@ -17,6 +18,7 @@ object InjectorUtils {
         val tokensRepository = TokensRepository.getInstance()
         val expressionRepository = ExpressionRepository.getInstance()
         val resultFormatsRepository = ResultFormatsRepository.getInstance()
-        return CalculatorViewModelFactory(expressionRepository, tokensRepository,resultFormatsRepository)
+        val perUnitsRepository = PerUnitsRepository.getInstance()
+        return CalculatorViewModelFactory(expressionRepository, tokensRepository,resultFormatsRepository,perUnitsRepository)
     }
 }

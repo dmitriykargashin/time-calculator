@@ -97,26 +97,26 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         setContentView(R.layout.activity_main)
 
 
-     /*   try {
-            val info = getPackageManager().getPackageInfo(
-                getPackageName(),
-                PackageManager.GET_SIGNATURES
-            );
-            for (signature in info.signatures) {
-                var messageDigest = MessageDigest.getInstance ("SHA")
-                messageDigest.update(signature.toByteArray())
-                Log.d("KeyHash:", Base64.encodeToString(messageDigest.digest(), Base64.DEFAULT))
-            }
-        } catch (e:PackageManager.NameNotFoundException) {
+        /*   try {
+               val info = getPackageManager().getPackageInfo(
+                   getPackageName(),
+                   PackageManager.GET_SIGNATURES
+               );
+               for (signature in info.signatures) {
+                   var messageDigest = MessageDigest.getInstance ("SHA")
+                   messageDigest.update(signature.toByteArray())
+                   Log.d("KeyHash:", Base64.encodeToString(messageDigest.digest(), Base64.DEFAULT))
+               }
+           } catch (e:PackageManager.NameNotFoundException) {
 
-        }
-        catch(e:NoSuchAlgorithmException) {
+           }
+           catch(e:NoSuchAlgorithmException) {
 
-        }
+           }
 
 
 
-        logger("Start Setup Billing")*/
+           logger("Start Setup Billing")*/
 
 
         //   checkPurchases()
@@ -185,6 +185,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     override fun onBackPressed() {
         if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout(10, 10)
+        else if (viewModel.getIsPerLayoutVisible().value!!) closePerLayout(10, 10)
         else moveTaskToBack(true)
     }
 
@@ -417,6 +418,14 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         })
 
 
+        viewModel.getIsPerLayoutVisible().observe(this, Observer {
+            if (it)
+                perLayout.visibility = View.VISIBLE
+            else
+                perLayout.visibility = View.GONE
+        })
+
+
         viewModel.getSelectedFormat().observe(this, Observer {
 
             Log.d("TAG", "changeFormat click")
@@ -442,6 +451,11 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                 tvOnlineResult.text = it?.toLightSpannableString()
                 rvPer.adapter = RvAdapterPer(viewModel)
+
+                // add result to ViewPer view
+                labelTimeIntervalAmount.text = it?.toSpannableString()
+
+
 
                 /*tokens ->
                                val stringBuilder = StringBuilder()
@@ -629,7 +643,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
         buttonPer.setOnClickListener {
-            viewModel.updateResultFormats()
+            viewModel.updatePerUnits()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 
@@ -670,14 +684,14 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             // viewModel.clearAll()
                         }
                     })*/
-             ///////////////////   viewModel.setIsFormatsLayoutVisible(true)
+                viewModel.setIsPerLayoutVisible(true)
                 perLayout.visibility = View.VISIBLE
 
                 anim.start()
 
 
             } else {
-              /////////////////  viewModel.setIsFormatsLayoutVisible(true)
+                viewModel.setIsPerLayoutVisible(true)
                 perLayout.visibility = View.VISIBLE
 
             }
@@ -812,12 +826,14 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             data = Uri.parse("mailto:") // only email apps should handle this
             putExtra(Intent.EXTRA_EMAIL, arrayOf("dmitrii.kargashin@cardamon.org"))
             //intent.setData(Uri.parse("mailto:dmitrii.kargashin@cardamon.org"))
-            putExtra(Intent.EXTRA_SUBJECT, "Feedback Time Calculator Cardamon ${BuildConfig.VERSION_CODE}")
+            putExtra(
+                Intent.EXTRA_SUBJECT,
+                "Feedback Time Calculator Cardamon ${BuildConfig.VERSION_CODE}"
+            )
         }
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
         }
-
 
 
     }
@@ -963,26 +979,16 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
         toolbar.setNavigationOnClickListener {
-
             closeFormatsLayout(10, 10)
-
-
             // back button pressed
 
         }
-
         toolbarPer.setNavigationOnClickListener {
-
             closePerLayout(10, 10)
-
-
             // back button pressed
-
         }
-
 
     }
-
 
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -1075,7 +1081,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                 override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
-                  /////  viewModel.setIsFormatsLayoutVisible(false)
+                    viewModel.setIsPerLayoutVisible(false)
                     perLayout.visibility = View.GONE
 
                     //  viewModel.clearAll()
@@ -1087,7 +1093,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             anim.start()
 
         } else {
-           ////// viewModel.setIsFormatsLayoutVisible(false)
+            viewModel.setIsPerLayoutVisible(false)
             perLayout.visibility = View.GONE
 
         }

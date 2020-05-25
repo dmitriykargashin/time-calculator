@@ -13,6 +13,7 @@ import com.dmitriykargashin.cardamontimecalculator.R
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithGreenColor
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.card_view_formats.view.*
+import java.math.RoundingMode
 
 
 class RvAdapterPer(private val viewModel: CalculatorViewModel) :
@@ -27,25 +28,28 @@ class RvAdapterPer(private val viewModel: CalculatorViewModel) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        val perUnit = viewModel.getPerUnits().value!![position]
+        val perUnits = viewModel.getPerUnits().value!!
+
         holder.id.text =
-            viewModel.getResultFormats().value!![position].textPresentationOfTokens.toHTMLWithGreenColor()
+            perUnits.amount.toString() + " " + perUnits.unitName + " per " + perUnit.timeUnit.strRepresentation.toHTMLWithGreenColor() +" in the interval"
         holder.name.text =
-            viewModel.getResultFormats().value!![position].convertedResultTokens.toLightSpannableString()
+            perUnit.unitsPer_Result.setScale(2, RoundingMode.HALF_UP).toPlainString() + " "+ perUnits.unitName
 
 
-        holder.cardView.setOnClickListener {
-            viewModel.setSelectedFormat(position)
-
-        }
+//        holder.cardView.setOnClickListener {
+//            viewModel.setSelectedFormat(position)
+//
+//        }
     }
 
     override fun getItemCount(): Int {
-        return viewModel.getResultFormats().value!!.size
+        return viewModel.getPerUnits().value!!.size
     }
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val id =  itemView.tvFormat as TextView
+        val id = itemView.tvFormat as TextView
         val name = itemView.tvResultFormat as TextView
         val cardView = itemView.materialCardView as MaterialCardView
 

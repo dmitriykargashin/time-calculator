@@ -11,6 +11,44 @@
                >
 
 
+    <TextView
+            android:id="@+id/labelTimeInterval3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:labelFor="@id/etUnit"
+            android:text="Unit:"
+            app:layout_constraintStart_toEndOf="@+id/etUnitAmount"
+            app:layout_constraintTop_toBottomOf="@+id/labelTimeIntervalAmount" />
+
+    <EditText
+            android:id="@+id/etUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="8dp"
+            android:contentDescription="Unit"
+            android:ems="3"
+            android:includeFontPadding="false"
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/labelTimeInterval3"
+            app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval2"
+            tools:text="USD" />
+
+    <TextView
+            android:id="@+id/labelTimeInterval2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:labelFor="@id/etUnitAmount"
+            android:text="Amount:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelTimeIntervalAmount" />
+
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarPer"
             android:layout_width="0dp"
@@ -27,18 +65,20 @@
             app:titleMargin="4dp" />
 
     <EditText
-            android:id="@+id/etUnit"
+            android:id="@+id/etUnitAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="8dp"
-            android:ems="5"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Amount"
+            android:ems="3"
+            android:includeFontPadding="false"
             android:inputType="numberDecimal"
             android:paddingStart="8dp"
+            android:text="25"
             android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarPer"
-            tools:text="50" />
+            app:layout_constraintStart_toStartOf="@+id/labelTimeInterval2"
+            app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval2" />
 
     <ScrollView
             android:id="@+id/scrollView2"
@@ -50,7 +90,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etUnit">
+            app:layout_constraintTop_toBottomOf="@+id/etUnitAmount">
 
     </ScrollView>
     <androidx.recyclerview.widget.RecyclerView
@@ -63,18 +103,24 @@
             android:layout_marginStart="8dp" android:id="@+id/rvPer"/>
 
     <TextView
-            android:id="@+id/textView"
+            android:id="@+id/labelTimeInterval"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:clickable="false"
-            android:editable="false"
-            android:enabled="true"
-            android:paddingStart="8dp"
-            android:text="1 Unit ="
+            android:text="Time interval:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarPer" />
+
+    <TextView
+            android:id="@+id/labelTimeIntervalAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="10 Hour 25 Minute 5 Second"
             android:textSize="24sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/etUnit"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

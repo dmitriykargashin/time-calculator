@@ -501,6 +501,30 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonPer"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:fontFamily="@font/googlesans_regular"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:gravity="start"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="Per"
+                android:textAllCaps="false"
+                android:textColor="#304FFE"
+                android:textSize="@dimen/buttons_time_size"
+                android:textStyle="bold"
+                android:theme="@style/Theme.MaterialComponents"
+                ads:cornerRadius="5dp"
+                ads:elevation="2dp"
+                ads:layout_constraintBottom_toTopOf="@+id/tvOnlineResult"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:strokeColor="#304FFE"
+                ads:strokeWidth="1dp" />
 
         <TextView
                 android:id="@+id/tvOnlineResult"
@@ -740,4 +764,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+            android:id="@+id/perLayout"
+            layout="@layout/view_per"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/mainConstraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
