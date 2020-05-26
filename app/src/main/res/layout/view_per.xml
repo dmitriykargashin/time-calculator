@@ -15,10 +15,10 @@
             android:id="@+id/labelTimeInterval3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:labelFor="@id/etUnit"
-            android:text="Unit:"
+            android:text="Value unit:"
             app:layout_constraintStart_toEndOf="@+id/etUnitAmount"
             app:layout_constraintTop_toBottomOf="@+id/labelTimeIntervalAmount" />
 
@@ -46,7 +46,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:labelFor="@id/etUnitAmount"
-            android:text="Amount:"
+            android:text="Value:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelTimeIntervalAmount" />
 
@@ -62,7 +62,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="The amount per unit"
+            app:title="Amount for the time interval"
             app:titleMargin="4dp" />
 
     <EditText

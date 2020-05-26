@@ -27,7 +27,6 @@ class CalculatorViewModel(
     private val resultFormatsRepository: ResultFormatsRepository,
     private val perUnitsRepository: PerUnitsRepository
 
-
 ) : ViewModel() {
 
 
@@ -41,15 +40,21 @@ class CalculatorViewModel(
 
     private val isInPerViewMode = MutableLiveData<Boolean>()
 
+
     private var tempResultInMsec = Tokens()
+
+    private var isPerViewButtonDisabledRepository: Boolean =
+        true
+    private val isPerViewButtonDisabled = MutableLiveData<Boolean>()
 
 
     init {
         isInFormatsChooseMode.value = isInFormatsChooseModeRepository
         isInPerViewMode.value = isInPerViewModeRepository
-
+        isPerViewButtonDisabled.value = isPerViewButtonDisabledRepository
 
     }
+
 
     fun getResultTokens() = tokensRepository.getTokens()
 
@@ -78,6 +83,15 @@ class CalculatorViewModel(
         isInPerViewModeRepository = visible
         isInPerViewMode.value = isInPerViewModeRepository
     }
+
+
+    fun getIsPerViewButtonDisabled() = isPerViewButtonDisabled as LiveData<Boolean>
+
+    fun setIsPerViewButtonDisabled(visible: Boolean) {
+        isPerViewButtonDisabledRepository = visible
+        isPerViewButtonDisabled.value = isPerViewButtonDisabledRepository
+    }
+
 
     fun addToExpression(element: Token) {
 
@@ -109,6 +123,7 @@ class CalculatorViewModel(
         )
 
         tokensRepository.setTokens(resultTokens)
+        setIsPerViewButtonDisabled(false)
 
     }
 
@@ -116,6 +131,7 @@ class CalculatorViewModel(
     fun clearAll() {
         tokensRepository.setTokens(Tokens())
         expressionRepository.setTokens(Tokens())
+        setIsPerViewButtonDisabled(true)
         //  expressionRepository.setExpression("")
 
     }
@@ -136,6 +152,7 @@ class CalculatorViewModel(
         if (tokensRepository.length() > 0) {
             expressionRepository.setTokens(tokensRepository.getTokens().value!!)
             tokensRepository.setTokens(Tokens())
+            setIsPerViewButtonDisabled(true)
         }
     }
 
@@ -144,17 +161,20 @@ class CalculatorViewModel(
     }
 
 
-
     fun updatePerUnits() {
-       // updateSettingsForPerUnits(30.toBigDecimal(),"RUB")
-        perUnitsRepository.updatePerUnitsWithPreview(tempResultInMsec)
+        // updateSettingsForPerUnits(30.toBigDecimal(),"RUB")
+        if (!isPerViewButtonDisabledRepository)
+            perUnitsRepository.updatePerUnitsWithPreview(tempResultInMsec)
 
     }
 
 
     fun updateSettingsForPerUnits(amount: BigDecimal, unitName: String) {
-        perUnitsRepository. setParams(amount,unitName,tokensRepository.getTokens().value!!)
-        perUnitsRepository.updatePerUnitsWithPreview(tempResultInMsec)
+
+        if (!isPerViewButtonDisabledRepository) {
+            perUnitsRepository.setParams(amount, unitName, tokensRepository.getTokens().value!!)
+            perUnitsRepository.updatePerUnitsWithPreview(tempResultInMsec)
+        }
     }
 
     fun getSelectedFormat() = resultFormatsRepository.getSelectedFormat()
@@ -173,7 +193,6 @@ class CalculatorViewModel(
         tokensRepository.setTokens(resultConvertedTokens)
 
         return selectedFormat
-
 
     }
 

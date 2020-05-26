@@ -40,6 +40,8 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.opengl.Visibility
 import android.text.Editable
@@ -318,6 +320,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
             adView.loadAd(adRequest)
 
+        /////    removeAds()
 
         }
 
@@ -435,12 +438,30 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         })
 
 
+        viewModel.getIsPerViewButtonDisabled().observe(this, Observer {
+            if (it) {
+                buttonPer.isEnabled = false
+                buttonPer.isClickable = false
+
+                buttonPer.alpha=0.5f
+
+
+
+            }
+            else {
+                buttonPer.isEnabled = true
+                buttonPer.isClickable = true
+                buttonPer.alpha=1.0f
+            }
+        })
+
         viewModel.getIsPerLayoutVisible().observe(this, Observer {
             if (it)
                 perLayout.visibility = View.VISIBLE
             else
                 perLayout.visibility = View.GONE
         })
+
 
 
         viewModel.getSelectedFormat().observe(this, Observer {
