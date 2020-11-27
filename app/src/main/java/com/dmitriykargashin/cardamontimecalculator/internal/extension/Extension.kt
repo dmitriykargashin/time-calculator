@@ -55,6 +55,17 @@ fun String.toHTMLWithLightGreenColor(): SpannableString {
 
 }
 
+
+fun String.toHTMLBlackColor(): SpannableString {
+
+
+//todo how to get color from colors.xml?
+
+    return spannable { size(0.7f, color(Color.parseColor("#000000"), this)) }
+
+
+}
+
 fun String.toHTMLWithGrayColor(): SpannableString {
 
 

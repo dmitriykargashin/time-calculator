@@ -16,9 +16,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainConstraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:background="@android:color/background_light"
-            app:layout_constraintBottom_toTopOf="@+id/adView"
+
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".MainActivity"
             tools:orientation="vertical">
@@ -738,21 +738,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-
-            ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-    </com.google.android.gms.ads.AdView>
 
     <include
             android:id="@+id/formatsLayout"

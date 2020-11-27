@@ -50,6 +50,8 @@ import android.util.Base64
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLBlackColor
+import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithGrayColor
 import com.google.android.material.snackbar.Snackbar
 import com.facebook.FacebookSdk
 import kotlinx.android.synthetic.main.view_per.*
@@ -75,7 +77,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         super.onPause()
         if (!isPaidVersion() && !isRemoveAdsPurchased) {
-            adView.pause()
+            //    adView.pause()
         }
 
     }
@@ -86,14 +88,14 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         checkPurchases()
 
         if (!isPaidVersion() && !isRemoveAdsPurchased) {
-            adView.resume()
+            //adView.resume()
         }
     }
 
     // Called before the activity is destroyed
     public override fun onDestroy() {
         if (!isPaidVersion() && !isRemoveAdsPurchased) {
-            adView.destroy()
+            //   adView.destroy()
         }
         super.onDestroy()
     }
@@ -138,7 +140,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
               adView.loadAd(adRequest)*/
 
 
-        } else adView.visibility = View.GONE
+        } //else adView.visibility = View.GONE
 
         initUI()
         setupRateMe()
@@ -315,12 +317,12 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         } else {// user dont have any purchase
 
 
-            MobileAds.initialize(this)
-            val adRequest =
-                AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
-            adView.loadAd(adRequest)
+//            MobileAds.initialize(this)
+//            val adRequest =
+//                AdRequest.Builder().addTestDevice("C38113ED0332D64C52D625B7ED43DDED").build()
+//            adView.loadAd(adRequest)
 
-        /////    removeAds()
+            /////    removeAds()
 
         }
 
@@ -344,7 +346,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
           return*/
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             if (purchase.sku == "remove_ads") {
-                removeAds()
+                //    removeAds()
 // Grant the item to the user, and then acknowledge the purchase
             }
 
@@ -384,7 +386,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private fun removeAds() {
         isRemoveAdsPurchased = true
-        adView.visibility = View.GONE
+        //   adView.visibility = View.GONE
         removeads.visibility = View.GONE
         tvRemoveAds.visibility = View.GONE
 
@@ -443,15 +445,13 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 buttonPer.isEnabled = false
                 buttonPer.isClickable = false
 
-                buttonPer.alpha=0.5f
+                buttonPer.alpha = 0.5f
 
 
-
-            }
-            else {
+            } else {
                 buttonPer.isEnabled = true
                 buttonPer.isClickable = true
-                buttonPer.alpha=1.0f
+                buttonPer.alpha = 1.0f
             }
         })
 
@@ -468,7 +468,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
             Log.d("TAG", "changeFormat click")
 
-            buttonFormats.text = it.textPresentationOfTokens.toHTMLWithLightGreenColor()
+            tvFormats.text = (it.textPresentationOfTokens+":").toHTMLBlackColor()
 
             val touchPointX = commonConstraintLayout.width / 2
             val touchPointY = commonConstraintLayout.height / 2
@@ -857,7 +857,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         s.toString().toBigDecimal(),
                         etUnit.text.toString()
                     )
-                      rvPer.visibility = View.VISIBLE
+                    rvPer.visibility = View.VISIBLE
                 } else rvPer.visibility = View.INVISIBLE
             }
         })
@@ -884,8 +884,8 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         etUnitAmount.text.toString().toBigDecimal(), s.toString()
                     )
 
-                   // if (!etUnitAmount.text.isEmpty())
-                        rvPer.visibility = View.VISIBLE
+                    // if (!etUnitAmount.text.isEmpty())
+                    rvPer.visibility = View.VISIBLE
 
                 } else
                     rvPer.visibility = View.INVISIBLE
