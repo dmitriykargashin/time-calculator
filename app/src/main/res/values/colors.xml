@@ -8,6 +8,7 @@
     <color name="colorTimeBtns">#33691e</color>
     <color name="colorSecondaryBackground">#9AFDD835</color>
     <color name="colorSecondaryBackgroundForPer">#66BB6A</color>
+    <color name="colorSecondaryBackgroundForSupport">#03A9F4</color>
     <color name="semitransparentBackground">#CCCACACA</color>
 
 </resources>

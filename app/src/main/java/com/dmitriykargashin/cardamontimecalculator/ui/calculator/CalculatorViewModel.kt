@@ -41,6 +41,13 @@ class CalculatorViewModel(
     private val isInPerViewMode = MutableLiveData<Boolean>()
 
 
+
+    private var isInSupportAppViewModeRepository: Boolean =
+        false // for controlling whenever opened Support app view or not
+    private val isInSupportAppViewMode = MutableLiveData<Boolean>()
+
+
+
     private var tempResultInMsec = Tokens()
 
     private var isPerViewButtonDisabledRepository: Boolean =
@@ -52,7 +59,7 @@ class CalculatorViewModel(
         isInFormatsChooseMode.value = isInFormatsChooseModeRepository
         isInPerViewMode.value = isInPerViewModeRepository
         isPerViewButtonDisabled.value = isPerViewButtonDisabledRepository
-
+        isInSupportAppViewMode.value = isInSupportAppViewModeRepository
     }
 
 
@@ -73,6 +80,8 @@ class CalculatorViewModel(
 
     fun getIsPerLayoutVisible() = isInPerViewMode as LiveData<Boolean>
 
+    fun getIsSupportAppLayoutVisible() = isInSupportAppViewMode as LiveData<Boolean>
+
     fun setIsFormatsLayoutVisible(visible: Boolean) {
         isInFormatsChooseModeRepository = visible
         isInFormatsChooseMode.value = isInFormatsChooseModeRepository
@@ -82,6 +91,11 @@ class CalculatorViewModel(
     fun setIsPerLayoutVisible(visible: Boolean) {
         isInPerViewModeRepository = visible
         isInPerViewMode.value = isInPerViewModeRepository
+    }
+
+    fun setIsSupportAppLayoutVisible(visible: Boolean) {
+        isInSupportAppViewModeRepository = visible
+        isInSupportAppViewMode.value = isInSupportAppViewModeRepository
     }
 
 

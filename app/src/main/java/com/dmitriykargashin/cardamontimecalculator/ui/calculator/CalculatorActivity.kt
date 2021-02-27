@@ -53,8 +53,8 @@ import android.view.inputmethod.InputMethodManager
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLBlackColor
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithGrayColor
 import com.google.android.material.snackbar.Snackbar
-import com.facebook.FacebookSdk
 import kotlinx.android.synthetic.main.view_per.*
+import kotlinx.android.synthetic.main.view_support_app.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -169,7 +169,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
 
-    fun rateMeOnGooglePlay() {
+    private fun rateMeOnGooglePlay() {
         try {
             startActivity(
                 Intent(
@@ -194,6 +194,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     override fun onBackPressed() {
         if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout(10, 10)
         else if (viewModel.getIsPerLayoutVisible().value!!) closePerLayout(10, 10)
+        else if (viewModel.getIsSupportAppLayoutVisible().value!!) closeSupport_appLayout(10, 10)
         else moveTaskToBack(true)
     }
 
@@ -395,8 +396,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     private fun initUI() {
-
-
+        setSupportActionBar(toolbarSupport_app)
+        setSupportActionBar(toolbarPer)
+        setSupportActionBar(toolbar)
         factory = InjectorUtils.provideCalculatorViewModelFactory()
         viewModel = ViewModelProviders.of(this, factory)
             .get(CalculatorViewModel::class.java)
@@ -462,6 +464,12 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 perLayout.visibility = View.GONE
         })
 
+        viewModel.getIsSupportAppLayoutVisible().observe(this, Observer {
+            if (it)
+                support_appLayout.visibility = View.VISIBLE
+            else
+                support_appLayout.visibility = View.GONE
+        })
 
 
         viewModel.getSelectedFormat().observe(this, Observer {
@@ -736,6 +744,63 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
 
+        buttonFood.setOnClickListener {
+         //   viewModel.updateResultFormats()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+                //  forceRippleAnimation(tvOnlineResult)
+
+                val location = IntArray(2)
+                buttonFood.getLocationOnScreen(location)
+
+                val x = location[0] + buttonFood.width / 2
+                val y = location[1] + buttonFood.height / 2
+
+                val startRadius = 0
+                val endRadius =
+                    hypot(
+                        commonConstraintLayout.width.toDouble(),
+                        commonConstraintLayout.height.toDouble()
+                    )
+                        .toInt()
+
+                val anim =
+                    ViewAnimationUtils.createCircularReveal(
+                        support_appLayout,
+                        x,
+                        y,
+                        startRadius.toFloat(),
+                        endRadius.toFloat()
+                    ).apply {
+                        interpolator = AccelerateDecelerateInterpolator()
+                        duration = 600
+                    }
+                // make the view invisible when the animation is done
+                /*    anim.addListener(object : AnimatorListenerAdapter() {
+
+                        override fun onAnimationEnd(animation: Animator) {
+                            super.onAnimationEnd(animation)
+                            //           mainConstraintLayout.visibility = View.GONE
+
+                            // viewModel.clearAll()
+                        }
+                    })*/
+                viewModel.setIsSupportAppLayoutVisible(true)
+                support_appLayout.visibility = View.VISIBLE
+
+                anim.start()
+
+
+            } else {
+                viewModel.setIsSupportAppLayoutVisible(true)
+                support_appLayout.visibility = View.VISIBLE
+
+            }
+        }
+
+
+
 
 
         buttonDelete.setOnLongClickListener {
@@ -758,7 +823,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     val endRadius =
                         hypot(
                             tvExpressionField.width.toDouble(),
-                            tvExpressionField.height.toDouble() + tvOnlineResult.height.toDouble() + buttonFormats.height.toDouble()
+                            tvExpressionField.height.toDouble() + tvOnlineResult.height.toDouble()
                         )
                             .toInt()
 
@@ -1106,7 +1171,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     private fun toolbarInitalize() {
-        buttonPer.text = buttonPer.text.toString().toHTMLWithLightGreenColor()
+     //   buttonPer.text = buttonPer.text.toString().toHTMLWithLightGreenColor()
 
 
         toolbar.setNavigationOnClickListener {
@@ -1116,6 +1181,11 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
         toolbarPer.setNavigationOnClickListener {
             closePerLayout(10, 10)
+            // back button pressed
+        }
+
+        toolbarSupport_app.setNavigationOnClickListener {
+            closeSupport_appLayout(10, 10)
             // back button pressed
         }
 
@@ -1230,6 +1300,56 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         } else {
             viewModel.setIsPerLayoutVisible(false)
             perLayout.visibility = View.GONE
+
+        }
+    }
+
+
+    private fun closeSupport_appLayout(x: Int, y: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+            /*  val x = 10
+              val y = 10*/
+
+            val endRadius = 0
+            val startRadius =
+                hypot(
+                    commonConstraintLayout.width.toDouble(),
+                    commonConstraintLayout.height.toDouble()
+                )
+                    .toInt()
+
+            val anim =
+                ViewAnimationUtils.createCircularReveal(
+                    support_appLayout,
+                    x,
+                    y,
+                    startRadius.toFloat(),
+                    endRadius.toFloat()
+                ).apply {
+                    interpolator = AccelerateDecelerateInterpolator()
+                    duration = 450
+                }
+            // make the view invisible when the animation is done
+            anim.addListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                    viewModel.setIsSupportAppLayoutVisible(false)
+                    support_appLayout.visibility = View.GONE
+
+                    //  viewModel.clearAll()
+                }
+            })
+            //       formatsLayout = View.GONE
+
+
+            anim.start()
+
+        } else {
+            viewModel.setIsSupportAppLayoutVisible(false)
+            support_appLayout.visibility = View.GONE
 
         }
     }

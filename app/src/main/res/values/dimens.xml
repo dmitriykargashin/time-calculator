@@ -4,9 +4,9 @@
   -->
 
 <resources>
-    <dimen name="buttons_num_size">18sp</dimen>
-    <dimen name="buttons_time_size">16sp</dimen>
-    <dimen name="buttons_operators_size">20sp</dimen>
+    <dimen name="buttons_num_size">36sp</dimen>
+    <dimen name="buttons_time_size">24sp</dimen>
+    <dimen name="buttons_operators_size">34sp</dimen>
     <dimen name="margin_16_size">16dp</dimen>
     <dimen name="margin_8_size">8dp</dimen>
     <dimen name="result_output_height">60dp</dimen>

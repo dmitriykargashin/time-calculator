@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorSecondaryBackgroundForSupport"
+        tools:context=".ui.calculator.CalculatorActivity"
+        tools:layout_editor_absoluteY="25dp"
+        tools:orientation="vertical">
+
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarSupport_app"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSecondaryBackgroundForSupport"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ToolbarTheme"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="A cup of tea for the developer"
+            app:titleMargin="4dp" />
+
+    <RadioGroup
+            android:id="@+id/teacups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:baselineAligned="false"
+            android:checkedButton="@id/cup5"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="24px"
+
+            app:layout_constraintBottom_toTopOf="@+id/buttonSupport"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval">
+
+        <RadioButton
+                android:id="@+id/cup1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:drawableRight="@drawable/ic_food"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="1 ✕ "
+                android:textSize="18sp" />
+
+        <RadioButton
+                android:id="@+id/cup5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:drawableRight="@drawable/ic_food"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="5 ✕ "
+                android:textSize="18sp" />
+
+        <RadioButton
+                android:id="@+id/cup9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_food"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="9 ✕ "
+                android:textSize="18sp" />
+
+        <RadioButton
+                android:id="@+id/cup15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_food"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="15 ✕ "
+                android:textSize="18sp" />
+
+        <RadioButton
+                android:id="@+id/cup21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_food"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="29 ✕ "
+                android:textSize="18sp" />
+    </RadioGroup>
+
+
+    <TextView
+            android:id="@+id/labelTimeInterval"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/googlesans_regular"
+            android:lineSpacingExtra="4sp"
+            android:text="For your best user experience, the application is now free and ad-free.\n\nIf you would like to support me, as a developer of the app, you can buy me some CUPS of TEA."
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarSupport_app" />
+
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSupport"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:fontFamily="@font/googlesans_regular"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:gravity="start"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="Support $5"
+            android:textAllCaps="false"
+            android:textColor="#304FFE"
+            android:textSize="@dimen/buttons_time_size"
+            android:textStyle="bold"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cornerRadius="5dp"
+            app:elevation="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="#304FFE"
+            app:strokeWidth="1dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

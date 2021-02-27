@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="36sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/googlesans_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -53,7 +54,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvFormat"
                 tools:layout_conversion_absoluteHeight="0dp"
                 tools:layout_conversion_absoluteWidth="0dp"
-                tools:text="dsfdfdsfdfdf"
+                tools:text="100 minutes"
+                android:fontFamily="@font/googlesans_regular"
                 android:paddingStart="@dimen/margin_16_size" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

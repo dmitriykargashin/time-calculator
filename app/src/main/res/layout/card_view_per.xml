@@ -37,6 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_absoluteHeight="0dp"
                 tools:layout_conversion_absoluteWidth="0dp"
+                android:fontFamily="@font/googlesans_regular"
                 tools:text="100" />
 
         <TextView
@@ -53,6 +54,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvFormat"
                 tools:layout_conversion_absoluteHeight="0dp"
                 tools:layout_conversion_absoluteWidth="0dp"
-                tools:text="dsfdfdsfdfdf" />
+                android:fontFamily="@font/googlesans_regular"
+                tools:text="100 Minutes" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

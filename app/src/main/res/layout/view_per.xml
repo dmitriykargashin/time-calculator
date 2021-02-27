@@ -19,6 +19,7 @@
             android:layout_marginTop="8dp"
             android:labelFor="@id/etUnit"
             android:text="Value unit:"
+            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toEndOf="@+id/etUnitAmount"
             app:layout_constraintTop_toBottomOf="@+id/labelTimeIntervalAmount" />
 
@@ -36,6 +37,7 @@
             android:paddingStart="8dp"
             android:text="USD"
             android:textSize="24sp"
+            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toStartOf="@+id/labelTimeInterval3"
             app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval2" />
 
@@ -47,6 +49,7 @@
             android:layout_marginTop="8dp"
             android:labelFor="@id/etUnitAmount"
             android:text="Value:"
+            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelTimeIntervalAmount" />
 
@@ -79,6 +82,7 @@
             android:paddingStart="8dp"
             android:text="25"
             android:textSize="24sp"
+            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toStartOf="@+id/labelTimeInterval2"
             app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval2" />
 
@@ -110,6 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Time interval:"
+            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarPer" />
 
@@ -118,6 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:fontFamily="@font/googlesans_regular"
             android:text="10 Hour 25 Minute 5 Second"
             android:textSize="24sp"
             android:textStyle="bold"
