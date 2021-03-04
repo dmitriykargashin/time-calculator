@@ -39,7 +39,7 @@
             android:orientation="vertical"
             android:padding="24px"
 
-            app:layout_constraintBottom_toTopOf="@+id/buttonSupport"
+            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval">
@@ -55,10 +55,20 @@
                 android:textSize="18sp" />
 
         <RadioButton
-                android:id="@+id/cup5"
+                android:id="@+id/cup3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                android:drawableRight="@drawable/ic_food"
+                android:fontFamily="@font/googlesans_regular"
+                android:text="3 ✕ "
+                android:textSize="18sp" />
+
+        <RadioButton
+                android:id="@+id/cup5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
                 android:drawableRight="@drawable/ic_food"
                 android:fontFamily="@font/googlesans_regular"
                 android:text="5 ✕ "
@@ -116,7 +126,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="104dp"
             android:background="?selectableItemBackgroundBorderless"
             android:fontFamily="@font/googlesans_regular"
             android:foreground="?selectableItemBackgroundBorderless"
@@ -130,12 +140,24 @@
             android:textStyle="bold"
             android:theme="@style/Theme.MaterialComponents"
             app:cornerRadius="5dp"
-            app:elevation="1dp"
+            app:elevation="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.257"
             app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="#304FFE"
+            android:visibility="gone"
             app:strokeWidth="1dp" />
+
+    <Button
+            android:id="@+id/button"
+            android:layout_width="127dp"
+            android:layout_height="46dp"
+            android:layout_marginBottom="24dp"
+            android:text="Support $3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

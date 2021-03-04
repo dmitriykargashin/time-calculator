@@ -54,6 +54,7 @@ import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLBlac
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithGrayColor
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.view_per.*
+import kotlinx.android.synthetic.main.view_settings.*
 import kotlinx.android.synthetic.main.view_support_app.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -195,6 +196,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout(10, 10)
         else if (viewModel.getIsPerLayoutVisible().value!!) closePerLayout(10, 10)
         else if (viewModel.getIsSupportAppLayoutVisible().value!!) closeSupport_appLayout(10, 10)
+        else if (viewModel.getIsSettingsLayoutVisible().value!!) closeSettingsLayout(10, 10)
         else moveTaskToBack(true)
     }
 
@@ -446,7 +448,6 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             if (it) {
                 buttonPer.isEnabled = false
                 buttonPer.isClickable = false
-
                 buttonPer.alpha = 0.5f
 
 
@@ -454,6 +455,21 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 buttonPer.isEnabled = true
                 buttonPer.isClickable = true
                 buttonPer.alpha = 1.0f
+            }
+        })
+
+
+        viewModel.getIsFormatsViewButtonDisabled().observe(this, Observer {
+            if (it) {
+                buttonFormats.isEnabled = false
+                buttonFormats.isClickable = false
+                buttonFormats.alpha = 0.5f
+
+
+            } else {
+                buttonFormats.isEnabled = true
+                buttonFormats.isClickable = true
+                buttonFormats.alpha = 1.0f
             }
         })
 
@@ -799,6 +815,62 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
 
+
+
+        buttonSettings.setOnClickListener {
+            //   viewModel.updateResultFormats()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+                //  forceRippleAnimation(tvOnlineResult)
+
+                val location = IntArray(2)
+                buttonSettings.getLocationOnScreen(location)
+
+                val x = location[0] + buttonSettings.width / 2
+                val y = location[1] + buttonSettings.height / 2
+
+                val startRadius = 0
+                val endRadius =
+                    hypot(
+                        commonConstraintLayout.width.toDouble(),
+                        commonConstraintLayout.height.toDouble()
+                    )
+                        .toInt()
+
+                val anim =
+                    ViewAnimationUtils.createCircularReveal(
+                        settingsLayout,
+                        x,
+                        y,
+                        startRadius.toFloat(),
+                        endRadius.toFloat()
+                    ).apply {
+                        interpolator = AccelerateDecelerateInterpolator()
+                        duration = 600
+                    }
+                // make the view invisible when the animation is done
+                /*    anim.addListener(object : AnimatorListenerAdapter() {
+
+                        override fun onAnimationEnd(animation: Animator) {
+                            super.onAnimationEnd(animation)
+                            //           mainConstraintLayout.visibility = View.GONE
+
+                            // viewModel.clearAll()
+                        }
+                    })*/
+                viewModel.setIsSettingsLayoutVisible(true)
+                settingsLayout.visibility = View.VISIBLE
+
+                anim.start()
+
+
+            } else {
+                viewModel.setIsSettingsLayoutVisible(true)
+                settingsLayout.visibility = View.VISIBLE
+
+            }
+        }
 
 
 
@@ -1189,6 +1261,11 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             // back button pressed
         }
 
+        toolbarSettings.setNavigationOnClickListener {
+            closeSettingsLayout(10, 10)
+            // back button pressed
+        }
+
     }
 
 
@@ -1350,6 +1427,57 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         } else {
             viewModel.setIsSupportAppLayoutVisible(false)
             support_appLayout.visibility = View.GONE
+
+        }
+    }
+
+
+
+    private fun closeSettingsLayout(x: Int, y: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+            /*  val x = 10
+              val y = 10*/
+
+            val endRadius = 0
+            val startRadius =
+                hypot(
+                    commonConstraintLayout.width.toDouble(),
+                    commonConstraintLayout.height.toDouble()
+                )
+                    .toInt()
+
+            val anim =
+                ViewAnimationUtils.createCircularReveal(
+                    settingsLayout,
+                    x,
+                    y,
+                    startRadius.toFloat(),
+                    endRadius.toFloat()
+                ).apply {
+                    interpolator = AccelerateDecelerateInterpolator()
+                    duration = 450
+                }
+            // make the view invisible when the animation is done
+            anim.addListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                    viewModel.setIsSettingsLayoutVisible(false)
+                    settingsLayout.visibility = View.GONE
+
+                    //  viewModel.clearAll()
+                }
+            })
+            //       formatsLayout = View.GONE
+
+
+            anim.start()
+
+        } else {
+            viewModel.setIsSettingsLayoutVisible(false)
+            settingsLayout.visibility = View.GONE
 
         }
     }

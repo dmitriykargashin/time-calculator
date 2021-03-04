@@ -21,6 +21,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             tools:layout_conversion_absoluteHeight="0dp"
             tools:layout_conversion_absoluteWidth="0dp"
             tools:layout_editor_absoluteX="0dp"
@@ -30,6 +32,7 @@
                 android:id="@+id/tvFormat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/googlesans_regular"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -37,13 +40,13 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_absoluteHeight="0dp"
                 tools:layout_conversion_absoluteWidth="0dp"
-                android:fontFamily="@font/googlesans_regular"
                 tools:text="100" />
 
         <TextView
                 android:id="@+id/tvResultFormat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/googlesans_regular"
                 android:paddingStart="@dimen/margin_16_size"
                 android:paddingEnd="@dimen/margin_16_size"
                 android:textSize="24sp"
@@ -54,7 +57,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvFormat"
                 tools:layout_conversion_absoluteHeight="0dp"
                 tools:layout_conversion_absoluteWidth="0dp"
-                android:fontFamily="@font/googlesans_regular"
                 tools:text="100 Minutes" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

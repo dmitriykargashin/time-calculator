@@ -757,6 +757,16 @@ abstract class TimeConverter {
                     )
                     endResult.add(Token(type))
                 }
+                else {
+                    endResult.add(
+                        Token(
+                            TokenType.NUMBER,
+                            ZERO.toPlainString()
+                        )
+                    )
+                    endResult.add(Token(type))
+
+                }
             } else {
 
                 val currentResultRounded = currentResult.setScale(0, RoundingMode.DOWN)
@@ -779,9 +789,7 @@ abstract class TimeConverter {
                     )
                     endResult.add(Token(type))
                 }
-
                 reminderInMsecResult = if (reminderFromFullNumber.compareTo(ZERO) != 0) {
-
                     convertPartOfUnitToMScec(reminderFromFullNumber, type)
 
 

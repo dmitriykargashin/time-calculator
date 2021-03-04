@@ -6,9 +6,10 @@
     <color name="colorNums">@android:color/black</color>
     <color name="colorOperators">@android:color/holo_blue_dark</color>
     <color name="colorTimeBtns">#33691e</color>
-    <color name="colorSecondaryBackground">#9AFDD835</color>
-    <color name="colorSecondaryBackgroundForPer">#66BB6A</color>
-    <color name="colorSecondaryBackgroundForSupport">#03A9F4</color>
+    <color name="colorMainBackground">#FDFCFA</color>
+    <color name="colorSecondaryBackground">#E8E8E8</color>
+    <color name="colorSecondaryBackgroundForPer">#E8E8E8</color>
+    <color name="colorSecondaryBackgroundForSupport">#E8E8E8</color>
     <color name="semitransparentBackground">#CCCACACA</color>
 
 </resources>

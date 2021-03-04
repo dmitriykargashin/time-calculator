@@ -95,8 +95,14 @@ class ResultFormatsRepository {
         )
         addResultFormat(
             ResultFormat(
-                "Year Month Day Minute".toTokens(),
-                "1 Year 2 Month 3 Day 4 Minute".toTokens()
+                "Year Month Day Hour".toTokens(),
+                "1 Year 2 Month 3 Day 4 Hour".toTokens()
+            )
+        )
+        addResultFormat(
+            ResultFormat(
+                "Year Month Day Hour Minute".toTokens(),
+                "1 Year 2 Month 3 Day 4 Hour 5 Minute".toTokens()
             )
         )
 

@@ -17,7 +17,7 @@
             android:id="@+id/mainConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/background_light"
+            android:background="@color/colorMainBackground"
             android:descendantFocusability="beforeDescendants"
             android:focusableInTouchMode="true"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -35,15 +35,13 @@
                 android:id="@+id/tvOnlineResult"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/result_output_height"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
 
                 android:ellipsize="none"
                 android:fontFamily="@font/googlesans_regular"
                 android:gravity="center_vertical|end"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:paddingBottom="4dp"
                 android:scrollbarStyle="outsideInset"
                 android:scrollbars="vertical"
@@ -54,7 +52,7 @@
                 android:textStyle="bold"
                 app:autoSizeMaxTextSize="@dimen/result_output_maxtextsize"
                 app:autoSizeMinTextSize="@dimen/result_output_mintextsize"
-                app:autoSizeStepGranularity="1sp"
+                app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
                 app:elevation="-100dp"
                 app:layout_constraintBottom_toTopOf="@+id/buttonSettings"
@@ -81,7 +79,6 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="Formats"
-
                 android:fontFamily="@font/googlesans_regular"
                 android:minHeight="30dp"
                 android:paddingTop="5dp"
@@ -89,10 +86,7 @@
                 android:scaleType="center"
                 android:src="@drawable/ic_convert_24"
                 android:text="Formats"
-
                 android:textSize="@dimen/buttons_operators_size"
-
-
                 app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNum7"
                 app:layout_constraintStart_toStartOf="@+id/buttonNum7" />
@@ -103,7 +97,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-
                 android:contentDescription="Per"
                 android:fontFamily="@font/googlesans_regular"
                 android:minHeight="30dp"
@@ -112,10 +105,6 @@
                 android:scaleType="center"
                 android:src="@drawable/ic_per"
                 android:text="Per"
-
-                android:textColor="@color/colorNums"
-
-
                 android:textSize="@dimen/buttons_operators_size"
                 app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
                 app:layout_constraintEnd_toStartOf="@+id/buttonFood"
@@ -645,18 +634,15 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_gravity="fill"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@android:color/white"
                 android:ellipsize="marquee"
                 android:enabled="true"
                 android:fontFamily="@font/googlesans_regular"
                 android:gravity="bottom|end"
                 android:minHeight="@dimen/result_expression_mintextsize"
-                android:paddingStart="2dp"
+                android:paddingStart="8dp"
                 android:paddingTop="4dp"
-                android:paddingEnd="2dp"
+                android:paddingEnd="8dp"
                 android:paddingBottom="4dp"
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:scrollbarStyle="outsideInset"
@@ -668,7 +654,7 @@
                 android:textSize="@dimen/result_expression_maxtextsize"
                 app:autoSizeMaxTextSize="@dimen/result_expression_maxtextsize"
                 app:autoSizeMinTextSize="@dimen/result_expression_mintextsize"
-                app:autoSizeStepGranularity="1sp"
+                app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toTopOf="@+id/tvFormats"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -869,6 +855,17 @@
     <include
             android:id="@+id/support_appLayout"
             layout="@layout/view_support_app"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/mainConstraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+            android:id="@+id/settingsLayout"
+            layout="@layout/view_settings"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="gone"
