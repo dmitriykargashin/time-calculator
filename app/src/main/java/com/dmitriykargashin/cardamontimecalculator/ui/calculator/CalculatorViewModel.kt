@@ -4,6 +4,7 @@
 
 package com.dmitriykargashin.cardamontimecalculator.ui.calculator
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,7 +26,9 @@ class CalculatorViewModel(
     private val expressionRepository: ExpressionRepository,
     private val tokensRepository: TokensRepository,
     private val resultFormatsRepository: ResultFormatsRepository,
-    private val perUnitsRepository: PerUnitsRepository
+    private val perUnitsRepository: PerUnitsRepository,
+    private val context: Context
+
 
 ) : ViewModel() {
 
@@ -73,7 +76,11 @@ class CalculatorViewModel(
     }
 
 
-    fun getResultTokens() = tokensRepository.getTokens()
+    fun getResultTokens(): LiveData<Tokens> {
+        setIsPerViewButtonDisabled(isResultEmpty())
+        setIsFormatsViewButtonDisabled(isResultEmpty())
+        return tokensRepository.getTokens()
+    }
 
 
     fun getResultFormats() = resultFormatsRepository.getResultFormats()
@@ -112,7 +119,7 @@ class CalculatorViewModel(
 
     fun setIsSettingsLayoutVisible(visible: Boolean) {
         isInSettingsViewModeRepository = visible
-        isInSettingsViewMode.value = isInSupportAppViewModeRepository
+        isInSettingsViewMode.value = isInSettingsViewModeRepository
     }
 
 
@@ -146,9 +153,10 @@ class CalculatorViewModel(
     fun getExpression() = expressionRepository.getExpression()
 
 
-    fun isExpressionEmpty(): Boolean {
-        return expressionRepository.getExpression().value.isNullOrEmpty()
-    }
+    fun isExpressionEmpty(): Boolean = expressionRepository.getExpression().value.isNullOrEmpty()
+
+    fun isResultEmpty(): Boolean = tokensRepository.getTokens().value.isNullOrEmpty()
+
 
     private suspend fun evaluateExpression() {
 
@@ -176,11 +184,15 @@ class CalculatorViewModel(
 
     }
 
-    fun clearOneLastSymbol() {
+    fun clearOneLastSymbol(context: Context) {
         if (expressionRepository.deleteLastTokenOrSymbol()) {
             Log.i(
                 "TAG",
-                "AfterPress cleared ${expressionRepository.getExpression().value?.toSpannableString()}"
+                "AfterPress cleared ${
+                    expressionRepository.getExpression().value?.toSpannableString(
+                        context
+                    )
+                }"
             )
             //if true then recalculate
             viewModelScope.coroutineContext.cancelChildren()
@@ -252,6 +264,7 @@ class CalculatorViewModel(
      //      Log.i("TAG", textView.text.toString())
 
  }*/
+//}
 
 
 }

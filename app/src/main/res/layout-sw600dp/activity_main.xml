@@ -35,7 +35,6 @@
                 android:id="@+id/tvOnlineResult"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/result_output_height"
-                android:layout_marginBottom="8dp"
 
                 android:ellipsize="none"
                 android:fontFamily="@font/googlesans_regular"
@@ -55,7 +54,7 @@
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
                 app:elevation="-100dp"
-                app:layout_constraintBottom_toTopOf="@+id/buttonSettings"
+                app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -164,6 +163,7 @@
                 android:textSize="@dimen/buttons_time_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/buttonMinute"
+                app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent" />
 
         <Button
@@ -220,7 +220,7 @@
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
                 app:layout_constraintStart_toEndOf="@+id/buttonSecond" />
 
 
@@ -573,17 +573,17 @@
                 android:fontFamily="@font/googlesans_regular"
 
                 android:minHeight="30dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:scaleType="center"
                 android:src="@drawable/ic_backspace_black_24dp"
                 android:text="Del"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_operators_size"
-                app:layout_constraintBottom_toBottomOf="@+id/buttonSettings"
-                app:layout_constraintEnd_toEndOf="@+id/buttonDivide"
-                app:layout_constraintStart_toStartOf="@+id/buttonDivide"
-                app:layout_constraintTop_toTopOf="@+id/buttonSettings" />
+                app:layout_constraintBottom_toBottomOf="@+id/buttonDivide"
+                app:layout_constraintEnd_toEndOf="@+id/buttonFormats"
+                app:layout_constraintStart_toStartOf="@+id/buttonFormats"
+                app:layout_constraintTop_toTopOf="@+id/buttonDivide" />
 
         <ImageButton
                 android:id="@+id/buttonFood"
@@ -595,8 +595,8 @@
 
                 android:fontFamily="@font/googlesans_regular"
                 android:minHeight="30dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:scaleType="center"
                 android:src="@drawable/ic_food"
                 android:text="Food"
@@ -605,9 +605,11 @@
                 android:textSize="@dimen/buttons_operators_size"
 
 
-                app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
-                app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
-                app:layout_constraintStart_toEndOf="@+id/buttonPer" />
+                app:layout_constraintBottom_toTopOf="@+id/buttonSettings"
+                app:layout_constraintEnd_toEndOf="@+id/buttonSettings"
+                app:layout_constraintStart_toStartOf="@+id/buttonSettings"
+                app:layout_constraintTop_toBottomOf="@+id/buttonPer" />
+
 
         <ImageButton
                 android:id="@+id/buttonFormats"
@@ -618,15 +620,16 @@
                 android:contentDescription="Formats"
                 android:fontFamily="@font/googlesans_regular"
                 android:minHeight="30dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:scaleType="center"
                 android:src="@drawable/ic_convert_24"
                 android:text="Formats"
                 android:textSize="@dimen/buttons_operators_size"
-                app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
-                app:layout_constraintEnd_toEndOf="@+id/buttonNum7"
-                app:layout_constraintStart_toStartOf="@+id/buttonNum7" />
+                app:layout_constraintBottom_toTopOf="@+id/buttonPer"
+                app:layout_constraintEnd_toEndOf="@+id/buttonPer"
+                app:layout_constraintStart_toStartOf="@+id/buttonPer"
+                app:layout_constraintTop_toBottomOf="@+id/buttonDelete" />
 
         <ImageButton
                 android:id="@+id/buttonPer"
@@ -637,15 +640,16 @@
                 android:contentDescription="Per"
                 android:fontFamily="@font/googlesans_regular"
                 android:minHeight="30dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:scaleType="center"
                 android:src="@drawable/ic_per"
                 android:text="Per"
                 android:textSize="@dimen/buttons_operators_size"
-                app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
-                app:layout_constraintEnd_toStartOf="@+id/buttonFood"
-                app:layout_constraintStart_toEndOf="@+id/buttonFormats" />
+                app:layout_constraintBottom_toTopOf="@+id/buttonFood"
+                app:layout_constraintEnd_toEndOf="@+id/buttonFood"
+                app:layout_constraintStart_toStartOf="@+id/buttonFood"
+                app:layout_constraintTop_toBottomOf="@+id/buttonFormats" />
 
         <ImageButton
                 android:id="@+id/buttonSettings"
@@ -656,21 +660,17 @@
                 android:contentDescription="Settings"
                 android:fontFamily="@font/googlesans_regular"
                 android:minHeight="30dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:scaleType="center"
                 android:src="@drawable/ic_settings"
                 android:text="Settings"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_operators_size"
-
-                app:elevation="100dp"
-
-
-                app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
-                app:layout_constraintEnd_toEndOf="@+id/buttonNum9"
-                app:layout_constraintStart_toStartOf="@+id/buttonNum9" />
-
+                app:layout_constraintBottom_toBottomOf="@+id/buttonMsec"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonMsec"
+                app:layout_constraintTop_toBottomOf="@+id/buttonDay" />
 
         <TextView
                 android:id="@+id/tvFormats"
@@ -680,8 +680,8 @@
                 android:fontFamily="@font/googlesans_regular"
                 android:text="Hour Minute"
                 android:textAllCaps="false"
-                android:textSize="@dimen/separator_time_text_size"
                 android:textColor="@color/colorControls"
+                android:textSize="@dimen/separator_time_text_size"
                 app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult"
                 app:layout_constraintStart_toStartOf="parent" />
 

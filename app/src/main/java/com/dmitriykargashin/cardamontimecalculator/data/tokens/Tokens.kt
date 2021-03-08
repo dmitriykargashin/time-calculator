@@ -4,6 +4,7 @@
 
 package com.dmitriykargashin.cardamontimecalculator.data.tokens
 
+import android.content.Context
 import android.text.SpannableString
 import android.util.Log
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.*
@@ -52,7 +53,7 @@ class Tokens : ArrayList<Token>(), Cloneable {
         return tokensString.trim()
     }
 
-    fun toSpannableString(): SpannableString {
+    fun toSpannableString(context: Context): SpannableString {
         var spanString = SpannableString("")
 
         for (token in this) {
@@ -62,7 +63,7 @@ class Tokens : ArrayList<Token>(), Cloneable {
 
                 TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
                     spanString += token.strRepresentation.addStartAndEndSpace()
-                        .toHTMLWithGreenColor()
+                        .toHTMLWithGreenColor(context)
 
                 TokenType.MULTIPLY, TokenType.PLUS, TokenType.DIVIDE, TokenType.MINUS ->
                     spanString += token.strRepresentation.addStartAndEndSpace()
@@ -75,20 +76,20 @@ class Tokens : ArrayList<Token>(), Cloneable {
         return spanString
     }
 
-    fun toLightSpannableString(): SpannableString {
+    fun toLightSpannableString(context: Context): SpannableString {
         var spanString = SpannableString("")
 
         for (token in this) {
             when (token.type) {
                 TokenType.NUMBER ->
-                    spanString += token.strRepresentation.toHTMLWithGrayColor()
+                    spanString += token.strRepresentation.toHTMLWithGrayColor(context)
 
                 TokenType.SECOND, TokenType.MSECOND, TokenType.YEAR, TokenType.MONTH, TokenType.WEEK, TokenType.DAY, TokenType.HOUR, TokenType.MINUTE ->
                     spanString += token.strRepresentation.addStartAndEndSpace()
-                        .toHTMLWithLightGreenColor()
+                        .toHTMLWithLightGreenColor(context)
                 TokenType.MULTIPLY, TokenType.PLUS, TokenType.DIVIDE, TokenType.MINUS ->
                     spanString += token.strRepresentation.addStartAndEndSpace()
-                        .toHTMLWithGrayColor()
+                        .toHTMLWithGrayColor(context)
 
                 TokenType.ERROR -> spanString += token.strRepresentation.addStartAndEndSpace()
                     .toHTMLWithRedColor()

@@ -4,6 +4,7 @@
 
 package com.dmitriykargashin.cardamontimecalculator.ui.calculator
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.card_view_formats.view.*
 
 
-class RvAdapterResultFormats(private val viewModel: CalculatorViewModel) :
+class RvAdapterResultFormats(private val viewModel: CalculatorViewModel, private val context: Context) :
     RecyclerView.Adapter<RvAdapterResultFormats.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
@@ -28,9 +29,9 @@ class RvAdapterResultFormats(private val viewModel: CalculatorViewModel) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.id.text =
-            viewModel.getResultFormats().value!![position].textPresentationOfTokens.toHTMLWithGreenColor()
+            viewModel.getResultFormats().value!![position].textPresentationOfTokens.toHTMLWithGreenColor(context)
         holder.name.text =
-            viewModel.getResultFormats().value!![position].convertedResultTokens.toLightSpannableString()
+            viewModel.getResultFormats().value!![position].convertedResultTokens.toLightSpannableString(context)
 
 
         holder.cardView.setOnClickListener {

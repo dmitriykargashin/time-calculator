@@ -4,6 +4,7 @@ package com.dmitriykargashin.cardamontimecalculator.internal.extension
 
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 
 
@@ -11,6 +12,8 @@ import android.text.SpannableString
 
 import android.text.TextUtils
 import android.util.Log
+import androidx.core.content.ContextCompat
+import com.dmitriykargashin.cardamontimecalculator.R
 import com.dmitriykargashin.cardamontimecalculator.utilites.TimeConverter
 import com.dmitriykargashin.cardamontimecalculator.engine.lexer.LexicalAnalyzer
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.Token
@@ -34,23 +37,19 @@ fun String.toTokenInMSec(): Token {
 }
 
 
-fun String.toHTMLWithGreenColor(): SpannableString {
+fun String.toHTMLWithGreenColor(context: Context): SpannableString {
 
 
-//todo how to get color from colors.xml?
-
-    return spannable { size(0.7f, color(Color.parseColor("#33691e"), this)) }
+    return spannable { size(0.7f, color(ContextCompat.getColor(context, R.color.colorExpressionTime), this)) }
 
 
 }
 
 
-fun String.toHTMLWithLightGreenColor(): SpannableString {
+fun String.toHTMLWithLightGreenColor(context: Context): SpannableString {
+    return spannable { size(0.7f, color(ContextCompat.getColor(context, R.color.colorResultTime), this)) }
 
-
-//todo how to get color from colors.xml?
-
-    return spannable { size(0.7f, color(Color.parseColor("#4c992e"), this)) }
+   // return spannable { size(0.7f, color(Color.parseColor("#4c992e"), this)) }
 
 
 }
@@ -66,12 +65,12 @@ fun String.toHTMLBlackColor(): SpannableString {
 
 }
 
-fun String.toHTMLWithGrayColor(): SpannableString {
+fun String.toHTMLWithGrayColor(context:Context): SpannableString {
 
+    return spannable { size(0.7f, color(ContextCompat.getColor(context, R.color.colorResultNums), this)) }
 
-//todo how to get color from colors.xml?
-
-    return spannable {  color(Color.parseColor("#807e7e"), this) }
+//
+//    return spannable {  color(Color.parseColor("#807e7e"), this) }
 
 
 }

@@ -27,9 +27,11 @@ class TokensRepository {
 
     }
 
+    fun isEmpty() = length() == 0
+
     fun length(): Int = tokensList.lastIndex + 1
 
-    fun getTokens()= tokens as LiveData<Tokens>
+    fun getTokens() = tokens as LiveData<Tokens>
 
     fun setTokens(newTokens: Tokens) {
 

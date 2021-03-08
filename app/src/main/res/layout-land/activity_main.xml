@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2019. Dmitriy Kargashin
-  -->
+<?xml version="1.0" encoding="utf-8"?>
+
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/commonConstraintLayout"
@@ -13,50 +12,63 @@
         tools:orientation="vertical"
         tools:visibility="visible">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/background_light"
+            android:background="@color/colorMainBackground"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            app:layout_constraintBottom_toBottomOf="parent"
 
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:context=".MainActivity"
+            app:layout_constraintVertical_bias="1.0"
+            tools:context=".ui.calculator.CalculatorActivity"
             tools:orientation="vertical">
 
+
+        <TextView
+                android:id="@+id/tvOnlineResult"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/result_output_height"
+
+                android:ellipsize="none"
+                android:fontFamily="@font/googlesans_regular"
+                android:gravity="center_vertical|end"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="vertical"
+                android:singleLine="false"
+                android:textColor="@android:color/black"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/result_output_maxtextsize"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="@dimen/result_output_maxtextsize"
+                app:autoSizeMinTextSize="@dimen/result_output_mintextsize"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:elevation="-100dp"
+                app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
                 android:id="@+id/tvSpaceWithShadowOnly"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/text_view_shadow"
+                android:includeFontPadding="false"
                 android:textSize="0sp"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
-
-        <ImageButton
-                android:id="@+id/buttonDelete"
-                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:contentDescription="Delete"
-                android:fontFamily="@font/googlesans_regular"
-                android:minWidth="50dp"
-                android:minHeight="25dp"
-                android:padding="8dp"
-
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_backspace_black_24dp"
-
-                android:text="Clear"
-                android:textColor="@color/colorNums"
-                android:textSize="@dimen/buttons_operators_size"
-                app:layout_constraintBottom_toBottomOf="@+id/buttonDivide"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonAddition"
-                app:layout_constraintTop_toTopOf="@+id/buttonDivide" />
 
 
         <Button
@@ -66,15 +78,16 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons_time"
+                android:paddingBottom="@dimen/padding_buttons_time"
                 android:text="Year"
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum9"
-                app:layout_constraintEnd_toEndOf="@+id/buttonWeek"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/buttonWeek" />
+                app:layout_constraintBottom_toTopOf="@+id/buttonHour"
+                app:layout_constraintEnd_toEndOf="@+id/buttonHour"
+                app:layout_constraintStart_toStartOf="@+id/buttonHour" />
 
         <Button
                 android:id="@+id/buttonMonth"
@@ -83,15 +96,16 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons_time"
+                android:paddingBottom="@dimen/padding_buttons_time"
                 android:text="Month"
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonYear"
-                app:layout_constraintEnd_toEndOf="@+id/buttonDay"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/buttonDay" />
+                app:layout_constraintBottom_toTopOf="@+id/buttonMinute"
+                app:layout_constraintEnd_toEndOf="@+id/buttonMinute"
+                app:layout_constraintStart_toStartOf="@+id/buttonMinute" />
 
         <Button
                 android:id="@+id/buttonWeek"
@@ -100,43 +114,10 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons_time"
+                android:paddingBottom="@dimen/padding_buttons_time"
                 android:text="Week"
-                android:textAllCaps="false"
-                android:textColor="@color/colorTimeBtns"
-                android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum6"
-                app:layout_constraintEnd_toEndOf="@+id/buttonHour"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/buttonHour" />
-
-        <Button
-                android:id="@+id/buttonDay"
-                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackgroundBorderless"
-                android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
-                android:text="Day"
-                android:textAllCaps="false"
-                android:textColor="@color/colorTimeBtns"
-                android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonWeek"
-                app:layout_constraintEnd_toEndOf="@+id/buttonMinute"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/buttonMinute" />
-
-
-        <Button
-                android:id="@+id/buttonHour"
-                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackgroundBorderless"
-                android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
-                android:text="Hour "
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
@@ -145,53 +126,101 @@
                 app:layout_constraintStart_toStartOf="@+id/buttonSecond" />
 
         <Button
-                android:id="@+id/buttonMinute"
+                android:id="@+id/buttonDay"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
-                android:text="Minute"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons_time"
+                android:paddingBottom="@dimen/padding_buttons_time"
+                android:text="Day"
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonMsec"
                 app:layout_constraintEnd_toEndOf="@+id/buttonMsec"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/buttonWeek"
                 app:layout_constraintStart_toStartOf="@+id/buttonMsec" />
+
+
+        <Button
+                android:id="@+id/buttonHour"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_16_size"
+                android:background="?selectableItemBackgroundBorderless"
+                android:fontFamily="@font/googlesans_regular"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons_time"
+                android:paddingBottom="@dimen/padding_buttons_time"
+                android:text="Hour"
+                android:textAllCaps="false"
+                android:textColor="@color/colorTimeBtns"
+                android:textSize="@dimen/buttons_time_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/buttonMinute"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+                android:id="@+id/buttonMinute"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_16_size"
+                android:background="?selectableItemBackgroundBorderless"
+                android:fontFamily="@font/googlesans_regular"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons_time"
+                android:paddingBottom="@dimen/padding_buttons_time"
+                android:text="Minute"
+                android:textAllCaps="false"
+                android:textColor="@color/colorTimeBtns"
+                android:textSize="@dimen/buttons_time_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/buttonSecond"
+                app:layout_constraintStart_toEndOf="@+id/buttonHour" />
 
         <Button
                 android:id="@+id/buttonSecond"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_16_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons_time"
+                android:paddingBottom="@dimen/padding_buttons_time"
                 android:text="Second"
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonEqual"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/buttonMsec"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/buttonEqual" />
+                app:layout_constraintStart_toEndOf="@+id/buttonMinute" />
 
         <Button
                 android:id="@+id/buttonMsec"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_16_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons_time"
+                android:paddingBottom="@dimen/padding_buttons_time"
                 android:text="Msec"
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBaseline_toBaselineOf="@+id/buttonSecond"
-                app:layout_constraintEnd_toStartOf="@+id/buttonAddition"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
                 app:layout_constraintStart_toEndOf="@+id/buttonSecond" />
 
 
@@ -202,13 +231,14 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="7"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum4"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNum4"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonNum4" />
 
         <Button
@@ -218,13 +248,15 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="8"
+
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum5"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNum5"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonNum5" />
 
         <Button
@@ -234,34 +266,57 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="9"
+
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum6"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNum6"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonNum6" />
+
 
         <Button
                 android:id="@+id/buttonDivide"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:includeFontPadding="false"
-                android:minWidth="50dp"
-                android:minHeight="25dp"
+
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="@string/button_divide"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="@dimen/buttons_operators_size"
+                android:textSize="@dimen/buttons_num_size"
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum9"
                 app:layout_constraintBottom_toTopOf="@+id/buttonMultiply"
-                app:layout_constraintStart_toStartOf="@+id/buttonMultiply"
-                app:layout_constraintTop_toBottomOf="@+id/tvOnlineResult"
-                app:layout_constraintVertical_chainStyle="spread_inside" />
+                app:layout_constraintEnd_toEndOf="@+id/buttonMultiply"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/buttonMultiply" />
 
+        <Button
+                android:id="@+id/buttonMultiply"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:fontFamily="@font/googlesans_regular"
+
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
+                android:text="@string/button_multiply"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="@dimen/buttons_num_size"
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum6"
+                app:layout_constraintBottom_toTopOf="@+id/buttonAddition"
+                app:layout_constraintEnd_toEndOf="@+id/buttonAddition"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/buttonAddition" />
 
         <Button
                 android:id="@+id/buttonNum4"
@@ -270,13 +325,14 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="4"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum1"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNum1"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonNum1" />
 
         <Button
@@ -286,7 +342,9 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="5"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
@@ -302,7 +360,9 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="6"
                 android:textAllCaps="false"
                 android:textColor="@color/colorNums"
@@ -312,23 +372,25 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonNum3" />
 
+
         <Button
-                android:id="@+id/buttonMultiply"
+                android:id="@+id/buttonAddition"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:includeFontPadding="false"
-                android:minWidth="50dp"
-                android:minHeight="25dp"
-                android:text="@string/button_multiply"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="@dimen/buttons_operators_size"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
+                android:text="@string/button_addition"
+                android:textColor="@color/colorOperators"
+                android:textSize="@dimen/buttons_num_size"
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum3"
                 app:layout_constraintBottom_toTopOf="@+id/buttonSubstraction"
-                app:layout_constraintStart_toStartOf="@+id/buttonSubstraction"
-                app:layout_constraintTop_toBottomOf="@+id/buttonDivide" />
-
+                app:layout_constraintEnd_toEndOf="@+id/buttonSubstraction"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/buttonSubstraction" />
 
         <Button
                 android:id="@+id/buttonNum1"
@@ -337,13 +399,14 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="1"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum0"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNum0"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonNum0" />
 
         <Button
@@ -353,13 +416,15 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="2"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonComma"
                 app:layout_constraintEnd_toEndOf="@+id/buttonComma"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.521"
                 app:layout_constraintStart_toStartOf="@+id/buttonComma" />
 
         <Button
@@ -369,7 +434,9 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="3"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
@@ -385,15 +452,19 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:includeFontPadding="false"
-                android:minWidth="50dp"
-                android:minHeight="25dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="@string/button_substraction"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="@dimen/buttons_operators_size"
-                app:layout_constraintBottom_toTopOf="@+id/buttonAddition"
-                app:layout_constraintStart_toStartOf="@+id/buttonAddition"
-                app:layout_constraintTop_toBottomOf="@+id/buttonMultiply" />
+
+                android:textSize="@dimen/buttons_num_size"
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonEqual"
+                app:layout_constraintBottom_toTopOf="@+id/buttonDay"
+                app:layout_constraintEnd_toEndOf="@+id/buttonDay"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/buttonDay"
+                app:layout_constraintTop_toBottomOf="@+id/buttonAddition" />
 
 
         <Button
@@ -401,343 +472,221 @@
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_8_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="."
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonEqual"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/buttonNum0" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum0"
+                app:layout_constraintEnd_toEndOf="@+id/buttonMonth"
+                app:layout_constraintStart_toStartOf="@+id/buttonMonth" />
 
         <Button
                 android:id="@+id/buttonNum0"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_8_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="0"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonComma"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBottom_toTopOf="@id/buttonYear"
+                app:layout_constraintEnd_toEndOf="@+id/buttonYear"
+                app:layout_constraintStart_toStartOf="@+id/buttonYear" />
 
         <Button
                 android:id="@+id/buttonEqual"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_8_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
-                android:minHeight="35dp"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
                 android:text="="
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonSecond"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/buttonComma" />
-
-        <Button
-                android:id="@+id/buttonAddition"
-                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_8_size"
-                android:background="?selectableItemBackgroundBorderless"
-                android:fontFamily="@font/googlesans_regular"
-                android:includeFontPadding="false"
-                android:minWidth="50dp"
-                android:minHeight="25dp"
-                android:text="+"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="@dimen/buttons_operators_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
-
-
-                app:layout_constraintStart_toEndOf="@+id/buttonMsec"
-                app:layout_constraintTop_toBottomOf="@+id/buttonSubstraction" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonComma"
+                app:layout_constraintEnd_toEndOf="@+id/buttonWeek"
+                app:layout_constraintStart_toStartOf="@+id/buttonWeek" />
 
         <TextView
                 android:id="@+id/tvExpressionField"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_gravity="fill"
-                android:background="@android:color/white"
+                android:layout_marginBottom="8dp"
                 android:ellipsize="marquee"
                 android:enabled="true"
                 android:fontFamily="@font/googlesans_regular"
                 android:gravity="bottom|end"
                 android:minHeight="@dimen/result_expression_mintextsize"
-                android:paddingLeft="@dimen/margin_16_size"
-                android:paddingTop="@dimen/margin_8_size"
-                android:paddingEnd="@dimen/margin_16_size"
-                android:paddingRight="@dimen/margin_16_size"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:scrollbarStyle="outsideInset"
                 android:scrollbars="vertical"
-                android:textColor="#272727"
+                android:textColor="@color/colorNums"
                 android:textIsSelectable="true"
+
+
                 android:textSize="@dimen/result_expression_maxtextsize"
                 app:autoSizeMaxTextSize="@dimen/result_expression_maxtextsize"
                 app:autoSizeMinTextSize="@dimen/result_expression_mintextsize"
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toTopOf="@+id/buttonFormats"
+                app:layout_constraintBottom_toTopOf="@+id/tvFormats"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonPer"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:fontFamily="@font/googlesans_regular"
-                android:foreground="?selectableItemBackgroundBorderless"
-                android:gravity="start"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:text="Per"
-                android:textAllCaps="false"
-                android:textColor="#304FFE"
-                android:textSize="@dimen/buttons_time_size"
-                android:textStyle="bold"
-                android:theme="@style/Theme.MaterialComponents"
-                ads:cornerRadius="5dp"
-                ads:elevation="2dp"
-                ads:layout_constraintBottom_toTopOf="@+id/tvOnlineResult"
-                ads:layout_constraintEnd_toEndOf="parent"
-                ads:strokeColor="#304FFE"
-                ads:strokeWidth="1dp" />
-
-        <TextView
-                android:id="@+id/tvOnlineResult"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/result_output_height"
-                android:background="@android:color/white"
-                android:clickable="false"
-                android:ellipsize="none"
-                android:enabled="true"
-                android:fontFamily="@font/googlesans_regular"
-                android:gravity="center_vertical|end"
-                android:paddingLeft="@dimen/margin_16_size"
-                android:paddingEnd="@dimen/margin_16_size"
-                android:paddingRight="@dimen/margin_16_size"
-                android:scrollbarStyle="outsideInset"
-                android:scrollbars="vertical"
-                android:singleLine="false"
-                android:textColor="@android:color/black"
-                android:textIsSelectable="true"
-                android:textSize="@dimen/result_output_maxtextsize"
-                android:textStyle="bold"
-                app:autoSizeMaxTextSize="@dimen/result_output_maxtextsize"
-                app:autoSizeMinTextSize="@dimen/result_output_mintextsize"
-                app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonFormats"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="537dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:fontFamily="@font/googlesans_regular"
-                android:foreground="?selectableItemBackgroundBorderless"
-                android:gravity="start"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:text="Hour Minute"
-                android:textAllCaps="false"
-                android:textColor="#304FFE"
-                android:textSize="@dimen/buttons_time_size"
-                android:textStyle="bold"
-                android:theme="@style/Theme.MaterialComponents"
-                app:cornerRadius="5dp"
-                app:elevation="1dp"
-                app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:strokeColor="#304FFE"
-                app:strokeWidth="1dp" />
 
         <TextView
                 android:id="@+id/tvFakeForClear"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@android:color/holo_blue_dark"
+                android:background="@color/colorResultTime"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/tvSpaceWithShadowOnly"
-                app:layout_constraintEnd_toEndOf="@+id/tvExpressionField"
-                app:layout_constraintStart_toStartOf="@+id/tvExpressionField"
-                app:layout_constraintTop_toTopOf="@+id/tvExpressionField" />
-
-        <include
-                android:id="@+id/dimmedBackground"
-                layout="@layout/dimmed_background"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="gone"
-                ads:layout_constraintHorizontal_bias="0.0"
-                ads:layout_constraintVertical_bias="0.0"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/tvExpressionField" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
+        <ImageButton
+                android:id="@+id/buttonDelete"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginStart="@dimen/fab_margin"
-                android:layout_marginTop="@dimen/fab_margin"
-                android:clickable="true"
-                android:contentDescription="@string/settings"
-                android:focusable="true"
-                android:src="@drawable/ic_menu_white_24dp"
-                ads:backgroundTint="@color/colorTimeBtns"
-                ads:elevation="6dp"
-                ads:fabSize="mini"
-                ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toTopOf="parent"
-                app:tint="@null" />
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="Delete"
+                android:fontFamily="@font/googlesans_regular"
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/removeads"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
+                android:scaleType="center"
+                android:src="@drawable/ic_backspace_black_24dp"
+                android:text="Del"
+                android:textColor="@color/colorNums"
+                android:textSize="@dimen/buttons_operators_size"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonDivide"
+                app:layout_constraintEnd_toEndOf="@+id/buttonFormats"
+                app:layout_constraintStart_toStartOf="@+id/buttonFormats"
+                app:layout_constraintTop_toTopOf="@+id/buttonDivide" />
+
+        <ImageButton
+                android:id="@+id/buttonFood"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:contentDescription="@string/removeads"
-                android:focusable="true"
-                android:src="@drawable/ic_remove_ads_green_24dp"
-                ads:backgroundTint="@android:color/white"
-                ads:elevation="4dp"
-                ads:fabSize="mini"
-                ads:layout_constraintEnd_toEndOf="@+id/fab"
-                ads:layout_constraintStart_toStartOf="@+id/fab"
-                ads:layout_constraintTop_toBottomOf="@+id/feedback"
-                app:tint="@null" />
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="Tea"
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/rateApp"
+                android:fontFamily="@font/googlesans_regular"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
+                android:scaleType="center"
+                android:src="@drawable/ic_food"
+                android:text="Food"
+                android:textColor="@color/colorNums"
+
+                android:textSize="@dimen/buttons_operators_size"
+
+
+                app:layout_constraintBottom_toTopOf="@+id/buttonSettings"
+                app:layout_constraintEnd_toEndOf="@+id/buttonSettings"
+                app:layout_constraintStart_toStartOf="@+id/buttonSettings"
+                app:layout_constraintTop_toBottomOf="@+id/buttonPer" />
+
+
+        <ImageButton
+                android:id="@+id/buttonFormats"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:contentDescription="@string/ratetheapp"
-                android:focusable="true"
-                android:src="@drawable/ic_star_green_24dp"
-                ads:backgroundTint="@android:color/white"
-                ads:elevation="4dp"
-                ads:fabSize="mini"
-                ads:layout_constraintEnd_toEndOf="@+id/fab"
-                ads:layout_constraintStart_toStartOf="@+id/fab"
-                ads:layout_constraintTop_toBottomOf="@+id/fab"
-                app:tint="@null" />
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="Formats"
+                android:fontFamily="@font/googlesans_regular"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
+                android:scaleType="center"
+                android:src="@drawable/ic_convert_24"
+                android:text="Formats"
+                android:textSize="@dimen/buttons_operators_size"
+                app:layout_constraintBottom_toTopOf="@+id/buttonPer"
+                app:layout_constraintEnd_toEndOf="@+id/buttonPer"
+                app:layout_constraintStart_toStartOf="@+id/buttonPer"
+                app:layout_constraintTop_toBottomOf="@+id/buttonDelete" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/feedback"
+        <ImageButton
+                android:id="@+id/buttonPer"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:contentDescription="@string/feedback"
-                android:focusable="true"
-                android:src="@drawable/ic_mail_green_24dp"
-                ads:backgroundTint="@android:color/white"
-                ads:elevation="4dp"
-                ads:fabSize="mini"
-                ads:layout_constraintEnd_toEndOf="@+id/fab"
-                ads:layout_constraintStart_toStartOf="@+id/fab"
-                ads:layout_constraintTop_toBottomOf="@+id/rateApp"
-                app:tint="@null" />
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="Per"
+                android:fontFamily="@font/googlesans_regular"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
+                android:scaleType="center"
+                android:src="@drawable/ic_per"
+                android:text="Per"
+                android:textSize="@dimen/buttons_operators_size"
+                app:layout_constraintBottom_toTopOf="@+id/buttonFood"
+                app:layout_constraintEnd_toEndOf="@+id/buttonFood"
+                app:layout_constraintStart_toStartOf="@+id/buttonFood"
+                app:layout_constraintTop_toBottomOf="@+id/buttonFormats" />
 
+        <ImageButton
+                android:id="@+id/buttonSettings"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="Settings"
+                android:fontFamily="@font/googlesans_regular"
+                android:minHeight="30dp"
+                android:paddingTop="@dimen/padding_buttons"
+                android:paddingBottom="@dimen/padding_buttons"
+                android:scaleType="center"
+                android:src="@drawable/ic_settings"
+                android:text="Settings"
+                android:textColor="@color/colorNums"
+                android:textSize="@dimen/buttons_operators_size"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonMsec"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonMsec"
+                app:layout_constraintTop_toTopOf="@+id/buttonMsec" />
 
         <TextView
-                android:id="@+id/tvRateApp"
-                style="@style/Widget.AppCompat.TextView"
+                android:id="@+id/tvFormats"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/rounded_corner"
-                android:elevation="2dp"
                 android:fontFamily="@font/googlesans_regular"
-                android:labelFor="@id/rateApp"
-                android:paddingStart="@dimen/margin_8_size"
-                android:paddingEnd="@dimen/margin_8_size"
-                android:text="@string/rate_the_app"
-                android:textColor="@color/colorTimeBtns"
-                android:textStyle="bold"
-                ads:layout_constraintBottom_toBottomOf="@+id/rateApp"
-                ads:layout_constraintStart_toEndOf="@+id/rateApp"
-                ads:layout_constraintTop_toTopOf="@+id/rateApp" />
-
-        <TextView
-                android:id="@+id/tvFeedback"
-                style="@style/Widget.AppCompat.TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/rounded_corner"
-                android:elevation="2dp"
-                android:fontFamily="@font/googlesans_regular"
-                android:labelFor="@id/rateApp"
-                android:paddingStart="@dimen/margin_8_size"
-                android:paddingEnd="@dimen/margin_8_size"
-                android:text="@string/send_feedback"
-                android:textColor="@color/colorTimeBtns"
-                android:textStyle="bold"
-                ads:layout_constraintBottom_toBottomOf="@+id/feedback"
-                ads:layout_constraintStart_toEndOf="@+id/feedback"
-                ads:layout_constraintTop_toTopOf="@+id/feedback" />
-
-        <TextView
-                android:id="@+id/tvRemoveAds"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/rounded_corner"
-                android:elevation="2dp"
-                android:fontFamily="@font/googlesans_regular"
-                android:paddingStart="@dimen/margin_8_size"
-                android:paddingEnd="@dimen/margin_8_size"
-                android:text="@string/remove_ads"
-                android:textColor="@color/colorTimeBtns"
-                android:textStyle="bold"
-                ads:layout_constraintBottom_toBottomOf="@+id/removeads"
-                ads:layout_constraintStart_toEndOf="@+id/removeads"
-                ads:layout_constraintTop_toTopOf="@+id/removeads" />
-
+                android:text="Hour Minute"
+                android:textAllCaps="false"
+                android:textColor="@color/colorControls"
+                android:textSize="@dimen/separator_time_text_size"
+                app:layout_constraintBottom_toTopOf="@+id/tvOnlineResult"
+                app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <include
             android:id="@+id/formatsLayout"
@@ -761,4 +710,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+            android:id="@+id/support_appLayout"
+            layout="@layout/view_support_app"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/mainConstraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+            android:id="@+id/settingsLayout"
+            layout="@layout/view_settings"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/mainConstraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

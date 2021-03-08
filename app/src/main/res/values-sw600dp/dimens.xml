@@ -12,7 +12,7 @@
     <dimen name="result_output_height">60dp</dimen>
     <dimen name="result_output_mintextsize">16sp</dimen>
     <dimen name="result_output_maxtextsize">50sp</dimen>
-     <dimen name="result_expression_mintextsize">24sp</dimen>
+    <dimen name="result_expression_mintextsize">24sp</dimen>
     <dimen name="result_expression_maxtextsize">64sp</dimen>
     <dimen name="fab_margin">8dp</dimen>
     <dimen name="separator_time_text_size">18sp</dimen>

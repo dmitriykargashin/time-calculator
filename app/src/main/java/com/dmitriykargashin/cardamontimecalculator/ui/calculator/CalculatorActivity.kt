@@ -50,6 +50,7 @@ import android.util.Base64
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLBlackColor
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithGrayColor
 import com.google.android.material.snackbar.Snackbar
@@ -229,31 +230,30 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     private fun loadAllSKUs() = if (billingClient.isReady) {
-        val params = SkuDetailsParams
-            .newBuilder()
-            .setSkusList(skuList)
-            .setType(BillingClient.SkuType.INAPP)
-            .build()
-        billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
-            // Process the result.
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList.isNotEmpty()) {
-                for (skuDetails in skuDetailsList) {
-                    if (skuDetails.sku == "remove_ads")
-
-                        removeads.setOnClickListener {
-                            logger("press button to buy")
-                            fadeOutFABs()
-                            val billingFlowParams = BillingFlowParams
-                                .newBuilder()
-                                .setSkuDetails(skuDetails)
-                                .build()
-                            billingClient.launchBillingFlow(this, billingFlowParams)
-                        }
-                }
-            }
-            //  logger(skuDetailsList.get(0).description)
-
-        }
+//        val params = SkuDetailsParams
+//            .newBuilder()
+//            .setSkusList(skuList)
+//            .setType(BillingClient.SkuType.INAPP)
+//            .build()
+//        billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+//            // Process the result.
+//            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList.isNotEmpty()) {
+//                for (skuDetails in skuDetailsList) {
+//                    if (skuDetails.sku == "remove_ads")
+//
+////                        removeads.setOnClickListener {
+////                            logger("press button to buy")
+////                            val billingFlowParams = BillingFlowParams
+////                                .newBuilder()
+////                                .setSkuDetails(skuDetails)
+////                                .build()
+////                            billingClient.launchBillingFlow(this, billingFlowParams)
+////                        }
+//                }
+//            }
+//            //  logger(skuDetailsList.get(0).description)
+//
+//        }
 
     } else {
         logger("Billing Client not ready")
@@ -387,21 +387,13 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
     }
 
-    private fun removeAds() {
-        isRemoveAdsPurchased = true
-        //   adView.visibility = View.GONE
-        removeads.visibility = View.GONE
-        tvRemoveAds.visibility = View.GONE
-
-        logger("Purchase applied. ads removed")
-    }
 
 
     private fun initUI() {
         setSupportActionBar(toolbarSupport_app)
         setSupportActionBar(toolbarPer)
         setSupportActionBar(toolbar)
-        factory = InjectorUtils.provideCalculatorViewModelFactory()
+        factory = InjectorUtils.provideCalculatorViewModelFactory(applicationContext)
         viewModel = ViewModelProviders.of(this, factory)
             .get(CalculatorViewModel::class.java)
 
@@ -419,7 +411,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         // Observe the model
         viewModel.getResultFormats().observe(this, Observer {
-            rvFormatsToChoose.adapter = RvAdapterResultFormats(viewModel)
+            rvFormatsToChoose.adapter = RvAdapterResultFormats(viewModel,applicationContext)
             Log.d("TAG", "changeFormat")
         })
 
@@ -448,7 +440,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             if (it) {
                 buttonPer.isEnabled = false
                 buttonPer.isClickable = false
-                buttonPer.alpha = 0.5f
+                buttonPer.alpha = 0.2f
 
 
             } else {
@@ -463,7 +455,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             if (it) {
                 buttonFormats.isEnabled = false
                 buttonFormats.isClickable = false
-                buttonFormats.alpha = 0.5f
+                buttonFormats.alpha = 0.2f
 
 
             } else {
@@ -492,13 +484,13 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
             Log.d("TAG", "changeFormat click")
 
-            tvFormats.text = (it.textPresentationOfTokens+":").toHTMLBlackColor()
+            tvFormats.text = (it.textPresentationOfTokens)//.toHTMLBlackColor()
 
             val touchPointX = commonConstraintLayout.width / 2
             val touchPointY = commonConstraintLayout.height / 2
 
             if (formatsLayout.isAttachedToWindow && viewModel.getIsFormatsLayoutVisible().value!!) {
-                Log.d("TAG", "changeFormat click ${formatsLayout.visibility == View.VISIBLE}")
+               // Log.d("TAG", "changeFormat click ${formatsLayout.visibility == View.VISIBLE}")
                 closeFormatsLayout(
                     touchPointX,
                     touchPointY
@@ -511,11 +503,11 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             this,
             Observer {
 
-                tvOnlineResult.text = it?.toLightSpannableString()
+                tvOnlineResult.text = it?.toLightSpannableString(applicationContext)
                 rvPer.adapter = RvAdapterPer(viewModel)
 
                 // add result to ViewPer view
-                labelTimeIntervalAmount.text = it?.toSpannableString()
+                labelTimeIntervalAmount.text = it?.toSpannableString(applicationContext)
 
 
                 /*tokens ->
@@ -532,7 +524,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         viewModel.getExpression().observe(
             this,
             Observer {
-                tvExpressionField.text = it.toSpannableString()
+                tvExpressionField.text = it.toSpannableString(applicationContext)
                 tvExpressionField.movementMethod = ScrollingMovementMethod()
                 // tvExpressionField.setTextIsSelectable(true)
 
@@ -550,7 +542,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
         toolbarInitalize()
-        fabInitalize()
+
 
 
         //nums
@@ -643,7 +635,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         buttonDelete.setOnClickListener {
-            viewModel.clearOneLastSymbol()
+            viewModel.clearOneLastSymbol(applicationContext)
             //      Log.i("TAG","pressed delete")
         }
 
@@ -680,19 +672,21 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         duration = 600
                     }
                 // make the view invisible when the animation is done
-                /*    anim.addListener(object : AnimatorListenerAdapter() {
-
-                        override fun onAnimationEnd(animation: Animator) {
-                            super.onAnimationEnd(animation)
-                            //           mainConstraintLayout.visibility = View.GONE
-
-                            // viewModel.clearAll()
-                        }
-                    })*/
+//                    anim.addListener(object : AnimatorListenerAdapter() {
+//
+//                        override fun onAnimationEnd(animation: Animator) {
+//                            super.onAnimationEnd(animation)
+//                            window.statusBarColor = ContextCompat.getColor(applicationContext, R.color.colorSecondaryBackground)
+//                            //           mainConstraintLayout.visibility = View.GONE
+//
+//                            // viewModel.clearAll()
+//                        }
+//                    })
                 viewModel.setIsFormatsLayoutVisible(true)
                 formatsLayout.visibility = View.VISIBLE
 
                 anim.start()
+
 
 
             } else {
@@ -970,7 +964,6 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
         toolbarInitalize()
-        fabInitalize()
 
 
         etUnitAmount.addTextChangedListener(object : TextWatcher {
@@ -1032,60 +1025,6 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     }
 
-    private fun fabInitalize() {
-        if (!isRemoveAdsPurchased) {
-            init(removeads)
-            init(tvRemoveAds)
-
-
-        }
-        init(rateApp)
-        init(tvRateApp)
-
-        init(feedback)
-        init(tvFeedback)
-
-
-
-        fab.setOnClickListener {
-
-            if (!fab.isExpanded) {
-                fadeInFABs()
-            } else {
-                fadeOutFABs()
-            }
-
-
-            //  dimmedBackground.visibility = View.VISIBLE
-            /*if (fab.isExpanded()) {//make the background visible
-
-            } else {//make the background invisible
-                dimmedBackground.visibility = View.GONE
-            }*/
-
-        }
-
-
-
-        dimmedBackground.setOnClickListener {
-            fadeOutFABs()
-        }
-
-
-        rateApp.setOnClickListener {
-            fadeOutFABs()
-            rateMeOnGooglePlay()
-
-        }
-
-        feedback.setOnClickListener {
-            fadeOutFABs()
-            sendFeedback()
-
-        }
-
-
-    }
 
     private fun sendFeedback() {
 
@@ -1107,133 +1046,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
 
-    private fun fadeInFABs() {
-        fadeIn()
-        if (!isRemoveAdsPurchased) {
-            showIn(removeads, -removeads.height.toFloat())
-            showIn(tvRemoveAds, -removeads.height.toFloat())
-        }
-        showIn(rateApp, -rateApp.height.toFloat())
-        showIn(tvRateApp, -rateApp.height.toFloat())
-        showIn(feedback, -feedback.height.toFloat())
-        showIn(tvFeedback, -feedback.height.toFloat())
 
-
-        fab.isExpanded = true
-        fab.setImageResource(R.drawable.ic_close_white_24dp)
-    }
-
-
-    private fun fadeOutFABs() {
-
-        fadeOut()
-        if (!isRemoveAdsPurchased) {
-            showOut(removeads, -removeads.height.toFloat())
-            showOut(tvRemoveAds, -removeads.height.toFloat())
-        }
-        showOut(rateApp, -rateApp.height.toFloat())
-        showOut(tvRateApp, -rateApp.height.toFloat())
-        showOut(feedback, -feedback.height.toFloat())
-        showOut(tvFeedback, -feedback.height.toFloat())
-
-
-        fab.isExpanded = false
-        fab.setImageResource(R.drawable.ic_menu_white_24dp)
-    }
-
-
-    //crossfade animation for background
-    private fun fadeIn() {
-        dimmedBackground.apply {
-            // Set the content view to 0% opacity but visible, so that it is visible
-            // (but fully transparent) during the animation.
-            alpha = 0f
-            visibility = View.VISIBLE
-
-            // Animate the content view to 100% opacity, and clear any animation
-            // listener set on the view.
-            animate()
-                .alpha(1f)
-                .setDuration(100)
-                .setListener(null)
-        }
-        // Animate the loading view to 0% opacity. After the animation ends,
-        // set its visibility to GONE as an optimization step (it won't
-        /*     // participate in layout passes, etc.)
-         dimmedBackground.animate()
-                 .alpha(0f)
-                 .setDuration(1)
-                 .setListener(object : AnimatorListenerAdapter() {
-                     override fun onAnimationEnd(animation: Animator) {
-                         dimmedBackground.visibility = View.VISIBLE
-                     }
-                 })*/
-    }
-
-
-    private fun fadeOut() {
-        dimmedBackground.apply {
-            // Set the content view to 0% opacity but visible, so that it is visible
-            // (but fully transparent) during the animation.
-            //   alpha = 0f
-            // visibility = View.VISIBLE
-
-            // Animate the content view to 100% opacity, and clear any animation
-            // listener set on the view.
-            animate()
-                .alpha(0f)
-                .setDuration(100)
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        dimmedBackground.visibility = View.GONE
-                    }
-                })
-        }
-        // Animate the loading view to 0% opacity. After the animation ends,
-        // set its visibility to GONE as an optimization step (it won't
-        /*     // participate in layout passes, etc.)
-         dimmedBackground.animate()
-                 .alpha(0f)
-                 .setDuration(1)
-                 .setListener(object : AnimatorListenerAdapter() {
-                     override fun onAnimationEnd(animation: Animator) {
-                         dimmedBackground.visibility = View.VISIBLE
-                     }
-                 })*/
-    }
-
-
-    private fun showIn(v: View, startPosition: Float) {
-        v.visibility = View.VISIBLE
-        v.alpha = 0f
-        v.translationY = startPosition
-        v.animate()
-            .setDuration(200)
-            .translationY(0f)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                }
-            })
-            .alpha(1f)
-            .start()
-    }
-
-    private fun showOut(v: View, endPosition: Float) {
-        v.visibility = View.VISIBLE
-        v.alpha = 1f
-        v.translationY = 0f
-        v.animate()
-            .setDuration(200)
-            .translationY(endPosition)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    v.visibility = View.GONE
-                    super.onAnimationEnd(animation)
-                }
-            }).alpha(0f)
-            .start()
-    }
 
     private fun init(v: View) {
         v.visibility = View.INVISIBLE

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
@@ -9,10 +9,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/colorSecondaryBackground</item>
 
     </style>
 
-    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+    <style name="ToolbarTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <item name="android:fontFamily">@font/googlesans_regular</item>
         <item name="colorPrimary">#9AFDD835</item>
         <item name="android:textColor">#9AFDD835</item>
