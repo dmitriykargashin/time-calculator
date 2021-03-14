@@ -10,13 +10,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dmitriykargashin.cardamontimecalculator.data.repository.*
 import com.dmitriykargashin.cardamontimecalculator.engine.calculator.CalculatorOfTime
-import com.dmitriykargashin.cardamontimecalculator.data.repository.ExpressionRepository
-import com.dmitriykargashin.cardamontimecalculator.data.repository.PerUnitsRepository
-import com.dmitriykargashin.cardamontimecalculator.data.repository.ResultFormatsRepository
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.Token
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.Tokens
-import com.dmitriykargashin.cardamontimecalculator.data.repository.TokensRepository
 import com.dmitriykargashin.cardamontimecalculator.data.resultFormat.ResultFormat
 import com.dmitriykargashin.cardamontimecalculator.utilites.TimeConverter
 import kotlinx.coroutines.*
@@ -27,60 +24,75 @@ class CalculatorViewModel(
     private val tokensRepository: TokensRepository,
     private val resultFormatsRepository: ResultFormatsRepository,
     private val perUnitsRepository: PerUnitsRepository,
+    private val prefRepository: PrefRepository,
+    private val utilityRepository: UtilityRepository,
     private val context: Context
 
 
 ) : ViewModel() {
 
 
-    private var isInFormatsChooseModeRepository: Boolean =
-        false // for controlling whenever opened format chooser view or not
 
-    private val isInFormatsChooseMode = MutableLiveData<Boolean>()
-
-    private var isInPerViewModeRepository: Boolean =
-        false // for controlling whenever opened per view or not
-
-    private val isInPerViewMode = MutableLiveData<Boolean>()
-
-
-    private var isInSupportAppViewModeRepository: Boolean =
-        false // for controlling whenever opened Support app view or not
-    private val isInSupportAppViewMode = MutableLiveData<Boolean>()
-
-
-    private var isInSettingsViewModeRepository: Boolean =
-        false // for controlling whenever opened Settings view or not
-    private val isInSettingsViewMode = MutableLiveData<Boolean>()
-
-    private var tempResultInMsec = Tokens()
-
-    private var isPerViewButtonDisabledRepository: Boolean =
-        true
-    private val isPerViewButtonDisabled = MutableLiveData<Boolean>()
-
-    private var isFormatsViewButtonDisabledRepository: Boolean =
-        true
-    private val isFormatsViewButtonDisabled = MutableLiveData<Boolean>()
 
 
     init {
-        isInFormatsChooseMode.value = isInFormatsChooseModeRepository
-        isInPerViewMode.value = isInPerViewModeRepository
-        isInSupportAppViewMode.value = isInSupportAppViewModeRepository
-        isInSettingsViewMode.value = isInSettingsViewModeRepository
 
-        isPerViewButtonDisabled.value = isPerViewButtonDisabledRepository
-        isFormatsViewButtonDisabled.value = isFormatsViewButtonDisabledRepository
 
     }
+
+    ///utility repo
+    fun getIsFormatsLayoutVisible() = utilityRepository.getIsFormatsLayoutVisible()
+
+    fun getIsPerLayoutVisible() = utilityRepository.getIsPerLayoutVisible()
+
+    fun getIsSupportAppLayoutVisible() = utilityRepository.getIsSupportAppLayoutVisible()
+
+    fun getIsSettingsLayoutVisible() = utilityRepository.getIsSettingsLayoutVisible()
+
+    fun setIsFormatsLayoutVisible(visible: Boolean) {
+        utilityRepository.setIsFormatsLayoutVisible(visible)
+    }
+
+    fun setIsPerLayoutVisible(visible: Boolean) {
+        utilityRepository.setIsPerLayoutVisible(visible)
+    }
+
+    fun setIsSupportAppLayoutVisible(visible: Boolean) {
+        utilityRepository.setIsSupportAppLayoutVisible(visible)
+    }
+
+    fun setIsSettingsLayoutVisible(visible: Boolean) {
+        utilityRepository.setIsSettingsLayoutVisible(visible)
+    }
+
+
+    fun getIsFormatsViewButtonDisabled() = utilityRepository.getIsFormatsViewButtonDisabled()
+
+    fun getIsPerViewButtonDisabled() = utilityRepository.getIsPerViewButtonDisabled()
+
+    fun setIsPerViewButtonDisabled(visible: Boolean) {
+        utilityRepository.setIsPerViewButtonDisabled(visible)
+    }
+
+    fun setIsFormatsViewButtonDisabled(visible: Boolean) {
+        utilityRepository.setIsFormatsViewButtonDisabled(visible)
+    }
+
+
+///utility repo end
 
 
     fun getResultTokens(): LiveData<Tokens> {
-        setIsPerViewButtonDisabled(isResultEmpty())
-        setIsFormatsViewButtonDisabled(isResultEmpty())
+        utilityRepository.setIsPerViewButtonDisabled(isResultEmpty())
+        utilityRepository.setIsFormatsViewButtonDisabled(isResultEmpty())
         return tokensRepository.getTokens()
     }
+
+
+    //preferences
+    fun getPrefThemeColor() = prefRepository.getPrefThemeColor()
+    fun setPrefThemeColor(value: String) = prefRepository.setPrefThemeColor(value)
+//end preferences
 
 
     fun getResultFormats() = resultFormatsRepository.getResultFormats()
@@ -93,50 +105,6 @@ class CalculatorViewModel(
 
     fun addToken(token: Token) = tokensRepository.addToken(token)
 
-    fun getIsFormatsLayoutVisible() = isInFormatsChooseMode as LiveData<Boolean>
-
-    fun getIsPerLayoutVisible() = isInPerViewMode as LiveData<Boolean>
-
-    fun getIsSupportAppLayoutVisible() = isInSupportAppViewMode as LiveData<Boolean>
-
-    fun getIsSettingsLayoutVisible() = isInSettingsViewMode as LiveData<Boolean>
-
-    fun setIsFormatsLayoutVisible(visible: Boolean) {
-        isInFormatsChooseModeRepository = visible
-        isInFormatsChooseMode.value = isInFormatsChooseModeRepository
-    }
-
-
-    fun setIsPerLayoutVisible(visible: Boolean) {
-        isInPerViewModeRepository = visible
-        isInPerViewMode.value = isInPerViewModeRepository
-    }
-
-    fun setIsSupportAppLayoutVisible(visible: Boolean) {
-        isInSupportAppViewModeRepository = visible
-        isInSupportAppViewMode.value = isInSupportAppViewModeRepository
-    }
-
-    fun setIsSettingsLayoutVisible(visible: Boolean) {
-        isInSettingsViewModeRepository = visible
-        isInSettingsViewMode.value = isInSettingsViewModeRepository
-    }
-
-
-    fun getIsPerViewButtonDisabled() = isPerViewButtonDisabled as LiveData<Boolean>
-
-    fun setIsPerViewButtonDisabled(visible: Boolean) {
-        isPerViewButtonDisabledRepository = visible
-        isPerViewButtonDisabled.value = isPerViewButtonDisabledRepository
-    }
-
-
-    fun getIsFormatsViewButtonDisabled() = isFormatsViewButtonDisabled as LiveData<Boolean>
-
-    fun setIsFormatsViewButtonDisabled(visible: Boolean) {
-        isFormatsViewButtonDisabledRepository = visible
-        isFormatsViewButtonDisabled.value = isFormatsViewButtonDisabledRepository
-    }
 
     fun addToExpression(element: Token) {
 
@@ -160,17 +128,19 @@ class CalculatorViewModel(
 
     private suspend fun evaluateExpression() {
 
-        tempResultInMsec = withContext(Dispatchers.Default) {
+        utilityRepository.setTempResultInMsec(withContext(Dispatchers.Default) {
             CalculatorOfTime.evaluate(getExpression().value!!/*.toString()*/)
+        })
 
-        }
+
         val resultTokens = TimeConverter.convertTokensToTokensWithFormat(
-            tempResultInMsec, resultFormatsRepository.getSelectedFormat().value!!.formatTokens
+            utilityRepository.getTempResultInMsec().value!!,
+            resultFormatsRepository.getSelectedFormat().value!!.formatTokens
         )
 
         tokensRepository.setTokens(resultTokens)
-        setIsPerViewButtonDisabled(false)
-        setIsFormatsViewButtonDisabled(false)
+        utilityRepository.setIsPerViewButtonDisabled(false)
+        utilityRepository.setIsFormatsViewButtonDisabled(false)
 
     }
 
@@ -178,8 +148,8 @@ class CalculatorViewModel(
     fun clearAll() {
         tokensRepository.setTokens(Tokens())
         expressionRepository.setTokens(Tokens())
-        setIsPerViewButtonDisabled(true)
-        setIsFormatsViewButtonDisabled(true)
+        utilityRepository.setIsPerViewButtonDisabled(true)
+        utilityRepository.setIsFormatsViewButtonDisabled(true)
         //  expressionRepository.setExpression("")
 
     }
@@ -204,29 +174,29 @@ class CalculatorViewModel(
         if (tokensRepository.length() > 0) {
             expressionRepository.setTokens(tokensRepository.getTokens().value!!)
             tokensRepository.setTokens(Tokens())
-            setIsPerViewButtonDisabled(true)
-            setIsFormatsViewButtonDisabled(true)
+            utilityRepository.setIsPerViewButtonDisabled(true)
+            utilityRepository.setIsFormatsViewButtonDisabled(true)
         }
     }
 
     fun updateResultFormats() {
-        resultFormatsRepository.updateFormatsWithPreview(tempResultInMsec)
+        resultFormatsRepository.updateFormatsWithPreview(utilityRepository.getTempResultInMsec().value!!)
     }
 
 
     fun updatePerUnits() {
         // updateSettingsForPerUnits(30.toBigDecimal(),"RUB")
-        if (!isPerViewButtonDisabledRepository)
-            perUnitsRepository.updatePerUnitsWithPreview(tempResultInMsec)
+        if (utilityRepository.getIsPerViewButtonDisabled().value == false)
+            perUnitsRepository.updatePerUnitsWithPreview(utilityRepository.getTempResultInMsec().value!!)
 
     }
 
 
     fun updateSettingsForPerUnits(amount: BigDecimal, unitName: String) {
 
-        if (!isPerViewButtonDisabledRepository) {
+        if (utilityRepository.getIsPerViewButtonDisabled().value == false) {
             perUnitsRepository.setParams(amount, unitName, tokensRepository.getTokens().value!!)
-            perUnitsRepository.updatePerUnitsWithPreview(tempResultInMsec)
+            perUnitsRepository.updatePerUnitsWithPreview(utilityRepository.getTempResultInMsec().value!!)
         }
     }
 
@@ -240,7 +210,7 @@ class CalculatorViewModel(
         // here we need to update result of expression to desired format
 
         val resultConvertedTokens = TimeConverter.convertTokensToTokensWithFormat(
-            tempResultInMsec,
+            utilityRepository.getTempResultInMsec().value!!,
             resultFormatsRepository.getSelectedFormat().value!!.formatTokens
         )
         tokensRepository.setTokens(resultConvertedTokens)

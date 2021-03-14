@@ -7,14 +7,26 @@ package com.dmitriykargashin.cardamontimecalculator.ui.calculator
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,40 +37,16 @@ import com.dmitriykargashin.cardamontimecalculator.R
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.Token
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.TokenType
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.logger
-import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithLightGreenColor
 import com.dmitriykargashin.cardamontimecalculator.utilites.InjectorUtils
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
+import com.google.android.material.snackbar.Snackbar
 import hotchemi.android.rate.AppRate
+import hotchemi.android.rate.StoreType
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_formats.*
-import kotlin.math.hypot
-
-import hotchemi.android.rate.StoreType
-import android.content.Intent
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.net.Uri
-import android.opengl.Visibility
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Base64
-import android.view.MotionEvent
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLBlackColor
-import com.dmitriykargashin.cardamontimecalculator.internal.extension.toHTMLWithGrayColor
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.view_per.*
 import kotlinx.android.synthetic.main.view_settings.*
 import kotlinx.android.synthetic.main.view_support_app.*
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
+import kotlin.math.hypot
 
 
 class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -78,9 +66,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     public override fun onPause() {
 
         super.onPause()
-        if (!isPaidVersion() && !isRemoveAdsPurchased) {
-            //    adView.pause()
-        }
+
 
     }
 
@@ -89,9 +75,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         super.onResume()
         checkPurchases()
 
-        if (!isPaidVersion() && !isRemoveAdsPurchased) {
-            //adView.resume()
-        }
+//        if (!isPaidVersion() && !isRemoveAdsPurchased) {
+//            //adView.resume()
+//        }
     }
 
     // Called before the activity is destroyed
@@ -194,11 +180,13 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     override fun onBackPressed() {
-        if (viewModel.getIsFormatsLayoutVisible().value!!) closeFormatsLayout(10, 10)
-        else if (viewModel.getIsPerLayoutVisible().value!!) closePerLayout(10, 10)
-        else if (viewModel.getIsSupportAppLayoutVisible().value!!) closeSupport_appLayout(10, 10)
-        else if (viewModel.getIsSettingsLayoutVisible().value!!) closeSettingsLayout(10, 10)
-        else moveTaskToBack(true)
+        when {
+            viewModel.getIsFormatsLayoutVisible().value!! -> closeFormatsLayout(10, 10)
+            viewModel.getIsPerLayoutVisible().value!! -> closePerLayout(10, 10)
+            viewModel.getIsSupportAppLayoutVisible().value!! -> closeSupport_appLayout(10, 10)
+            viewModel.getIsSettingsLayoutVisible().value!! -> closeSettingsLayout(10, 10)
+            else -> moveTaskToBack(true)
+        }
     }
 
 
@@ -388,7 +376,6 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
 
-
     private fun initUI() {
         setSupportActionBar(toolbarSupport_app)
         setSupportActionBar(toolbarPer)
@@ -411,7 +398,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         // Observe the model
         viewModel.getResultFormats().observe(this, Observer {
-            rvFormatsToChoose.adapter = RvAdapterResultFormats(viewModel,applicationContext)
+            rvFormatsToChoose.adapter = RvAdapterResultFormats(viewModel, applicationContext)
             Log.d("TAG", "changeFormat")
         })
 
@@ -429,6 +416,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         })
 
         viewModel.getIsFormatsLayoutVisible().observe(this, Observer {
+            logger("savestate IsFormatsLayout $it")
             if (it)
                 formatsLayout.visibility = View.VISIBLE
             else
@@ -480,6 +468,15 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         })
 
 
+        viewModel.getIsSettingsLayoutVisible().observe(this, Observer {
+            if (it)
+                settingsLayout.visibility = View.VISIBLE
+            else
+                settingsLayout.visibility = View.GONE
+        })
+
+
+
         viewModel.getSelectedFormat().observe(this, Observer {
 
             Log.d("TAG", "changeFormat click")
@@ -490,7 +487,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             val touchPointY = commonConstraintLayout.height / 2
 
             if (formatsLayout.isAttachedToWindow && viewModel.getIsFormatsLayoutVisible().value!!) {
-               // Log.d("TAG", "changeFormat click ${formatsLayout.visibility == View.VISIBLE}")
+                // Log.d("TAG", "changeFormat click ${formatsLayout.visibility == View.VISIBLE}")
                 closeFormatsLayout(
                     touchPointX,
                     touchPointY
@@ -542,7 +539,6 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
         toolbarInitalize()
-
 
 
         //nums
@@ -688,7 +684,6 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 anim.start()
 
 
-
             } else {
                 viewModel.setIsFormatsLayoutVisible(true)
                 formatsLayout.visibility = View.VISIBLE
@@ -755,7 +750,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
         buttonFood.setOnClickListener {
-         //   viewModel.updateResultFormats()
+            //   viewModel.updateResultFormats()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 
@@ -930,6 +925,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
 
+        buttonFeedback_Sendfeedback.setOnClickListener {
+            sendFeedback()
+        }
 
 
         etUnitAmount.setOnEditorActionListener { _, actionId, _ ->
@@ -1023,15 +1021,84 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         })
 
 
+
+
+
+
+        viewModel.getPrefThemeColor().observe(
+            this,
+            {
+
+                when (it) {
+                    "0" -> {
+                        AppCompatDelegate.setDefaultNightMode(
+                            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                        )
+                        if (!rbTheme_SystemDefault.isChecked) rbTheme_SystemDefault.isChecked = true
+                    }
+                    "1" -> {
+                        AppCompatDelegate.setDefaultNightMode(
+                            AppCompatDelegate.MODE_NIGHT_NO
+                        )
+
+                        if (!rbTheme_Light.isChecked) rbTheme_Light.isChecked = true
+                    }
+
+                    "2" -> {
+                        AppCompatDelegate.setDefaultNightMode(
+                            AppCompatDelegate.MODE_NIGHT_YES
+                        )
+                        if (!rbTheme_Dark.isChecked) rbTheme_Dark.isChecked = true
+                    }
+                    else -> {
+                        AppCompatDelegate.setDefaultNightMode(
+                            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                        )
+                        if (!rbTheme_SystemDefault.isChecked) rbTheme_SystemDefault.isChecked = true
+                    }
+
+                }
+
+                logger("theme -  $it")
+            }
+        )
+
+
+    }
+
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.rbTheme_SystemDefault ->
+                    if (checked) {
+                        viewModel.setPrefThemeColor("0")
+
+                    }
+                R.id.rbTheme_Light ->
+                    if (checked) {
+                        viewModel.setPrefThemeColor("1")
+                    }
+
+                R.id.rbTheme_Dark ->
+                    if (checked) {
+                        viewModel.setPrefThemeColor("2")
+                    }
+            }
+        }
     }
 
 
     private fun sendFeedback() {
 
-
+        logger("theme - sendFeedback")
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:") // only email apps should handle this
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("dmitrii.kargashin@cardamon.org"))
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("support@cardamon.org"))
             //intent.setData(Uri.parse("mailto:dmitrii.kargashin@cardamon.org"))
             putExtra(
                 Intent.EXTRA_SUBJECT,
@@ -1046,8 +1113,6 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
 
-
-
     private fun init(v: View) {
         v.visibility = View.INVISIBLE
         //v.translationY = -v.height.toFloat()
@@ -1056,7 +1121,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     private fun toolbarInitalize() {
-     //   buttonPer.text = buttonPer.text.toString().toHTMLWithLightGreenColor()
+        //   buttonPer.text = buttonPer.text.toString().toHTMLWithLightGreenColor()
 
 
         toolbar.setNavigationOnClickListener {
@@ -1243,7 +1308,6 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         }
     }
-
 
 
     private fun closeSettingsLayout(x: Int, y: Int) {

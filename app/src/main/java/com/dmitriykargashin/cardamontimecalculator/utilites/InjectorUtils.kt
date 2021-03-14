@@ -5,21 +5,21 @@
 package com.dmitriykargashin.cardamontimecalculator.utilites
 
 import android.content.Context
-import com.dmitriykargashin.cardamontimecalculator.data.repository.ExpressionRepository
-import com.dmitriykargashin.cardamontimecalculator.data.repository.PerUnitsRepository
-import com.dmitriykargashin.cardamontimecalculator.data.repository.ResultFormatsRepository
-import com.dmitriykargashin.cardamontimecalculator.data.repository.TokensRepository
+import com.dmitriykargashin.cardamontimecalculator.data.repository.*
 import com.dmitriykargashin.cardamontimecalculator.ui.calculator.CalculatorViewModelFactory
 
 object InjectorUtils {
 
-    fun provideCalculatorViewModelFactory( context: Context): CalculatorViewModelFactory {
+    fun provideCalculatorViewModelFactory(context: Context): CalculatorViewModelFactory {
         // ViewModelFactory needs a repository, which in turn needs a DAO from a database
         // The whole dependency tree is constructed right here, in one place
         val tokensRepository = TokensRepository.getInstance()
         val expressionRepository = ExpressionRepository.getInstance()
         val resultFormatsRepository = ResultFormatsRepository.getInstance()
         val perUnitsRepository = PerUnitsRepository.getInstance()
-        return CalculatorViewModelFactory(expressionRepository, tokensRepository,resultFormatsRepository,perUnitsRepository,context)
+        val prefRepository = PrefRepository.getInstance(context)
+        val utilityRepository = UtilityRepository.getInstance()
+
+        return CalculatorViewModelFactory(expressionRepository, tokensRepository,resultFormatsRepository,perUnitsRepository,prefRepository,utilityRepository,context)
     }
 }

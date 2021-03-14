@@ -10,12 +10,13 @@
         android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
+        android:layout_margin="8dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardElevation="2dp"
         app:cardMaxElevation="3dp"
+        app:cardCornerRadius="20dp"
         app:contentPadding="@dimen/margin_8_size">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +34,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/googlesans_regular"
-                android:textSize="36sp"
+                android:textSize="@dimen/buttons_num_size"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

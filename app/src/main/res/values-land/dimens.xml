@@ -19,4 +19,7 @@
     <dimen name="separator_time_text_size">14sp</dimen>
     <dimen name="padding_buttons">0dp</dimen>
     <dimen name="padding_buttons_time">3dp</dimen>
+    <dimen name="settings_group_text_size">14sp</dimen>
+    <dimen name="settings_item_text_size">16sp</dimen>
+    <dimen name="settings_item_min_height">44dp</dimen>
 </resources>

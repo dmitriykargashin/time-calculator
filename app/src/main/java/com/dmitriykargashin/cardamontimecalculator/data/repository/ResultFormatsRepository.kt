@@ -188,7 +188,7 @@ class ResultFormatsRepository {
                 // also set the "instance" property to be the currently created one
                 instance
                     ?: ResultFormatsRepository().also {
-                        //fiil list only once
+                        //fill list only once
                         it.fillRepository()
 
 

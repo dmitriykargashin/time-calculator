@@ -3,6 +3,7 @@
   ~ Copyright (c) 2019. Dmitriy Kargashin
   -->
 
+
 <resources>
     <dimen name="buttons_num_size">36sp</dimen>
     <dimen name="buttons_time_size">24sp</dimen>
@@ -12,10 +13,13 @@
     <dimen name="result_output_height">60dp</dimen>
     <dimen name="result_output_mintextsize">16sp</dimen>
     <dimen name="result_output_maxtextsize">50sp</dimen>
-     <dimen name="result_expression_mintextsize">24sp</dimen>
+    <dimen name="result_expression_mintextsize">24sp</dimen>
     <dimen name="result_expression_maxtextsize">64sp</dimen>
     <dimen name="fab_margin">8dp</dimen>
     <dimen name="separator_time_text_size">18sp</dimen>
     <dimen name="padding_buttons">6dp</dimen>
     <dimen name="padding_buttons_time">12dp</dimen>
+    <dimen name="settings_group_text_size">18sp</dimen>
+    <dimen name="settings_item_text_size">20sp</dimen>
+    <dimen name="settings_item_min_height">50dp</dimen>
 </resources>

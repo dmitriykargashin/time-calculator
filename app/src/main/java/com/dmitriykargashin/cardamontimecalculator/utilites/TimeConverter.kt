@@ -697,6 +697,7 @@ abstract class TimeConverter {
             val endResult = Tokens()
 
             var reminderInMsec = convertTokensToMScec(tokensToConvert)
+            val initialValueIsZero = reminderInMsec.compareTo(ZERO) == 0  //to pass the initial value is Zero
 
             Log.d("before convert", reminderInMsec.toPlainString())
             // var remainderInMsec=0.0
@@ -713,7 +714,8 @@ abstract class TimeConverter {
                     reminderInMsec,
                     tokenFormat.type, (index == tokensFormat.lastIndex),
                     endResult,
-                    removeZeroUnits
+                    removeZeroUnits,
+                    initialValueIsZero
                 )
                 Log.d("reminder after", reminderInMsec.toPlainString())
 
@@ -729,7 +731,8 @@ abstract class TimeConverter {
             type: TokenType,
             isLast: Boolean,
             endResult: Tokens,
-            removeZeroUnits: Boolean
+            removeZeroUnits: Boolean,
+            initialValueIsZero: Boolean
         ): BigDecimal {
 
 
@@ -758,6 +761,8 @@ abstract class TimeConverter {
                     endResult.add(Token(type))
                 }
                 else {
+                   if (initialValueIsZero)
+                    {
                     endResult.add(
                         Token(
                             TokenType.NUMBER,
@@ -765,6 +770,7 @@ abstract class TimeConverter {
                         )
                     )
                     endResult.add(Token(type))
+                }
 
                 }
             } else {

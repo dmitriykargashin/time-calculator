@@ -4,6 +4,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/scrollConstaint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorSecondaryBackgroundForSupport"
@@ -28,136 +29,187 @@
             app:title="A cup of tea for the developer"
             app:titleMargin="4dp" />
 
-    <RadioGroup
-            android:id="@+id/teacups"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:baselineAligned="false"
-            android:checkedButton="@id/cup5"
-            android:clickable="true"
-            android:orientation="vertical"
-            android:padding="24px"
-
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval">
-
-        <RadioButton
-                android:id="@+id/cup1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:drawableRight="@drawable/ic_food"
-                android:fontFamily="@font/googlesans_regular"
-                android:text="1 ✕ "
-                android:textSize="18sp" />
-
-        <RadioButton
-                android:id="@+id/cup3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:drawableRight="@drawable/ic_food"
-                android:fontFamily="@font/googlesans_regular"
-                android:text="3 ✕ "
-                android:textSize="18sp" />
-
-        <RadioButton
-                android:id="@+id/cup5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:drawableRight="@drawable/ic_food"
-                android:fontFamily="@font/googlesans_regular"
-                android:text="5 ✕ "
-                android:textSize="18sp" />
-
-        <RadioButton
-                android:id="@+id/cup9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_food"
-                android:fontFamily="@font/googlesans_regular"
-                android:text="9 ✕ "
-                android:textSize="18sp" />
-
-        <RadioButton
-                android:id="@+id/cup15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_food"
-                android:fontFamily="@font/googlesans_regular"
-                android:text="15 ✕ "
-                android:textSize="18sp" />
-
-        <RadioButton
-                android:id="@+id/cup21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_food"
-                android:fontFamily="@font/googlesans_regular"
-                android:text="29 ✕ "
-                android:textSize="18sp" />
-    </RadioGroup>
-
-
-    <TextView
-            android:id="@+id/labelTimeInterval"
+    <ScrollView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:fontFamily="@font/googlesans_regular"
-            android:lineSpacingExtra="4sp"
-            android:text="For your best user experience, the application is now free and ad-free.\n\nIf you would like to support me, as a developer of the app, you can buy me some CUPS of TEA."
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarSupport_app" />
-
-
-    <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonSupport"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="104dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:fontFamily="@font/googlesans_regular"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:gravity="start"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:text="Support $5"
-            android:textAllCaps="false"
-            android:textColor="#304FFE"
-            android:textSize="@dimen/buttons_time_size"
-            android:textStyle="bold"
-            android:theme="@style/Theme.MaterialComponents"
-            app:cornerRadius="5dp"
-            app:elevation="10dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_16_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.257"
             app:layout_constraintStart_toStartOf="parent"
-            app:strokeColor="#304FFE"
-            android:visibility="gone"
-            app:strokeWidth="1dp" />
+            app:layout_constraintTop_toBottomOf="@id/toolbarSupport_app">
 
-    <Button
-            android:id="@+id/button"
-            android:layout_width="127dp"
-            android:layout_height="46dp"
-            android:layout_marginBottom="24dp"
-            android:text="Support $3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/labelSupport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16_size"
+                    android:layout_marginEnd="@dimen/margin_16_size"
+                    android:fontFamily="@font/googlesans_regular"
+                    android:lineSpacingExtra="4sp"
+                    android:text="For your best user experience, the application is now free and ad-free.\n If you would like to support me, as a developer of the app, you can buy me some CUPS of TEA.\nAny purchase will give you a green star to the right of the corresponding button"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/settings_group_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                    android:id="@+id/imageStar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16_size"
+                    android:paddingTop="@dimen/margin_8_size"
+                    android:paddingBottom="@dimen/margin_8_size"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnSupport1"
+                    app:layout_constraintStart_toEndOf="@+id/btnSupport1"
+                    app:layout_constraintTop_toTopOf="@+id/btnSupport1"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:srcCompat="@drawable/ic_star_green_24dp" />
+
+            <ImageView
+                    android:id="@+id/imageStar3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16_size"
+                    android:paddingTop="@dimen/margin_8_size"
+                    android:paddingBottom="@dimen/margin_8_size"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnSupport2"
+                    app:layout_constraintStart_toEndOf="@+id/btnSupport2"
+                    app:layout_constraintTop_toTopOf="@+id/btnSupport2"
+                    app:srcCompat="@drawable/ic_star_green_24dp" />
+
+            <ImageView
+                    android:id="@+id/imageStar5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16_size"
+                    android:paddingTop="@dimen/margin_8_size"
+                    android:paddingBottom="@dimen/margin_8_size"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnSupport5"
+                    app:layout_constraintStart_toEndOf="@+id/btnSupport5"
+                    app:layout_constraintTop_toTopOf="@+id/btnSupport5"
+                    app:srcCompat="@drawable/ic_star_green_24dp" />
+
+            <ImageView
+                    android:id="@+id/imageStar9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16_size"
+                    android:paddingTop="@dimen/margin_8_size"
+                    android:paddingBottom="@dimen/margin_8_size"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnSupport9"
+                    app:layout_constraintStart_toEndOf="@+id/btnSupport9"
+                    app:layout_constraintTop_toTopOf="@+id/btnSupport9"
+                    app:srcCompat="@drawable/ic_star_green_24dp" />
+
+            <ImageView
+                    android:id="@+id/imageStar15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16_size"
+                    android:paddingTop="@dimen/margin_8_size"
+                    android:paddingBottom="@dimen/margin_8_size"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnSupport15"
+                    app:layout_constraintStart_toEndOf="@+id/btnSupport15"
+                    app:layout_constraintTop_toTopOf="@+id/btnSupport15"
+                    app:srcCompat="@drawable/ic_star_green_24dp"
+                    tools:visibility="visible" />
+
+            <ImageView
+                    android:id="@+id/imageStar29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16_size"
+                    android:paddingTop="@dimen/margin_8_size"
+                    android:paddingBottom="@dimen/margin_8_size"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btnSupport29"
+                    app:layout_constraintTop_toTopOf="@+id/btnSupport29"
+                    app:srcCompat="@drawable/ic_star_green_24dp"
+                    tools:visibility="visible" />
+
+            <Button
+                    android:id="@+id/btnSupport1"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:drawableLeft="@drawable/ic_food"
+                    android:text="buy 1 Cup"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelSupport" />
+
+            <Button
+                    android:id="@+id/btnSupport2"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableLeft="@drawable/ic_food"
+                    android:text="buy 3 Cups"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnSupport1" />
+
+            <Button
+                    android:id="@+id/btnSupport5"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableLeft="@drawable/ic_food"
+                    android:text="buy 5 Cups"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnSupport2" />
+
+            <Button
+                    android:id="@+id/btnSupport9"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableLeft="@drawable/ic_food"
+                    android:text="buy 9 Cups"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnSupport5" />
+
+            <Button
+                    android:id="@+id/btnSupport15"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableLeft="@drawable/ic_food"
+                    android:text="buy 15 Cups"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnSupport9" />
+
+            <Button
+                    android:id="@+id/btnSupport29"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableLeft="@drawable/ic_food"
+                    android:text="buy 29 Cups"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnSupport15" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

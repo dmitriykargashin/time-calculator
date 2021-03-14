@@ -29,26 +29,181 @@
             app:titleMargin="4dp" />
 
 
-    <Switch
-            android:id="@+id/switch1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:text="Dark Theme"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarSettings" />
+    <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
 
-    <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Send Feedback"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/switch1"
-            app:layout_constraintTop_toBottomOf="@+id/switch1" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarSettings"
+            app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/tvTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorMainBackground"
+                    android:fontFamily="@font/googlesans_regular"
+                    android:gravity="bottom"
+                    android:minHeight="@dimen/settings_item_min_height"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="THEME"
+
+                    android:textColor="@color/colorExpressionNums"
+                    android:textSize="@dimen/settings_group_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                    android:id="@+id/divider5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTheme" />
+
+            <RadioGroup
+                    android:id="@+id/rgTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="1dp"
+                    android:paddingStart="30dp"
+                    android:paddingRight="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTheme">
+
+                <RadioButton
+                        android:id="@+id/rbTheme_SystemDefault"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorSecondaryBackground"
+                        android:checked="true"
+                        android:fontFamily="@font/googlesans_regular"
+                        android:minHeight="@dimen/settings_item_min_height"
+                        android:onClick="onRadioButtonClicked"
+                        android:paddingStart="16dp"
+                        android:text="System default"
+                        android:textColor="@color/colorResultNums"
+                        android:textSize="@dimen/settings_item_text_size" />
+
+                <View
+                        android:id="@+id/divider2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                <RadioButton
+                        android:id="@+id/rbTheme_Light"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorSecondaryBackground"
+                        android:fontFamily="@font/googlesans_regular"
+                        android:minHeight="@dimen/settings_item_min_height"
+                        android:onClick="onRadioButtonClicked"
+                        android:paddingStart="16dp"
+                        android:text="Light"
+                        android:textColor="@color/colorResultNums"
+                        android:textSize="@dimen/settings_item_text_size" />
+
+                <View
+                        android:id="@+id/divider3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                <RadioButton
+                        android:id="@+id/rbTheme_Dark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorSecondaryBackground"
+                        android:fontFamily="@font/googlesans_regular"
+                        android:minHeight="@dimen/settings_item_min_height"
+                        android:onClick="onRadioButtonClicked"
+                        android:paddingStart="16dp"
+                        android:text="Dark"
+                        android:textColor="@color/colorResultNums"
+                        android:textSize="@dimen/settings_item_text_size" />
+
+
+            </RadioGroup>
+
+            <View
+                    android:id="@+id/divider6"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rgTheme" />
+
+            <TextView
+                    android:id="@+id/tvFeedbackG"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorMainBackground"
+                    android:fontFamily="@font/googlesans_regular"
+                    android:gravity="bottom"
+                    android:minHeight="@dimen/settings_item_min_height"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="FEEDBACK"
+                    android:textColor="@color/colorExpressionNums"
+                    android:textSize="@dimen/settings_group_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider6" />
+            <View
+                    android:id="@+id/divider7"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFeedbackG" />
+
+
+            <Button
+                    android:id="@+id/buttonFeedback_Sendfeedback"
+                    style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:fontFamily="@font/googlesans_regular"
+                    android:minHeight="@dimen/settings_item_min_height"
+                    android:paddingStart="35dp"
+                    android:text="Send Feedback"
+                    android:textAlignment="viewStart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorResultNums"
+                    android:textSize="@dimen/settings_item_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
+            <View
+                    android:id="@+id/divider8"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonFeedback_Sendfeedback" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

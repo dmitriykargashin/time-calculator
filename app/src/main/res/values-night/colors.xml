@@ -13,7 +13,7 @@
     <color name="semitransparentBackground">#CCCACACA</color>
     <color name="colorControls">#CCCCCC</color>
     <color name="colorExpressionTime">@color/colorTimeBtns</color>
-    <color name="colorExpressionNums">#EFEFEF</color>
+    <color name="colorExpressionNums">@color/colorNums</color>
     <color name="colorResultTime">#727C6E</color>
     <color name="colorResultNums">#939292</color>
 </resources>

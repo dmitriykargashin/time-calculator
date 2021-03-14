@@ -4,12 +4,14 @@
 
 package com.dmitriykargashin.cardamontimecalculator.ui.calculator
 
+import android.content.Context
 import android.graphics.Color
 import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dmitriykargashin.cardamontimecalculator.R
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.*
@@ -36,7 +38,7 @@ class RvAdapterPer(private val viewModel: CalculatorViewModel) :
             SpannableString(perUnits.amount.toString() + " " + perUnits.unitName + " per") + spannable {
                 size(
                     1.0f, color(
-                        Color.parseColor("#33691e"), " " + perUnit.timeUnit.strRepresentation
+                        ContextCompat.getColor(holder.itemView.context, R.color.colorExpressionTime), " " + perUnit.timeUnit.strRepresentation
                     )
                 )
             } + SpannableString(" in the interval")
@@ -51,7 +53,7 @@ class RvAdapterPer(private val viewModel: CalculatorViewModel) :
         ) + spannable {
             size(
                 0.7f, color(
-                    Color.parseColor("#33691e"), " " + perUnits.unitName
+                    ContextCompat.getColor(holder.itemView.context, R.color.colorResultTime), " " + perUnits.unitName
                 )
             )
         }

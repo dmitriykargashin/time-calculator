@@ -536,7 +536,7 @@
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:scrollbarStyle="outsideInset"
                 android:scrollbars="vertical"
-                android:textColor="@color/colorNums"
+                android:textColor="@color/colorExpressionNums"
                 android:textIsSelectable="true"
 
 

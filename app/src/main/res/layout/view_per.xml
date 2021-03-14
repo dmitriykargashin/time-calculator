@@ -11,47 +11,82 @@
                >
 
 
+    <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarPer">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clInner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/labelTimeInterval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/googlesans_regular"
+                    android:text="Time interval:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                    android:id="@+id/labelTimeIntervalAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/googlesans_regular"
+                    android:text="10 Hour 25 Minute 5 Second"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/labelTimeInterval"
+                    app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </HorizontalScrollView>
+
     <TextView
             android:id="@+id/labelTimeInterval3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:fontFamily="@font/googlesans_regular"
             android:labelFor="@id/etUnit"
             android:text="Value unit:"
-            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toEndOf="@+id/etUnitAmount"
-            app:layout_constraintTop_toBottomOf="@+id/labelTimeIntervalAmount" />
+            app:layout_constraintTop_toTopOf="@+id/labelTimeInterval2" />
 
     <EditText
             android:id="@+id/etUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="8dp"
             android:contentDescription="Unit"
-            android:ems="5"
+            android:ems="3"
+            android:fontFamily="@font/googlesans_regular"
             android:imeOptions="actionDone"
             android:includeFontPadding="false"
             android:inputType="text"
-            android:paddingStart="8dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="4dp"
             android:text="USD"
             android:textSize="24sp"
-            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toStartOf="@+id/labelTimeInterval3"
-            app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval2" />
+            app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval3" />
 
     <TextView
             android:id="@+id/labelTimeInterval2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/googlesans_regular"
             android:labelFor="@id/etUnitAmount"
             android:text="Value:"
-            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelTimeIntervalAmount" />
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarPer"
@@ -62,6 +97,7 @@
             android:theme="@style/ToolbarTheme"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="?attr/homeAsUpIndicator"
@@ -73,32 +109,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="8dp"
             android:contentDescription="Amount"
             android:ems="3"
+            android:fontFamily="@font/googlesans_regular"
             android:imeOptions="actionDone"
             android:includeFontPadding="false"
             android:inputType="numberDecimal"
-            android:paddingStart="8dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="4dp"
             android:text="25"
             android:textSize="24sp"
-            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toStartOf="@+id/labelTimeInterval2"
             app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval2" />
 
-    <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorSecondaryBackgroundForPer"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etUnitAmount">
-
-    </ScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPer"
@@ -106,32 +129,10 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/scrollView2"
-            app:layout_constraintTop_toTopOf="@+id/scrollView2" />
-
-    <TextView
-            android:id="@+id/labelTimeInterval"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Time interval:"
-            android:fontFamily="@font/googlesans_regular"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarPer" />
-
-    <TextView
-            android:id="@+id/labelTimeIntervalAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/googlesans_regular"
-            android:text="10 Hour 25 Minute 5 Second"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelTimeInterval" />
+            app:layout_constraintTop_toBottomOf="@+id/etUnitAmount" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

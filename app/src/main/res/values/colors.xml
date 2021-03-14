@@ -3,7 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">@color/colorMainBackground</color>
     <color name="colorAccent">@android:color/holo_blue_dark</color>
-    <color name="colorNums">#1E1E1E</color>
+    <color name="colorNums">#2E2D2D</color>
     <color name="colorOperators">@android:color/holo_blue_dark</color>
     <color name="colorTimeBtns">#33691e</color>
     <color name="colorMainBackground">#FDFCFA</color>
@@ -13,7 +13,7 @@
     <color name="semitransparentBackground">#CCCACACA</color>
     <color name="colorControls">#CC474646</color>
     <color name="colorExpressionTime">@color/colorTimeBtns</color>
-    <color name="colorExpressionNums">#EFEFEF</color>
+    <color name="colorExpressionNums">@color/colorNums</color>
     <color name="colorResultTime">#567749</color>
     <color name="colorResultNums">@color/colorControls</color>
 </resources>

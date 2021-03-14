@@ -157,7 +157,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/Applications/Android%20Studio%204.2%20Preview.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/settings/baseline_settings_24.xml" />
+                                      <entry key="url" value="jar:file:/Applications/Android%20Studio%204.2%20Preview.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/stars/baseline_stars_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -167,7 +167,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_settings" />
+                            <entry key="opacityPercent" value="80" />
+                            <entry key="outputName" value="ic_baseline_stars_24" />
                             <entry key="sourceFile" value="$USER_HOME$/Documents/Graphics/Time calculator logo5.svg" />
                           </map>
                         </option>
