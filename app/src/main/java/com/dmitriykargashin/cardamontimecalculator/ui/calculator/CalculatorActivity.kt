@@ -39,6 +39,9 @@ import com.dmitriykargashin.cardamontimecalculator.data.tokens.TokenType
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.logger
 import com.dmitriykargashin.cardamontimecalculator.utilites.InjectorUtils
 import com.google.android.material.snackbar.Snackbar
+import com.suddenh4x.ratingdialog.AppRating
+import com.suddenh4x.ratingdialog.preferences.MailSettings
+import com.suddenh4x.ratingdialog.preferences.RatingThreshold
 import hotchemi.android.rate.AppRate
 import hotchemi.android.rate.StoreType
 import kotlinx.android.synthetic.main.activity_main.*
@@ -56,10 +59,18 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     lateinit var viewModel: CalculatorViewModel
     private val TAG = "CalculatorActivity"
 
-    private var isRemoveAdsPurchased = false
+    // private var isRemoveAdsPurchased = false
 
     private lateinit var billingClient: BillingClient
-    private val skuList = listOf("remove_ads")
+    private val skuList = listOf(
+        "support_1",
+        "support_3",
+        "support_5",
+        "support_9",
+//        "support_15",
+//        "support_29",
+        "remove_ads"
+    )
 
 
     // Called when leaving the activity
@@ -82,9 +93,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     // Called before the activity is destroyed
     public override fun onDestroy() {
-        if (!isPaidVersion() && !isRemoveAdsPurchased) {
-            //   adView.destroy()
-        }
+//        if (!isPaidVersion() && !isRemoveAdsPurchased) {
+//            //   adView.destroy()
+//        }
         super.onDestroy()
     }
 
@@ -116,7 +127,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
         //   checkPurchases()
-
+        logger("purchase isPaidVersion ${isPaidVersion()}")
         if (!isPaidVersion()) {
 
             setupBillingClient()
@@ -131,50 +142,86 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         } //else adView.visibility = View.GONE
 
         initUI()
-        setupRateMe()
 
-    }
-
-    private fun setupRateMe() {
-        AppRate.with(this)
-            .setStoreType(StoreType.GOOGLEPLAY) //default is Google, other option is Amazon
-            .setInstallDays(10) // default 10, 0 means install day.
-            .setLaunchTimes(10) // default 10 times.
-            .setRemindInterval(2) // default 1 day.
-            .setShowLaterButton(true) // default true.
-            .setDebug(false) // default false.
-            .setCancelable(false) // default false.
-            .setOnClickButtonListener {
-                if (it == 0) rateMeOnGooglePlay() // 0 index of rate me button
-            }
-
-            .setMessage(R.string.new_rate_dialog_message)
-
-            .monitor()
-
-        AppRate.showRateDialogIfMeetsConditions(this)
-
-    }
-
-
-    private fun rateMeOnGooglePlay() {
-        try {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=$packageName")
-                )
-            )
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=$packageName")
-                )
-            )
+        if (savedInstanceState == null) {
+            rateBuilder()
+                .showRateNeverButtonAfterNTimes(
+                    R.string.never_show_ratetheapp,
+                    null,
+                    3
+                ) // by default the button is hidden
+                .showIfMeetsConditions()
         }
+        // setupRateMe()
 
     }
+
+    private fun rateBuilder(): AppRating.Builder {
+
+        return AppRating.Builder(this)
+            .setMinimumLaunchTimes(5)
+            .setMinimumDays(7)
+            .setMinimumLaunchTimesToShowAgain(5)
+            .setMinimumDaysToShowAgain(10)
+            // .setCustomTheme(R.style.RateTheme)
+            .setRatingThreshold(RatingThreshold.FOUR)
+            .setShowOnlyFullStars(true)
+
+            .setTitleTextId(R.string.rate_main_text)
+            .setMessageTextId(R.string.rate_second_text) // by default no message is shown
+
+//                .setStoreRatingTitleTextId(storeRatingTitleTextId: Int)
+            .setStoreRatingMessageTextId(R.string.rate_store_second_text)
+            .setMailFeedbackMessageTextId(R.string.rate_feedback_main_text)
+
+            .setMailSettingsForFeedbackDialog(
+                MailSettings(
+                    mailAddress = "support@cardamon.org",
+                    subject = "Feedback Time Calculator Cardamon v.${BuildConfig.VERSION_CODE}"
+                )
+            )
+    }
+
+//    private fun setupRateMe() {
+//        AppRate.with(this)
+//            .setStoreType(StoreType.GOOGLEPLAY) //default is Google, other option is Amazon
+//            .setInstallDays(10) // default 10, 0 means install day.
+//            .setLaunchTimes(10) // default 10 times.
+//            .setRemindInterval(2) // default 1 day.
+//            .setShowLaterButton(true) // default true.
+//            .setDebug(false) // default false.
+//            .setCancelable(false) // default false.
+//            .setOnClickButtonListener {
+//                if (it == 0) rateMeOnGooglePlay() // 0 index of rate me button
+//            }
+//
+//            .setMessage(R.string.new_rate_dialog_message)
+//
+//            .monitor()
+//
+//        AppRate.showRateDialogIfMeetsConditions(this)
+//
+//    }
+
+//
+//    private fun rateMeOnGooglePlay() {
+//        try {
+//            startActivity(
+//                Intent(
+//                    Intent.ACTION_VIEW,
+//                    Uri.parse("market://details?id=$packageName")
+//                )
+//            )
+//        } catch (e: ActivityNotFoundException) {
+//            startActivity(
+//                Intent(
+//                    Intent.ACTION_VIEW,
+//                    Uri.parse("http://play.google.com/store/apps/details?id=$packageName")
+//                )
+//            )
+//        }
+//
+//    }
 
     private fun isPaidVersion() = BuildConfig.PRO_VERSION
 
@@ -196,6 +243,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .enablePendingPurchases()
             .setListener(this)
             .build()
+
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
@@ -218,55 +266,108 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     private fun loadAllSKUs() = if (billingClient.isReady) {
-//        val params = SkuDetailsParams
-//            .newBuilder()
-//            .setSkusList(skuList)
-//            .setType(BillingClient.SkuType.INAPP)
-//            .build()
-//        billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
-//            // Process the result.
-//            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList.isNotEmpty()) {
-//                for (skuDetails in skuDetailsList) {
-//                    if (skuDetails.sku == "remove_ads")
-//
-////                        removeads.setOnClickListener {
-////                            logger("press button to buy")
-////                            val billingFlowParams = BillingFlowParams
-////                                .newBuilder()
-////                                .setSkuDetails(skuDetails)
-////                                .build()
-////                            billingClient.launchBillingFlow(this, billingFlowParams)
-////                        }
-//                }
-//            }
-//            //  logger(skuDetailsList.get(0).description)
-//
-//        }
+        val params = SkuDetailsParams
+            .newBuilder()
+            .setSkusList(skuList)
+            .setType(BillingClient.SkuType.INAPP)
+            .build()
+
+        logger("loadAllSKUs")
+        billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+            // Process the result.
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList?.isNotEmpty()!!) {
+                for (skuDetails in skuDetailsList) {
+                    if (skuDetails.sku == "remove_ads" || skuDetails.sku == "support_3")
+                        btnSupport3.setOnClickListener {
+                            //  logger("press button to buy")
+                            val billingFlowParams = BillingFlowParams
+                                .newBuilder()
+                                .setSkuDetails(skuDetails)
+                                .build()
+                            billingClient.launchBillingFlow(this, billingFlowParams)
+                        }
+
+                    if (skuDetails.sku == "support_1")
+                        btnSupport1.setOnClickListener {
+                            //  logger("press button to buy")
+                            val billingFlowParams = BillingFlowParams
+                                .newBuilder()
+                                .setSkuDetails(skuDetails)
+                                .build()
+                            billingClient.launchBillingFlow(this, billingFlowParams)
+                        }
+
+                    if (skuDetails.sku == "support_5")
+                        btnSupport5.setOnClickListener {
+                            //  logger("press button to buy")
+                            val billingFlowParams = BillingFlowParams
+                                .newBuilder()
+                                .setSkuDetails(skuDetails)
+                                .build()
+                            billingClient.launchBillingFlow(this, billingFlowParams)
+                        }
+
+
+                    if (skuDetails.sku == "support_9")
+                        btnSupport9.setOnClickListener {
+                            //  logger("press button to buy")
+                            val billingFlowParams = BillingFlowParams
+                                .newBuilder()
+                                .setSkuDetails(skuDetails)
+                                .build()
+                            billingClient.launchBillingFlow(this, billingFlowParams)
+                        }
+
+//                    if (skuDetails.sku == "support_15")
+//                        btnSupport.setOnClickListener {
+//                            //  logger("press button to buy")
+//                            val billingFlowParams = BillingFlowParams
+//                                .newBuilder()
+//                                .setSkuDetails(skuDetails)
+//                                .build()
+//                            billingClient.launchBillingFlow(this, billingFlowParams)
+//                        }
+
+
+//                    if (skuDetails.sku == "support_29")
+//                        btnSupport29.setOnClickListener {
+//                            //  logger("press button to buy")
+//                            val billingFlowParams = BillingFlowParams
+//                                .newBuilder()
+//                                .setSkuDetails(skuDetails)
+//                                .build()
+//                            billingClient.launchBillingFlow(this, billingFlowParams)
+//                        }
+
+                    logger("details " + skuDetails.description)
+                }
+            }
+            logger("details " + skuDetailsList.toString())
+            //    logger("details "+skuDetails.description)
+
+        }
 
     } else {
         logger("Billing Client not ready")
     }
 
 
-    override fun onPurchasesUpdated(
-        billingResult: BillingResult?,
-        purchases: MutableList<Purchase>?
-    ) {
-        if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+    override fun onPurchasesUpdated(p0: BillingResult, purchases: MutableList<Purchase>?) {
+        if (p0?.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
                 acknowledgePurchase(purchase.purchaseToken)
                 handlePurchase(purchase)
 
             }
-        } else if (billingResult?.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+        } else if (p0?.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             // Handle an error caused by a user cancelling the purchase flow.
             logger("User Cancelled")
-            logger(billingResult.debugMessage.toString())
+            logger(p0.debugMessage.toString())
 
 
         } else {
             logger("other error")
-            logger(billingResult?.debugMessage.toString())
+            logger(p0?.debugMessage.toString())
 
             Snackbar.make(
                 commonConstraintLayout,
@@ -303,10 +404,11 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             for (purchase in purchasesList) {
                 handlePurchase(purchase)
             }
-
+// user has any purchase
+            buttonFood.setImageResource(R.drawable.ic_food);
 
         } else {// user dont have any purchase
-
+            buttonFood.setImageResource(R.drawable.ic_food_checked);
 
 //            MobileAds.initialize(this)
 //            val adRequest =
@@ -335,13 +437,63 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
               }
           }
           return*/
+
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-            if (purchase.sku == "remove_ads") {
+            if (purchase.sku == "remove_ads" || purchase.sku == "support_3") {
                 //    removeAds()
 // Grant the item to the user, and then acknowledge the purchase
+                imageStar3.visibility = View.VISIBLE
+                btnSupport3.isEnabled = false
+                btnSupport3.alpha = 0.5f
+
+            }
+
+            if (purchase.sku == "support_1") {
+                //    removeAds()
+// Grant the item to the user, and then acknowledge the purchase
+                imageStar1.visibility = View.VISIBLE
+                btnSupport1.isEnabled = false
+                btnSupport1.alpha = 0.5f
+
+            }
+
+            if (purchase.sku == "support_5") {
+                //    removeAds()
+// Grant the item to the user, and then acknowledge the purchase
+                imageStar5.visibility = View.VISIBLE
+                btnSupport5.isEnabled = false
+                btnSupport5.alpha = 0.5f
+
+            }
+
+            if (purchase.sku == "support_9") {
+                //    removeAds()
+// Grant the item to the user, and then acknowledge the purchase
+                imageStar9.visibility = View.VISIBLE
+                btnSupport9.isEnabled = false
+                btnSupport9.alpha = 0.5f
+
             }
 
 
+//            if (purchase.sku == "support_15") {
+//                //    removeAds()
+//// Grant the item to the user, and then acknowledge the purchase
+//                imageStar15.visibility = View.VISIBLE
+//                btnSupport15.isEnabled = false
+//                btnSupport15.alpha = 0.5f
+//
+//            }
+//
+//
+//            if (purchase.sku == "support_29") {
+//                //    removeAds()
+//// Grant the item to the user, and then acknowledge the purchase
+//                imageStar29.visibility = View.VISIBLE
+//                btnSupport29.isEnabled = false
+//                btnSupport29.alpha = 0.5f
+//
+//            }
         } else {
 // here i start show ads, if not purchased.
 
@@ -380,7 +532,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         setSupportActionBar(toolbarSupport_app)
         setSupportActionBar(toolbarPer)
         setSupportActionBar(toolbar)
-        factory = InjectorUtils.provideCalculatorViewModelFactory(applicationContext)
+        factory = InjectorUtils.provideCalculatorViewModelFactory(baseContext)
         viewModel = ViewModelProviders.of(this, factory)
             .get(CalculatorViewModel::class.java)
 
@@ -398,7 +550,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         // Observe the model
         viewModel.getResultFormats().observe(this, Observer {
-            rvFormatsToChoose.adapter = RvAdapterResultFormats(viewModel, applicationContext)
+            rvFormatsToChoose.adapter = RvAdapterResultFormats(viewModel, baseContext)
             Log.d("TAG", "changeFormat")
         })
 
@@ -500,11 +652,11 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             this,
             Observer {
 
-                tvOnlineResult.text = it?.toLightSpannableString(applicationContext)
+                tvOnlineResult.text = it?.toLightSpannableString(baseContext)
                 rvPer.adapter = RvAdapterPer(viewModel)
 
                 // add result to ViewPer view
-                labelTimeIntervalAmount.text = it?.toSpannableString(applicationContext)
+                labelTimeIntervalAmount.text = it?.toSpannableString(baseContext)
 
 
                 /*tokens ->
@@ -521,7 +673,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         viewModel.getExpression().observe(
             this,
             Observer {
-                tvExpressionField.text = it.toSpannableString(applicationContext)
+                tvExpressionField.text = it.toSpannableString(baseContext)
                 tvExpressionField.movementMethod = ScrollingMovementMethod()
                 // tvExpressionField.setTextIsSelectable(true)
 
@@ -539,6 +691,13 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
         toolbarInitalize()
+
+        btnSupportRate.setOnClickListener {
+            //  logger("press button to buy")
+            rateBuilder()
+                .dontCountThisAsAppLaunch()
+                .showNow();
+        }
 
 
         //nums
@@ -631,7 +790,7 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         buttonDelete.setOnClickListener {
-            viewModel.clearOneLastSymbol(applicationContext)
+            viewModel.clearOneLastSymbol(baseContext)
             //      Log.i("TAG","pressed delete")
         }
 

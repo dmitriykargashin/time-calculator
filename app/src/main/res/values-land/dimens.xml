@@ -6,6 +6,7 @@
 
 <resources>
     <dimen name="buttons_num_size">30sp</dimen>
+    <dimen name="buttons_num_min_width">38sp</dimen>
     <dimen name="buttons_time_size">20sp</dimen>
     <dimen name="buttons_operators_size">30sp</dimen>
     <dimen name="margin_16_size">10dp</dimen>
@@ -17,8 +18,9 @@
     <dimen name="result_expression_maxtextsize">64sp</dimen>
     <dimen name="fab_margin">8dp</dimen>
     <dimen name="separator_time_text_size">14sp</dimen>
-    <dimen name="padding_buttons">0dp</dimen>
-    <dimen name="padding_buttons_time">3dp</dimen>
+    <dimen name="padding_buttons">6dp</dimen>
+    <dimen name="padding_buttons_time">7dp</dimen>
+    <dimen name="padding_buttons_action">3dp</dimen>
     <dimen name="settings_group_text_size">14sp</dimen>
     <dimen name="settings_item_text_size">16sp</dimen>
     <dimen name="settings_item_min_height">44dp</dimen>

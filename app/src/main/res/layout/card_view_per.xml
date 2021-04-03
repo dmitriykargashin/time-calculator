@@ -22,7 +22,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="4dp"
+            android:paddingStart="10dp"
+            android:paddingTop="4dp"
             android:paddingEnd="4dp"
             tools:layout_conversion_absoluteHeight="0dp"
             tools:layout_conversion_absoluteWidth="0dp"

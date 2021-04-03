@@ -78,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons_time"
                 android:paddingBottom="@dimen/padding_buttons_time"
@@ -85,9 +86,9 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBottom_toTopOf="@+id/buttonHour"
-                app:layout_constraintEnd_toEndOf="@+id/buttonHour"
-                app:layout_constraintStart_toStartOf="@+id/buttonHour" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonMonth"
+                app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
+                app:layout_constraintStart_toEndOf="@+id/buttonMonth" />
 
         <Button
                 android:id="@+id/buttonMonth"
@@ -96,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons_time"
                 android:paddingBottom="@dimen/padding_buttons_time"
@@ -103,9 +105,9 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBottom_toTopOf="@+id/buttonMinute"
-                app:layout_constraintEnd_toEndOf="@+id/buttonMinute"
-                app:layout_constraintStart_toStartOf="@+id/buttonMinute" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonSubstraction"
+                app:layout_constraintEnd_toStartOf="@+id/buttonYear"
+                app:layout_constraintStart_toEndOf="@+id/buttonSubstraction" />
 
         <Button
                 android:id="@+id/buttonWeek"
@@ -114,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons_time"
                 android:paddingBottom="@dimen/padding_buttons_time"
@@ -121,9 +124,10 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBottom_toTopOf="@+id/buttonSecond"
-                app:layout_constraintEnd_toEndOf="@+id/buttonSecond"
-                app:layout_constraintStart_toStartOf="@+id/buttonSecond" />
+                app:layout_constraintBottom_toTopOf="@+id/buttonYear"
+                app:layout_constraintEnd_toEndOf="@+id/buttonYear"
+                app:layout_constraintStart_toStartOf="@+id/buttonYear"
+                app:layout_constraintTop_toBottomOf="@+id/buttonMsec" />
 
         <Button
                 android:id="@+id/buttonDay"
@@ -132,6 +136,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons_time"
                 android:paddingBottom="@dimen/padding_buttons_time"
@@ -139,21 +144,19 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBottom_toTopOf="@+id/buttonMsec"
-                app:layout_constraintEnd_toEndOf="@+id/buttonMsec"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/buttonWeek"
-                app:layout_constraintStart_toStartOf="@+id/buttonMsec" />
-
+                app:layout_constraintBottom_toTopOf="@+id/buttonMonth"
+                app:layout_constraintEnd_toEndOf="@+id/buttonMonth"
+                app:layout_constraintStart_toStartOf="@+id/buttonMonth"
+                app:layout_constraintTop_toBottomOf="@+id/buttonSecond" />
 
         <Button
                 android:id="@+id/buttonHour"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_16_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons_time"
                 android:paddingBottom="@dimen/padding_buttons_time"
@@ -161,19 +164,18 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonMinute"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonDivide"
+                app:layout_constraintEnd_toEndOf="@+id/buttonSecond"
+                app:layout_constraintStart_toStartOf="@+id/buttonSecond" />
 
         <Button
                 android:id="@+id/buttonMinute"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_16_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons_time"
                 android:paddingBottom="@dimen/padding_buttons_time"
@@ -181,18 +183,19 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonSecond"
-                app:layout_constraintStart_toEndOf="@+id/buttonHour" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonHour"
+                app:layout_constraintEnd_toEndOf="@+id/buttonMsec"
+                app:layout_constraintStart_toStartOf="@+id/buttonMsec" />
+
 
         <Button
                 android:id="@+id/buttonSecond"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_16_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons_time"
                 android:paddingBottom="@dimen/padding_buttons_time"
@@ -200,18 +203,19 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonMsec"
-                app:layout_constraintStart_toEndOf="@+id/buttonMinute" />
+                app:layout_constraintBottom_toTopOf="@+id/buttonDay"
+                app:layout_constraintEnd_toEndOf="@+id/buttonDay"
+                app:layout_constraintStart_toStartOf="@+id/buttonDay"
+                app:layout_constraintTop_toBottomOf="@+id/buttonHour" />
 
         <Button
                 android:id="@+id/buttonMsec"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_16_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons_time"
                 android:paddingBottom="@dimen/padding_buttons_time"
@@ -219,10 +223,10 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorTimeBtns"
                 android:textSize="@dimen/buttons_time_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
-                app:layout_constraintStart_toEndOf="@+id/buttonSecond" />
-
+                app:layout_constraintBottom_toTopOf="@+id/buttonWeek"
+                app:layout_constraintEnd_toEndOf="@+id/buttonWeek"
+                app:layout_constraintStart_toStartOf="@+id/buttonWeek"
+                app:layout_constraintTop_toBottomOf="@+id/buttonMinute" />
 
         <Button
                 android:id="@+id/buttonNum7"
@@ -231,6 +235,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -248,11 +253,12 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
+
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
                 android:text="8"
-
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum5"
@@ -266,11 +272,12 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
+
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
                 android:text="9"
-
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum6"
@@ -286,6 +293,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
 
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -295,7 +303,6 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum9"
                 app:layout_constraintBottom_toTopOf="@+id/buttonMultiply"
                 app:layout_constraintEnd_toEndOf="@+id/buttonMultiply"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/buttonMultiply" />
 
         <Button
@@ -306,6 +313,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
 
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -315,7 +323,6 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum6"
                 app:layout_constraintBottom_toTopOf="@+id/buttonAddition"
                 app:layout_constraintEnd_toEndOf="@+id/buttonAddition"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/buttonAddition" />
 
         <Button
@@ -325,6 +332,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -342,6 +350,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -350,7 +359,6 @@
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum2"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNum2"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonNum2" />
 
         <Button
@@ -360,6 +368,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -369,7 +378,6 @@
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNum3"
                 app:layout_constraintEnd_toEndOf="@+id/buttonNum3"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonNum3" />
 
 
@@ -380,6 +388,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -389,7 +398,6 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum3"
                 app:layout_constraintBottom_toTopOf="@+id/buttonSubstraction"
                 app:layout_constraintEnd_toEndOf="@+id/buttonSubstraction"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonSubstraction" />
 
         <Button
@@ -399,6 +407,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -416,6 +425,8 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:includeFontPadding="false"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -424,7 +435,6 @@
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonComma"
                 app:layout_constraintEnd_toEndOf="@+id/buttonComma"
-                app:layout_constraintHorizontal_bias="0.521"
                 app:layout_constraintStart_toStartOf="@+id/buttonComma" />
 
         <Button
@@ -434,6 +444,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -442,8 +453,8 @@
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBottom_toTopOf="@+id/buttonEqual"
                 app:layout_constraintEnd_toEndOf="@+id/buttonEqual"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/buttonEqual" />
+
 
         <Button
                 android:id="@+id/buttonSubstraction"
@@ -452,20 +463,18 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
+
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
                 android:text="@string/button_substraction"
                 android:textColor="@android:color/holo_blue_dark"
-
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonEqual"
-                app:layout_constraintBottom_toTopOf="@+id/buttonDay"
-                app:layout_constraintEnd_toEndOf="@+id/buttonDay"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/buttonDay"
+                app:layout_constraintEnd_toStartOf="@+id/buttonMonth"
+                app:layout_constraintStart_toEndOf="@+id/buttonEqual"
                 app:layout_constraintTop_toBottomOf="@+id/buttonAddition" />
-
 
         <Button
                 android:id="@+id/buttonComma"
@@ -474,6 +483,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -481,25 +491,28 @@
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonNum0"
-                app:layout_constraintEnd_toEndOf="@+id/buttonMonth"
-                app:layout_constraintStart_toStartOf="@+id/buttonMonth" />
+                app:layout_constraintEnd_toStartOf="@+id/buttonEqual"
+                app:layout_constraintStart_toEndOf="@+id/buttonNum0" />
 
         <Button
                 android:id="@+id/buttonNum0"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_8_size"
+                android:layout_marginBottom="@dimen/margin_16_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
                 android:text="0"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
-                app:layout_constraintBottom_toTopOf="@id/buttonYear"
-                app:layout_constraintEnd_toEndOf="@+id/buttonYear"
-                app:layout_constraintStart_toStartOf="@+id/buttonYear" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/buttonComma"
+                app:layout_constraintStart_toStartOf="parent" />
 
         <Button
                 android:id="@+id/buttonEqual"
@@ -508,6 +521,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
                 android:paddingTop="@dimen/padding_buttons"
                 android:paddingBottom="@dimen/padding_buttons"
@@ -515,8 +529,8 @@
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_num_size"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonComma"
-                app:layout_constraintEnd_toEndOf="@+id/buttonWeek"
-                app:layout_constraintStart_toStartOf="@+id/buttonWeek" />
+                app:layout_constraintEnd_toStartOf="@+id/buttonSubstraction"
+                app:layout_constraintStart_toEndOf="@+id/buttonComma" />
 
         <TextView
                 android:id="@+id/tvExpressionField"
@@ -572,18 +586,19 @@
                 android:contentDescription="Delete"
                 android:fontFamily="@font/googlesans_regular"
 
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
-                android:paddingTop="@dimen/padding_buttons"
-                android:paddingBottom="@dimen/padding_buttons"
+                android:paddingTop="@dimen/padding_buttons_action"
+                android:paddingBottom="@dimen/padding_buttons_action"
                 android:scaleType="center"
                 android:src="@drawable/ic_backspace_black_24dp"
                 android:text="Del"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_operators_size"
-                app:layout_constraintBottom_toBottomOf="@+id/buttonDivide"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonMinute"
                 app:layout_constraintEnd_toEndOf="@+id/buttonFormats"
                 app:layout_constraintStart_toStartOf="@+id/buttonFormats"
-                app:layout_constraintTop_toTopOf="@+id/buttonDivide" />
+                app:layout_constraintTop_toTopOf="@+id/buttonMinute" />
 
         <ImageButton
                 android:id="@+id/buttonFood"
@@ -594,17 +609,18 @@
                 android:contentDescription="Tea"
 
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
-                android:paddingTop="@dimen/padding_buttons"
-                android:paddingBottom="@dimen/padding_buttons"
+                android:paddingTop="@dimen/padding_buttons_action"
+                android:paddingBottom="@dimen/padding_buttons_action"
                 android:scaleType="center"
-                android:src="@drawable/ic_food"
+                android:src="@drawable/ic_food_checked"
                 android:text="Food"
+
                 android:textColor="@color/colorNums"
 
+
                 android:textSize="@dimen/buttons_operators_size"
-
-
                 app:layout_constraintBottom_toTopOf="@+id/buttonSettings"
                 app:layout_constraintEnd_toEndOf="@+id/buttonSettings"
                 app:layout_constraintStart_toStartOf="@+id/buttonSettings"
@@ -619,9 +635,10 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="Formats"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
-                android:paddingTop="@dimen/padding_buttons"
-                android:paddingBottom="@dimen/padding_buttons"
+                android:paddingTop="@dimen/padding_buttons_action"
+                android:paddingBottom="@dimen/padding_buttons_action"
                 android:scaleType="center"
                 android:src="@drawable/ic_convert_24"
                 android:text="Formats"
@@ -639,9 +656,10 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="Per"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
-                android:paddingTop="@dimen/padding_buttons"
-                android:paddingBottom="@dimen/padding_buttons"
+                android:paddingTop="@dimen/padding_buttons_action"
+                android:paddingBottom="@dimen/padding_buttons_action"
                 android:scaleType="center"
                 android:src="@drawable/ic_per"
                 android:text="Per"
@@ -656,22 +674,23 @@
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="@dimen/margin_8_size"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="Settings"
                 android:fontFamily="@font/googlesans_regular"
+                android:minWidth="@dimen/buttons_num_min_width"
                 android:minHeight="30dp"
-                android:paddingTop="@dimen/padding_buttons"
-                android:paddingBottom="@dimen/padding_buttons"
+                android:paddingTop="@dimen/padding_buttons_action"
+                android:paddingBottom="@dimen/padding_buttons_action"
                 android:scaleType="center"
                 android:src="@drawable/ic_settings"
                 android:text="Settings"
                 android:textColor="@color/colorNums"
                 android:textSize="@dimen/buttons_operators_size"
-                app:layout_constraintBottom_toBottomOf="@+id/buttonMsec"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonYear"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonMsec"
-                app:layout_constraintTop_toTopOf="@+id/buttonMsec" />
+                app:layout_constraintStart_toEndOf="@+id/buttonYear"
+                app:layout_constraintTop_toTopOf="@+id/buttonYear" />
 
         <TextView
                 android:id="@+id/tvFormats"

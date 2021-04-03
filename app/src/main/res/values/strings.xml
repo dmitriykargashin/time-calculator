@@ -14,10 +14,18 @@
 
 
     <string name="new_rate_dialog_message">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thanks for your support!</string>
+
+    <string name="never_show_ratetheapp">NEVER</string>
+    <string name="rate_main_text">How was your experience with the Time Calculator?</string>
+    <string name="rate_second_text">The app is absolutely free.\nYou can contribute to the development of the app by writing a review!</string>
+    <string name="rate_store_second_text">If you enjoy using this app, would you mind taking a moment to rate it in the store?\n\nYour review will help this app develop further.</string>
+    <string name="rate_feedback_main_text">I want to improve the App with your help. Don\'t hesitate to send an email with your suggestions.\n\nSend an email?</string>
+
     <string name="send_feedback">Send Feedback</string>
     <string name="remove_ads">Remove Ads</string>
     <string name="rate_the_app">Rate the App</string>
     <string name="feedback">Send feedback</string>
+    <string name="support_app_text">For your best user experience, the application is now free and ad-free.\n If you would like to support me, as a developer of the app, you can buy me some CUPS of TEA.\nAny purchase will give you a green star to the right of the corresponding button\n\nYou can also leave a review to help improve the app.</string>
 
 
 </resources>

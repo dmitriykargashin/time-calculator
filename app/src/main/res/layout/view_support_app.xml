@@ -26,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="A cup of tea for the developer"
+            app:title="The app development support"
             app:titleMargin="4dp" />
 
     <ScrollView
@@ -51,10 +51,9 @@
                     android:layout_marginEnd="@dimen/margin_16_size"
                     android:fontFamily="@font/googlesans_regular"
                     android:lineSpacingExtra="4sp"
-                    android:text="For your best user experience, the application is now free and ad-free.\n If you would like to support me, as a developer of the app, you can buy me some CUPS of TEA.\nAny purchase will give you a green star to the right of the corresponding button"
+                    android:text="@string/support_app_text"
                     android:textAlignment="center"
                     android:textSize="@dimen/settings_group_text_size"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -66,12 +65,13 @@
                     android:layout_marginLeft="@dimen/margin_16_size"
                     android:paddingTop="@dimen/margin_8_size"
                     android:paddingBottom="@dimen/margin_8_size"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/btnSupport1"
                     app:layout_constraintStart_toEndOf="@+id/btnSupport1"
                     app:layout_constraintTop_toTopOf="@+id/btnSupport1"
                     app:layout_constraintVertical_chainStyle="spread"
-                    app:srcCompat="@drawable/ic_star_green_24dp" />
+                    app:srcCompat="@drawable/ic_star_green_24dp"
+                    tools:visibility="visible" />
 
             <ImageView
                     android:id="@+id/imageStar3"
@@ -80,11 +80,12 @@
                     android:layout_marginLeft="@dimen/margin_16_size"
                     android:paddingTop="@dimen/margin_8_size"
                     android:paddingBottom="@dimen/margin_8_size"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/btnSupport2"
-                    app:layout_constraintStart_toEndOf="@+id/btnSupport2"
-                    app:layout_constraintTop_toTopOf="@+id/btnSupport2"
-                    app:srcCompat="@drawable/ic_star_green_24dp" />
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnSupport3"
+                    app:layout_constraintStart_toEndOf="@+id/btnSupport3"
+                    app:layout_constraintTop_toTopOf="@+id/btnSupport3"
+                    app:srcCompat="@drawable/ic_star_green_24dp"
+                    tools:visibility="visible" />
 
             <ImageView
                     android:id="@+id/imageStar5"
@@ -93,10 +94,12 @@
                     android:layout_marginLeft="@dimen/margin_16_size"
                     android:paddingTop="@dimen/margin_8_size"
                     android:paddingBottom="@dimen/margin_8_size"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/btnSupport5"
                     app:layout_constraintStart_toEndOf="@+id/btnSupport5"
                     app:layout_constraintTop_toTopOf="@+id/btnSupport5"
-                    app:srcCompat="@drawable/ic_star_green_24dp" />
+                    app:srcCompat="@drawable/ic_star_green_24dp"
+                    tools:visibility="visible" />
 
             <ImageView
                     android:id="@+id/imageStar9"
@@ -105,37 +108,10 @@
                     android:layout_marginLeft="@dimen/margin_16_size"
                     android:paddingTop="@dimen/margin_8_size"
                     android:paddingBottom="@dimen/margin_8_size"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/btnSupport9"
                     app:layout_constraintStart_toEndOf="@+id/btnSupport9"
                     app:layout_constraintTop_toTopOf="@+id/btnSupport9"
-                    app:srcCompat="@drawable/ic_star_green_24dp" />
-
-            <ImageView
-                    android:id="@+id/imageStar15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16_size"
-                    android:paddingTop="@dimen/margin_8_size"
-                    android:paddingBottom="@dimen/margin_8_size"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/btnSupport15"
-                    app:layout_constraintStart_toEndOf="@+id/btnSupport15"
-                    app:layout_constraintTop_toTopOf="@+id/btnSupport15"
-                    app:srcCompat="@drawable/ic_star_green_24dp"
-                    tools:visibility="visible" />
-
-            <ImageView
-                    android:id="@+id/imageStar29"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_16_size"
-                    android:paddingTop="@dimen/margin_8_size"
-                    android:paddingBottom="@dimen/margin_8_size"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/btnSupport29"
-                    app:layout_constraintTop_toTopOf="@+id/btnSupport29"
                     app:srcCompat="@drawable/ic_star_green_24dp"
                     tools:visibility="visible" />
 
@@ -151,7 +127,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/labelSupport" />
 
             <Button
-                    android:id="@+id/btnSupport2"
+                    android:id="@+id/btnSupport3"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -170,7 +146,7 @@
                     android:text="buy 5 Cups"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btnSupport2" />
+                    app:layout_constraintTop_toBottomOf="@+id/btnSupport3" />
 
             <Button
                     android:id="@+id/btnSupport9"
@@ -184,26 +160,17 @@
                     app:layout_constraintTop_toBottomOf="@+id/btnSupport5" />
 
             <Button
-                    android:id="@+id/btnSupport15"
+                    android:id="@+id/btnSupportRate"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:drawableLeft="@drawable/ic_food"
-                    android:text="buy 15 Cups"
+                    android:drawableLeft="@drawable/ic_star_blue_24dp"
+                    android:text="Leave a review"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btnSupport9" />
 
-            <Button
-                    android:id="@+id/btnSupport29"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:drawableLeft="@drawable/ic_food"
-                    android:text="buy 29 Cups"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btnSupport15" />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
