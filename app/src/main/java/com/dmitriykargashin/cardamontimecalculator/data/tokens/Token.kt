@@ -4,12 +4,20 @@
 
 package com.dmitriykargashin.cardamontimecalculator.data.tokens
 
+import java.math.BigDecimal
+
 //import android.util.Log
 
 
-class Token(val type: TokenType, var strRepresentation: String = "") {
+class Token(val type: TokenType, val value: BigDecimal, var strRepresentation: String = "") {
 
     init {
+        if (type.isTimeKeyword()) {
+            if (value.compareTo(1.toBigDecimal()) != 0) {
+                strRepresentation += 's'
+            }
+        }
+
         /* if (type == TokenType.NUMBER) { // here we'll remove .0 from string representation of integer
          *//*    Log.i("TAG", "NUMBER: $strRepresentation")
             val tmpDouble = strRepresentation.toDouble()
@@ -20,7 +28,7 @@ class Token(val type: TokenType, var strRepresentation: String = "") {
         }*/
     }
 
-    constructor (type: TokenType) : this(type, type.value)
+    constructor (type: TokenType, value: BigDecimal) : this(type, value, type.value)
 
     fun addDotToNumber() {
         //  Log.i("TAG", "NUMBER DOT: $strRepresentation")

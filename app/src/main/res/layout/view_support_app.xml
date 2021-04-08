@@ -170,7 +170,24 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btnSupport9" />
 
+            <Button
+                    android:id="@+id/btnShareTheApp"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableLeft="@drawable/ic_baseline_share_24"
+                    android:text="Share the app"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btnSupportRate" />
 
+            <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnShareTheApp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

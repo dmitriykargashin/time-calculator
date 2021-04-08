@@ -42,7 +42,8 @@ abstract class LexicalAnalyzer {
                 val tmpToken =
                     findCurrentFullToken(
                         expression,
-                        currentPosition
+                        currentPosition,
+                        resultTokens
                     )
                 resultTokens.add(tmpToken)
                 currentPosition += tmpToken.length()
@@ -57,18 +58,23 @@ abstract class LexicalAnalyzer {
         private fun isLetter(x: Char): Boolean = x.isLetter()
 
         //Finding out that current symbol is operator
-        private fun isOperator(x: Char): Boolean = (x == TokenType.PLUS.value[0]) or (x == TokenType.MINUS.value[0]) or
-                (x == TokenType.MULTIPLY.value[0]) or (x == TokenType.DIVIDE.value[0]) or (x == '-') or (x == '/') or (x == '*') or (x == '+')
+        private fun isOperator(x: Char): Boolean =
+            (x == TokenType.PLUS.value[0]) or (x == TokenType.MINUS.value[0]) or
+                    (x == TokenType.MULTIPLY.value[0]) or (x == TokenType.DIVIDE.value[0]) or (x == '-') or (x == '/') or (x == '*') or (x == '+')
 
         //Finding out that current symbol is dot
-   //     fun isDot(x: Char): Boolean = x == '.'
+        //     fun isDot(x: Char): Boolean = x == '.'
 
 
         // finding full token body from current position
-        private fun findCurrentFullToken(expression: String, currentPosition: Int): Token {
+        private fun findCurrentFullToken(
+            expression: String,
+            currentPosition: Int,
+            currentTokens: Tokens
+        ): Token {
             // In Kotlin we dont need BUILDER Pattern!
             var findedToken =
-                Token(type = TokenType.ERROR)
+                Token(type = TokenType.ERROR, value = 1.toBigDecimal())
 
             if (currentPosition <= expressionLength) {
 
@@ -85,7 +91,8 @@ abstract class LexicalAnalyzer {
                         findedToken =
                             findCurrentLetterToken(
                                 expression,
-                                currentPosition
+                                currentPosition,
+                                currentTokens
                             )
                     }
 
@@ -97,13 +104,13 @@ abstract class LexicalAnalyzer {
                             )
                     }
 
-                 /*   isDot((expression[currentPosition])) -> {
-                        findedToken =
-                            findCurrentDigitalToken(
-                                expression,
-                                currentPosition
-                            )
-                    }*/
+                    /*   isDot((expression[currentPosition])) -> {
+                           findedToken =
+                               findCurrentDigitalToken(
+                                   expression,
+                                   currentPosition
+                               )
+                       }*/
 
                 }
 
@@ -115,57 +122,66 @@ abstract class LexicalAnalyzer {
         private fun findCurrentOperatorToken(expression: String, currentPosition: Int): Token {
             return when {
                 (expression[currentPosition] == TokenType.PLUS.value[0]) or (expression[currentPosition] == '+') -> {
-                    Token(type = TokenType.PLUS)
+                    Token(type = TokenType.PLUS, value = 1.toBigDecimal())
                 }
                 (expression[currentPosition] == TokenType.MINUS.value[0]) or (expression[currentPosition] == '-') -> {
-                    Token(type = TokenType.MINUS)
+                    Token(type = TokenType.MINUS, value = 1.toBigDecimal())
                 }
                 (expression[currentPosition] == TokenType.DIVIDE.value[0]) or (expression[currentPosition] == '/') -> {
-                    Token(type = TokenType.DIVIDE)
+                    Token(type = TokenType.DIVIDE, value = 1.toBigDecimal())
                 }
                 (expression[currentPosition] == TokenType.MULTIPLY.value[0]) or (expression[currentPosition] == '*') -> {
-                    Token(type = TokenType.MULTIPLY)
+                    Token(type = TokenType.MULTIPLY, value = 1.toBigDecimal())
                 }
-                else -> Token(type = TokenType.ERROR)
+                else -> Token(type = TokenType.ERROR, value = 1.toBigDecimal())
             }
 
         }
 
-        private fun findCurrentLetterToken(expression: String, currentPosition: Int): Token {
+        private fun findCurrentLetterToken(
+            expression: String,
+            currentPosition: Int,
+            currentTokens: Tokens
+        ): Token {
+            var tokenValue = 1.toBigDecimal()
+            if (currentTokens.isNotEmpty() && currentTokens.last().type == TokenType.NUMBER) {
+                tokenValue = currentTokens.last().value
+            }
+
             when {
                 expression.startsWith(TokenType.YEAR.value, currentPosition) -> {
-                    return Token(type = TokenType.YEAR)
+                    return Token(type = TokenType.YEAR, tokenValue)
                 }
 
                 expression.startsWith(TokenType.MONTH.value, currentPosition) -> {
-                    return Token(type = TokenType.MONTH)
+                    return Token(type = TokenType.MONTH, tokenValue)
                 }
 
                 expression.startsWith(TokenType.WEEK.value, currentPosition) -> {
-                    return Token(type = TokenType.WEEK)
+                    return Token(type = TokenType.WEEK, tokenValue)
                 }
 
                 expression.startsWith(TokenType.DAY.value, currentPosition) -> {
-                    return Token(type = TokenType.DAY)
+                    return Token(type = TokenType.DAY, tokenValue)
                 }
 
                 expression.startsWith(TokenType.HOUR.value, currentPosition) -> {
-                    return Token(type = TokenType.HOUR)
+                    return Token(type = TokenType.HOUR, tokenValue)
                 }
 
                 expression.startsWith(TokenType.MINUTE.value, currentPosition) -> {
-                    return Token(type = TokenType.MINUTE)
+                    return Token(type = TokenType.MINUTE, tokenValue)
                 }
 
                 expression.startsWith(TokenType.SECOND.value, currentPosition) -> {
-                    return Token(type = TokenType.SECOND)
+                    return Token(type = TokenType.SECOND, tokenValue)
                 }
 
                 expression.startsWith(TokenType.MSECOND.value, currentPosition) -> {
-                    return Token(type = TokenType.MSECOND)
+                    return Token(type = TokenType.MSECOND, tokenValue)
                 }
 
-                else -> return Token(type = TokenType.ERROR)
+                else -> return Token(type = TokenType.ERROR,tokenValue)
             }
         }
 
@@ -179,6 +195,7 @@ abstract class LexicalAnalyzer {
 
             return Token(
                 type = TokenType.NUMBER,
+                m.group().toBigDecimal(),
                 strRepresentation = m.group()
             )
 

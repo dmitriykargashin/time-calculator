@@ -7,7 +7,6 @@ package com.dmitriykargashin.cardamontimecalculator.ui.calculator
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -24,7 +23,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
@@ -39,11 +37,13 @@ import com.dmitriykargashin.cardamontimecalculator.data.tokens.TokenType
 import com.dmitriykargashin.cardamontimecalculator.internal.extension.logger
 import com.dmitriykargashin.cardamontimecalculator.utilites.InjectorUtils
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.suddenh4x.ratingdialog.AppRating
 import com.suddenh4x.ratingdialog.preferences.MailSettings
 import com.suddenh4x.ratingdialog.preferences.RatingThreshold
-import hotchemi.android.rate.AppRate
-import hotchemi.android.rate.StoreType
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_formats.*
 import kotlinx.android.synthetic.main.view_per.*
@@ -54,7 +54,7 @@ import kotlin.math.hypot
 
 class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
-
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private lateinit var factory: CalculatorViewModelFactory
     lateinit var viewModel: CalculatorViewModel
     private val TAG = "CalculatorActivity"
@@ -102,7 +102,8 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+       // mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = Firebase.analytics
 
         /*   try {
                val info = getPackageManager().getPackageInfo(
@@ -155,6 +156,18 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
         // setupRateMe()
 
     }
+
+
+    private fun shareTheApp() {
+        var intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(
+            Intent.EXTRA_TEXT,
+            "\uD83D\uDE0D The Best Time Calculator.\n  ✅ Work Hours\n  ✅ Allows you to select different time formats for the result\n  ✅ Convert any Time Units\n  ✅ Calculates Salary, Distance, etc\n\n\uD83D\uDD25 Please, try it: https://bit.ly/TimeCalcCardamon"
+        )
+        startActivity(Intent(intent))
+    }
+
 
     private fun rateBuilder(): AppRating.Builder {
 
@@ -285,6 +298,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 .setSkuDetails(skuDetails)
                                 .build()
                             billingClient.launchBillingFlow(this, billingFlowParams)
+                            mFirebaseAnalytics.logEvent("button_support_3") {
+                                param("button_name", "buttonSupport3")
+                            }
                         }
 
                     if (skuDetails.sku == "support_1")
@@ -295,6 +311,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 .setSkuDetails(skuDetails)
                                 .build()
                             billingClient.launchBillingFlow(this, billingFlowParams)
+                            mFirebaseAnalytics.logEvent("button_support_1") {
+                                param("button_name", "buttonSupport1")
+                            }
                         }
 
                     if (skuDetails.sku == "support_5")
@@ -305,6 +324,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 .setSkuDetails(skuDetails)
                                 .build()
                             billingClient.launchBillingFlow(this, billingFlowParams)
+                            mFirebaseAnalytics.logEvent("button_support_5") {
+                                param("button_name", "buttonSupport5")
+                            }
                         }
 
 
@@ -316,6 +338,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 .setSkuDetails(skuDetails)
                                 .build()
                             billingClient.launchBillingFlow(this, billingFlowParams)
+                            mFirebaseAnalytics.logEvent("button_support_9") {
+                                param("button_name", "buttonSupport9")
+                            }
                         }
 
 //                    if (skuDetails.sku == "support_15")
@@ -697,95 +722,106 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
             rateBuilder()
                 .dontCountThisAsAppLaunch()
                 .showNow();
+
+            mFirebaseAnalytics.logEvent("button_support_rate") {
+                param("button_name", "buttonSupportRate")
+            }
         }
 
+        btnShareTheApp.setOnClickListener {
+            //  logger("press button to buy")
+            shareTheApp()
+            mFirebaseAnalytics.logEvent("button_share_the_app") {
+                param("button_name", "buttonShareTheApp")
+            }
+        }
 
         //nums
         buttonNum1.setOnClickListener {
 
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "1"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER,value=1.toBigDecimal(), strRepresentation = "1"))
         }
         buttonNum2.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "2"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER,value=2.toBigDecimal(), strRepresentation = "2"))
 
         }
         buttonNum3.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "3"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER,value=3.toBigDecimal(), strRepresentation = "3"))
 
         }
         buttonNum4.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "4"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER, value=4.toBigDecimal(),strRepresentation = "4"))
 
         }
         buttonNum5.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "5"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER,value=5.toBigDecimal(), strRepresentation = "5"))
 
         }
         buttonNum6.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "6"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER,value=6.toBigDecimal(), strRepresentation = "6"))
         }
         buttonNum7.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "7"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER,value=7.toBigDecimal(), strRepresentation = "7"))
         }
         buttonNum8.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "8"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER,value=8.toBigDecimal(), strRepresentation = "8"))
         }
         buttonNum9.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "9"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER,value=9.toBigDecimal(), strRepresentation = "9"))
         }
         buttonNum0.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.NUMBER, strRepresentation = "0"))
+            viewModel.addToExpression(Token(type = TokenType.NUMBER,value=0.toBigDecimal(), strRepresentation = "0"))
 
         }
         buttonComma.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.DOT))
+            viewModel.addToExpression(Token(type = TokenType.DOT, value=1.toBigDecimal()))
 
         }
 
         /// times
         buttonYear.setOnClickListener {
 
-            viewModel.addToExpression(Token(type = TokenType.YEAR))
+            viewModel.addToExpressionTimeUnit(TokenType.YEAR)
         }
         buttonMonth.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.MONTH))
+            viewModel.addToExpressionTimeUnit(TokenType.MONTH)
 
         }
         buttonWeek.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.WEEK))
+            viewModel.addToExpressionTimeUnit(TokenType.WEEK)
 
         }
         buttonDay.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.DAY))
+            viewModel.addToExpressionTimeUnit(TokenType.DAY)
         }
         buttonHour.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.HOUR))
+            viewModel.addToExpressionTimeUnit(TokenType.HOUR)
         }
         buttonMinute.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.MINUTE))
+            viewModel.addToExpressionTimeUnit(TokenType.MINUTE)
         }
         buttonSecond.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.SECOND))
+            viewModel.addToExpressionTimeUnit(TokenType.SECOND)
         }
         buttonMsec.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.MSECOND))
+            viewModel.addToExpressionTimeUnit(TokenType.MSECOND)
         }
 
         ///operations
         buttonMultiply.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.MULTIPLY))
+            viewModel.addToExpression(Token(type = TokenType.MULTIPLY, value=1.toBigDecimal()))
 
         }
         buttonDivide.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.DIVIDE))
+            viewModel.addToExpression(Token(type = TokenType.DIVIDE, value=1.toBigDecimal()))
 
         }
         buttonSubstraction.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.MINUS))
+            viewModel.addToExpression(Token(type = TokenType.MINUS, value=1.toBigDecimal()))
 
         }
         buttonAddition.setOnClickListener {
-            viewModel.addToExpression(Token(type = TokenType.PLUS))
+            viewModel.addToExpression(Token(type = TokenType.PLUS, value=1.toBigDecimal()))
 
         }
 
@@ -848,6 +884,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 formatsLayout.visibility = View.VISIBLE
 
             }
+            mFirebaseAnalytics.logEvent("button_formats") {
+                param("button_name", "buttonFormats")
+            }
         }
 
 
@@ -904,6 +943,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 perLayout.visibility = View.VISIBLE
 
             }
+            mFirebaseAnalytics.logEvent("button_per") {
+                param("button_name", "buttonPer")
+            }
         }
 
 
@@ -914,6 +956,23 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
                 //  forceRippleAnimation(tvOnlineResult)
+
+//                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+//                    param(FirebaseAnalytics.Param.ITEM_ID, "support_button")
+//                    param(FirebaseAnalytics.Param.ITEM_NAME, "Pressed Support button")
+//                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "button")
+//                }
+
+
+//            val bundle = Bundle()
+//
+//
+//
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Support_Button")
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Pressed Support button")
+//                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "button")
+//                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+
 
                 val location = IntArray(2)
                 buttonFood.getLocationOnScreen(location)
@@ -960,6 +1019,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 viewModel.setIsSupportAppLayoutVisible(true)
                 support_appLayout.visibility = View.VISIBLE
 
+            }
+            mFirebaseAnalytics.logEvent("button_support") {
+                param("button_name", "buttonSupport")
             }
         }
 
@@ -1073,7 +1135,13 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 } else
                     viewModel.clearAll()
             }
+
+            mFirebaseAnalytics.logEvent("button_long_delete") {
+                param("button_name", "buttonLongDelete")
+            }
             true
+
+
         }
 
 
@@ -1086,6 +1154,9 @@ class CalculatorActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         buttonFeedback_Sendfeedback.setOnClickListener {
             sendFeedback()
+            mFirebaseAnalytics.logEvent("button_feedback") {
+                param("button_name", "buttonFeedback")
+            }
         }
 
 

@@ -79,6 +79,7 @@ abstract class CalculatorOfTime {
                 resultTokens.add(
                     Token(
                         TokenType.NUMBER,
+                        result,
                         resultAsString
                         /*result.toString()*/
                     )
@@ -86,7 +87,8 @@ abstract class CalculatorOfTime {
 
                 resultTokens.add(
                     Token(
-                        TokenType.MSECOND
+                        TokenType.MSECOND,
+                        result
 
                     )
                 )
@@ -99,6 +101,7 @@ abstract class CalculatorOfTime {
                 resultTokens.add(
                     Token(
                         TokenType.ERROR,
+                        1.toBigDecimal(),
                         "ERROR"
                     )
                 )
@@ -122,7 +125,8 @@ abstract class CalculatorOfTime {
                         if (!isParenthesesBegins) {
                             tokensWithParentheses.add(
                                 Token(
-                                    TokenType.PARENTHESESLEFT
+                                    TokenType.PARENTHESESLEFT,
+                                    1.toBigDecimal()
                                 )
                             )
                             isParenthesesBegins = true
@@ -130,7 +134,7 @@ abstract class CalculatorOfTime {
                     }
                     TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS -> {
 
-                        tokensWithParentheses.add(Token(TokenType.PARENTHESESRIGHT))
+                        tokensWithParentheses.add(Token(TokenType.PARENTHESESRIGHT, 1.toBigDecimal()))
                         isParenthesesBegins = false
 
                     }
@@ -138,12 +142,13 @@ abstract class CalculatorOfTime {
                 tokensWithParentheses.add(
                     Token(
                         token.type,
+                        token.value,
                         token.strRepresentation
                     )
                 )
 
             }
-            tokensWithParentheses.add(Token(TokenType.PARENTHESESRIGHT))
+            tokensWithParentheses.add(Token(TokenType.PARENTHESESRIGHT,1.toBigDecimal()))
             return tokensWithParentheses
         }
 

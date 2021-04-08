@@ -16,7 +16,7 @@ class Tokens : ArrayList<Token>(), Cloneable {
         val newTokens = Tokens()
 
         for (token in this) {
-            newTokens.add(Token(type = token.type, strRepresentation = token.strRepresentation))
+            newTokens.add(Token(type = token.type, value=token.value, strRepresentation = token.strRepresentation))
         }
         return newTokens
     }

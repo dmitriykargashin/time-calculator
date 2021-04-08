@@ -15,6 +15,7 @@ import com.dmitriykargashin.cardamontimecalculator.engine.calculator.CalculatorO
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.Token
 import com.dmitriykargashin.cardamontimecalculator.data.tokens.Tokens
 import com.dmitriykargashin.cardamontimecalculator.data.resultFormat.ResultFormat
+import com.dmitriykargashin.cardamontimecalculator.data.tokens.TokenType
 import com.dmitriykargashin.cardamontimecalculator.utilites.TimeConverter
 import kotlinx.coroutines.*
 import java.math.BigDecimal
@@ -109,6 +110,17 @@ class CalculatorViewModel(
     fun addToExpression(element: Token) {
 
         if (expressionRepository.addToExpression(element)) {
+            viewModelScope.coroutineContext.cancelChildren()
+            viewModelScope.launch { evaluateExpression() }
+        }
+        //   }
+        //  }
+
+
+    }
+    fun addToExpressionTimeUnit(elementType: TokenType) {
+
+        if (expressionRepository.addToExpressionTimeUnit(elementType)) {
             viewModelScope.coroutineContext.cancelChildren()
             viewModelScope.launch { evaluateExpression() }
         }

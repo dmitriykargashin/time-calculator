@@ -57,10 +57,11 @@ abstract class TimeConverter {
                 convertedTokens.add(
                     Token(
                         TokenType.NUMBER,
+                        years,
                         years.toPlainString()
                     )
                 )
-                convertedTokens.add(Token(TokenType.YEAR))
+                convertedTokens.add(Token(TokenType.YEAR, years))
             }
 
 
@@ -68,68 +69,75 @@ abstract class TimeConverter {
                 convertedTokens.add(
                     Token(
                         TokenType.NUMBER,
+                        months,
                         months.toPlainString()
                     )
                 )
-                convertedTokens.add(Token(TokenType.MONTH))
+                convertedTokens.add(Token(TokenType.MONTH, months))
             }
 
             if (weeks.compareTo(ZERO) != 0) {
                 convertedTokens.add(
                     Token(
                         TokenType.NUMBER,
+                        weeks,
                         weeks.toPlainString()
                     )
                 )
-                convertedTokens.add(Token(TokenType.WEEK))
+                convertedTokens.add(Token(TokenType.WEEK, weeks))
             }
             if (days.compareTo(ZERO) != 0) {
                 convertedTokens.add(
                     Token(
                         TokenType.NUMBER,
+                        days,
                         days.toPlainString()
                     )
                 )
-                convertedTokens.add(Token(TokenType.DAY))
+                convertedTokens.add(Token(TokenType.DAY, days))
             }
             if (hours.compareTo(ZERO) != 0) {
                 convertedTokens.add(
                     Token(
                         TokenType.NUMBER,
+                        hours,
                         hours.toPlainString()
                     )
                 )
-                convertedTokens.add(Token(TokenType.HOUR))
+                convertedTokens.add(Token(TokenType.HOUR, hours))
             }
 
             if (minutes.compareTo(ZERO) != 0) {
                 convertedTokens.add(
                     Token(
                         TokenType.NUMBER,
+                        minutes,
                         minutes.toPlainString()
                     )
                 )
-                convertedTokens.add(Token(TokenType.MINUTE))
+                convertedTokens.add(Token(TokenType.MINUTE, minutes))
             }
 
             if (seconds.compareTo(ZERO) != 0) {
                 convertedTokens.add(
                     Token(
                         TokenType.NUMBER,
+                        seconds,
                         seconds.toPlainString()
                     )
                 )
-                convertedTokens.add(Token(TokenType.SECOND))
+                convertedTokens.add(Token(TokenType.SECOND, seconds))
             }
 
             if (mseconds.compareTo(ZERO) != 0) {
                 convertedTokens.add(
                     Token(
                         TokenType.NUMBER,
+                        mseconds,
                         mseconds.toPlainString()
                     )
                 )
-                convertedTokens.add(Token(TokenType.MSECOND))
+                convertedTokens.add(Token(TokenType.MSECOND, mseconds))
             }
             return convertedTokens
         }
@@ -143,49 +151,54 @@ abstract class TimeConverter {
                     // main idea is to convert all time strings to "multiply on it's representation of one unit in Msecs"
 
                     TokenType.SECOND -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY))
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 1.toBigDecimal()))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
+                                MILLISECONDS_IN_SECOND,
                                 MILLISECONDS_IN_SECOND.toPlainString()
                             )
                         )
                     }
                     TokenType.MINUTE -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY))
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 1.toBigDecimal()))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
+                                MILLISECONDS_IN_MINUTE,
                                 MILLISECONDS_IN_MINUTE.toPlainString()
                             )
                         )
                     }
 
                     TokenType.HOUR -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY))
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 1.toBigDecimal()))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
+                                MILLISECONDS_IN_HOUR,
                                 MILLISECONDS_IN_HOUR.toPlainString()
                             )
                         )
                     }
 
                     TokenType.DAY -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY))
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 1.toBigDecimal()))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
+                                MILLISECONDS_IN_DAY,
                                 MILLISECONDS_IN_DAY.toPlainString()
                             )
                         )
                     }
 
                     TokenType.WEEK -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY))
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 1.toBigDecimal()))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
+                                MILLISECONDS_IN_WEEK,
                                 MILLISECONDS_IN_WEEK.toPlainString()
                             )
                         )
@@ -193,30 +206,33 @@ abstract class TimeConverter {
 
 
                     TokenType.MONTH -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY))
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 1.toBigDecimal()))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
+                                MILLISECONDS_IN_MONTH,
                                 MILLISECONDS_IN_MONTH.toPlainString()
                             )
                         )
                     }
 
                     TokenType.YEAR -> {
-                        convertedTokens.add(Token(TokenType.MULTIPLY))
+                        convertedTokens.add(Token(TokenType.MULTIPLY, 1.toBigDecimal()))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
+                                MILLISECONDS_IN_YEAR,
                                 MILLISECONDS_IN_YEAR.toPlainString()
                             )
                         )
                     }
 
                     TokenType.NUMBER -> {
-                        convertedTokens.add(Token(TokenType.PLUS))
+                        convertedTokens.add(Token(TokenType.PLUS, 1.toBigDecimal()))
                         convertedTokens.add(
                             Token(
                                 TokenType.NUMBER,
+                                token.strRepresentation.toBigDecimal(),
                                 token.strRepresentation
                             )
                         )
@@ -225,7 +241,8 @@ abstract class TimeConverter {
                     TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MINUS, TokenType.PLUS, TokenType.PARENTHESESRIGHT, TokenType.PARENTHESESLEFT -> {
                         convertedTokens.add(
                             Token(
-                                token.type
+                                token.type,
+                                1.toBigDecimal()
                             )
                         )
                     }
@@ -239,89 +256,106 @@ abstract class TimeConverter {
         // here we are converting result expression to specified type
         fun convertExpressionInMsecsToType(token: Token, type: TokenType): Tokens {
             val convertedTokens = Tokens()
+            var tempValue: BigDecimal = ZERO
             when (type) {
-
                 TokenType.MSECOND -> {
-
+                    tempValue = token.strRepresentation.toBigDecimal()
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toBigDecimal()).toPlainString()
+                            tempValue,
+                            tempValue.toPlainString()
                         )
                     )
                 }
 
                 TokenType.SECOND -> {
-
+                    tempValue =token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_SECOND
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_SECOND).toPlainString()
+                            tempValue,
+                            tempValue.toPlainString()
                         )
                     )
                 }
                 TokenType.MINUTE -> {
+                    tempValue =token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_MINUTE
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_MINUTE).toPlainString()
+                            tempValue,
+                            tempValue.toPlainString()
                         )
                     )
                 }
 
                 TokenType.HOUR -> {
+                    tempValue =token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_HOUR
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_HOUR).toPlainString()
+                            tempValue,
+                            tempValue.toPlainString()
                         )
                     )
                 }
 
                 TokenType.DAY -> {
+                    tempValue =token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_DAY
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_DAY).toPlainString()
+                            tempValue,
+                            tempValue.toPlainString()
                         )
                     )
                 }
 
                 TokenType.WEEK -> {
+                    tempValue =token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_WEEK
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_WEEK).toPlainString()
+                            tempValue,
+                            tempValue.toPlainString()
                         )
                     )
                 }
 
 
                 TokenType.MONTH -> {
+                    tempValue =token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_MONTH
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_MONTH).toPlainString()
+                            tempValue,
+                            tempValue.toPlainString()
                         )
                     )
                 }
 
                 TokenType.YEAR -> {
+                    tempValue =token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_YEAR
                     convertedTokens.add(
                         Token(
                             TokenType.NUMBER,
-                            (token.strRepresentation.toBigDecimal() / MILLISECONDS_IN_YEAR).toPlainString()
+                            tempValue,
+                            tempValue.toPlainString()
                         )
                     )
                 }
 
             }
-            convertedTokens.add(Token(type))
+            convertedTokens.add(Token(type,tempValue))
             return convertedTokens
         }
 
 
-        private fun convertMsecsToMSecsInType(mSecToConvert: BigDecimal, type: TokenType): BigDecimal {
+        private fun convertMsecsToMSecsInType(
+            mSecToConvert: BigDecimal,
+            type: TokenType
+        ): BigDecimal {
             var result = ZERO
             when (type) {
 
@@ -428,7 +462,7 @@ abstract class TimeConverter {
                     val resultAsString = fmt.format(multipliedResult)*/
 
             return Token(
-                TokenType.NUMBER, multipliedResult.toPlainString()
+                TokenType.NUMBER,multipliedResult, multipliedResult.toPlainString()
             )
 
         }
@@ -697,7 +731,8 @@ abstract class TimeConverter {
             val endResult = Tokens()
 
             var reminderInMsec = convertTokensToMScec(tokensToConvert)
-            val initialValueIsZero = reminderInMsec.compareTo(ZERO) == 0  //to pass the initial value is Zero
+            val initialValueIsZero =
+                reminderInMsec.compareTo(ZERO) == 0  //to pass the initial value is Zero
 
             Log.d("before convert", reminderInMsec.toPlainString())
             // var remainderInMsec=0.0
@@ -747,30 +782,30 @@ abstract class TimeConverter {
             {
                 //   Log.d("ADD currentResultZERO:", ZERO.toPlainString() + " isLast=$isLast")
                 if (!(currentResult.compareTo(ZERO) == 0 && removeZeroUnits)) {
-                    Log.d("ADD LAST currentResult:", currentResult.toPlainString() )
+                    Log.d("ADD LAST currentResult:", currentResult.toPlainString())
 
                     endResult.add(
                         Token(
                             TokenType.NUMBER,
+                            currentResult,
                             currentResult.setScale(
                                 7,
                                 RoundingMode.HALF_UP
                             ).stripTrailingZeros().toPlainString()
                         )
                     )
-                    endResult.add(Token(type))
-                }
-                else {
-                   if (initialValueIsZero)
-                    {
-                    endResult.add(
-                        Token(
-                            TokenType.NUMBER,
-                            ZERO.toPlainString()
+                    endResult.add(Token(type,currentResult))
+                } else {
+                    if (initialValueIsZero) {
+                        endResult.add(
+                            Token(
+                                TokenType.NUMBER,
+                                ZERO,
+                                ZERO.toPlainString()
+                            )
                         )
-                    )
-                    endResult.add(Token(type))
-                }
+                        endResult.add(Token(type,ZERO))
+                    }
 
                 }
             } else {
@@ -790,10 +825,11 @@ abstract class TimeConverter {
                     endResult.add(
                         Token(
                             TokenType.NUMBER,
+                            currentResultRounded,
                             currentResultRounded.toPlainString()
                         )
                     )
-                    endResult.add(Token(type))
+                    endResult.add(Token(type,currentResultRounded))
                 }
                 reminderInMsecResult = if (reminderFromFullNumber.compareTo(ZERO) != 0) {
                     convertPartOfUnitToMScec(reminderFromFullNumber, type)

@@ -25,7 +25,7 @@
     <string name="remove_ads">Remove Ads</string>
     <string name="rate_the_app">Rate the App</string>
     <string name="feedback">Send feedback</string>
-    <string name="support_app_text">For your best user experience, the application is now free and ad-free.\n If you would like to support me, as a developer of the app, you can buy me some CUPS of TEA.\nAny purchase will give you a green star to the right of the corresponding button\n\nYou can also leave a review to help improve the app.</string>
+    <string name="support_app_text">For your best user experience, the application is now free and ad-free.\n If you would like to support me, as a developer of the app, you can buy me some CUPS of TEA.\nAny purchase will give you a green star to the right of the corresponding button\n\nYou can also leave a review or share to help improve the app.</string>
 
 
 </resources>

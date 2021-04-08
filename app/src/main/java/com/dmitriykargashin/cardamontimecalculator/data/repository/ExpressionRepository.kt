@@ -162,6 +162,13 @@ class ExpressionRepository {
         } else false
     }
 
+    fun addToExpressionTimeUnit(elementType: TokenType): Boolean {
+        var tokenValue = 1.toBigDecimal()
+        if (tokensList.isNotEmpty() && tokensList.last().type == TokenType.NUMBER) {
+            tokenValue = tokensList.last().value
+        }
+        return addToExpression(Token(type = elementType, tokenValue))
+    }
 
     companion object {
         // @Volatile - Writes to this property are immediately visible to other threads
