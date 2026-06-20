@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "574139474687",
+    "firebase_url": "https://cardamon-time-calculator.firebaseio.com",
+    "project_id": "cardamon-time-calculator",
+    "storage_bucket": "cardamon-time-calculator.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574139474687:android:c8e5bd20f40cc3245a62ca",
+        "android_client_info": {
+          "package_name": "com.dmitriykargashin.cardamontimecalculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574139474687-jvetijv32akcaop15q1ev3cdo2o55idt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dmitriykargashin.cardamontimecalculator",
+            "certificate_hash": "c2c5f0f8c279d457978358940cabb2e9033f20f5"
+          }
+        },
+        {
+          "client_id": "574139474687-4425bhk56vk2mpqumm2a3ifpqkjlvbso.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfqFqaFkbYDqgKy1N26a88vl0Pz1s6B6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574139474687-4425bhk56vk2mpqumm2a3ifpqkjlvbso.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574139474687:android:524cb431d39d54a55a62ca",
+        "android_client_info": {
+          "package_name": "com.dmitriykargashin.cardamontimecalculator.pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574139474687-pc652o82in2r23mtlnamsvsi8isd70fk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dmitriykargashin.cardamontimecalculator.pro",
+            "certificate_hash": "4452250704b55244339b8ff9f9f9e4b3103f3dec"
+          }
+        },
+        {
+          "client_id": "574139474687-4425bhk56vk2mpqumm2a3ifpqkjlvbso.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfqFqaFkbYDqgKy1N26a88vl0Pz1s6B6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574139474687-4425bhk56vk2mpqumm2a3ifpqkjlvbso.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
