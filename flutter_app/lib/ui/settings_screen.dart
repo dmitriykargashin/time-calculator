@@ -138,6 +138,15 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: dim.margin16),
+                      // KEYPAD section: swap the keypad's Msec (millisecond) key
+                      // for the Year key. On by default (Msec).
+                      _sectionLabel('KEYPAD', dim, palette),
+                      _section(
+                        dim,
+                        palette,
+                        children: [_keypadMsecRow(settings, dim, palette)],
+                      ),
+                      SizedBox(height: dim.margin16),
                       _sectionLabel('FEEDBACK', dim, palette),
                       _section(
                         dim,
@@ -149,6 +158,8 @@ class SettingsScreen extends StatelessWidget {
                       // the app) plus the analytics-consent toggle when analytics
                       // is active.
                       _privacySection(dim, palette),
+                      // Quiet app-version footer at the very bottom.
+                      _versionFooter(dim, palette),
                     ],
                   );
                 },
@@ -156,6 +167,25 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  /// Quiet, centered app-version line at the bottom of the Settings list (e.g.
+  /// "Version 2.2.0 (26)"). Reads from [kAppVersionName]/[kAppVersionCode] - the
+  /// single source of truth kept in sync with pubspec.yaml - in the muted
+  /// [AppPalette.controls] tint so it reads as a footnote, not a row.
+  Widget _versionFooter(Dimens dim, AppPalette palette) {
+    return Padding(
+      padding: EdgeInsets.only(top: dim.margin16, bottom: dim.margin8),
+      child: Center(
+        child: Text(
+          'Version $kAppVersionName ($kAppVersionCode)',
+          style: TextStyle(
+            color: palette.controls,
+            fontSize: dim.settingsGroupTextSize,
+          ),
+        ),
       ),
     );
   }
@@ -250,6 +280,40 @@ class SettingsScreen extends StatelessWidget {
                 color: palette.controlsStrong,
                 semanticLabel: 'Locked (Pro)',
               ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// The KEYPAD card's toggle: swap the keypad's Year key for a Msec key. The
+  /// enclosing ListenableBuilder (on [SettingsModel]) rebuilds this row when the
+  /// value changes, so the Switch needs no local state. Tapping anywhere on the
+  /// row toggles it (the whole row is the target, like the theme rows).
+  Widget _keypadMsecRow(SettingsModel settings, Dimens dim, AppPalette palette) {
+    void toggle(bool value) => settings.setKeypadShowsMsec(value);
+    return InkWell(
+      onTap: () => toggle(!settings.keypadShowsMsec),
+      child: Container(
+        constraints: BoxConstraints(minHeight: dim.settingsItemMinHeight),
+        padding: const EdgeInsetsDirectional.only(start: 20, end: 12),
+        child: Row(
+          children: [
+            Icon(Icons.swap_horiz, color: palette.controlsStrong),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Msec key (not Year)',
+                style: TextStyle(
+                  color: palette.resultNums,
+                  fontSize: dim.settingsItemTextSize,
+                ),
+              ),
+            ),
+            Switch(
+              value: settings.keypadShowsMsec,
+              onChanged: toggle,
+            ),
           ],
         ),
       ),

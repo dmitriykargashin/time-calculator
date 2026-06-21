@@ -37,6 +37,12 @@ class SettingsModel extends ChangeNotifier {
   /// card takes the rest). A new Flutter-only preference (no Android analog).
   static const String prefDisplayFractionKey = 'display_fraction';
 
+  /// SharedPreferences key for the swappable keypad unit key: when `true` the
+  /// keypad's single swappable slot shows the Msec (millisecond) key; when
+  /// `false` it shows the Year key. Default `true` (Msec). A Flutter-only
+  /// preference (no Android analog).
+  static const String prefKeypadShowsMsecKey = 'keypad_shows_msec';
+
   /// Default display fraction (~0.52 display / 0.48 keypad), matching the split
   /// the screen shipped with before the divider was draggable, so first launch
   /// looks unchanged.
@@ -71,6 +77,14 @@ class SettingsModel extends ChangeNotifier {
   String _themeValue = themeValueSystem;
 
   double _displayFraction = defaultDisplayFraction;
+
+  bool _keypadShowsMsec = true;
+
+  /// Whether the keypad's swappable slot shows the Msec key (true, the default)
+  /// or the Year key (false). Read by the calculator screen when it builds the
+  /// keypad; toggled from the Settings overlay. Persisted under
+  /// [prefKeypadShowsMsecKey].
+  bool get keypadShowsMsec => _keypadShowsMsec;
 
   /// The persisted display fraction, always within
   /// [[minDisplayFraction], [maxDisplayFraction]]. The calculator screen reads
@@ -133,6 +147,7 @@ class SettingsModel extends ChangeNotifier {
             fraction.clamp(minStoredDisplayFraction, maxStoredDisplayFraction);
         displayFractionListenable.value = _displayFraction;
       }
+      _keypadShowsMsec = prefs.getBool(prefKeypadShowsMsecKey) ?? true;
     } catch (e) {
       debugPrint('SettingsModel: failed to load preferences: $e');
     }
@@ -151,6 +166,23 @@ class SettingsModel extends ChangeNotifier {
       await prefs.setString(prefThemeColorKey, value);
     } catch (e) {
       debugPrint('SettingsModel: failed to persist theme preference: $e');
+    }
+  }
+
+  /// Applies the keypad unit-key choice immediately (notifies the calculator
+  /// screen, which rebuilds the keypad) and writes it through to disk. `true`
+  /// shows the Msec key in the swappable slot, `false` the Year key. Never
+  /// throws.
+  Future<void> setKeypadShowsMsec(bool value) async {
+    if (_keypadShowsMsec != value) {
+      _keypadShowsMsec = value;
+      notifyListeners();
+    }
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(prefKeypadShowsMsecKey, value);
+    } catch (e) {
+      debugPrint('SettingsModel: failed to persist keypad unit preference: $e');
     }
   }
 

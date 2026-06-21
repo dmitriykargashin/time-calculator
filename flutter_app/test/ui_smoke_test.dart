@@ -11,7 +11,7 @@ import 'package:cardamon_time_calculator/ui/support_screen.dart';
 import 'package:cardamon_time_calculator/ui/widgets/keypad.dart';
 
 void main() {
-  setUp(() {
+  setUp(() async {
     // In-memory prefs so SettingsModel / RateService bookkeeping never hits
     // a missing platform channel.
     SharedPreferences.setMockInitialValues(<String, Object>{});
@@ -19,6 +19,11 @@ void main() {
     // expression/result (selected format intentionally persists, like a
     // running app).
     CalculatorModel.instance.clearAll();
+    // Pin the keypad's swappable slot to the Year key so the layout-geometry
+    // tests below locate it by its "Year" label (the swap is label-only - the
+    // slot geometry is identical with Msec; the Msec default + swap are covered
+    // by keypad_unit_toggle_test and the goldens).
+    await SettingsModel.instance.setKeypadShowsMsec(false);
   });
 
   testWidgets('typing an expression shows the formatted result and the '

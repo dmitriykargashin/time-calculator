@@ -349,11 +349,11 @@ void main() {
     });
   });
 
-  group('result formats list (RemoveADS: 24 entries)', () {
-    test('24 formats; index 3 is the changed "Year Month Day Hour", index 4 '
+  group('result formats list (RemoveADS: 26 entries)', () {
+    test('26 formats; index 3 is the changed "Year Month Day Hour", index 4 '
         'is the new "Year Month Day Hour Minute"', () {
       final repo = ResultFormatsRepository.getInstance();
-      expect(repo.length(), 24);
+      expect(repo.length(), 26);
 
       final formats = repo.getResultFormats().value;
       expect(formats[3].textPresentationOfTokens, 'Year Month Day Hour');
@@ -380,6 +380,37 @@ void main() {
         expect(format.textPresentationOfTokens.endsWith('s'),
             format.textPresentationOfTokens == 'All Units');
       }
+    });
+
+    test('the new "MSecond" format renders the whole interval in ms', () {
+      final formats = ResultFormatsRepository.getInstance()
+          .getResultFormats()
+          .value;
+      final msec = formats.firstWhere(
+          (f) => f.textPresentationOfTokens == 'MSecond');
+      expect(
+        TimeConverter.convertTokensToTokensWithFormat(
+          CalculatorOfTime.evaluate('2 Hour'.toTokens()),
+          msec.formatTokens,
+        ).toStringWithSpaces(),
+        '7200000 MSeconds',
+      );
+    });
+
+    test('the new "Hour Minute Second MSecond" format breaks out sub-second '
+        'milliseconds', () {
+      final formats = ResultFormatsRepository.getInstance()
+          .getResultFormats()
+          .value;
+      final hmsms = formats.firstWhere(
+          (f) => f.textPresentationOfTokens == 'Hour Minute Second MSecond');
+      expect(
+        TimeConverter.convertTokensToTokensWithFormat(
+          '1.5 Second'.toTokens(),
+          hmsms.formatTokens,
+        ).toStringWithSpaces(),
+        '1 Second 500 MSeconds',
+      );
     });
   });
 }

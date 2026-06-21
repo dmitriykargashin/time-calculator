@@ -21,8 +21,8 @@ class KeypadCallbacks {
 
   /// The 7 time-unit keys (RemoveADS: they dispatch by TokenType through
   /// CalculatorModel.addToExpressionTimeUnit so the unit token inherits the
-  /// trailing NUMBER's value for smart pluralization). Msec is no longer
-  /// typeable (its key was removed), but MSecond can still appear in results.
+  /// trailing NUMBER's value for smart pluralization). One slot is swappable
+  /// between Msec (the default) and Year via the Settings "Msec key" option.
   final ValueChanged<TokenType> onUnit;
 
   final VoidCallback onEquals;
@@ -218,8 +218,8 @@ class _KeypadKey extends StatelessWidget {
 
 /// Portrait phone keypad (RemoveADS layout/activity_main.xml) - 4 columns x
 /// 6 rows. The Per/Support/Settings secondary tools moved to the top bar
-/// (drawn by calculator_screen). There is NO separate utility row, NO AC and
-/// NO Msec. The right column runs Backspace / ÷ / × / + / − / = top-to-bottom:
+/// (drawn by calculator_screen). There is NO separate utility row and NO AC.
+/// The right column runs Backspace / ÷ / × / + / − / = top-to-bottom:
 /// the Backspace delete key takes the TOP-right slot, the operator column
 /// (÷ × + −) shifts DOWN one row to make room for it, and "=" sits in the
 /// BOTTOM-right corner. The seven time units regroup with Year in the old "="
@@ -229,10 +229,12 @@ class _KeypadKey extends StatelessWidget {
 /// 7     8      9      Backspace ⌫
 /// 4     5      6      ÷
 /// 1     2      3      ×
-/// 0     .      Year   +
+/// 0     .      Msec   +
 /// Month Week   Day    −
 /// Hour  Minute Second =
 /// ```
+/// (the "Msec" slot shows the Year key instead when the Settings "Msec key"
+/// option is turned off - see [swapUnitType]/[swapUnitLabel].)
 /// Every one of the SIX rows is an Expanded(flex:1) of EQUAL height; the
 /// inter-row gaps are FIXED [Dimens.keyGap] spacers BETWEEN the rows so every
 /// row is exactly as tall as the others.
@@ -240,10 +242,18 @@ class PortraitKeypad extends StatelessWidget {
   const PortraitKeypad({
     super.key,
     required this.callbacks,
+    required this.swapUnitType,
+    required this.swapUnitLabel,
     this.backspaceKey,
   });
 
   final KeypadCallbacks callbacks;
+
+  /// The swappable unit key (Row4-col3): [TokenType.mSecond] / "Msec" by
+  /// default, or [TokenType.year] / "Year" when the Settings "Msec key" option
+  /// is off.
+  final TokenType swapUnitType;
+  final String swapUnitLabel;
 
   /// Rides the backspace cell's ink as a stable widget identity (calculator
   /// _deleteKey). The clear-flash reveal no longer measures it - the flash now
@@ -268,14 +278,14 @@ class PortraitKeypad extends StatelessWidget {
     // height at any drag size. Right column top-to-bottom: Backspace, ÷, ×, +,
     // −, = (the Backspace delete key takes the TOP-right slot; the operator
     // column shifts down one row; "=" sits in the bottom-right corner). The
-    // seven time units regroup: Year in the old "=" slot, then Month/Week/Day
-    // and Hour/Minute/Second on the bottom two rows. No separate utility row,
-    // no Msec, no AC.
+    // seven time units regroup: the swappable Msec/Year key in the old "=" slot,
+    // then Month/Week/Day and Hour/Minute/Second on the bottom two rows. No
+    // separate utility row, no AC.
     final rows = <List<Widget>>[
       [k.digit('7'), k.digit('8'), k.digit('9'), k.backspace()],
       [k.digit('4'), k.digit('5'), k.digit('6'), k.divide()],
       [k.digit('1'), k.digit('2'), k.digit('3'), k.multiply()],
-      [k.digit('0'), k.dot(), k.unit(TokenType.year, 'Year'), k.plus()],
+      [k.digit('0'), k.dot(), k.unit(swapUnitType, swapUnitLabel), k.plus()],
       [
         k.unit(TokenType.month, 'Month'),
         k.unit(TokenType.week, 'Week'),
@@ -328,18 +338,28 @@ class PortraitKeypad extends StatelessWidget {
 /// 7 8 9 divide   Hour   Minute
 /// 4 5 6 multiply Second Day
 /// 1 2 3 plus     Week   Month
-/// 0 . = minus    Year   Backspace ⌫
+/// 0 . = minus    Msec   Backspace ⌫
 /// ```
+/// (the "Msec" slot shows the Year key instead when the Settings "Msec key"
+/// option is turned off - see [swapUnitType]/[swapUnitLabel].)
 /// Every key carries minWidth buttons_num_min_width here (38sp land /
 /// 48sp sw600). The four key rows are EQUAL height; no scroll, no overflow.
 class LandscapeKeypad extends StatelessWidget {
   const LandscapeKeypad({
     super.key,
     required this.callbacks,
+    required this.swapUnitType,
+    required this.swapUnitLabel,
     this.backspaceKey,
   });
 
   final KeypadCallbacks callbacks;
+
+  /// The swappable unit key (Row4-col5): [TokenType.mSecond] / "Msec" by
+  /// default, or [TokenType.year] / "Year" when the Settings "Msec key" option
+  /// is off.
+  final TokenType swapUnitType;
+  final String swapUnitLabel;
 
   /// Rides the backspace cell's ink as a stable widget identity (calculator
   /// _deleteKey). The clear-flash reveal no longer measures it - the flash now
@@ -393,7 +413,7 @@ class LandscapeKeypad extends StatelessWidget {
         k.dot(),
         k.equals(),
         k.minus(),
-        k.unit(TokenType.year, 'Year'),
+        k.unit(swapUnitType, swapUnitLabel),
         k.backspace(),
       ],
     ];

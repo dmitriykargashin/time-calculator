@@ -224,12 +224,13 @@ class ExpressionRepository {
       _instance ??= ExpressionRepository();
 }
 
-/// Holds the 24 selectable output formats (RemoveADS: "Year Month Day Minute"
+/// Holds the 26 selectable output formats (RemoveADS: "Year Month Day Minute"
 /// became "Year Month Day Hour" at 0-based index 3, and "Year Month Day Hour
-/// Minute" was inserted at index 4). Port of ResultFormatsRepository.kt.
-/// Use [getInstance]: it seeds the default formats exactly once, with
-/// "Hour Minute" (0-based index 18) selected; a directly constructed instance
-/// is empty.
+/// Minute" was inserted at index 4; later "Hour Minute Second MSecond" and a
+/// milliseconds-only "MSecond" were added AFTER index 18). Port of
+/// ResultFormatsRepository.kt. Use [getInstance]: it seeds the default formats
+/// exactly once, with "Hour Minute" (0-based index 18) selected; a directly
+/// constructed instance is empty.
 class ResultFormatsRepository {
   ResultFormatsRepository();
 
@@ -329,12 +330,18 @@ class ResultFormatsRepository {
         .isSelected = true; // The default format (0-based index 18).
     addResultFormat(ResultFormat('Hour Minute Second'.toTokens(),
         '1 Hour 2 Minute 3 Second'.toTokens()));
+    // Inserted AFTER "Hour Minute" (index 18) so the default selection's index
+    // is unchanged. The H:M:S:ms breakdown for sub-second precision.
+    addResultFormat(ResultFormat('Hour Minute Second MSecond'.toTokens(),
+        '1 Hour 2 Minute 3 Second 4 MSecond'.toTokens()));
 
     addResultFormat(ResultFormat('Minute'.toTokens(), '1 Minute'.toTokens()));
     addResultFormat(ResultFormat(
         'Minute Second'.toTokens(), '1 Minute 2 Second'.toTokens()));
 
     addResultFormat(ResultFormat('Second'.toTokens(), '1 Second'.toTokens()));
+    // Milliseconds-only result format (the whole interval in MSeconds).
+    addResultFormat(ResultFormat('MSecond'.toTokens(), '1 MSecond'.toTokens()));
 
     addResultFormat(ResultFormat(
       'Year Month Week Day Hour Minute Second MSecond'.toTokens(),

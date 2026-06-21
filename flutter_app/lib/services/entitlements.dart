@@ -9,6 +9,7 @@ const Set<String> kFreeFormatNames = {
   'Hour',
   'Minute',
   'Second',
+  'MSecond',
   'Day',
   'Year',
 };

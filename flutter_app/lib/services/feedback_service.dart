@@ -4,20 +4,17 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../config.dart';
 
-/// Android versionCode, from pubspec.yaml `version: 2.1.0+25`.
-/// Keep in sync with pubspec when bumping releases.
-const int _appVersionCode = 25;
-
 /// Subject pattern verbatim from the original Settings "Send Feedback":
-/// "Feedback Time Calculator Cardamon ${BuildConfig.VERSION_CODE}".
+/// "Feedback Time Calculator Cardamon ${BuildConfig.VERSION_CODE}". The version
+/// code is the single source of truth in [kAppVersionCode] (config.dart).
 const String kFeedbackSubject =
-    'Feedback Time Calculator Cardamon $_appVersionCode';
+    'Feedback Time Calculator Cardamon $kAppVersionCode';
 
 /// Subject variant used by the rating dialog's mail-feedback step, verbatim:
 /// "Feedback Time Calculator Cardamon v.${BuildConfig.VERSION_CODE}"
 /// (note the "v." prefix - only the rating-dialog mail has it).
 const String kRatingFeedbackSubject =
-    'Feedback Time Calculator Cardamon v.$_appVersionCode';
+    'Feedback Time Calculator Cardamon v.$kAppVersionCode';
 
 /// Opens a mail compose window addressed to [kFeedbackEmail] with the
 /// original subject (the original ACTION_SENDTO mailto: intent). When no

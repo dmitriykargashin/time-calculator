@@ -89,6 +89,32 @@ class Tokens extends ListBase<Token> {
     return true;
   }
 
+  /// True when this is a TIME expression (it has at least one of the 8 time
+  /// units) in which some NUMBER is neither immediately followed by a time
+  /// unit nor a multiply/divide scalar - i.e. a bare unitless quantity with no
+  /// time meaning. The canonical case is the "3 Hour 25" left by deleting
+  /// "Minute" from the "3 Hour 25 Minute" promoted to the input by "=": the
+  /// bare "25" would otherwise be silently evaluated as 25 raw milliseconds and
+  /// rendered as "0.0004167 Minutes". A pure-arithmetic expression (no time
+  /// unit) is never malformed by this rule (returns false); a scalar operand of
+  /// x / ÷ - such as the "3" in "2 Hour * 3" - is allowed (it carries the
+  /// preceding/following unit-bearing factor's dimension).
+  bool hasDanglingUnitlessNumber() {
+    if (isSimpleArithmeticExpression()) return false;
+    for (var i = 0; i < length; i++) {
+      if (this[i].type != TokenType.number) continue;
+      final next = i + 1 < length ? this[i + 1].type : null;
+      final prev = i - 1 >= 0 ? this[i - 1].type : null;
+      final boundToUnit = next != null && next.isTimeKeyword;
+      final scalarFactor = next == TokenType.multiply ||
+          next == TokenType.divide ||
+          prev == TokenType.multiply ||
+          prev == TokenType.divide;
+      if (!boundToUnit && !scalarFactor) return true;
+    }
+    return false;
+  }
+
   /// Removes the last token in place and returns `this`. Throws a
   /// [RangeError] on an empty list (like the original's
   /// IndexOutOfBoundsException).

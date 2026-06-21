@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../data/result_format.dart';
+import '../engine/token_type.dart';
 import '../engine/tokens.dart';
 import '../services/analytics_service.dart';
 import '../services/monetization.dart';
@@ -185,6 +186,12 @@ class _CalculatorScreenState extends State<CalculatorScreen>
   /// layout instead of summed estimated heights.
   final GlobalKey _resultBandKey = GlobalKey();
 
+  /// The hero display card's root box. The long-press clear flash is positioned
+  /// and clipped to THIS card's rect (with its rounded corners), and the flash
+  /// reveal centre is measured relative to it - so the green wipe stays inside
+  /// the expression/result card instead of covering the whole background band.
+  final GlobalKey _displayCardKey = GlobalKey();
+
   late final _RevealOverlay _formatsOverlay =
       _RevealOverlay(vsync: this, visible: _model.isFormatsLayoutVisible);
   late final _RevealOverlay _perOverlay =
@@ -213,12 +220,12 @@ class _CalculatorScreenState extends State<CalculatorScreen>
   /// [_kMinKeyHeight] floor).
   double _displayFraction = SettingsModel.instance.displayFraction;
 
-  /// Distance from the stack bottom to the TOP of the keypad card, captured
-  /// during build: the clear flash overlay (tvFakeForClear) covers everything
-  /// above the keypad card - i.e. the hero display card + the card gap. With
-  /// the six-stripe fake shadow retired, the card gap is the new seam, so the
-  /// flash stops at the keypad card's top edge instead of the old shadow strip.
-  double _displayBottomInset = 0;
+  /// The hero display card's height for the current layout, captured during
+  /// build so the long-press clear flash can be positioned and clipped to the
+  /// card's exact rect. The card's top/left/right are the constant screen
+  /// paddings ([_kScreenPadTop]/[_kScreenPadH]); only the height varies with the
+  /// draggable split, so this is the one geometry value the flash needs.
+  double _displayCardHeight = 0;
 
   @override
   void initState() {
@@ -236,6 +243,10 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     // guard avoids a redundant rebuild for our own drag-end writes.
     SettingsModel.instance.displayFractionListenable
         .addListener(_onDisplayFractionChanged);
+    // Rebuild the keypad when the Year/Msec swap key choice changes in Settings
+    // (SettingsModel notifies on the toggle; theme changes also rebuild the
+    // screen via the Theme dependency, so this extra setState is cheap).
+    SettingsModel.instance.addListener(_onSettingsChanged);
     // Snackbar parity with the Android branch: billing failures surface as
     // "Purchase is pending. Please wait" anchored over the calculator. The
     // notifier re-fires identical messages via a null-then-value transition.
@@ -247,6 +258,7 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     Monetization.instance.lastUserMessage.removeListener(_onBillingMessage);
     SettingsModel.instance.displayFractionListenable
         .removeListener(_onDisplayFractionChanged);
+    SettingsModel.instance.removeListener(_onSettingsChanged);
     _model.removeListener(_onModelChanged);
     _formatsOverlay.dispose();
     _perOverlay.dispose();
@@ -254,6 +266,12 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     _settingsOverlay.dispose();
     _flashController.dispose();
     super.dispose();
+  }
+
+  /// Rebuild when a SettingsModel value the keypad depends on changes (the
+  /// Year/Msec swap key). Cheap; the keypad reads the current choice in build.
+  void _onSettingsChanged() {
+    if (mounted) setState(() {});
   }
 
   /// Adopt a display fraction that changed in [SettingsModel] (e.g. restored on
@@ -338,22 +356,23 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     return Offset.zero;
   }
 
-  /// The bottom-RIGHT corner of a widget in stack-local coordinates. Used for
-  /// the clear-flash reveal origin: the result band's bottom-right corner is a
-  /// point INSIDE the flashed display region that coincides with where the
-  /// right-aligned result figures actually sit, so the green wipe grows from
-  /// the result it is about to erase.
-  Offset? _bottomRightOfKey(GlobalKey key) {
+  /// The bottom-RIGHT corner of [key]'s box, in [ancestorKey]'s local
+  /// coordinates. Used for the clear-flash reveal origin: the result band's
+  /// bottom-right corner, measured relative to the DISPLAY CARD, is a point
+  /// INSIDE the flashed card region that coincides with where the right-aligned
+  /// result figures actually sit, so the green wipe grows from the result it is
+  /// about to erase.
+  Offset? _bottomRightOfKey(GlobalKey key, GlobalKey ancestorKey) {
     final renderObject = key.currentContext?.findRenderObject();
-    final stackObject = _stackKey.currentContext?.findRenderObject();
+    final ancestorObject = ancestorKey.currentContext?.findRenderObject();
     if (renderObject is! RenderBox ||
-        stackObject is! RenderBox ||
+        ancestorObject is! RenderBox ||
         !renderObject.attached) {
       return null;
     }
     return renderObject.localToGlobal(
       renderObject.size.bottomRight(Offset.zero),
-      ancestor: stackObject,
+      ancestor: ancestorObject,
     );
   }
 
@@ -423,11 +442,10 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     // hero display card - a point that lives INSIDE the flashed region (the
     // flash is clipped to the display card) and sits where the right-aligned
     // result figures actually are, so the green wipe grows from the result it
-    // erases. Measured against the stack via the band's GlobalKey, so the flash
-    // follows the real card layout. (Previously the x came from the backspace
-    // cell center, which now lives in the keypad card below the flashed region,
-    // so the origin no longer corresponded to a point the flash paints.)
-    _flashCenter = _bottomRightOfKey(_resultBandKey) ?? Offset.zero;
+    // erases. Measured relative to the DISPLAY CARD (the flash overlay's own
+    // box), so the centre is already in the clip's local coordinates.
+    _flashCenter = _bottomRightOfKey(_resultBandKey, _displayCardKey) ??
+        Offset.zero;
     _flashController.forward(from: 0);
   }
 
@@ -488,9 +506,10 @@ class _CalculatorScreenState extends State<CalculatorScreen>
                 sevenColumn,
                 contentHeight,
               );
-              // Flash stops at the keypad card's TOP edge: from the stack
-              // bottom that is the bottom screen margin + the keypad card.
-              _displayBottomInset = _kScreenPadBottom + layout.keypadCardHeight;
+              // The clear flash is positioned and clipped to the display card's
+              // exact rect; capture its height here (top/left/right are the
+              // constant screen paddings).
+              _displayCardHeight = layout.displayHeight;
               return Stack(
                 key: _stackKey,
                 children: [
@@ -502,7 +521,7 @@ class _CalculatorScreenState extends State<CalculatorScreen>
                       layout,
                     ),
                   ),
-                  _clearFlash(palette),
+                  _clearFlash(palette, dim),
                   _overlay(
                     overlay: _formatsOverlay,
                     visible: _model.isFormatsLayoutVisible,
@@ -784,6 +803,7 @@ class _CalculatorScreenState extends State<CalculatorScreen>
   /// expression and the result.
   Widget _heroDisplayCard(Dimens dim, AppPalette palette) {
     return Container(
+      key: _displayCardKey,
       width: double.infinity,
       decoration: BoxDecoration(
         color: palette.displayCardSurface,
@@ -922,9 +942,30 @@ class _CalculatorScreenState extends State<CalculatorScreen>
       ),
       child: SizedBox(
         width: double.infinity,
-        child: sevenColumn
-            ? LandscapeKeypad(callbacks: callbacks, backspaceKey: _deleteKey)
-            : PortraitKeypad(callbacks: callbacks, backspaceKey: _deleteKey),
+        // The swappable unit key (Year by default, Msec when the Settings "Msec
+        // key" option is on). Read live here; the screen rebuilds on the toggle
+        // via the SettingsModel listener added in initState.
+        child: Builder(
+          builder: (context) {
+            final showMsec = SettingsModel.instance.keypadShowsMsec;
+            final swapUnitType =
+                showMsec ? TokenType.mSecond : TokenType.year;
+            final swapUnitLabel = showMsec ? 'Msec' : 'Year';
+            return sevenColumn
+                ? LandscapeKeypad(
+                    callbacks: callbacks,
+                    swapUnitType: swapUnitType,
+                    swapUnitLabel: swapUnitLabel,
+                    backspaceKey: _deleteKey,
+                  )
+                : PortraitKeypad(
+                    callbacks: callbacks,
+                    swapUnitType: swapUnitType,
+                    swapUnitLabel: swapUnitLabel,
+                    backspaceKey: _deleteKey,
+                  );
+          },
+        ),
       ),
     );
   }
@@ -1060,47 +1101,76 @@ class _CalculatorScreenState extends State<CalculatorScreen>
       alignment:
           dim.isWideHero ? Alignment.bottomRight : Alignment.centerRight,
       child: SelectionArea(
-        child: ValueListenableBuilder<Tokens>(
-          valueListenable: _model.resultTokens,
-          builder: (context, tokens, _) => _autoSizeTokens(
-            spansBuilder: (fontSize) => [
-              // Subtle "= " prefix so the live result reads as the answer
-              // ("= 4 Hours 50 Minutes"). Only emitted when there IS a result;
-              // it rides the SAME Text.rich as the figures so AutoSizeText still
-              // scales the whole line uniformly and never overflows. Strong-grey
-              // (controlsStrong) at the figures' 0.7x size so it sits beside the
-              // numbers as a quiet leading mark, not a hero glyph.
-              if (tokens.isNotEmpty)
-                TextSpan(
-                  text: '= ',
-                  style: TextStyle(
-                    color: palette.controlsStrong,
-                    fontSize: fontSize * 0.7,
-                    fontWeight: FontWeight.bold,
+        // Rebuild on result OR expression changes: the F1 "Add a time unit"
+        // hint depends on both (shown only when the input is unitless
+        // arithmetic with no result).
+        child: ListenableBuilder(
+          listenable:
+              Listenable.merge([_model.resultTokens, _model.expression]),
+          builder: (context, _) {
+            final tokens = _model.resultTokens.value;
+            // F1: unitless arithmetic ("5", "5 x 3") never produces a result -
+            // explain why instead of showing a blank slot.
+            if (tokens.isEmpty && _model.shouldShowAddUnitHint) {
+              return _addUnitHint(palette);
+            }
+            return _autoSizeTokens(
+              spansBuilder: (fontSize) => [
+                // Subtle "= " prefix so the live result reads as the answer
+                // ("= 4 Hours 50 Minutes"). Only emitted when there IS a result;
+                // it rides the SAME Text.rich as the figures so AutoSizeText
+                // still scales the whole line uniformly and never overflows.
+                // Strong-grey (controlsStrong) at the figures' 0.7x size so it
+                // sits beside the numbers as a quiet leading mark.
+                if (tokens.isNotEmpty)
+                  TextSpan(
+                    text: '= ',
+                    style: TextStyle(
+                      color: palette.controlsStrong,
+                      fontSize: fontSize * 0.7,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                ...tokensToLightSpans(
+                  tokens,
+                  fontSize: fontSize,
+                  palette: palette,
                 ),
-              ...tokensToLightSpans(
-                tokens,
-                fontSize: fontSize,
-                palette: palette,
-              ),
-            ],
-            // Every light span carries its own color; the base color only
-            // matters for hypothetical unspanned segments. The branch's
-            // land/sw600 layout hardcoded BLACK here (black-on-near-black in
-            // dark landscape - documented bug, NOT ported).
-            color: palette.nums,
-            bold: true,
-            minSize: dim.resultOutputMinTextSize,
-            // Hero scale: the result is the visual anchor of the card, so it
-            // grows from the branch's 50dp cap to heroResultBaseSize (46 with
-            // the 0.7x unit spans => ~32dp unit words, matching the proto's
-            // 46/34 number/unit pairing).
-            maxSize: dim.heroResultBaseSize,
-            step: dim.autoSizeStep,
-            reverseScroll: false,
-          ),
+              ],
+              // Every light span carries its own color; the base color only
+              // matters for hypothetical unspanned segments.
+              color: palette.nums,
+              bold: true,
+              minSize: dim.resultOutputMinTextSize,
+              // Hero scale: the result is the visual anchor of the card, so it
+              // grows to heroResultBaseSize (46 with the 0.7x unit spans =>
+              // ~32dp unit words).
+              maxSize: dim.heroResultBaseSize,
+              step: dim.autoSizeStep,
+              reverseScroll: false,
+            );
+          },
         ),
+      ),
+    );
+  }
+
+  /// F1 (empty/invalid-result hint): the small "Add a time unit" hint shown in
+  /// the result slot when the input is unitless arithmetic (e.g. "5", "5 x 3")
+  /// that can never produce a time result. Quiet muted-grey ([AppPalette.controls]
+  /// - the same secondary tint as the version footer) at a normal weight so it
+  /// reads as a gentle nudge, not an error; a concrete example teaches the format
+  /// so a new user does not assume the app is broken. ASCII-only text (ABeeZee
+  /// has no em dash / "≈").
+  Widget _addUnitHint(AppPalette palette) {
+    return Text(
+      "Add a time unit - try '2 Hours 5 Minutes + 15 Minutes'",
+      textAlign: TextAlign.end,
+      style: TextStyle(
+        color: palette.controls,
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        height: 1.3,
       ),
     );
   }
@@ -1305,29 +1375,33 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     );
   }
 
-  /// Green (colorResultTime) circular flash over the hero display card region,
-  /// 400ms; clears everything when the reveal completes. (RemoveADS recolored
-  /// tvFakeForClear from holo_blue_dark to colorResultTime.) The old six-stripe
-  /// fake shadow that used to separate this region from the keypad is retired -
-  /// the card gap is the seam now, and [_displayBottomInset] stops the flash at
-  /// the keypad card's top edge.
-  Widget _clearFlash(AppPalette palette) {
+  /// Green (colorResultTime) circular flash, 400ms; clears everything when the
+  /// reveal completes. (RemoveADS recolored tvFakeForClear from holo_blue_dark
+  /// to colorResultTime.) Positioned at - and clipped to - the hero display
+  /// card's EXACT rect (the constant screen paddings + [_displayCardHeight]),
+  /// with the card's rounded corners via the [ClipRRect], so the wipe reveals
+  /// INSIDE the expression/result card instead of over the whole background band
+  /// above the keypad.
+  Widget _clearFlash(AppPalette palette, Dimens dim) {
     return Positioned(
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: _displayBottomInset,
+      left: _kScreenPadH,
+      right: _kScreenPadH,
+      top: _kScreenPadTop,
+      height: _displayCardHeight,
       child: AnimatedBuilder(
         animation: _flashController,
         builder: (context, _) {
           if (_flashController.isDismissed) return const SizedBox.shrink();
           return IgnorePointer(
-            child: ClipPath(
-              clipper: CircularRevealClipper(
-                fraction: Curves.easeInOut.transform(_flashController.value),
-                center: _flashCenter,
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(dim.cardRadius)),
+              child: ClipPath(
+                clipper: CircularRevealClipper(
+                  fraction: Curves.easeInOut.transform(_flashController.value),
+                  center: _flashCenter,
+                ),
+                child: ColoredBox(color: palette.resultTime),
               ),
-              child: ColoredBox(color: palette.resultTime),
             ),
           );
         },

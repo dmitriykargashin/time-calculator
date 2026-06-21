@@ -4,6 +4,15 @@ import 'package:flutter/foundation.dart';
 /// (changed from dmitrii.kargashin@cardamon.org).
 const String kFeedbackEmail = 'support@cardamon.org';
 
+/// App version NAME (Android versionName / iOS CFBundleShortVersionString) and
+/// the numeric build CODE (Android versionCode). Single source of truth for the
+/// version shown in Settings and embedded in the feedback subject.
+///
+/// MUST be kept in sync with pubspec.yaml `version: <name>+<code>` on every
+/// release bump (there is no package_info_plus dependency by design).
+const String kAppVersionName = '2.2.0';
+const int kAppVersionCode = 26;
+
 /// Privacy policy URL, shown from the analytics-consent dialog and the Settings
 /// "Privacy Policy" row. REQUIRED now that the app collects analytics (Play Data
 /// safety + GDPR). The page content is specified in

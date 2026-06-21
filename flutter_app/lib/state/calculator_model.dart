@@ -98,6 +98,20 @@ class CalculatorModel extends ChangeNotifier {
   /// Whether a formatted result is currently displayed (drives the gating).
   bool isResultEmpty() => resultTokens.value.isEmpty;
 
+  /// F1 (empty/invalid-result hint): whether to show the "Add a time unit"
+  /// hint. True when the input is non-empty, contains NO time unit (pure
+  /// arithmetic such as "5" or "5 x 3"), and there is no result. Such input
+  /// never yields a result in this TIME calculator, so the hint explains why
+  /// instead of leaving a new user staring at a blank result and assuming the
+  /// app is broken. An expression that already has a unit - even an incomplete
+  /// one like "2 Hour + 3" - is NOT flagged (it is a partial time expression,
+  /// not the "missing unit" mistake), and neither is a blank input or a
+  /// legitimate zero result ("0 Minutes").
+  bool get shouldShowAddUnitHint =>
+      expression.value.isNotEmpty &&
+      expression.value.isSimpleArithmeticExpression() &&
+      resultTokens.value.isEmpty;
+
   /// The INPUT expression tokens.
   ValueListenable<Tokens> get expression =>
       _expressionRepository.getExpression();
@@ -263,9 +277,20 @@ class CalculatorModel extends ChangeNotifier {
   /// milliseconds, convert to the selected format, publish, enable both the
   /// Per and (RemoveADS) Formats buttons.
   void _evaluateExpression() {
-    tempResultInMsec = CalculatorOfTime.evaluate(
-      _expressionRepository.getExpression().value,
-    );
+    final expression = _expressionRepository.getExpression().value;
+    // An incomplete/malformed time expression - e.g. the "3 Hour 25" left by
+    // deleting "Minute" from a result promoted to the input with "=" - has no
+    // meaningful value: the bare "25" would be silently counted as 25 raw
+    // milliseconds and rendered as "0.0004167 Minutes". Show NO result and keep
+    // the Per/Formats buttons disabled instead of a nonsensical micro-amount.
+    if (expression.hasDanglingUnitlessNumber()) {
+      tempResultInMsec = Tokens();
+      _tokensRepository.setTokens(Tokens());
+      setIsPerViewButtonDisabled(true);
+      setIsFormatsViewButtonDisabled(true);
+      return;
+    }
+    tempResultInMsec = CalculatorOfTime.evaluate(expression);
     final selected = _resultFormatsRepository.getSelectedFormat().value!;
     _tokensRepository.setTokens(
       TimeConverter.convertTokensToTokensWithFormat(

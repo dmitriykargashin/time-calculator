@@ -314,6 +314,20 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
+  testWidgets('add-unit hint (unitless input shows the F1 hint)',
+      (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    await sizePhone(tester);
+    await SettingsModel.instance.setThemeValue('1');
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await _settle(tester);
+    // A unitless number produces no result; the F1 hint explains why.
+    await tester.tap(find.text('5'));
+    await _settle(tester);
+    await _shot(tester, '22_add_unit_hint_light');
+    debugDefaultTargetPlatformOverride = null;
+  });
+
   testWidgets('settings overlay - dark', (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
     await sizePhone(tester);
