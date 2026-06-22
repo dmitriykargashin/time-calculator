@@ -2,15 +2,19 @@ import 'dart:math' as math;
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../data/result_format.dart';
 import '../engine/token_type.dart';
 import '../engine/tokens.dart';
 import '../services/analytics_service.dart';
 import '../services/monetization.dart';
+import '../services/share_service.dart';
 import '../state/calculator_model.dart';
 import '../state/settings_model.dart';
+import 'clipboard_feedback.dart';
 import 'formats_screen.dart';
+import 'history_screen.dart';
 import 'per_screen.dart';
 import 'pro_screen.dart';
 import 'settings_screen.dart';
@@ -178,6 +182,7 @@ class _CalculatorScreenState extends State<CalculatorScreen>
   final GlobalKey _perButtonKey = GlobalKey();
   final GlobalKey _foodButtonKey = GlobalKey();
   final GlobalKey _settingsButtonKey = GlobalKey();
+  final GlobalKey _historyButtonKey = GlobalKey();
   final GlobalKey _deleteKey = GlobalKey();
 
   /// Marks the bottom edge of the live-result band inside the hero display
@@ -200,6 +205,8 @@ class _CalculatorScreenState extends State<CalculatorScreen>
       _RevealOverlay(vsync: this, visible: _model.isSupportAppLayoutVisible);
   late final _RevealOverlay _settingsOverlay =
       _RevealOverlay(vsync: this, visible: _model.isSettingsLayoutVisible);
+  late final _RevealOverlay _historyOverlay =
+      _RevealOverlay(vsync: this, visible: _model.isHistoryLayoutVisible);
 
   // Long-press-delete clear flash: 400ms, colorResultTime (RemoveADS; was
   // holo_blue_dark on master).
@@ -264,6 +271,7 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     _perOverlay.dispose();
     _supportOverlay.dispose();
     _settingsOverlay.dispose();
+    _historyOverlay.dispose();
     _flashController.dispose();
     super.dispose();
   }
@@ -308,6 +316,10 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     _syncOverlay(
       visible: _model.isSettingsLayoutVisible,
       overlay: _settingsOverlay,
+    );
+    _syncOverlay(
+      visible: _model.isHistoryLayoutVisible,
+      overlay: _historyOverlay,
     );
     setState(() {});
   }
@@ -414,6 +426,12 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     _model.setIsSettingsLayoutVisible(true);
   }
 
+  void _openHistory() {
+    _historyOverlay.revealCenter =
+        _centerOfKey(_historyButtonKey) ?? _stackCenter();
+    _model.setIsHistoryLayoutVisible(true);
+  }
+
   void _closeFormats(Offset center) {
     _formatsOverlay.closeCenter = center;
     _model.setIsFormatsLayoutVisible(false);
@@ -432,6 +450,11 @@ class _CalculatorScreenState extends State<CalculatorScreen>
   void _closeSettings(Offset center) {
     _settingsOverlay.closeCenter = center;
     _model.setIsSettingsLayoutVisible(false);
+  }
+
+  void _closeHistory(Offset center) {
+    _historyOverlay.closeCenter = center;
+    _model.setIsHistoryLayoutVisible(false);
   }
 
   void _onBackspaceLongPress() {
@@ -456,7 +479,8 @@ class _CalculatorScreenState extends State<CalculatorScreen>
     final overlayOpen = _model.isFormatsLayoutVisible ||
         _model.isPerLayoutVisible ||
         _model.isSupportAppLayoutVisible ||
-        _model.isSettingsLayoutVisible;
+        _model.isSettingsLayoutVisible ||
+        _model.isHistoryLayoutVisible;
     // Back-press cascade (RemoveADS onBackPressed): close Formats, else Per,
     // else Support, else Settings, else pop normally. The original instead
     // called moveTaskToBack(true) (backgrounding the task, preserving the
@@ -474,6 +498,8 @@ class _CalculatorScreenState extends State<CalculatorScreen>
           _closeSupport(const Offset(10, 10));
         } else if (_model.isSettingsLayoutVisible) {
           _closeSettings(const Offset(10, 10));
+        } else if (_model.isHistoryLayoutVisible) {
+          _closeHistory(const Offset(10, 10));
         }
       },
       child: Scaffold(
@@ -553,6 +579,17 @@ class _CalculatorScreenState extends State<CalculatorScreen>
                     visible: _model.isSettingsLayoutVisible,
                     child: SettingsScreen(
                       onClose: () => _closeSettings(const Offset(10, 10)),
+                    ),
+                  ),
+                  _overlay(
+                    overlay: _historyOverlay,
+                    visible: _model.isHistoryLayoutVisible,
+                    child: HistoryScreen(
+                      onClose: () => _closeHistory(const Offset(10, 10)),
+                      onSelect: (entry) {
+                        _model.loadFromHistory(entry);
+                        _closeHistory(const Offset(10, 10));
+                      },
                     ),
                   ),
                 ],
@@ -1100,58 +1137,160 @@ class _CalculatorScreenState extends State<CalculatorScreen>
       // card bottom instead of floating in the middle of the tall slot.
       alignment:
           dim.isWideHero ? Alignment.bottomRight : Alignment.centerRight,
-      child: SelectionArea(
-        // Rebuild on result OR expression changes: the F1 "Add a time unit"
-        // hint depends on both (shown only when the input is unitless
-        // arithmetic with no result).
-        child: ListenableBuilder(
-          listenable:
-              Listenable.merge([_model.resultTokens, _model.expression]),
-          builder: (context, _) {
-            final tokens = _model.resultTokens.value;
-            // F1: unitless arithmetic ("5", "5 x 3") never produces a result -
-            // explain why instead of showing a blank slot.
-            if (tokens.isEmpty && _model.shouldShowAddUnitHint) {
-              return _addUnitHint(palette);
-            }
-            return _autoSizeTokens(
-              spansBuilder: (fontSize) => [
-                // Subtle "= " prefix so the live result reads as the answer
-                // ("= 4 Hours 50 Minutes"). Only emitted when there IS a result;
-                // it rides the SAME Text.rich as the figures so AutoSizeText
-                // still scales the whole line uniformly and never overflows.
-                // Strong-grey (controlsStrong) at the figures' 0.7x size so it
-                // sits beside the numbers as a quiet leading mark.
-                if (tokens.isNotEmpty)
-                  TextSpan(
-                    text: '= ',
-                    style: TextStyle(
-                      color: palette.controlsStrong,
-                      fontSize: fontSize * 0.7,
-                      fontWeight: FontWeight.bold,
-                    ),
+      // Rebuild on result OR expression changes: the F1 "Add a time unit"
+      // hint depends on both (shown only when the input is unitless
+      // arithmetic with no result).
+      child: ListenableBuilder(
+        listenable: Listenable.merge([_model.resultTokens, _model.expression]),
+        builder: (context, _) {
+          final tokens = _model.resultTokens.value;
+          // F1: unitless arithmetic ("5", "5 x 3") never produces a result -
+          // explain why instead of showing a blank slot.
+          if (tokens.isEmpty && _model.shouldShowAddUnitHint) {
+            return _addUnitHint(palette);
+          }
+          final result = _autoSizeTokens(
+            spansBuilder: (fontSize) => [
+              // Subtle "= " prefix so the live result reads as the answer
+              // ("= 4 Hours 50 Minutes"). Only emitted when there IS a result;
+              // it rides the SAME Text.rich as the figures so AutoSizeText
+              // still scales the whole line uniformly and never overflows.
+              // Strong-grey (controlsStrong) at the figures' 0.7x size so it
+              // sits beside the numbers as a quiet leading mark.
+              if (tokens.isNotEmpty)
+                TextSpan(
+                  text: '= ',
+                  style: TextStyle(
+                    color: palette.controlsStrong,
+                    fontSize: fontSize * 0.7,
+                    fontWeight: FontWeight.bold,
                   ),
-                ...tokensToLightSpans(
-                  tokens,
-                  fontSize: fontSize,
-                  palette: palette,
+                ),
+              ...tokensToLightSpans(
+                tokens,
+                fontSize: fontSize,
+                palette: palette,
+              ),
+            ],
+            // Every light span carries its own color; the base color only
+            // matters for hypothetical unspanned segments.
+            color: palette.nums,
+            bold: true,
+            minSize: dim.resultOutputMinTextSize,
+            // Hero scale: the result is the visual anchor of the card, so it
+            // grows to heroResultBaseSize (46 with the 0.7x unit spans =>
+            // ~32dp unit words).
+            maxSize: dim.heroResultBaseSize,
+            step: dim.autoSizeStep,
+            reverseScroll: false,
+          );
+          if (tokens.isEmpty) return result;
+          final resultText = tokens.toStringWithSpaces();
+          // The result is the single tappable hero (no separate copy button):
+          //  - a SHORT TAP opens the action menu (copy / change result format /
+          //    rate / share);
+          //  - a LONG PRESS hands off to the wrapping SelectionArea for native
+          //    text selection + the system copy/select-all toolbar.
+          // InkWell registers only a tap recognizer (no onLongPress), so the
+          // long press falls through to SelectionArea while the tap is claimed
+          // by the deeper InkWell. The Material gives the InkWell its ripple
+          // over the otherwise non-Material card.
+          //
+          // Semantics: expose it as a labelled BUTTON (mirroring the format
+          // chip) so screen-reader users get a discoverable, activatable entry
+          // point to the menu - otherwise Copy/Share (which live only in the
+          // sheet) would be unreachable. ExcludeSemantics on the figures drops
+          // a redundant text node; on-screen text selection still works (it is
+          // a render-level feature, independent of the semantics tree).
+          return SelectionArea(
+            child: Semantics(
+              button: true,
+              label: 'Result $resultText. '
+                  'Tap for actions: copy, change format, rate, share.',
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  key: const ValueKey('result-tappable'),
+                  onTap: () => _showResultMenu(context, resultText),
+                  borderRadius: BorderRadius.circular(10),
+                  child: ExcludeSemantics(child: result),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  /// Copies [text] to the clipboard and shows a brief confirmation - EXCEPT on
+  /// Android, which since 13 pops its OWN system "Copied" preview for every
+  /// clipboard write; adding our snackbar on top is the "two toasts" the user
+  /// saw. So we only show our own confirmation where the platform gives no
+  /// native copy feedback (iOS / web / desktop). Where shown, any current toast
+  /// is removed INSTANTLY first (removeCurrentSnackBar, no exit animation) so a
+  /// repeat copy replaces it rather than stacking.
+  void _copyToClipboard(BuildContext context, String text) {
+    Clipboard.setData(ClipboardData(text: text));
+    if (platformConfirmsCopy) return;
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(
+        const SnackBar(
+          content: Text('Copied to clipboard'),
+          duration: Duration(milliseconds: 1300),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+  }
+
+  /// Single-tap on the result opens this action sheet - a tidy M3 bottom sheet
+  /// (drag handle, rounded top) so the result stays the one tappable hero with
+  /// no button clutter: copy, change the result format, open the rate
+  /// calculator, or share. Each action closes the sheet first, then runs.
+  void _showResultMenu(BuildContext context, String resultText) {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      // Size to content rather than the default 9/16-of-screen cap, and let the
+      // rows scroll if the screen is too short - otherwise the four actions
+      // overflow the squeezed landscape sheet height.
+      isScrollControlled: true,
+      builder: (sheetContext) {
+        Widget action(IconData icon, String label, VoidCallback onTap) {
+          return ListTile(
+            leading: Icon(icon),
+            title: Text(label),
+            onTap: () {
+              Navigator.of(sheetContext).pop();
+              onTap();
+            },
+          );
+        }
+
+        return SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                action(
+                  Icons.content_copy,
+                  'Copy result',
+                  () => _copyToClipboard(context, resultText),
+                ),
+                action(Icons.swap_horiz, 'Change result format', _openFormats),
+                action(Icons.more_time, 'Rate calculator', _openPer),
+                action(
+                  Icons.share_outlined,
+                  'Share',
+                  () => shareText(resultText),
                 ),
               ],
-              // Every light span carries its own color; the base color only
-              // matters for hypothetical unspanned segments.
-              color: palette.nums,
-              bold: true,
-              minSize: dim.resultOutputMinTextSize,
-              // Hero scale: the result is the visual anchor of the card, so it
-              // grows to heroResultBaseSize (46 with the 0.7x unit spans =>
-              // ~32dp unit words).
-              maxSize: dim.heroResultBaseSize,
-              step: dim.autoSizeStep,
-              reverseScroll: false,
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -1217,6 +1356,22 @@ class _CalculatorScreenState extends State<CalculatorScreen>
           );
         },
       ),
+      // F6: the History entry point sits next to Per (Rate). It appears only
+      // while history is enabled in Settings (on by default); turning it off
+      // hides it. The screen rebuilds on the SettingsModel listener, so the
+      // toggle shows/hides it live.
+      if (SettingsModel.instance.historyEnabled)
+        _actionIcon(
+          key: _historyButtonKey,
+          dim: dim,
+          icon: Icon(
+            Icons.history,
+            size: dim.actionGlyphSize,
+            color: palette.controlsStrong,
+            semanticLabel: 'History',
+          ),
+          onTap: _openHistory,
+        ),
       // ic_food / ic_food_checked: the tea cup carries a red attention
       // badge precisely while the user owns NO support purchase - but only
       // where buying is actually possible (no nagging toward a Support

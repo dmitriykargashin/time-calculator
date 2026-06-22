@@ -377,9 +377,12 @@ class Dimens {
   double get resultOutputMaxTextSize => 50;
   double get expressionMaxTextSize => 64;
 
-  /// Autosize granularity: 2sp for BOTH the expression and (new on the
-  /// branch) the result line.
-  double get autoSizeStep => 2;
+  /// Autosize granularity for BOTH the expression and the result line. Kept
+  /// fine (0.25sp) so the figures scale almost continuously as the draggable
+  /// split resizes the display - matching the keypad keys' FittedBox(scaleDown)
+  /// smoothness instead of jumping in coarse steps. AutoSizeText binary-searches
+  /// the presets, so the finer list costs only a couple extra measure passes.
+  double get autoSizeStep => 0.25;
 
   /// Height of the fake drop-shadow strip (six 1dp layers).
   double get shadowHeight => 6;

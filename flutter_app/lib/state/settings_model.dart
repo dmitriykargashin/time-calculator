@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../services/history_service.dart';
 import '../services/monetization.dart';
 
 /// Port of the RemoveADS branch's PrefRepository - the ONLY disk persistence
@@ -42,6 +43,10 @@ class SettingsModel extends ChangeNotifier {
   /// `false` it shows the Year key. Default `true` (Msec). A Flutter-only
   /// preference (no Android analog).
   static const String prefKeypadShowsMsecKey = 'keypad_shows_msec';
+
+  /// SharedPreferences key for the F6 calculation-history switch. Default
+  /// `true` (on) - history records and shows unless the user turns it off.
+  static const String prefHistoryEnabledKey = 'history_enabled';
 
   /// Default display fraction (~0.52 display / 0.48 keypad), matching the split
   /// the screen shipped with before the divider was draggable, so first launch
@@ -85,6 +90,13 @@ class SettingsModel extends ChangeNotifier {
   /// keypad; toggled from the Settings overlay. Persisted under
   /// [prefKeypadShowsMsecKey].
   bool get keypadShowsMsec => _keypadShowsMsec;
+
+  bool _historyEnabled = true;
+
+  /// Whether the F6 calculation history is on (true, the default). Drives
+  /// recording in [HistoryService] and the visibility of the History entry
+  /// point/overlay. Persisted under [prefHistoryEnabledKey].
+  bool get historyEnabled => _historyEnabled;
 
   /// The persisted display fraction, always within
   /// [[minDisplayFraction], [maxDisplayFraction]]. The calculator screen reads
@@ -148,8 +160,16 @@ class SettingsModel extends ChangeNotifier {
         displayFractionListenable.value = _displayFraction;
       }
       _keypadShowsMsec = prefs.getBool(prefKeypadShowsMsecKey) ?? true;
+      _historyEnabled = prefs.getBool(prefHistoryEnabledKey) ?? true;
     } catch (e) {
       debugPrint('SettingsModel: failed to load preferences: $e');
+    }
+    // Seed the history store with the loaded entries + the enabled flag (best
+    // effort; never blocks startup).
+    try {
+      await HistoryService.instance.load(enabled: _historyEnabled);
+    } catch (e) {
+      debugPrint('SettingsModel: failed to load history: $e');
     }
     notifyListeners();
   }
@@ -183,6 +203,23 @@ class SettingsModel extends ChangeNotifier {
       await prefs.setBool(prefKeypadShowsMsecKey, value);
     } catch (e) {
       debugPrint('SettingsModel: failed to persist keypad unit preference: $e');
+    }
+  }
+
+  /// Applies the F6 history opt-in immediately (notifies listeners + tells
+  /// [HistoryService] to start/stop recording) and writes it through to disk.
+  /// Never throws.
+  Future<void> setHistoryEnabled(bool value) async {
+    if (_historyEnabled != value) {
+      _historyEnabled = value;
+      HistoryService.instance.setEnabled(value);
+      notifyListeners();
+    }
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(prefHistoryEnabledKey, value);
+    } catch (e) {
+      debugPrint('SettingsModel: failed to persist history preference: $e');
     }
   }
 

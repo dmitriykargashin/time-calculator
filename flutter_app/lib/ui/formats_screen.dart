@@ -298,9 +298,12 @@ class _FormatsScreenState extends State<FormatsScreen> {
   ) {
     final format = formats[index];
     // Compact, scannable sizes (more rows fit on screen): the name reads as a
-    // clear title, the preview as a calm secondary line.
+    // clear title, the preview as a calm secondary line. The preview base is
+    // sized generously so the rendered result stays legible - figures AND units
+    // scale together off this base, keeping the figures-larger-than-units
+    // proportion (the result hero's [kResultUnitRelativeSize]).
     const nameSize = 19.0;
-    const previewSize = 16.0;
+    const previewSize = 24.0;
     // Pro gate: free formats select normally; locked formats route the tap to
     // the paywall and carry a trailing lock. Where gating is off, every format
     // is free (isFormatFree always true) so this is a no-op.
@@ -324,6 +327,9 @@ class _FormatsScreenState extends State<FormatsScreen> {
         rounded.tokens,
         fontSize: previewSize,
         palette: palette,
+        // Keep the result hero's proportion (units smaller than figures); the
+        // larger [previewSize] base scales BOTH up together so the line is
+        // legible without flattening the figures-vs-units relationship.
       ),
     ];
 
@@ -456,6 +462,9 @@ Widget overlayHeader({
   required VoidCallback onClose,
   required Dimens dim,
   required AppPalette palette,
+  // Optional end-aligned action (e.g. the History "clear all" button), kept in
+  // the header so it stays reachable without scrolling.
+  Widget? trailing,
 }) {
   return Container(
     color: palette.mainBackground,
@@ -496,6 +505,7 @@ Widget overlayHeader({
             overflow: TextOverflow.ellipsis,
           ),
         ),
+        ?trailing,
       ],
     ),
   );

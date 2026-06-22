@@ -10,6 +10,14 @@ import 'theme.dart';
 /// (new on the RemoveADS branch) the gray result numbers/operators.
 const double kTokenRelativeSize = 0.7;
 
+/// Unit-name size factor in the RESULT (and format previews). The gray result
+/// FIGURES are already at [kTokenRelativeSize]; the unit words take a FURTHER
+/// [kTokenRelativeSize] so they read a touch smaller than the figures - the same
+/// number-vs-unit proportion the expression shows (full-size figures beside
+/// 0.7x units). Without this, result units rendered at the SAME size as the
+/// figures.
+const double kResultUnitRelativeSize = kTokenRelativeSize * kTokenRelativeSize;
+
 /// Port of `Tokens.toSpannableString(context)` (expression / Per interval
 /// header rendering), theme-aware since RemoveADS:
 /// * NUMBER - plain text, inherits the surrounding style (the caller paints
@@ -32,6 +40,8 @@ List<TextSpan> tokensToSpans(
       unitColor: palette.expressionTime,
       plainColor: null,
       plainRelativeSize: false,
+      // Expression: full-size figures, units at 0.7x.
+      unitRelativeSize: kTokenRelativeSize,
     );
 
 /// Port of `Tokens.toLightSpannableString(context)` (result / preview
@@ -46,6 +56,12 @@ List<TextSpan> tokensToLightSpans(
   Tokens tokens, {
   required double fontSize,
   required AppPalette palette,
+  // The result HERO defaults to the smaller [kResultUnitRelativeSize] so unit
+  // words sit beside the big figures as a quiet suffix (matching the
+  // expression's proportion). The Formats PREVIEW - already a small secondary
+  // line - overrides this with the larger [kTokenRelativeSize] so its units do
+  // not shrink to an unreadable size.
+  double unitRelativeSize = kResultUnitRelativeSize,
 }) =>
     _spans(
       tokens,
@@ -53,6 +69,7 @@ List<TextSpan> tokensToLightSpans(
       unitColor: palette.resultTime,
       plainColor: palette.resultNums,
       plainRelativeSize: true,
+      unitRelativeSize: unitRelativeSize,
     );
 
 List<TextSpan> _spans(
@@ -61,6 +78,7 @@ List<TextSpan> _spans(
   required Color unitColor,
   required Color? plainColor,
   required bool plainRelativeSize,
+  required double unitRelativeSize,
 }) {
   final plainStyle = plainColor == null
       ? null
@@ -79,7 +97,7 @@ List<TextSpan> _spans(
           text: ' ${token.strRepresentation} ',
           style: TextStyle(
             color: unitColor,
-            fontSize: fontSize * kTokenRelativeSize,
+            fontSize: fontSize * unitRelativeSize,
           ),
         ),
       );
@@ -93,7 +111,7 @@ List<TextSpan> _spans(
           text: ' ${token.strRepresentation} ',
           style: TextStyle(
             color: AppPalette.error,
-            fontSize: fontSize * kTokenRelativeSize,
+            fontSize: fontSize * unitRelativeSize,
           ),
         ),
       );

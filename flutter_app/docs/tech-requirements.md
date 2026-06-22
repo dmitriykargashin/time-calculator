@@ -428,21 +428,23 @@ Two features are already implemented and shipped in the app, but are not discove
 **Done when:**
 - History is stored locally (SharedPreferences or SQLite; no cloud sync)
 - History is gated behind a Settings toggle (opt-in; off by default)
-- Only 5–10 most recent calculations are shown (not 100+)
+- Dont limit the history - just add the history specific item for delete
 - Tapping a history item copies it to the input field and recalculates
+- User can give a name to the history entry
 - Clearing history removes all entries
 
 **Measurable success:** Users with history enabled should report higher satisfaction; check in 6+ months if demand increases beyond 5 mentions.
 
 ### Functional Requirements
 
-1. Store last 5–10 calculations in local SharedPreferences or lightweight SQLite database
+1. Store all calculations in local SharedPreferences or lightweight SQLite database
 2. Add a collapsible "History" section at the bottom of the input area (below the number pad)
-3. Add a Settings toggle to enable/disable history (default: disabled)
-4. Each history item shows: calculation + result (e.g., "5 hours + 30 minutes = 5h 30m")
-5. Tapping a history item: copies the expression to the input field, auto-calculates, and displays the result
-6. Add a "Clear history" button in Settings
-7. Do NOT add export, sync, or analytics
+3. User can give a name to the history entry
+4. Add a Settings toggle to enable/disable history (default: disabled)
+5. Each history item shows: calculation + result (e.g., "5 hours + 30 minutes = 5h 30m") and name
+6. Tapping a history item: copies the expression to the input field, auto-calculates, and displays the result
+7. Add a "Clear history" button in Settings
+8. Do NOT add export, sync, or analytics
 
 ### UI/UX Spec
 
@@ -465,7 +467,6 @@ Two features are already implemented and shipped in the app, but are not discove
 - [ ] History toggle appears in Settings
 - [ ] Toggling history off hides the history section
 - [ ] After enabling history, first calculation is stored
-- [ ] Up to 10 calculations are stored; oldest ones are removed when 11th is added
 - [ ] Tapping a history item populates the input field and recalculates
 - [ ] "Clear history" button removes all entries
 - [ ] App does not crash if history is corrupt or empty

@@ -6,10 +6,12 @@ import '../data/result_format.dart';
 import '../data/result_formats.dart';
 import '../engine/big_decimal.dart';
 import '../engine/calculator_of_time.dart';
+import '../engine/lexical_analyzer.dart';
 import '../engine/time_converter.dart';
 import '../engine/token.dart';
 import '../engine/token_type.dart';
 import '../engine/tokens.dart';
+import '../services/history_service.dart';
 
 /// Port of CalculatorViewModel: the single UI facade over the four process
 /// singleton repositories.
@@ -72,6 +74,7 @@ class CalculatorModel extends ChangeNotifier {
   bool _isPerLayoutVisible = false;
   bool _isSupportAppLayoutVisible = false;
   bool _isSettingsLayoutVisible = false;
+  bool _isHistoryLayoutVisible = false;
   bool _isPerViewButtonDisabled = true;
   bool _isFormatsViewButtonDisabled = true;
 
@@ -86,6 +89,10 @@ class CalculatorModel extends ChangeNotifier {
 
   /// Whether the "Settings" overlay is open (RemoveADS).
   bool get isSettingsLayoutVisible => _isSettingsLayoutVisible;
+
+  /// Whether the "History" overlay is open (F6; only reachable when history is
+  /// enabled in Settings).
+  bool get isHistoryLayoutVisible => _isHistoryLayoutVisible;
 
   /// Per button gating; starts disabled, enabled after any evaluation pass,
   /// disabled again by clear-all and equals.
@@ -168,9 +175,19 @@ class CalculatorModel extends ChangeNotifier {
   }
 
   /// "=" key: promotes the formatted result to be the new input expression
-  /// (no evaluation occurs); result blanks and Per/Formats are disabled.
+  /// (no evaluation occurs); result blanks and Per/Formats are disabled. Also
+  /// records the completed "expression = result" into the F6 history (a no-op
+  /// unless history is enabled).
   void sendResultToExpression() {
     if (_tokensRepository.length() > 0) {
+      // Record BEFORE promoting: the expression is still the entered input and
+      // the tokens are still the result. Display strings (re-lexable), plus the
+      // selected result format so the entry reopens in the same format.
+      HistoryService.instance.record(
+        _expressionRepository.getExpression().value.toStringWithSpaces(),
+        _tokensRepository.getTokens().value.toStringWithSpaces(),
+        formatIndex: _selectedFormatIndex,
+      );
       _expressionRepository.setTokens(_tokensRepository.getTokens().value);
       _tokensRepository.setTokens(Tokens());
       setIsPerViewButtonDisabled(true);
@@ -255,6 +272,41 @@ class CalculatorModel extends ChangeNotifier {
     if (_isSettingsLayoutVisible == visible) return;
     _isSettingsLayoutVisible = visible;
     notifyListeners();
+  }
+
+  /// Shows/hides the History overlay (F6).
+  void setIsHistoryLayoutVisible(bool visible) {
+    if (_isHistoryLayoutVisible == visible) return;
+    _isHistoryLayoutVisible = visible;
+    notifyListeners();
+  }
+
+  /// The 0-based index of the currently selected result format (-1 if none),
+  /// saved with a history record so it can reopen in the same format.
+  int get _selectedFormatIndex =>
+      _resultFormatsRepository.getResultFormats().value.indexWhere(
+            (format) => format.isSelected,
+          );
+
+  /// F6: reloads a calculation chosen from History - restores its saved result
+  /// format (when known), then lexes its expression back in and recomputes, so
+  /// the picked entry shows the same result in the same format it was saved in.
+  void loadFromHistory(HistoryEntry entry) {
+    final formats = _resultFormatsRepository.getResultFormats().value;
+    if (entry.formatIndex >= 0 && entry.formatIndex < formats.length) {
+      // Select-only (no re-render of the stale result); the load below renders
+      // the recomputed result in this now-selected format.
+      _resultFormatsRepository.setSelectedFormat(entry.formatIndex);
+    }
+    loadExpressionFromHistory(entry.expression);
+  }
+
+  /// Lexes [expression] back into the input and recomputes (Per/Formats
+  /// re-enable). The history list is unchanged. Used by [loadFromHistory] and
+  /// directly by tests.
+  void loadExpressionFromHistory(String expression) {
+    _expressionRepository.setTokens(LexicalAnalyzer.analyze(expression));
+    _evaluateExpression();
   }
 
   /// Enables/disables the Per button (alpha 0.2 + not clickable when

@@ -16,6 +16,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 
 import 'package:cardamon_time_calculator/config.dart';
 import 'package:cardamon_time_calculator/main.dart';
+import 'package:cardamon_time_calculator/services/history_service.dart';
 import 'package:cardamon_time_calculator/services/monetization.dart';
 import 'package:cardamon_time_calculator/state/calculator_model.dart';
 import 'package:cardamon_time_calculator/state/settings_model.dart';
@@ -73,6 +74,10 @@ void main() {
     model.setIsPerLayoutVisible(false);
     model.setIsSupportAppLayoutVisible(false);
     model.setIsSettingsLayoutVisible(false);
+    model.setIsHistoryLayoutVisible(false);
+    // History is on by default now; clear stored entries between shots so the
+    // top bar shows the History icon without leaking entries across tests.
+    HistoryService.instance.clear();
   });
 
   Future<void> sizePhone(WidgetTester tester) async {
@@ -311,6 +316,29 @@ void main() {
     await _settle(tester);
     await _shot(tester, '05b_per_dark');
     await SettingsModel.instance.setThemeValue('1');
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('history overlay (F6)', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    await sizePhone(tester);
+    await SettingsModel.instance.setThemeValue('1');
+    // History is on by default; enable the store directly (setHistoryEnabled is
+    // a no-op now that SettingsModel already defaults true, so it would not
+    // propagate to HistoryService).
+    HistoryService.instance.setEnabled(true);
+    HistoryService.instance.clear();
+    // Fixed local timestamps keep the rendered dates deterministic.
+    HistoryService.instance.record('5 Hours + 10 Minutes', '4 Hours 50 Minutes',
+        at: DateTime(2026, 6, 21, 9, 5).millisecondsSinceEpoch);
+    HistoryService.instance.record('2 Days', '48 Hours',
+        at: DateTime(2026, 6, 21, 14, 30).millisecondsSinceEpoch);
+    HistoryService.instance.setNote(0, 'Project A payroll'); // the newest entry
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await _settle(tester);
+    await tester.tap(find.byIcon(Icons.history));
+    await _settle(tester);
+    await _shot(tester, '23_history_light');
     debugDefaultTargetPlatformOverride = null;
   });
 

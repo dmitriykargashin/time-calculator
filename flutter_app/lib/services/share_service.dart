@@ -14,3 +14,13 @@ Future<void> shareTheApp() async {
     debugPrint('shareTheApp: share failed: $e');
   }
 }
+
+/// Plain-text share of an arbitrary [text] (e.g. a calculation result from the
+/// result action menu). Never throws.
+Future<void> shareText(String text) async {
+  try {
+    await SharePlus.instance.share(ShareParams(text: text));
+  } catch (e) {
+    debugPrint('shareText: share failed: $e');
+  }
+}

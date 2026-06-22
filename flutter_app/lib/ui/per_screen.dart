@@ -310,7 +310,9 @@ class _PerScreenState extends State<PerScreen> {
       thickness: 1,
       indent: 20,
       endIndent: 16,
-      color: palette.shadowBase.withValues(alpha: 0.5),
+      // controlsStrong adapts (dark line in light theme, light line in dark),
+      // so the separator stays visible on the near-black dark card surface.
+      color: palette.controlsStrong.withValues(alpha: 0.25),
     );
   }
 

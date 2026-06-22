@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cardamon_time_calculator/main.dart';
 import 'package:cardamon_time_calculator/state/calculator_model.dart';
 import 'package:cardamon_time_calculator/state/settings_model.dart';
+import 'package:cardamon_time_calculator/ui/clipboard_feedback.dart';
 import 'package:cardamon_time_calculator/ui/formats_screen.dart';
-import 'package:cardamon_time_calculator/ui/support_screen.dart';
 import 'package:cardamon_time_calculator/ui/widgets/keypad.dart';
 
 void main() {
@@ -24,6 +24,10 @@ void main() {
     // slot geometry is identical with Msec; the Msec default + swap are covered
     // by keypad_unit_toggle_test and the goldens).
     await SettingsModel.instance.setKeypadShowsMsec(false);
+    // Pin history OFF so the top bar holds the original three tools (Per / Tea /
+    // Settings); the on-by-default history icon + its placement are covered by
+    // history_test and the goldens.
+    await SettingsModel.instance.setHistoryEnabled(false);
   });
 
   testWidgets('typing an expression shows the formatted result and the '
@@ -819,7 +823,7 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.emoji_food_beverage));
     await tester.pumpAndSettle();
-    expect(find.text('The app development support'), findsOneWidget);
+    expect(find.text('Support the app'), findsOneWidget);
 
     // Billing is unavailable on iOS: no tea copy, no buy buttons - only
     // review and share (dead purchase UI would be a 2.1 rejection).
@@ -844,7 +848,7 @@ void main() {
     // Close the overlay via the toolbar back arrow.
     await tester.tap(find.byIcon(Icons.arrow_back));
     await tester.pumpAndSettle();
-    expect(find.text('The app development support'), findsNothing);
+    expect(find.text('Support the app'), findsNothing);
 
     debugDefaultTargetPlatformOverride = null;
   });
@@ -861,7 +865,7 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.emoji_food_beverage));
     await tester.pumpAndSettle();
-    expect(find.text('The app development support'), findsOneWidget);
+    expect(find.text('Support the app'), findsOneWidget);
     expect(find.textContaining('CUPS of TEA'), findsOneWidget);
     for (final label in [
       'buy 1 Cup',
@@ -874,20 +878,9 @@ void main() {
       expect(find.text(label), findsOneWidget, reason: 'button $label');
     }
 
-    // Nothing is owned: all four buy buttons are enabled, and tapping one
-    // is a harmless no-op in tests (Monetization.init() never ran, so buy()
-    // bails before touching platform channels).
-    expect(
-      tester
-          .widgetList<ElevatedButton>(
-            find.descendant(
-              of: find.byType(SupportScreen),
-              matching: find.byType(ElevatedButton),
-            ),
-          )
-          .where((button) => button.onPressed == null),
-      isEmpty,
-    );
+    // Nothing is owned: every tier row is enabled (no "Owned" star) and tapping
+    // one is a harmless no-op in tests (Monetization.init() never ran, so buy()
+    // bails before touching platform channels). The tap exercises that path.
     await tester.tap(find.text('buy 1 Cup'));
     await tester.pump();
 
@@ -911,8 +904,141 @@ void main() {
     // Close the overlay via the toolbar back arrow.
     await tester.tap(find.byIcon(Icons.arrow_back));
     await tester.pumpAndSettle();
-    expect(find.text('The app development support'), findsNothing);
+    expect(find.text('Support the app'), findsNothing);
 
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('single tap on the result opens the action menu; Copy works',
+      (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await tester.pumpAndSettle();
+
+    // Type "5 Hour - 10 Minute" so there is a result to act on.
+    await tester.tap(find.text('5'));
+    await tester.pump();
+    await tester.tap(find.text('Hour'));
+    await tester.pump();
+    await tester.tap(find.text('–'));
+    await tester.pump();
+    await tester.tap(find.text('1'));
+    await tester.pump();
+    await tester.tap(find.text('0'));
+    await tester.pump();
+    await tester.tap(find.text('Minute'));
+    await tester.pump();
+
+    // No menu until the result is tapped.
+    expect(find.text('Change result format'), findsNothing);
+
+    // Tap the result hero -> the action sheet appears with all four actions.
+    await tester.tap(find.byKey(const ValueKey('result-tappable')));
+    await tester.pumpAndSettle();
+    expect(find.text('Copy result'), findsOneWidget);
+    expect(find.text('Change result format'), findsOneWidget);
+    expect(find.text('Rate calculator'), findsOneWidget);
+    expect(find.text('Share'), findsOneWidget);
+
+    // Copy dismisses the sheet and confirms with a single snackbar.
+    await tester.tap(find.text('Copy result'));
+    await tester.pumpAndSettle();
+    expect(find.text('Copy result'), findsNothing); // sheet gone
+    expect(find.text('Copied to clipboard'), findsOneWidget);
+    expect(find.byType(SnackBar), findsOneWidget); // exactly one toast
+
+    // Let the snackbar's auto-dismiss timer elapse so none is left pending.
+    await tester.pump(const Duration(seconds: 2));
+
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets(
+      'long press on the result selects text instead of opening the action '
+      'menu', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await tester.pumpAndSettle();
+
+    // Type "5 Hour - 10 Minute" so there is a result to select.
+    await tester.tap(find.text('5'));
+    await tester.pump();
+    await tester.tap(find.text('Hour'));
+    await tester.pump();
+    await tester.tap(find.text('–'));
+    await tester.pump();
+    await tester.tap(find.text('1'));
+    await tester.pump();
+    await tester.tap(find.text('0'));
+    await tester.pump();
+    await tester.tap(find.text('Minute'));
+    await tester.pump();
+
+    // Long-press the result: this must NOT open the custom action menu - it
+    // hands off to the wrapping SelectionArea for native text selection.
+    await tester.longPress(find.byKey(const ValueKey('result-tappable')));
+    await tester.pumpAndSettle();
+    expect(find.text('Change result format'), findsNothing);
+    expect(find.text('Rate calculator'), findsNothing);
+
+    // The native selection toolbar (Copy / Select all) is shown instead.
+    expect(find.byType(AdaptiveTextSelectionToolbar), findsOneWidget);
+
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('copying twice in a row never stacks two toasts',
+      (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await tester.pumpAndSettle();
+
+    // Type "5 Hour - 10 Minute" so there is a result to copy.
+    await tester.tap(find.text('5'));
+    await tester.pump();
+    await tester.tap(find.text('Hour'));
+    await tester.pump();
+    await tester.tap(find.text('–'));
+    await tester.pump();
+    await tester.tap(find.text('1'));
+    await tester.pump();
+    await tester.tap(find.text('0'));
+    await tester.pump();
+    await tester.tap(find.text('Minute'));
+    await tester.pump();
+
+    Future<void> copyViaMenu() async {
+      await tester.tap(find.byKey(const ValueKey('result-tappable')));
+      await tester.pumpAndSettle(); // open the sheet
+      await tester.tap(find.text('Copy result'));
+      await tester.pumpAndSettle(); // close the sheet; toast stays (timer pending)
+    }
+
+    await copyViaMenu();
+    expect(find.byType(SnackBar), findsOneWidget);
+
+    // Copy again while the first toast is still on screen (well within 1300ms):
+    // removeCurrentSnackBar must replace it instantly, never showing two.
+    await copyViaMenu();
+    expect(find.byType(SnackBar), findsOneWidget);
+
+    // Flush the snackbar timer so none is left pending at test end.
+    await tester.pump(const Duration(seconds: 2));
+
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  test('platformConfirmsCopy: true only on native Android (which shows its own '
+      'system copy confirmation), false elsewhere', () {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    expect(platformConfirmsCopy, isTrue);
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    expect(platformConfirmsCopy, isFalse);
+    debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+    expect(platformConfirmsCopy, isFalse);
     debugDefaultTargetPlatformOverride = null;
   });
 }

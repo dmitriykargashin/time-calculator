@@ -7,6 +7,7 @@ import '../services/feedback_service.dart';
 import '../services/monetization.dart';
 import '../state/settings_model.dart';
 import 'formats_screen.dart' show overlayHeader;
+import 'history_screen.dart' show confirmClearHistory;
 import 'pro_screen.dart';
 import 'theme.dart';
 
@@ -147,6 +148,21 @@ class SettingsScreen extends StatelessWidget {
                         children: [_keypadMsecRow(settings, dim, palette)],
                       ),
                       SizedBox(height: dim.margin16),
+                      // HISTORY section (F6): opt in to saving the last few
+                      // calculations; when on, a "Clear history" row appears.
+                      _sectionLabel('HISTORY', dim, palette),
+                      _section(
+                        dim,
+                        palette,
+                        children: [
+                          _historyToggleRow(settings, dim, palette),
+                          if (settings.historyEnabled) ...[
+                            _innerDivider(palette),
+                            _historyClearRow(context, dim, palette),
+                          ],
+                        ],
+                      ),
+                      SizedBox(height: dim.margin16),
                       _sectionLabel('FEEDBACK', dim, palette),
                       _section(
                         dim,
@@ -234,7 +250,9 @@ class SettingsScreen extends StatelessWidget {
       thickness: 1,
       indent: 20,
       endIndent: 20,
-      color: palette.shadowBase.withValues(alpha: 0.5),
+      // controlsStrong adapts (dark line in light theme, light line in dark),
+      // so the separator stays visible on the near-black dark card surface.
+      color: palette.controlsStrong.withValues(alpha: 0.25),
     );
   }
 
@@ -313,6 +331,64 @@ class SettingsScreen extends StatelessWidget {
             Switch(
               value: settings.keypadShowsMsec,
               onChanged: toggle,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// The HISTORY card's opt-in toggle (F6). Default off; turning it on starts
+  /// saving completed calculations and reveals the History top-bar icon.
+  Widget _historyToggleRow(
+      SettingsModel settings, Dimens dim, AppPalette palette) {
+    void toggle(bool value) => settings.setHistoryEnabled(value);
+    return InkWell(
+      onTap: () => toggle(!settings.historyEnabled),
+      child: Container(
+        constraints: BoxConstraints(minHeight: dim.settingsItemMinHeight),
+        padding: const EdgeInsetsDirectional.only(start: 20, end: 12),
+        child: Row(
+          children: [
+            Icon(Icons.history, color: palette.controlsStrong),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Save calculations',
+                style: TextStyle(
+                  color: palette.resultNums,
+                  fontSize: dim.settingsItemTextSize,
+                ),
+              ),
+            ),
+            Switch(value: settings.historyEnabled, onChanged: toggle),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// The HISTORY card's "Clear history" row (destructive: error tint + a
+  /// confirmation), shown only while history is enabled.
+  Widget _historyClearRow(
+      BuildContext context, Dimens dim, AppPalette palette) {
+    return InkWell(
+      onTap: () => confirmClearHistory(context),
+      child: Container(
+        constraints: BoxConstraints(minHeight: dim.settingsItemMinHeight),
+        padding: const EdgeInsetsDirectional.only(start: 20, end: 20),
+        child: Row(
+          children: [
+            const Icon(Icons.delete_outline, color: AppPalette.error),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Clear history',
+                style: TextStyle(
+                  color: AppPalette.error,
+                  fontSize: dim.settingsItemTextSize,
+                ),
+              ),
             ),
           ],
         ),
