@@ -571,4 +571,95 @@ void main() {
     await _shot(tester, '18_calc_landscape_resized_light');
     debugDefaultTargetPlatformOverride = null;
   });
+
+  // Keypad-keys sub-screen (Settings -> "Keypad keys"): the One UI-style page
+  // with the whole-keypad live preview, presets and per-unit chips. Default
+  // (Standard, 7 units): the full preview.
+  testWidgets('keypad keys sub-screen - light', (tester) async {
+    addTearDown(() => SettingsModel.instance
+        .applyKeypadUnitPreset(SettingsModel.keypadUnitPresets.first));
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    await sizePhone(tester);
+    await SettingsModel.instance.setThemeValue('1');
+    await SettingsModel.instance
+        .applyKeypadUnitPreset(SettingsModel.keypadUnitPresets.first);
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await _settle(tester);
+    await tester.tap(find.byIcon(Icons.settings));
+    await _settle(tester);
+    await tester.tap(find.text('Keypad keys'));
+    await _settle(tester);
+    await _shot(tester, '24_keypad_keys_light');
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  // The SAME sub-screen with a compact selection (Stopwatch: Msec/Sec/Min) -
+  // the preview's unit band shrinks, so the whole keypad is shorter.
+  testWidgets('keypad keys sub-screen - compact (Stopwatch) - light',
+      (tester) async {
+    addTearDown(() => SettingsModel.instance
+        .applyKeypadUnitPreset(SettingsModel.keypadUnitPresets.first));
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    await sizePhone(tester);
+    await SettingsModel.instance.setThemeValue('1');
+    await SettingsModel.instance.applyKeypadUnitPreset(
+      SettingsModel.keypadUnitPresets.firstWhere((p) => p.name == 'Stopwatch'),
+    );
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await _settle(tester);
+    await tester.tap(find.byIcon(Icons.settings));
+    await _settle(tester);
+    await tester.tap(find.text('Keypad keys'));
+    await _settle(tester);
+    await _shot(tester, '25_keypad_keys_stopwatch_light');
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  // The preview carousel's SECOND page: the landscape keypad (swiped to).
+  testWidgets('keypad keys sub-screen - landscape preview - light',
+      (tester) async {
+    addTearDown(() => SettingsModel.instance
+        .applyKeypadUnitPreset(SettingsModel.keypadUnitPresets.first));
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    await sizePhone(tester);
+    await SettingsModel.instance.setThemeValue('1');
+    await SettingsModel.instance
+        .applyKeypadUnitPreset(SettingsModel.keypadUnitPresets.first);
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await _settle(tester);
+    await tester.tap(find.byIcon(Icons.settings));
+    await _settle(tester);
+    await tester.tap(find.text('Keypad keys'));
+    await _settle(tester);
+    // Swipe the preview carousel to the landscape page.
+    await tester.drag(find.byType(PageView), const Offset(-400, 0));
+    await _settle(tester);
+    await _shot(tester, '26_keypad_keys_landscape_light');
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  // Landscape preview for a count where (units + "=") is NOT a multiple of 4
+  // (Calendar = 4 units): the partial last column stretches and "=" shares it -
+  // no empty cells, no stranded "=".
+  testWidgets('keypad keys sub-screen - landscape - Calendar - light',
+      (tester) async {
+    addTearDown(() => SettingsModel.instance
+        .applyKeypadUnitPreset(SettingsModel.keypadUnitPresets.first));
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    await sizePhone(tester);
+    await SettingsModel.instance.setThemeValue('1');
+    await SettingsModel.instance.applyKeypadUnitPreset(
+      SettingsModel.keypadUnitPresets.firstWhere((p) => p.name == 'Calendar'),
+    );
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await _settle(tester);
+    await tester.tap(find.byIcon(Icons.settings));
+    await _settle(tester);
+    await tester.tap(find.text('Keypad keys'));
+    await _settle(tester);
+    await tester.drag(find.byType(PageView), const Offset(-400, 0));
+    await _settle(tester);
+    await _shot(tester, '27_keypad_keys_landscape_calendar_light');
+    debugDefaultTargetPlatformOverride = null;
+  });
 }

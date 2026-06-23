@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../engine/token_type.dart';
 import '../services/history_service.dart';
 import '../services/monetization.dart';
 
@@ -85,11 +86,139 @@ class SettingsModel extends ChangeNotifier {
 
   bool _keypadShowsMsec = true;
 
-  /// Whether the keypad's swappable slot shows the Msec key (true, the default)
-  /// or the Year key (false). Read by the calculator screen when it builds the
-  /// keypad; toggled from the Settings overlay. Persisted under
-  /// [prefKeypadShowsMsecKey].
+  /// VESTIGIAL: the keypad no longer has a Msec/Year swap slot - it renders the
+  /// full [enabledUnits] set. This flag is kept ONLY as a persistence bridge:
+  /// [setEnabledUnits] keeps it in sync (Msec enabled, or Year not) and persists
+  /// it under [prefKeypadShowsMsecKey], so an older build reading that pref still
+  /// sees a sensible value. Nothing in the live UI reads it anymore.
   bool get keypadShowsMsec => _keypadShowsMsec;
+
+  /// SharedPreferences key for the customizable keypad time-unit key set
+  /// (keypad-key customization, phase 1). Stored as the enum names of the
+  /// enabled units; absent on first run -> [_defaultEnabledUnits].
+  static const String prefEnabledUnitsKey = 'keypad_enabled_units';
+
+  /// Every time-unit key the keypad can offer, in canonical small -> large
+  /// order (also the order they render in the chips / preview / keypad).
+  static const List<TokenType> allKeypadUnits = <TokenType>[
+    TokenType.mSecond,
+    TokenType.second,
+    TokenType.minute,
+    TokenType.hour,
+    TokenType.day,
+    TokenType.week,
+    TokenType.month,
+    TokenType.year,
+  ];
+
+  /// The keypad must keep at least this many unit keys (you cannot form a time
+  /// expression with fewer); the picker blocks dropping below it.
+  static const int minKeypadUnits = 2;
+
+  /// Shipping default: Msec + Second..Month (Year is the swap alternative and
+  /// is off by default), matching today's keypad.
+  static const Set<TokenType> _defaultEnabledUnits = <TokenType>{
+    TokenType.mSecond,
+    TokenType.second,
+    TokenType.minute,
+    TokenType.hour,
+    TokenType.day,
+    TokenType.week,
+    TokenType.month,
+  };
+
+  /// Named one-tap presets shown above the per-unit chips in the picker.
+  static const List<KeypadUnitPreset> keypadUnitPresets = <KeypadUnitPreset>[
+    KeypadUnitPreset('Standard', _defaultEnabledUnits),
+    KeypadUnitPreset('Stopwatch', <TokenType>{
+      TokenType.mSecond,
+      TokenType.second,
+      TokenType.minute,
+    }),
+    // Hour:Minute:Second:Msec - video/audio timecode work.
+    KeypadUnitPreset('Media', <TokenType>{
+      TokenType.mSecond,
+      TokenType.second,
+      TokenType.minute,
+      TokenType.hour,
+    }),
+    KeypadUnitPreset('Hours & minutes', <TokenType>{
+      TokenType.minute,
+      TokenType.hour,
+    }),
+    KeypadUnitPreset('Calendar', <TokenType>{
+      TokenType.day,
+      TokenType.week,
+      TokenType.month,
+      TokenType.year,
+    }),
+    KeypadUnitPreset('Everything', <TokenType>{
+      TokenType.mSecond,
+      TokenType.second,
+      TokenType.minute,
+      TokenType.hour,
+      TokenType.day,
+      TokenType.week,
+      TokenType.month,
+      TokenType.year,
+    }),
+  ];
+
+  Set<TokenType> _enabledUnits = <TokenType>{..._defaultEnabledUnits};
+
+  /// The enabled keypad unit keys, in canonical [allKeypadUnits] order.
+  List<TokenType> get enabledUnits =>
+      allKeypadUnits.where(_enabledUnits.contains).toList(growable: false);
+
+  /// Whether [unit] is currently an enabled keypad key.
+  bool isKeypadUnitEnabled(TokenType unit) => _enabledUnits.contains(unit);
+
+  static bool _sameUnits(Set<TokenType> a, Set<TokenType> b) =>
+      a.length == b.length && a.containsAll(b);
+
+  /// The preset whose set exactly matches the current selection, or null when
+  /// the selection is "Custom".
+  KeypadUnitPreset? get activeKeypadUnitPreset {
+    for (final preset in keypadUnitPresets) {
+      if (_sameUnits(preset.units, _enabledUnits)) return preset;
+    }
+    return null;
+  }
+
+  /// Replaces the enabled keypad unit set. Ignored if it would drop below
+  /// [minKeypadUnits] or is unchanged. Persists, and bridges the choice onto
+  /// today's fixed keypad: its single swap slot shows Msec when Msec is enabled
+  /// (or whenever Year is not), else Year. The full reflow that makes the
+  /// keypad honor the WHOLE set is the next step.
+  Future<void> setEnabledUnits(Set<TokenType> units) async {
+    final next = allKeypadUnits.where(units.contains).toSet();
+    if (next.length < minKeypadUnits || _sameUnits(next, _enabledUnits)) return;
+    _enabledUnits = next;
+    _keypadShowsMsec =
+        next.contains(TokenType.mSecond) || !next.contains(TokenType.year);
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(
+      prefEnabledUnitsKey,
+      enabledUnits.map((u) => u.name).toList(),
+    );
+    await prefs.setBool(prefKeypadShowsMsecKey, _keypadShowsMsec);
+  }
+
+  /// Enables/disables a single keypad unit key (min-[minKeypadUnits] enforced).
+  Future<void> setKeypadUnitEnabled(TokenType unit, bool enabled) {
+    final next = <TokenType>{..._enabledUnits};
+    if (enabled) {
+      next.add(unit);
+    } else {
+      next.remove(unit);
+    }
+    return setEnabledUnits(next);
+  }
+
+  /// Applies a named preset's unit set.
+  Future<void> applyKeypadUnitPreset(KeypadUnitPreset preset) =>
+      setEnabledUnits(<TokenType>{...preset.units});
 
   bool _historyEnabled = true;
 
@@ -160,6 +289,12 @@ class SettingsModel extends ChangeNotifier {
         displayFractionListenable.value = _displayFraction;
       }
       _keypadShowsMsec = prefs.getBool(prefKeypadShowsMsecKey) ?? true;
+      final storedUnits = prefs.getStringList(prefEnabledUnitsKey);
+      if (storedUnits != null) {
+        final parsed =
+            allKeypadUnits.where((u) => storedUnits.contains(u.name)).toSet();
+        if (parsed.length >= minKeypadUnits) _enabledUnits = parsed;
+      }
       _historyEnabled = prefs.getBool(prefHistoryEnabledKey) ?? true;
     } catch (e) {
       debugPrint('SettingsModel: failed to load preferences: $e');
@@ -243,4 +378,13 @@ class SettingsModel extends ChangeNotifier {
       debugPrint('SettingsModel: failed to persist display fraction: $e');
     }
   }
+}
+
+/// A one-tap preset of keypad time-unit keys for the Settings picker.
+@immutable
+class KeypadUnitPreset {
+  const KeypadUnitPreset(this.name, this.units);
+
+  final String name;
+  final Set<TokenType> units;
 }

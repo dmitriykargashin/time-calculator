@@ -19,11 +19,11 @@ void main() {
     // expression/result (selected format intentionally persists, like a
     // running app).
     CalculatorModel.instance.clearAll();
-    // Pin the keypad's swappable slot to the Year key so the layout-geometry
-    // tests below locate it by its "Year" label (the swap is label-only - the
-    // slot geometry is identical with Msec; the Msec default + swap are covered
-    // by keypad_unit_toggle_test and the goldens).
-    await SettingsModel.instance.setKeypadShowsMsec(false);
+    // Pin the keypad's units to the shipped default (Standard: Msec, Second,
+    // Minute, Hour, Day, Week, Month - no Year), so the layout-geometry tests
+    // below run against a known key set.
+    await SettingsModel.instance
+        .applyKeypadUnitPreset(SettingsModel.keypadUnitPresets.first);
     // Pin history OFF so the top bar holds the original three tools (Per / Tea /
     // Settings); the on-by-default history icon + its placement are covered by
     // history_test and the goldens.
@@ -234,8 +234,8 @@ void main() {
       );
     }
 
-    // The single Backspace is the ONLY delete key (now the TOP-right slot of
-    // the grid). There is no AC key and no Msec key anymore.
+    // The single Backspace is the ONLY delete key (the TOP-right slot of the
+    // number block). There is no AC key.
     expect(
       find.descendant(
         of: find.byType(PortraitKeypad),
@@ -251,25 +251,16 @@ void main() {
       findsNothing,
       reason: 'the AC (Clear) key was removed',
     );
-    expect(
-      find.descendant(
-        of: find.byType(PortraitKeypad),
-        matching: find.text('Msec'),
-      ),
-      findsNothing,
-      reason: 'the Msec time-unit key was removed',
-    );
     // No red attention badge on iOS: billing is gated to Android, so the
     // cup must not nag toward a Support screen without buy buttons.
     expect(find.byType(Badge), findsNothing);
 
-    // All 23 keys of the portrait 4x6 grid (one slot is the backspace icon) are
-    // present (scoped to the keypad: the selected-format label can also read
-    // e.g. "Minute").
+    // All keys of the COMPACT portrait keypad are present: digits, operators,
+    // "=", and the Standard unit set (Msec..Month, no Year).
     for (final label in [
       '7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.', '=',
       '÷', '×', '+', '–',
-      'Year', 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Second',
+      'Msec', 'Second', 'Minute', 'Hour', 'Day', 'Week', 'Month',
     ]) {
       expect(
         find.descendant(
@@ -281,17 +272,14 @@ void main() {
       );
     }
 
-    // NEW portrait arrangement (4 cols x 6 rows):
-    //   7     8      9      Backspace ⌫
-    //   4     5      6      ÷
-    //   1     2      3      ×
-    //   0     .      Year   +
-    //   Month Week   Day    −
-    //   Hour  Minute Second =
-    // Verify the load-bearing moves: Backspace TOP-right, "=" BOTTOM-right,
-    // the operator column ÷/×/+/− shifted DOWN one row, Year in the old "="
-    // slot (Row4-col3), Month/Week/Day shifted LEFT onto Row5 cols1-3, and
-    // Hour/Minute/Second on Row6 cols1-3.
+    // COMPACT portrait arrangement (number/operator block, then the green unit
+    // band with "=" bottom-right) - Standard preset:
+    //   7    8      9      ⌫
+    //   4    5      6      ÷
+    //   1    2      3      ×
+    //   0    .      +      −
+    //   Msec Second Minute Hour
+    //   Day  Week   Month  =
     Rect kpRect(Finder f) => tester.getRect(find.descendant(
           of: find.byType(PortraitKeypad),
           matching: f,
@@ -304,48 +292,37 @@ void main() {
     final minusRect = rectText('–');
     final equalsRect = rectText('=');
 
-    // The right operator column is a single vertical stack: every operator key
-    // shares Backspace's horizontal center (right-most column).
-    for (final r in [divideRect, multiplyRect, plusRect, minusRect, equalsRect]) {
-      expect((r.center.dx - backspaceRect.center.dx).abs(), lessThan(0.5),
-          reason: 'all right-column keys share the right-most column x');
-    }
-    // Top-to-bottom order down the right column: Backspace, ÷, ×, +, −, =.
-    expect(backspaceRect.center.dy, lessThan(divideRect.center.dy));
-    expect(divideRect.center.dy, lessThan(multiplyRect.center.dy));
-    expect(multiplyRect.center.dy, lessThan(plusRect.center.dy));
-    expect(plusRect.center.dy, lessThan(minusRect.center.dy));
-    expect(minusRect.center.dy, lessThan(equalsRect.center.dy));
-
-    // Backspace is the TOP-right key: it shares the top row center with "7".
+    // Backspace is the TOP-right key (shares the "7" row, right of "9").
     expect((backspaceRect.center.dy - rectText('7').center.dy).abs(),
         lessThan(0.5),
         reason: 'Backspace sits on the top row (with 7/8/9)');
-    // "=" is the BOTTOM-right corner: it shares the bottom row center with the
-    // bottom time-unit row (Hour/Minute/Second) and sits to their right.
-    expect((equalsRect.center.dy - rectText('Hour').center.dy).abs(),
-        lessThan(0.5),
-        reason: '"=" sits on the bottom row (with Hour/Minute/Second)');
-    expect(equalsRect.center.dx, greaterThan(rectText('Second').center.dx),
-        reason: '"=" is the right-most cell of the bottom row');
+    expect(backspaceRect.center.dx, greaterThan(rectText('9').center.dx));
+    // ÷, ×, − run down the right column under Backspace (shared x); + is to the
+    // left of − on the "0" row.
+    for (final r in [divideRect, multiplyRect, minusRect]) {
+      expect((r.center.dx - backspaceRect.center.dx).abs(), lessThan(0.5),
+          reason: 'right-column keys share the right-most column x');
+    }
+    expect(backspaceRect.center.dy, lessThan(divideRect.center.dy));
+    expect(divideRect.center.dy, lessThan(multiplyRect.center.dy));
+    expect(multiplyRect.center.dy, lessThan(minusRect.center.dy));
+    expect((plusRect.center.dy - rectText('0').center.dy).abs(), lessThan(0.5),
+        reason: '"+" shares the "0" row');
+    expect((minusRect.center.dy - rectText('0').center.dy).abs(), lessThan(0.5),
+        reason: '"−" shares the "0" row');
+    expect(plusRect.center.dx, lessThan(minusRect.center.dx),
+        reason: '"+" is left of "−"');
 
-    // Year took the old "=" slot: Row4, col3 - it shares "0"'s row center and
-    // sits between "." (col2) and the "+" operator (col4).
-    final yearRect = rectText('Year');
-    expect((yearRect.center.dy - rectText('0').center.dy).abs(), lessThan(0.5),
-        reason: 'Year shares the "0" row (Row4)');
-    expect(yearRect.center.dx, greaterThan(rectText('.').center.dx));
-    expect(yearRect.center.dx, lessThan(plusRect.center.dx));
-    // Month/Week/Day shifted LEFT onto Row5 cols1-3 (Month under "0"/col1).
-    expect((rectText('Month').center.dx - rectText('0').center.dx).abs(),
-        lessThan(0.5),
-        reason: 'Month moved left to col1 (under "0")');
-    expect(rectText('Month').center.dy, greaterThan(yearRect.center.dy),
-        reason: 'Month/Week/Day are on Row5, below Year (Row4)');
-    // Hour/Minute/Second are the bottom-left row (Row6 cols1-3).
-    expect((rectText('Hour').center.dx - rectText('0').center.dx).abs(),
-        lessThan(0.5),
-        reason: 'Hour is bottom-left (col1)');
+    // The green unit band sits BELOW the number/operator block: Msec is below
+    // the "0" row.
+    expect(rectText('Msec').center.dy, greaterThan(rectText('0').center.dy),
+        reason: 'the unit band is below the number block');
+    // "=" is the BOTTOM-RIGHT key: below the operator block and in the right-most
+    // column (sharing Backspace's x).
+    expect(equalsRect.center.dy, greaterThan(minusRect.center.dy),
+        reason: '"=" is below the number/operator block');
+    expect((equalsRect.center.dx - backspaceRect.center.dx).abs(), lessThan(0.5),
+        reason: '"=" is in the right-most column (bottom-right corner)');
 
     // A digit keypress lands in the expression display.
     await tester.tap(find.text('7'));
@@ -474,7 +451,7 @@ void main() {
 
     // The full 4x6 keypad still renders (no overflow / dropped rows) at the
     // smaller size: every key is present and tappable.
-    for (final label in ['7', '0', '=', '–', 'Year', 'Second']) {
+    for (final label in ['7', '0', '=', '–', 'Hour', 'Second']) {
       expect(
         find.descendant(
           of: find.byType(PortraitKeypad),
@@ -563,9 +540,8 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
-  testWidgets('landscape keypad cells are UNIFORM equal height across columns '
-      'and rows; the single Backspace sits in the bottom-right slot',
-      (tester) async {
+  testWidgets('landscape keypad: the number block is uniform, units stack in '
+      'columns, and "=" is the bottom-right key', (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     tester.view.physicalSize = const Size(960, 540);
     tester.view.devicePixelRatio = 1.0;
@@ -578,9 +554,8 @@ void main() {
     await tester.pumpWidget(const TimeCalculatorApp());
     await tester.pumpAndSettle();
 
-    // Column 1 (digits 7/4/1/0) has four cells top-to-bottom. Equal cell
-    // heights => equal spacing between consecutive cell centers (the top cell
-    // must NOT be ~gap taller than the rest).
+    // The number block's digit column (7/4/1/0) has four UNIFORM cells: equal
+    // spacing between consecutive cell centers.
     double cellCenterY(String label) => tester
         .getRect(find.descendant(
           of: find.byType(LandscapeKeypad),
@@ -588,39 +563,37 @@ void main() {
         ))
         .center
         .dy;
-    final ys = ['7', '4', '1', '0'].map(cellCenterY).toList();
-    final gap01 = ys[1] - ys[0];
-    final gap12 = ys[2] - ys[1];
-    final gap23 = ys[3] - ys[2];
-    expect((gap01 - gap12).abs(), lessThan(0.5),
-        reason: 'cell 0->1 vs 1->2 spacing must match (uniform cells)');
-    expect((gap12 - gap23).abs(), lessThan(0.5),
-        reason: 'cell 1->2 vs 2->3 spacing must match (uniform cells)');
-
-    // Rows line up ACROSS columns: the top cell of the digit column (7) and the
-    // top cell of a time column (Hour) share a row center.
-    expect((cellCenterY('7') - cellCenterY('Hour')).abs(), lessThan(0.5),
-        reason: 'the top row must line up across columns');
-
-    // The single Backspace delete key occupies the BOTTOM-RIGHT slot of the
-    // 6x4 grid (no separate utility row, no AC). Its center sits on the bottom
-    // row (sharing a row center with the bottom digit "0") and to the RIGHT of
-    // the bottom time-unit key "Year".
-    final backspaceRect = tester.getRect(find.descendant(
-      of: find.byType(LandscapeKeypad),
-      matching: find.byIcon(Icons.backspace),
-    ));
-    expect((backspaceRect.center.dy - cellCenterY('0')).abs(), lessThan(0.5),
-        reason: 'Backspace shares the bottom row center');
-    final yearX = tester
-        .getRect(find.descendant(
+    Rect lkRect(Finder f) => tester.getRect(find.descendant(
           of: find.byType(LandscapeKeypad),
-          matching: find.text('Year'),
-        ))
-        .center
-        .dx;
-    expect(backspaceRect.center.dx, greaterThan(yearX),
-        reason: 'Backspace is the right-most cell of the bottom row');
+          matching: f,
+        ));
+    final ys = ['7', '4', '1', '0'].map(cellCenterY).toList();
+    expect(((ys[1] - ys[0]) - (ys[2] - ys[1])).abs(), lessThan(0.5),
+        reason: 'cell 0->1 vs 1->2 spacing must match (uniform block)');
+    expect(((ys[2] - ys[1]) - (ys[3] - ys[2])).abs(), lessThan(0.5),
+        reason: 'cell 1->2 vs 2->3 spacing must match (uniform block)');
+
+    // Backspace is the TOP-right key of the number block (shares the "7" row,
+    // right of "9").
+    final backspaceRect = lkRect(find.byIcon(Icons.backspace));
+    expect((backspaceRect.center.dy - cellCenterY('7')).abs(), lessThan(0.5),
+        reason: 'Backspace sits on the top row (with 7/8/9)');
+    expect(
+        backspaceRect.center.dx, greaterThan(lkRect(find.text('9')).center.dx));
+
+    // The Standard unit keys fill columns to the RIGHT of the number block.
+    expect(lkRect(find.text('Hour')).center.dx,
+        greaterThan(backspaceRect.center.dx),
+        reason: 'unit keys are to the right of the number/operator block');
+
+    // "=" is the BOTTOM-RIGHT key: on the bottom row (sharing the "0" row) and
+    // to the right of the last unit column.
+    final equalsRect = lkRect(find.text('='));
+    expect((equalsRect.center.dy - cellCenterY('0')).abs(), lessThan(0.5),
+        reason: '"=" sits on the bottom row');
+    expect(equalsRect.center.dx,
+        greaterThan(lkRect(find.text('Hour')).center.dx),
+        reason: '"=" is the right-most cell of the bottom row');
 
     await SettingsModel.instance.setDisplayFraction(
       SettingsModel.defaultDisplayFraction,
@@ -685,7 +658,7 @@ void main() {
 
     // The full 7-column keypad still renders at the new size: every key and
     // the action column are present and a keypress still registers.
-    for (final label in ['7', '0', '=', '–', 'Year', 'Second']) {
+    for (final label in ['7', '0', '=', '–', 'Hour', 'Second']) {
       expect(
         find.descendant(
           of: find.byType(LandscapeKeypad),

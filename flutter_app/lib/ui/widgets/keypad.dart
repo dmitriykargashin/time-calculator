@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../engine/big_decimal.dart';
 import '../../engine/token.dart';
 import '../../engine/token_type.dart';
+import '../keypad_layout.dart';
 import '../theme.dart';
 
 /// Shared callbacks for both keypad layouts.
@@ -19,10 +20,10 @@ class KeypadCallbacks {
 
   final ValueChanged<Token> onToken;
 
-  /// The 7 time-unit keys (RemoveADS: they dispatch by TokenType through
+  /// The time-unit keys (they dispatch by TokenType through
   /// CalculatorModel.addToExpressionTimeUnit so the unit token inherits the
-  /// trailing NUMBER's value for smart pluralization). One slot is swappable
-  /// between Msec (the default) and Year via the Settings "Msec key" option.
+  /// trailing NUMBER's value for smart pluralization). Which units appear is the
+  /// user's enabled set (Settings -> Keypad keys).
   final ValueChanged<TokenType> onUnit;
 
   final VoidCallback onEquals;
@@ -216,44 +217,37 @@ class _KeypadKey extends StatelessWidget {
   }
 }
 
-/// Portrait phone keypad (RemoveADS layout/activity_main.xml) - 4 columns x
-/// 6 rows. The Per/Support/Settings secondary tools moved to the top bar
-/// (drawn by calculator_screen). There is NO separate utility row and NO AC.
-/// The right column runs Backspace / ÷ / × / + / − / = top-to-bottom:
-/// the Backspace delete key takes the TOP-right slot, the operator column
-/// (÷ × + −) shifts DOWN one row to make room for it, and "=" sits in the
-/// BOTTOM-right corner. The seven time units regroup with Year in the old "="
-/// slot (Row4-col3), then Month/Week/Day on Row5 cols1-3 and Hour/Minute/Second
-/// on Row6 cols1-3:
+/// Portrait phone keypad. The fixed 4-wide number/operator block on top, then
+/// the enabled time-unit keys as a green band of rows (4 per row) with "=" as
+/// the last cell of the last row - the COMPACT, units-driven layout produced by
+/// [portraitKeypadLayout]. Fewer enabled units => fewer band rows. The
+/// Per/Support/Settings secondary tools live in the top bar; there is no utility
+/// row and no AC. Example with the Standard unit set:
 /// ```
-/// 7     8      9      Backspace ⌫
-/// 4     5      6      ÷
-/// 1     2      3      ×
-/// 0     .      Msec   +
-/// Month Week   Day    −
-/// Hour  Minute Second =
+/// 7    8      9      ⌫
+/// 4    5      6      ÷
+/// 1    2      3      ×
+/// 0    .      +      −
+/// Msec Second Minute Hour
+/// Day  Week   Month  =
 /// ```
-/// (the "Msec" slot shows the Year key instead when the Settings "Msec key"
-/// option is turned off - see [swapUnitType]/[swapUnitLabel].)
-/// Every one of the SIX rows is an Expanded(flex:1) of EQUAL height; the
-/// inter-row gaps are FIXED [Dimens.keyGap] spacers BETWEEN the rows so every
-/// row is exactly as tall as the others.
+/// Every row is an Expanded(flex:1) of EQUAL height; inter-row gaps are FIXED
+/// [Dimens.keyGap] spacers. The layout (shared with the Settings "Keypad keys"
+/// preview) is the single source of truth - see [portraitKeypadLayout].
 class PortraitKeypad extends StatelessWidget {
   const PortraitKeypad({
     super.key,
     required this.callbacks,
-    required this.swapUnitType,
-    required this.swapUnitLabel,
+    required this.units,
     this.backspaceKey,
   });
 
   final KeypadCallbacks callbacks;
 
-  /// The swappable unit key (Row4-col3): [TokenType.mSecond] / "Msec" by
-  /// default, or [TokenType.year] / "Year" when the Settings "Msec key" option
-  /// is off.
-  final TokenType swapUnitType;
-  final String swapUnitLabel;
+  /// The enabled time-unit keys, in canonical order (from SettingsModel) - they
+  /// form the green unit band below the number/operator block, in rows of 4 with
+  /// "=" as the last cell of the last row.
+  final List<TokenType> units;
 
   /// Rides the backspace cell's ink as a stable widget identity (calculator
   /// _deleteKey). The clear-flash reveal no longer measures it - the flash now
@@ -282,22 +276,8 @@ class PortraitKeypad extends StatelessWidget {
     // then Month/Week/Day and Hour/Minute/Second on the bottom two rows. No
     // separate utility row, no AC.
     final rows = <List<Widget>>[
-      [k.digit('7'), k.digit('8'), k.digit('9'), k.backspace()],
-      [k.digit('4'), k.digit('5'), k.digit('6'), k.divide()],
-      [k.digit('1'), k.digit('2'), k.digit('3'), k.multiply()],
-      [k.digit('0'), k.dot(), k.unit(swapUnitType, swapUnitLabel), k.plus()],
-      [
-        k.unit(TokenType.month, 'Month'),
-        k.unit(TokenType.week, 'Week'),
-        k.unit(TokenType.day, 'Day'),
-        k.minus(),
-      ],
-      [
-        k.unit(TokenType.hour, 'Hour'),
-        k.unit(TokenType.minute, 'Minute'),
-        k.unit(TokenType.second, 'Second'),
-        k.equals(),
-      ],
+      for (final row in portraitKeypadLayout(units))
+        [for (final cell in row) k.cell(cell)],
     ];
     return Material(
       color: Colors.transparent,
@@ -327,39 +307,37 @@ class PortraitKeypad extends StatelessWidget {
       );
 }
 
-/// Land/sw600 keypad (layout-land/activity_main.xml ==
-/// layout-sw600dp/activity_main.xml, byte-identical on the branch) - used by
-/// phones in landscape AND by tablets in BOTH orientations. The Per/Support/
-/// Settings secondary tools moved to the top bar, so the old 7th action-icon
-/// column is gone. There is NO separate utility row (saving a row, as in
-/// portrait): the single Backspace delete key takes the bottom-right slot
-/// (where Msec used to be), and AC is gone. The grid is 6 columns x 4 rows:
+/// Landscape / tablet keypad (used by phones in landscape AND by tablets in
+/// both orientations). The fixed 4x4 number/operator block on the LEFT, then the
+/// enabled time-unit keys stacked in COLUMNS to the right with "=" pinned
+/// bottom-right - the COMPACT, units-driven layout produced by
+/// [landscapeKeypadLayout]. Fewer enabled units => fewer columns => a narrower
+/// keypad. The Per/Support/Settings tools live in the top bar; no utility row,
+/// no AC. Example with the Standard unit set:
 /// ```
-/// 7 8 9 divide   Hour   Minute
-/// 4 5 6 multiply Second Day
-/// 1 2 3 plus     Week   Month
-/// 0 . = minus    Msec   Backspace ⌫
+/// 7 8 9 ⌫   Msec   Day
+/// 4 5 6 ÷   Second Week
+/// 1 2 3 ×   Minute Month
+/// 0 . + −   Hour   =
 /// ```
-/// (the "Msec" slot shows the Year key instead when the Settings "Msec key"
-/// option is turned off - see [swapUnitType]/[swapUnitLabel].)
-/// Every key carries minWidth buttons_num_min_width here (38sp land /
-/// 48sp sw600). The four key rows are EQUAL height; no scroll, no overflow.
+/// The number block is flex:4 and each unit column flex:1, so every cell stays
+/// ~the same width; a partial last column's cells stretch to fill the height.
+/// Every key carries minWidth (buttons_num_min_width: 38sp land / 48sp sw600);
+/// no scroll, no overflow. See [landscapeKeypadLayout] (shared with the preview).
 class LandscapeKeypad extends StatelessWidget {
   const LandscapeKeypad({
     super.key,
     required this.callbacks,
-    required this.swapUnitType,
-    required this.swapUnitLabel,
+    required this.units,
     this.backspaceKey,
   });
 
   final KeypadCallbacks callbacks;
 
-  /// The swappable unit key (Row4-col5): [TokenType.mSecond] / "Msec" by
-  /// default, or [TokenType.year] / "Year" when the Settings "Msec key" option
-  /// is off.
-  final TokenType swapUnitType;
-  final String swapUnitLabel;
+  /// The enabled time-unit keys, in canonical order (from SettingsModel) - they
+  /// fill the columns to the right of the number/operator block, with "=" in the
+  /// bottom-right corner.
+  final List<TokenType> units;
 
   /// Rides the backspace cell's ink as a stable widget identity (calculator
   /// _deleteKey). The clear-flash reveal no longer measures it - the flash now
@@ -378,72 +356,55 @@ class LandscapeKeypad extends StatelessWidget {
       backspaceKey: backspaceKey,
     );
     final gap = dim.keyGap;
-    // ROW-MAJOR: the grid is built as 4 ROWS of 6 cells with FIXED gaps between
-    // them - exactly the portrait rhythm. The 7 time units repack into the two
-    // right columns (top-to-bottom), and the single Backspace delete key takes
-    // the bottom-right slot (where Msec used to be). No utility row, no AC -
-    // the four key rows are all EQUAL height.
-    final keyRows = <List<Widget>>[
-      [
-        k.digit('7'),
-        k.digit('8'),
-        k.digit('9'),
-        k.divide(),
-        k.unit(TokenType.hour, 'Hour'),
-        k.unit(TokenType.minute, 'Minute'),
+    // The fixed 4x4 number/operator block on the LEFT, the green unit keys in
+    // columns to the RIGHT with "=" pinned bottom-right (see
+    // [landscapeKeypadLayout]). Fewer units -> fewer columns -> narrower keypad.
+    final layout = landscapeKeypadLayout(units);
+
+    Widget blockRow(List<KeypadCell> row) => Row(
+          children: [
+            for (var i = 0; i < row.length; i++) ...[
+              if (i != 0) SizedBox(width: gap),
+              Expanded(child: k.cell(row[i])),
+            ],
+          ],
+        );
+    final block = Column(
+      children: [
+        for (var r = 0; r < layout.block.length; r++) ...[
+          if (r != 0) SizedBox(height: gap),
+          Expanded(child: blockRow(layout.block[r])),
+        ],
       ],
-      [
-        k.digit('4'),
-        k.digit('5'),
-        k.digit('6'),
-        k.multiply(),
-        k.unit(TokenType.second, 'Second'),
-        k.unit(TokenType.day, 'Day'),
-      ],
-      [
-        k.digit('1'),
-        k.digit('2'),
-        k.digit('3'),
-        k.plus(),
-        k.unit(TokenType.week, 'Week'),
-        k.unit(TokenType.month, 'Month'),
-      ],
-      [
-        k.digit('0'),
-        k.dot(),
-        k.equals(),
-        k.minus(),
-        k.unit(swapUnitType, swapUnitLabel),
-        k.backspace(),
-      ],
-    ];
+    );
+
+    // A unit column fills the full height: a short column has fewer, TALLER
+    // cells (Expanded) rather than an empty slot.
+    Widget unitColumn(List<KeypadCell> col) => Column(
+          children: [
+            for (var i = 0; i < col.length; i++) ...[
+              if (i != 0) SizedBox(height: gap),
+              Expanded(child: k.cell(col[i])),
+            ],
+          ],
+        );
+
     return Material(
-      // No internal edge margins: the keypad card (drawn by calculator_screen)
-      // owns the surface padding. The grid fills the card width; the flex rows
-      // fill the budgeted keypadHeight.
+      // No internal edge margins: the keypad card owns the surface padding. The
+      // grid fills the card; flex weights keep every cell ~the same width (the
+      // 4-wide block vs the 1-wide unit columns).
       color: Colors.transparent,
-      child: Column(
+      child: Row(
         children: [
-          for (var r = 0; r < keyRows.length; r++) ...[
-            if (r != 0) SizedBox(height: gap),
-            Expanded(child: _row(gap, keyRows[r])),
+          Expanded(flex: 4, child: block),
+          for (final col in layout.columns) ...[
+            SizedBox(width: gap),
+            Expanded(flex: 1, child: unitColumn(col)),
           ],
         ],
       ),
     );
   }
-
-  /// One row of six equal-width cells separated by [gap] horizontally; the
-  /// inter-ROW gaps are fixed spacers added by build between the Expanded rows,
-  /// so every row stays equal height and the cells line up across columns.
-  Widget _row(double gap, List<Widget> keys) => Row(
-        children: [
-          for (var i = 0; i < keys.length; i++) ...[
-            if (i != 0) SizedBox(width: gap),
-            Expanded(child: keys[i]),
-          ],
-        ],
-      );
 }
 
 class _KeyFactory {
@@ -516,6 +477,21 @@ class _KeyFactory {
         dim.buttonsTimeSize,
         () => callbacks.onUnit(type),
       );
+
+  /// Builds the interactive key for an abstract [KeypadCell] from
+  /// [keypad_layout] (so the real keypad and the Settings preview share one
+  /// layout).
+  Widget cell(KeypadCell c) => switch (c.kind) {
+        KeypadCellKind.digit =>
+          c.digit == '.' ? dot() : digit(c.digit!),
+        KeypadCellKind.divide => divide(),
+        KeypadCellKind.multiply => multiply(),
+        KeypadCellKind.plus => plus(),
+        KeypadCellKind.minus => minus(),
+        KeypadCellKind.backspace => backspace(),
+        KeypadCellKind.equals => equals(),
+        KeypadCellKind.unit => unit(c.unit!, keypadUnitLabel(c.unit!)),
+      };
 
   /// BACKSPACE delete key (bottom-right grid slot): the ONLY clear control.
   /// Tap deletes one trailing symbol; LONG-PRESS triggers the clear-flash

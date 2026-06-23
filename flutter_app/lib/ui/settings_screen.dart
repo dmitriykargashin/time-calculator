@@ -8,6 +8,8 @@ import '../services/monetization.dart';
 import '../state/settings_model.dart';
 import 'formats_screen.dart' show overlayHeader;
 import 'history_screen.dart' show confirmClearHistory;
+import 'keypad_keys_screen.dart';
+import 'keypad_layout.dart' show keypadUnitLabel;
 import 'pro_screen.dart';
 import 'theme.dart';
 
@@ -139,13 +141,16 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: dim.margin16),
-                      // KEYPAD section: swap the keypad's Msec (millisecond) key
-                      // for the Year key. On by default (Msec).
+                      // KEYPAD section: a One UI-style row that opens the
+                      // dedicated "Keypad keys" sub-screen (presets + per-unit
+                      // chips + a whole-keypad live preview).
                       _sectionLabel('KEYPAD', dim, palette),
                       _section(
                         dim,
                         palette,
-                        children: [_keypadMsecRow(settings, dim, palette)],
+                        children: [
+                          _keypadKeysNavRow(context, settings, dim, palette),
+                        ],
                       ),
                       SizedBox(height: dim.margin16),
                       // HISTORY section (F6): opt in to saving the last few
@@ -304,34 +309,59 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  /// The KEYPAD card's toggle: swap the keypad's Year key for a Msec key. The
-  /// enclosing ListenableBuilder (on [SettingsModel]) rebuilds this row when the
-  /// value changes, so the Switch needs no local state. Tapping anywhere on the
-  /// row toggles it (the whole row is the target, like the theme rows).
-  Widget _keypadMsecRow(SettingsModel settings, Dimens dim, AppPalette palette) {
-    void toggle(bool value) => settings.setKeypadShowsMsec(value);
+  /// One UI-style navigation row that opens the dedicated "Keypad keys"
+  /// sub-screen: leading icon, title, a summary subtitle (the active preset or
+  /// the chosen unit labels), and a trailing chevron. The enclosing
+  /// ListenableBuilder keeps the summary in sync with the selection.
+  Widget _keypadKeysNavRow(
+      BuildContext context, SettingsModel settings, Dimens dim,
+      AppPalette palette) {
+    final active = settings.activeKeypadUnitPreset;
+    final summary = active != null
+        ? active.name
+        : settings.enabledUnits.map(keypadUnitLabel).join(', ');
     return InkWell(
-      onTap: () => toggle(!settings.keypadShowsMsec),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute<void>(builder: (_) => const KeypadKeysScreen()),
+      ),
       child: Container(
         constraints: BoxConstraints(minHeight: dim.settingsItemMinHeight),
-        padding: const EdgeInsetsDirectional.only(start: 20, end: 12),
+        padding: const EdgeInsetsDirectional.fromSTEB(20, 10, 12, 10),
         child: Row(
           children: [
-            Icon(Icons.swap_horiz, color: palette.controlsStrong),
+            Icon(Icons.dialpad, color: palette.controlsStrong),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(
-                'Msec key (not Year)',
-                style: TextStyle(
-                  color: palette.resultNums,
-                  fontSize: dim.settingsItemTextSize,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Keypad keys',
+                    style: TextStyle(
+                      color: palette.resultNums,
+                      fontSize: dim.settingsItemTextSize,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  // The current value in the keypad's green time-unit colour +
+                  // medium weight, so it reads as the active setting rather than
+                  // a muted footnote.
+                  Text(
+                    summary,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: palette.timeKeyText,
+                      fontSize: dim.settingsItemTextSize,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ),
-            Switch(
-              value: settings.keypadShowsMsec,
-              onChanged: toggle,
-            ),
+            const SizedBox(width: 8),
+            Icon(Icons.chevron_right, color: palette.controls),
           ],
         ),
       ),

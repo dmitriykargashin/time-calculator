@@ -10,8 +10,8 @@ const String kFeedbackEmail = 'support@cardamon.org';
 ///
 /// MUST be kept in sync with pubspec.yaml `version: <name>+<code>` on every
 /// release bump (there is no package_info_plus dependency by design).
-const String kAppVersionName = '2.3.0';
-const int kAppVersionCode = 27;
+const String kAppVersionName = '2.4.0';
+const int kAppVersionCode = 28;
 
 /// Privacy policy URL, shown from the analytics-consent dialog and the Settings
 /// "Privacy Policy" row. REQUIRED now that the app collects analytics (Play Data

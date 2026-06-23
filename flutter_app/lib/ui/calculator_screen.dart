@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../data/result_format.dart';
-import '../engine/token_type.dart';
 import '../engine/tokens.dart';
 import '../services/analytics_service.dart';
 import '../services/monetization.dart';
@@ -979,26 +978,21 @@ class _CalculatorScreenState extends State<CalculatorScreen>
       ),
       child: SizedBox(
         width: double.infinity,
-        // The swappable unit key (Year by default, Msec when the Settings "Msec
-        // key" option is on). Read live here; the screen rebuilds on the toggle
-        // via the SettingsModel listener added in initState.
+        // The enabled time-unit keys (Settings -> Keypad keys). Read live here;
+        // the screen rebuilds on changes via the SettingsModel listener added in
+        // initState.
         child: Builder(
           builder: (context) {
-            final showMsec = SettingsModel.instance.keypadShowsMsec;
-            final swapUnitType =
-                showMsec ? TokenType.mSecond : TokenType.year;
-            final swapUnitLabel = showMsec ? 'Msec' : 'Year';
+            final units = SettingsModel.instance.enabledUnits;
             return sevenColumn
                 ? LandscapeKeypad(
                     callbacks: callbacks,
-                    swapUnitType: swapUnitType,
-                    swapUnitLabel: swapUnitLabel,
+                    units: units,
                     backspaceKey: _deleteKey,
                   )
                 : PortraitKeypad(
                     callbacks: callbacks,
-                    swapUnitType: swapUnitType,
-                    swapUnitLabel: swapUnitLabel,
+                    units: units,
                     backspaceKey: _deleteKey,
                   );
           },
