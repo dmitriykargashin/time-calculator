@@ -10,8 +10,8 @@ import 'theme.dart';
 /// screen (the Per action, a locked format row, the dark-theme radio).
 ///
 /// Contents:
-/// * the three unlocks (the value/"Per" calculator, all result formats, dark
-///   theme);
+/// * the four unlocks (the value/"Per" calculator, all result formats, custom
+///   keypad, and unlimited history);
 /// * an "Unlock Pro" button - its label includes [Monetization.proPrice] when
 ///   known, it calls [Monetization.buyPro], and it is disabled with a subtle
 ///   "coming soon" note while [Monetization.canBuyPro] is false (i.e. before
@@ -148,15 +148,24 @@ class _ProPaywallState extends State<_ProPaywall> {
                 palette,
                 Icons.format_list_bulleted,
                 'All result formats',
-                'Every time format for the result, not just the six free ones.',
+                'Every time format for the result, not just the basic ones.',
               ),
               SizedBox(height: dim.margin16),
               _unlockRow(
                 dim,
                 palette,
-                Icons.dark_mode_outlined,
-                'Dark theme',
-                'Switch the whole app to the dark palette.',
+                Icons.dialpad,
+                'Custom keypad',
+                'Pick any time-unit keys and every preset, beyond the two '
+                    'free layouts.',
+              ),
+              SizedBox(height: dim.margin16),
+              _unlockRow(
+                dim,
+                palette,
+                Icons.history,
+                'Unlimited history',
+                'Keep every calculation, not just the last five.',
               ),
               SizedBox(height: dim.margin16 + dim.margin8),
               ElevatedButton(

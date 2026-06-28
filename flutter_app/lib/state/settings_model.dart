@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../engine/token_type.dart';
 import '../services/history_service.dart';
-import '../services/monetization.dart';
 
 /// Port of the RemoveADS branch's PrefRepository - the ONLY disk persistence
 /// in the app: the theme choice, stored as String "0"/"1"/"2" under the
@@ -251,18 +250,11 @@ class SettingsModel extends ChangeNotifier {
         _ => ThemeMode.system,
       };
 
-  /// The theme mode MaterialApp actually applies. While Pro gating is on and
-  /// Pro is not yet unlocked (Apple-only, [kApplePurchasesEnabled]), the dark
-  /// theme is a Pro feature, so the app is forced to [ThemeMode.light]
-  /// regardless of the stored choice. The stored "0"/"1"/"2" value is left
-  /// untouched, so unlocking Pro instantly applies the user's real selection
-  /// (main.dart rebuilds on the Monetization notification). Everywhere gating
-  /// is off this is identical to [themeMode].
-  ThemeMode get effectiveThemeMode {
-    final mon = Monetization.instance;
-    if (mon.isProGated && !mon.isProUnlocked) return ThemeMode.light;
-    return themeMode;
-  }
+  /// The theme mode MaterialApp actually applies. Theme (including dark mode) is
+  /// a FREE feature on every platform, so this is simply [themeMode] — there is
+  /// no Pro clamp. Kept as a distinct getter so [main] and Settings read one
+  /// source of truth (and so the call sites stay stable if gating ever returns).
+  ThemeMode get effectiveThemeMode => themeMode;
 
   /// Loads the persisted values; call before runApp. A blank first run writes
   /// "0" back for the theme (PrefRepository.init parity). The display fraction

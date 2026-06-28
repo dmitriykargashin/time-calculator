@@ -1,5 +1,6 @@
 # Matches IPHONEOS_DEPLOYMENT_TARGET and AppFrameworkInfo.plist.
-platform :ios, '13.0'
+# 15.0 is the floor required by firebase_analytics (Firebase iOS SDK 12.x).
+platform :ios, '15.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'

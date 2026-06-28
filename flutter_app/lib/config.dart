@@ -52,7 +52,13 @@ const String kProSku = 'pro_unlock';
 /// Leave `false` until ALL of the above are done: this is the single switch
 /// that turns gating, the paywall, and Pro billing on for Apple platforms.
 /// Android and web ignore it entirely (they are never gated).
-const bool kApplePurchasesEnabled = false;
+///
+/// ⚠️ TEMPORARILY `true` for LOCAL paywall testing on the iOS simulator (paired
+/// with `ios/Runner/Configuration.storekit` + the Runner scheme's StoreKit
+/// configuration, which serves a fake `pro_unlock` product with no Apple
+/// Developer account). REVERT to `false` before shipping any build that does
+/// not yet have the real `pro_unlock` product live in App Store Connect.
+const bool kApplePurchasesEnabled = true;
 
 /// App Store listing URL (meaningless while [kAppleAppId] is empty).
 const String kAppStoreUrl = 'https://apps.apple.com/app/id$kAppleAppId';

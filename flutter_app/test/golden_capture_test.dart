@@ -381,22 +381,28 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
-  testWidgets('support overlay - ios (no buy buttons)', (tester) async {
+  // iOS has no donation tea-cup; "Leave a review" + "Share the app" live in the
+  // Settings HELP section instead. Capture that (scrolled into view).
+  testWidgets('settings - ios (HELP: review + share, no tea-cup)',
+      (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     await sizePhone(tester);
     await SettingsModel.instance.setThemeValue('1');
     await tester.pumpWidget(const TimeCalculatorApp());
     await _settle(tester);
-    await tester.tap(find.byIcon(Icons.emoji_food_beverage));
+    await tester.tap(find.byIcon(Icons.settings));
     await _settle(tester);
-    await _shot(tester, '08_support_ios_light');
+    await tester.ensureVisible(find.text('Leave a review'));
+    await _settle(tester);
+    await _shot(tester, '08_settings_ios_help_light');
     debugDefaultTargetPlatformOverride = null;
   });
 
   // ---------------------------------------------------------------------------
   // Apple-only Pro gating shots. These FORCE gating on via the Monetization
   // test seam (production keeps it off until kApplePurchasesEnabled flips), so
-  // we can audit how the paywall and the three locks actually render. The
+  // we can audit how the paywall and the locks (the Per badge and the non-free
+  // result-format rows; theme is FREE and never locked) actually render. The
   // earlier (android, gating-off) shots above are unaffected.
   // ---------------------------------------------------------------------------
 
@@ -501,7 +507,7 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
-  testWidgets('settings overlay - gated (locked theme rows + Pro row)',
+  testWidgets('settings overlay - gated (Pro row; theme NOT locked - free)',
       (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     await sizePhone(tester);

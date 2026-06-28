@@ -1,0 +1,35 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [ ]
+  },
+  "identifier" : "5C3A1B2D-1E2F-4A3B-8C4D-5E6F7A8B9C0D",
+  "nonRenewingSubscriptions" : [ ],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "1A2B3C4D-5E6F-4071-8293-A4B5C6D7E8F9",
+      "localizations" : [
+        {
+          "description" : "Unlock the value calculator, all result formats, the custom keypad and unlimited history.",
+          "displayName" : "Pro Unlock",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "pro_unlock",
+      "referenceName" : "Pro Unlock",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [ ]
+  },
+  "subscriptionGroups" : [ ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

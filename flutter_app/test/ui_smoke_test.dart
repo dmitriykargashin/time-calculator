@@ -198,9 +198,9 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
-  testWidgets('top bar carries Per/Support/Settings; the keypad carries a '
-      'single Backspace (no AC, no Msec); no tea badge where billing is '
-      'unavailable', (tester) async {
+  testWidgets('top bar carries Per/Settings (tea-cup is Android-only); the '
+      'keypad carries a single Backspace (no AC, no Msec); no tea-cup or badge '
+      'where billing is unavailable', (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     tester.view.physicalSize = const Size(540, 960);
     tester.view.devicePixelRatio = 1.0;
@@ -216,12 +216,14 @@ void main() {
     expect(find.byIcon(Icons.compare_arrows), findsNothing);
     expect(find.byIcon(Icons.expand_more), findsOneWidget);
     expect(find.byIcon(Icons.more_time), findsOneWidget);
-    expect(find.byIcon(Icons.emoji_food_beverage), findsOneWidget);
+    // The donation tea-cup is Android-only: on iOS it (and its badge) are gone.
+    expect(find.byIcon(Icons.emoji_food_beverage), findsNothing);
+    expect(find.byType(Badge), findsNothing);
     expect(find.byIcon(Icons.settings), findsOneWidget);
-    // None of the three secondary tools are inside the keypad anymore.
+    // The secondary tools that DO show on iOS (Per / Settings) are in the top
+    // bar, never inside the keypad.
     for (final icon in [
       Icons.more_time,
-      Icons.emoji_food_beverage,
       Icons.settings,
     ]) {
       expect(
@@ -787,30 +789,29 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
-  testWidgets('support overlay on iOS hides the buy buttons and never shows '
-      'the custom rating dialog (guideline 5.6.1)', (tester) async {
+  testWidgets('iOS has no tea-cup; Leave a review + Share live in Settings, and '
+      'review never opens the custom rating dialog (guideline 5.6.1)',
+      (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 
     await tester.pumpWidget(const TimeCalculatorApp());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.emoji_food_beverage));
-    await tester.pumpAndSettle();
-    expect(find.text('Support the app'), findsOneWidget);
+    // No donation tea-cup anywhere on iOS (monetization is the Pro paywall) -
+    // so no "Support the app" overlay is reachable either.
+    expect(find.byIcon(Icons.emoji_food_beverage), findsNothing);
+    expect(find.text('Support the app'), findsNothing);
 
-    // Billing is unavailable on iOS: no tea copy, no buy buttons - only
-    // review and share (dead purchase UI would be a 2.1 rejection).
-    expect(find.textContaining('CUPS of TEA'), findsNothing);
-    expect(find.textContaining('free and ad-free'), findsOneWidget);
-    for (final label in ['buy 1 Cup', 'buy 3 Cups', 'buy 5 Cups',
-        'buy 9 Cups']) {
-      expect(find.text(label), findsNothing, reason: 'button $label');
-    }
+    // Open Settings: the HELP section carries Leave a review + Share the app.
+    await tester.tap(find.byIcon(Icons.settings));
+    await tester.pumpAndSettle();
     expect(find.text('Leave a review'), findsOneWidget);
     expect(find.text('Share the app'), findsOneWidget);
 
-    // "Leave a review" must NOT open the custom star dialog on iOS (it goes
-    // to the native review sheet, which has no platform channel in tests).
+    // "Leave a review" must NOT open the custom star dialog on iOS (it goes to
+    // the native review sheet, which has no platform channel in tests).
+    await tester.ensureVisible(find.text('Leave a review'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Leave a review'));
     await tester.pumpAndSettle();
     expect(
@@ -818,10 +819,10 @@ void main() {
       findsNothing,
     );
 
-    // Close the overlay via the toolbar back arrow.
+    // Close the Settings overlay so it doesn't leak into the next test
+    // (ui_smoke's setUp does not reset the overlay-visibility singletons).
     await tester.tap(find.byIcon(Icons.arrow_back));
     await tester.pumpAndSettle();
-    expect(find.text('Support the app'), findsNothing);
 
     debugDefaultTargetPlatformOverride = null;
   });

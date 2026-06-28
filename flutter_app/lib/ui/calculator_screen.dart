@@ -1366,35 +1366,36 @@ class _CalculatorScreenState extends State<CalculatorScreen>
           ),
           onTap: _openHistory,
         ),
-      // ic_food / ic_food_checked: the tea cup carries a red attention
-      // badge precisely while the user owns NO support purchase - but only
-      // where buying is actually possible (no nagging toward a Support
-      // screen without buy buttons on iOS/macOS/web).
-      ListenableBuilder(
-        listenable: Monetization.instance,
-        builder: (context, _) {
-          final cup = Icon(
-            Icons.emoji_food_beverage,
-            size: dim.actionGlyphSize,
-            color: palette.controlsStrong,
-            semanticLabel: 'Tea',
-          );
-          final showBadge = Monetization.instance.isBillingAvailable &&
-              !Monetization.instance.hasAnySupport;
-          return _actionIcon(
-            key: _foodButtonKey,
-            dim: dim,
-            icon: showBadge
-                ? Badge(
-                    backgroundColor: AppPalette.badge,
-                    smallSize: 9,
-                    child: cup,
-                  )
-                : cup,
-            onTap: _openSupport,
-          );
-        },
-      ),
+      // The tea-cup "Support the app" (donations) entry is shown ONLY where
+      // buying actually works (Android). On iOS/web there are no donations -
+      // Rate/Share live in Settings (HELP section) and monetization is the Pro
+      // paywall - so the button is omitted there entirely. The red attention
+      // badge shows while the user owns NO support purchase yet.
+      if (Monetization.instance.isBillingAvailable)
+        ListenableBuilder(
+          listenable: Monetization.instance,
+          builder: (context, _) {
+            final cup = Icon(
+              Icons.emoji_food_beverage,
+              size: dim.actionGlyphSize,
+              color: palette.controlsStrong,
+              semanticLabel: 'Tea',
+            );
+            final showBadge = !Monetization.instance.hasAnySupport;
+            return _actionIcon(
+              key: _foodButtonKey,
+              dim: dim,
+              icon: showBadge
+                  ? Badge(
+                      backgroundColor: AppPalette.badge,
+                      smallSize: 9,
+                      child: cup,
+                    )
+                  : cup,
+              onTap: _openSupport,
+            );
+          },
+        ),
       _actionIcon(
         key: _settingsButtonKey,
         dim: dim,

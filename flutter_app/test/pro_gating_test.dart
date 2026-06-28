@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cardamon_time_calculator/config.dart';
 import 'package:cardamon_time_calculator/main.dart';
 import 'package:cardamon_time_calculator/services/entitlements.dart';
+import 'package:cardamon_time_calculator/services/history_service.dart';
 import 'package:cardamon_time_calculator/services/monetization.dart';
 import 'package:cardamon_time_calculator/state/calculator_model.dart';
 import 'package:cardamon_time_calculator/state/settings_model.dart';
@@ -17,13 +18,18 @@ import 'package:cardamon_time_calculator/ui/formats_screen.dart';
 /// [kApplePurchasesEnabled] compile-time const - so the same suite asserts the
 /// gated (iOS go-live) world AND the ungated (Android, default) world.
 ///
-/// The contract under test (PRO ENTITLEMENT CONTRACT v1):
-/// * gating ON  => the Per icon, every non-free format card and the
-///   System/Dark theme rows show a lock and route taps to the paywall (and do
-///   NOT perform their underlying action); buying `pro_unlock` flips
-///   [Monetization.hasPro] so the locks vanish and everything works again;
-/// * gating OFF => no locks anywhere and Per/formats/dark behave exactly as in
-///   the rest of the app.
+/// The contract under test (PRO ENTITLEMENT CONTRACT v2):
+/// * gating ON  => the Per icon and every non-free result-format card show a
+///   lock and route taps to the paywall (and do NOT perform their underlying
+///   action); buying `pro_unlock` flips [Monetization.hasPro] so the locks
+///   vanish and everything works again;
+/// * theme (incl. dark) is FREE on every platform — it is NEVER gated;
+/// * gating OFF => no locks anywhere; Per/formats behave exactly as in the rest
+///   of the app.
+///
+/// Keypad-customization and history caps are entitlement features covered by
+/// their own groups below (free presets {Standard, Stopwatch} + no custom
+/// picker; history capped at [kFreeHistoryLimit] while gated).
 ///
 /// `debugDefaultTargetPlatformOverride` is reset at the END of each test body
 /// (not via tearDown): the foundation-debug-var invariant check runs before
@@ -207,30 +213,31 @@ void main() {
       leavePlatform();
     });
 
-    testWidgets('Dark and System theme rows are locked; tapping opens the '
-        'paywall and effectiveThemeMode stays light', (tester) async {
+    testWidgets('theme is FREE even while gated: Dark applies, no theme-row '
+        'lock, and tapping a theme row never opens the paywall', (tester) async {
       enterGated();
-      // Store a Dark preference up front: while gated it must NOT take effect.
+      // Store a Dark preference up front: while gated it must STILL take effect
+      // (theme is not a Pro feature).
       await SettingsModel.instance.setThemeValue(SettingsModel.themeValueDark);
 
       await pumpApp(tester);
 
-      // Despite the stored "dark", the app is clamped to light while gated.
-      expect(SettingsModel.instance.effectiveThemeMode, ThemeMode.light);
+      // Dark applies despite gating being on.
+      expect(SettingsModel.instance.effectiveThemeMode, ThemeMode.dark);
       expect(
         Theme.of(tester.element(find.byType(Scaffold))).brightness,
-        Brightness.light,
+        Brightness.dark,
       );
 
       await tester.tap(find.byIcon(Icons.settings));
       await tester.pumpAndSettle();
 
-      // The Pro upsell row + locked System/Dark theme rows are present.
+      // The Pro upsell row is present (gating is on), but NO theme row is locked.
       expect(find.text('Unlock Pro'), findsWidgets);
       expect(find.text('System default'), findsOneWidget);
       expect(find.text('Dark'), findsOneWidget);
-      // System and Dark each carry a lock (Light does not); plus the Per badge
-      // is offstage behind the Settings overlay - so scope to the rows we tap.
+      // No lock on the Dark row (the only lock_outline on screen is the offstage
+      // Per badge behind the Settings overlay, so scope to the Dark row).
       expect(
         find.descendant(
           of: find.ancestor(
@@ -239,19 +246,17 @@ void main() {
           ),
           matching: find.byIcon(Icons.lock_outline),
         ),
-        findsOneWidget,
+        findsNothing,
       );
 
-      await tester.tap(find.text('Dark'));
+      // Tapping System switches the theme directly — no paywall SHEET opens.
+      // (find.text('Unlock Pro') would match the always-present gated _proRow,
+      // so assert on the modal BottomSheet instead.)
+      await tester.tap(find.text('System default'));
       await tester.pumpAndSettle();
+      expect(find.byType(BottomSheet), findsNothing);
+      expect(SettingsModel.instance.themeValue, SettingsModel.themeValueSystem);
 
-      // Tapping Dark opened the paywall and did NOT switch the theme.
-      expect(paywall(), findsWidgets);
-      expect(SettingsModel.instance.effectiveThemeMode, ThemeMode.light);
-      // The stored value is preserved underneath (so unlock restores it).
-      expect(SettingsModel.instance.themeValue, SettingsModel.themeValueDark);
-
-      await dismissPaywall(tester);
       leavePlatform();
     });
 
@@ -264,15 +269,16 @@ void main() {
       await pumpApp(tester);
       await typeSample(tester);
 
-      // Sanity: gated and clamped before the purchase.
+      // Sanity: gated before the purchase — but theme is FREE, so the stored
+      // dark choice already applies even while gated.
       expect(monetization.hasPro, isFalse);
-      expect(SettingsModel.instance.effectiveThemeMode, ThemeMode.light);
+      expect(SettingsModel.instance.effectiveThemeMode, ThemeMode.dark);
 
       // Mock the purchase grant (what the purchase stream would do).
       monetization.debugGrantPro();
       await tester.pumpAndSettle();
 
-      // hasPro is now true; the stored dark theme applies instantly.
+      // hasPro is now true; dark still applies (it never depended on Pro).
       expect(monetization.hasPro, isTrue);
       expect(SettingsModel.instance.effectiveThemeMode, ThemeMode.dark);
       // Read brightness from a descendant of MaterialApp - Theme.of at the
@@ -427,6 +433,163 @@ void main() {
       expect(SettingsModel.instance.themeMode, ThemeMode.dark);
       expect(SettingsModel.instance.effectiveThemeMode, ThemeMode.dark);
       expect(find.text('Unlock Pro'), findsNothing);
+
+      leavePlatform();
+    });
+  });
+
+  // Pure entitlement logic (no widgets) driven by the Monetization seam, so it
+  // is platform-independent: hasPro = !isProGated || isProUnlocked.
+  group('entitlement getters', () {
+    test('gated, no Pro: only {Standard, Stopwatch} are free, no custom, '
+        'history capped at 5', () {
+      monetization.debugSetProGated(true);
+      expect(isKeypadPresetFree('Standard'), isTrue);
+      expect(isKeypadPresetFree('Stopwatch'), isTrue);
+      expect(isKeypadPresetFree('Media'), isFalse);
+      expect(isKeypadPresetFree('Hours & minutes'), isFalse);
+      expect(isKeypadPresetFree('Calendar'), isFalse);
+      expect(isKeypadPresetFree('Everything'), isFalse);
+      expect(canCustomizeKeypad, isFalse);
+      expect(hasUnlimitedHistory, isFalse);
+      expect(kFreeHistoryLimit, 5);
+    });
+
+    test('gated WITH Pro: every preset is free, custom + full history unlocked',
+        () {
+      monetization.debugSetProGated(true);
+      monetization.debugGrantPro();
+      expect(isKeypadPresetFree('Media'), isTrue);
+      expect(isKeypadPresetFree('Everything'), isTrue);
+      expect(canCustomizeKeypad, isTrue);
+      expect(hasUnlimitedHistory, isTrue);
+    });
+
+    test('ungated: nothing is gated', () {
+      monetization.debugSetProGated(false);
+      expect(isKeypadPresetFree('Media'), isTrue);
+      expect(canCustomizeKeypad, isTrue);
+      expect(hasUnlimitedHistory, isTrue);
+    });
+
+    test('every free-preset name is a real preset', () {
+      final realNames =
+          SettingsModel.keypadUnitPresets.map((p) => p.name).toSet();
+      expect(realNames.containsAll(kFreeKeypadPresetNames), isTrue,
+          reason: 'kFreeKeypadPresetNames must match real preset names');
+    });
+  });
+
+  group('keypad customization gating', () {
+    testWidgets('gated: non-free presets + the custom picker lock to the '
+        'paywall; free presets apply', (tester) async {
+      enterGated();
+      // Start from a known free preset (Standard).
+      await SettingsModel.instance
+          .applyKeypadUnitPreset(SettingsModel.keypadUnitPresets.first);
+      await pumpApp(tester);
+
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Keypad keys'));
+      await tester.pumpAndSettle();
+
+      // The custom-picker lock hint is shown.
+      expect(find.text('Choose individual keys with Pro'), findsOneWidget);
+
+      // Tapping a locked preset ('Media') opens the paywall and does NOT change
+      // the enabled units.
+      final before = SettingsModel.instance.enabledUnits;
+      await tester.tap(find.text('Media'));
+      await tester.pumpAndSettle();
+      expect(paywall(), findsOneWidget);
+      expect(SettingsModel.instance.enabledUnits, before);
+      await dismissPaywall(tester);
+
+      // Tapping a free preset ('Stopwatch') applies it (no paywall).
+      await tester.tap(find.text('Stopwatch'));
+      await tester.pumpAndSettle();
+      expect(paywall(), findsNothing);
+      expect(
+          SettingsModel.instance.activeKeypadUnitPreset?.name, 'Stopwatch');
+
+      leavePlatform();
+    });
+
+    testWidgets('ungated: all presets apply and the custom picker is live',
+        (tester) async {
+      enterUngated();
+      await pumpApp(tester);
+
+      await tester.tap(find.byIcon(Icons.settings));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Keypad keys'));
+      await tester.pumpAndSettle();
+
+      // No lock hint; the custom picker works.
+      expect(find.text('Choose individual keys with Pro'), findsNothing);
+
+      // A normally-Pro preset applies with no paywall.
+      await tester.tap(find.text('Media'));
+      await tester.pumpAndSettle();
+      expect(paywall(), findsNothing);
+      expect(SettingsModel.instance.activeKeypadUnitPreset?.name, 'Media');
+
+      leavePlatform();
+    });
+  });
+
+  group('history cap gating', () {
+    testWidgets('gated: only the latest 5 entries show + a Pro upsell; '
+        'unlocking Pro reveals the rest', (tester) async {
+      enterGated();
+      // Seed 6 distinct entries directly (newest last → index 0 once stored).
+      HistoryService.instance.setEnabled(true);
+      HistoryService.instance.clear();
+      for (var i = 1; i <= 6; i++) {
+        HistoryService.instance
+            .record('$i Hour + 1 Minute', '$i Hours 1 Minute');
+      }
+      addTearDown(HistoryService.instance.clear);
+
+      await pumpApp(tester);
+      // warnIfMissed:false: the history icon lives under the reveal-overlay
+      // stack (reported offstage during layout), but the tap still opens it.
+      await tester.tap(find.byIcon(Icons.history), warnIfMissed: false);
+      await tester.pumpAndSettle();
+
+      // Exactly 5 rows render, plus the upsell; the 6th is hidden.
+      expect(find.byKey(const ValueKey('history-entry-4')), findsOneWidget);
+      expect(find.byKey(const ValueKey('history-entry-5')), findsNothing);
+      expect(find.byKey(const ValueKey('history-pro-upsell')), findsOneWidget);
+
+      // Unlock Pro: the upsell vanishes and the 6th row appears.
+      monetization.debugGrantPro();
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('history-pro-upsell')), findsNothing);
+      expect(find.byKey(const ValueKey('history-entry-5')), findsOneWidget);
+
+      leavePlatform();
+    });
+
+    testWidgets('ungated: all entries show, no upsell', (tester) async {
+      enterUngated();
+      HistoryService.instance.setEnabled(true);
+      HistoryService.instance.clear();
+      for (var i = 1; i <= 6; i++) {
+        HistoryService.instance
+            .record('$i Hour + 1 Minute', '$i Hours 1 Minute');
+      }
+      addTearDown(HistoryService.instance.clear);
+
+      await pumpApp(tester);
+      // warnIfMissed:false: the history icon lives under the reveal-overlay
+      // stack (reported offstage during layout), but the tap still opens it.
+      await tester.tap(find.byIcon(Icons.history), warnIfMissed: false);
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ValueKey('history-entry-5')), findsOneWidget);
+      expect(find.byKey(const ValueKey('history-pro-upsell')), findsNothing);
 
       leavePlatform();
     });

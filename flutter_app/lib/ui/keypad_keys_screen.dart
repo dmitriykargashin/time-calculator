@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../engine/token_type.dart';
+import '../services/entitlements.dart';
+import '../services/monetization.dart';
 import '../state/settings_model.dart';
 import 'formats_screen.dart' show overlayHeader;
 import 'keypad_layout.dart';
+import 'pro_screen.dart' show showProPaywall;
 import 'theme.dart';
 
 /// Dedicated "Keypad keys" sub-screen (One UI style: a full page pushed from a
@@ -39,10 +42,14 @@ class KeypadKeysScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
                 child: ListenableBuilder(
-                  listenable: SettingsModel.instance,
+                  // Listen to Monetization too: buying Pro from a locked chip's
+                  // paywall must unlock the presets/units live on return.
+                  listenable: Listenable.merge(
+                      [SettingsModel.instance, Monetization.instance]),
                   builder: (context, _) {
                     final settings = SettingsModel.instance;
                     final active = settings.activeKeypadUnitPreset;
+                    final canCustomize = canCustomizeKeypad;
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -76,12 +83,27 @@ class KeypadKeysScreen extends StatelessWidget {
                               children: [
                                 for (final preset
                                     in SettingsModel.keypadUnitPresets)
-                                  ChoiceChip(
-                                    label: Text(preset.name),
-                                    selected: active == preset,
-                                    onSelected: (_) =>
-                                        settings.applyKeypadUnitPreset(preset),
-                                  ),
+                                  if (isKeypadPresetFree(preset.name))
+                                    ChoiceChip(
+                                      label: Text(preset.name),
+                                      selected: active == preset,
+                                      onSelected: (_) =>
+                                          settings.applyKeypadUnitPreset(preset),
+                                    )
+                                  else
+                                    // Pro-locked preset: a lock avatar, and the
+                                    // tap opens the paywall instead of applying.
+                                    ChoiceChip(
+                                      label: Text(preset.name),
+                                      selected: active == preset,
+                                      avatar: Icon(
+                                        Icons.lock_outline,
+                                        size: 16,
+                                        color: palette.controlsStrong,
+                                      ),
+                                      onSelected: (_) =>
+                                          showProPaywall(context),
+                                    ),
                                 if (active == null)
                                   ChoiceChip(
                                     label: const Text('Custom'),
@@ -100,34 +122,68 @@ class KeypadKeysScreen extends StatelessWidget {
                           child: Padding(
                             padding:
                                 const EdgeInsetsDirectional.fromSTEB(16, 14, 16, 14),
-                            child: Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                for (final unit in SettingsModel.allKeypadUnits)
-                                  FilterChip(
-                                    label: Text(keypadUnitLabel(unit)),
-                                    selected:
-                                        settings.isKeypadUnitEnabled(unit),
-                                    onSelected: (enabled) => settings
-                                        .setKeypadUnitEnabled(unit, enabled),
+                                // While gated without Pro the per-unit picker is
+                                // locked: a lock hint, and every chip tap opens
+                                // the paywall instead of toggling the key.
+                                if (!canCustomize) ...[
+                                  Row(
+                                    children: [
+                                      Icon(Icons.lock_outline,
+                                          size: 16,
+                                          color: palette.controlsStrong),
+                                      const SizedBox(width: 6),
+                                      Expanded(
+                                        child: Text(
+                                          'Choose individual keys with Pro',
+                                          style: TextStyle(
+                                            color: palette.controls,
+                                            fontSize: dim.settingsGroupTextSize,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  const SizedBox(height: 12),
+                                ],
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: [
+                                    for (final unit
+                                        in SettingsModel.allKeypadUnits)
+                                      FilterChip(
+                                        label: Text(keypadUnitLabel(unit)),
+                                        selected:
+                                            settings.isKeypadUnitEnabled(unit),
+                                        onSelected: canCustomize
+                                            ? (enabled) =>
+                                                settings.setKeypadUnitEnabled(
+                                                    unit, enabled)
+                                            : (_) => showProPaywall(context),
+                                      ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Text(
-                            'Keep at least ${SettingsModel.minKeypadUnits} '
-                            'unit keys.',
-                            style: TextStyle(
-                              color: palette.controls,
-                              fontSize: dim.settingsGroupTextSize,
+                        if (canCustomize) ...[
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
+                              'Keep at least ${SettingsModel.minKeypadUnits} '
+                              'unit keys.',
+                              style: TextStyle(
+                                color: palette.controls,
+                                fontSize: dim.settingsGroupTextSize,
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ],
                     );
                   },

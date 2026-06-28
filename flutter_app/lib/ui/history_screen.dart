@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../engine/lexical_analyzer.dart';
+import '../services/entitlements.dart';
 import '../services/history_service.dart';
+import '../services/monetization.dart';
 import 'clipboard_feedback.dart';
 import 'formats_screen.dart' show overlayHeader;
+import 'pro_screen.dart' show showProPaywall;
 import 'spans.dart';
 import 'theme.dart';
 
@@ -44,9 +47,18 @@ class HistoryScreen extends StatelessWidget {
       // Wrap the whole overlay so the header's "clear all" action appears/hides
       // with the entries (and the body switches between the list and the hint).
       child: ListenableBuilder(
-        listenable: HistoryService.instance,
+        // Monetization too: buying Pro from the upsell must reveal the full log.
+        listenable: Listenable.merge(
+            [HistoryService.instance, Monetization.instance]),
         builder: (context, _) {
-          final entries = HistoryService.instance.entries;
+          final all = HistoryService.instance.entries;
+          // Free (gated, non-Pro) users see only the most recent
+          // [kFreeHistoryLimit]; older entries stay in storage and reappear the
+          // moment Pro is unlocked. Everywhere gating is off the full log shows.
+          final entries = hasUnlimitedHistory
+              ? all
+              : all.take(kFreeHistoryLimit).toList();
+          final hiddenCount = all.length - entries.length;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -75,7 +87,14 @@ class HistoryScreen extends StatelessWidget {
                         child: _section(
                           dim,
                           palette,
-                          children: _entryRows(context, entries, dim, palette),
+                          children: [
+                            ..._entryRows(context, entries, dim, palette),
+                            if (hiddenCount > 0) ...[
+                              _innerDivider(palette),
+                              _proHistoryUpsellRow(
+                                  context, hiddenCount, dim, palette),
+                            ],
+                          ],
                         ),
                       ),
               ),
@@ -302,6 +321,42 @@ class HistoryScreen extends StatelessWidget {
     final hh = dt.hour.toString().padLeft(2, '0');
     final mm = dt.minute.toString().padLeft(2, '0');
     return '${months[dt.month - 1]} ${dt.day}, $hh:$mm';
+  }
+
+  /// Shown to a free (gated) user once the stored history exceeds
+  /// [kFreeHistoryLimit]: a tappable row at the bottom of the list that opens
+  /// the Pro paywall to reveal the full log. [hiddenCount] entries are kept in
+  /// storage and reappear the instant Pro is unlocked.
+  Widget _proHistoryUpsellRow(
+    BuildContext context,
+    int hiddenCount,
+    Dimens dim,
+    AppPalette palette,
+  ) {
+    return InkWell(
+      key: const ValueKey('history-pro-upsell'),
+      onTap: () => showProPaywall(context),
+      child: Container(
+        constraints: BoxConstraints(minHeight: dim.settingsItemMinHeight),
+        padding: const EdgeInsetsDirectional.fromSTEB(20, 12, 20, 12),
+        child: Row(
+          children: [
+            Icon(Icons.lock_outline, color: palette.controlsStrong),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Unlock Pro for unlimited history — $hiddenCount more saved',
+                style: TextStyle(
+                  color: palette.resultNums,
+                  fontSize: dim.settingsItemTextSize,
+                ),
+              ),
+            ),
+            Icon(Icons.chevron_right, color: palette.controls),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _emptyHint(AppPalette palette) {

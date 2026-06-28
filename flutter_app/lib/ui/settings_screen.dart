@@ -5,6 +5,8 @@ import '../config.dart';
 import '../services/analytics_service.dart';
 import '../services/feedback_service.dart';
 import '../services/monetization.dart';
+import '../services/rate_service.dart';
+import '../services/share_service.dart';
 import '../state/settings_model.dart';
 import 'formats_screen.dart' show overlayHeader;
 import 'history_screen.dart' show confirmClearHistory;
@@ -78,16 +80,6 @@ class SettingsScreen extends StatelessWidget {
                 builder: (context, _) {
                   final settings = SettingsModel.instance;
                   final monetization = Monetization.instance;
-                  // Theme is gated only where Pro gating is on and not unlocked;
-                  // then only "Light" is selectable (matching effectiveThemeMode)
-                  // and System/Dark route to the paywall.
-                  final themeGated =
-                      monetization.isProGated && !monetization.isProUnlocked;
-                  // While gated the radio reflects the forced Light selection;
-                  // the stored "0"/"1"/"2" value is preserved underneath.
-                  final selectedThemeValue = themeGated
-                      ? SettingsModel.themeValueLight
-                      : settings.themeValue;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -105,7 +97,7 @@ class SettingsScreen extends StatelessWidget {
                       // The three theme radios live in one tonal card, split by
                       // soft inset dividers (instead of edge-to-edge hairlines).
                       RadioGroup<String>(
-                        groupValue: selectedThemeValue,
+                        groupValue: settings.themeValue,
                         onChanged: (value) {
                           if (value != null) settings.setThemeValue(value);
                         },
@@ -118,8 +110,6 @@ class SettingsScreen extends StatelessWidget {
                               SettingsModel.themeValueSystem,
                               dim,
                               palette,
-                              locked: themeGated,
-                              onLocked: () => showProPaywall(context),
                             ),
                             _innerDivider(palette),
                             _themeRow(
@@ -134,8 +124,6 @@ class SettingsScreen extends StatelessWidget {
                               SettingsModel.themeValueDark,
                               dim,
                               palette,
-                              locked: themeGated,
-                              onLocked: () => showProPaywall(context),
                             ),
                           ],
                         ),
@@ -174,6 +162,23 @@ class SettingsScreen extends StatelessWidget {
                         palette,
                         children: [_feedbackRow(dim, palette)],
                       ),
+                      // HELP section (Leave a review + Share the app). Shown
+                      // ONLY where the tea-cup donation entry is NOT in the
+                      // toolbar (iOS/web); on Android these live in the Support
+                      // overlay reached from the tea-cup button.
+                      if (!monetization.isBillingAvailable) ...[
+                        SizedBox(height: dim.margin16),
+                        _sectionLabel('HELP', dim, palette),
+                        _section(
+                          dim,
+                          palette,
+                          children: [
+                            _reviewRow(context, dim, palette),
+                            _innerDivider(palette),
+                            _shareRow(dim, palette),
+                          ],
+                        ),
+                      ],
                       // PRIVACY section: the always-available Privacy Policy
                       // link (Google requires the policy to be reachable inside
                       // the app) plus the analytics-consent toggle when analytics
@@ -271,21 +276,15 @@ class SettingsScreen extends StatelessWidget {
     String label,
     String value,
     Dimens dim,
-    AppPalette palette, {
-    bool locked = false,
-    VoidCallback? onLocked,
-  }) {
+    AppPalette palette,
+  ) {
     return InkWell(
-      onTap: locked
-          ? onLocked
-          : () => SettingsModel.instance.setThemeValue(value),
+      onTap: () => SettingsModel.instance.setThemeValue(value),
       child: Container(
         constraints: BoxConstraints(minHeight: dim.settingsItemMinHeight),
         padding: const EdgeInsetsDirectional.only(start: 12, end: 20),
         child: Row(
           children: [
-            // Locked rows ignore the radio (it can never be the forced-Light
-            // selection); the lock_outline carries the affordance instead.
             IgnorePointer(child: Radio<String>(value: value)),
             const SizedBox(width: 8),
             Expanded(
@@ -297,12 +296,6 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            if (locked)
-              Icon(
-                Icons.lock_outline,
-                color: palette.controlsStrong,
-                semanticLabel: 'Locked (Pro)',
-              ),
           ],
         ),
       ),
@@ -447,6 +440,67 @@ class SettingsScreen extends StatelessWidget {
             Expanded(
               child: Text(
                 'Send Feedback',
+                style: TextStyle(
+                  color: palette.resultNums,
+                  fontSize: dim.settingsItemTextSize,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// "Leave a review" row (HELP section, iOS/web). Forces the rating flow
+  /// regardless of the usual prompt thresholds — mirrors the Support overlay's
+  /// review action on Android.
+  Widget _reviewRow(BuildContext context, Dimens dim, AppPalette palette) {
+    return InkWell(
+      onTap: () {
+        AnalyticsService.instance.buttonSupportRate();
+        RateService.instance.showRatingFlow(context, force: true);
+      },
+      child: Container(
+        constraints: BoxConstraints(minHeight: dim.settingsItemMinHeight),
+        padding: const EdgeInsetsDirectional.only(start: 20, end: 20),
+        child: Row(
+          children: [
+            const Icon(Icons.star, color: AppPalette.accent),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Leave a review',
+                style: TextStyle(
+                  color: palette.resultNums,
+                  fontSize: dim.settingsItemTextSize,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// "Share the app" row (HELP section, iOS/web). Plain-text app share —
+  /// mirrors the Support overlay's share action on Android.
+  Widget _shareRow(Dimens dim, AppPalette palette) {
+    return InkWell(
+      onTap: () {
+        AnalyticsService.instance.buttonShareTheApp();
+        shareTheApp();
+      },
+      child: Container(
+        constraints: BoxConstraints(minHeight: dim.settingsItemMinHeight),
+        padding: const EdgeInsetsDirectional.only(start: 20, end: 20),
+        child: Row(
+          children: [
+            Icon(Icons.share, color: AppPalette.accent.withValues(alpha: 0.8)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Share the app',
                 style: TextStyle(
                   color: palette.resultNums,
                   fontSize: dim.settingsItemTextSize,

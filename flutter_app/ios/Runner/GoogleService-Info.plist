@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>574139474687-jvetijv32akcaop15q1ev3cdo2o55idt.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAowii4nuOv8ZKuWpC5AH3xg7bGjm_uH8w</string>
+	<key>GCM_SENDER_ID</key>
+	<string>574139474687</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.cardamon.timeCalculator</string>
+	<key>PROJECT_ID</key>
+	<string>cardamon-time-calculator</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cardamon-time-calculator.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:574139474687:ios:34d7edaf9f19c0565a62ca</string>
+	<key>DATABASE_URL</key>
+	<string>https://cardamon-time-calculator.firebaseio.com</string>
+</dict>
+</plist>
