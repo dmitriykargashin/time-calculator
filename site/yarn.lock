@@ -1828,7 +1828,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:4.4.8, @nuxt/kit@npm:^4.2.2, @nuxt/kit@npm:^4.4.2, @nuxt/kit@npm:^4.4.4, @nuxt/kit@npm:^4.4.6, @nuxt/kit@npm:^4.4.8":
+"@nuxt/kit@npm:4.4.8, @nuxt/kit@npm:^4.1.3, @nuxt/kit@npm:^4.2.2, @nuxt/kit@npm:^4.4.2, @nuxt/kit@npm:^4.4.4, @nuxt/kit@npm:^4.4.6, @nuxt/kit@npm:^4.4.8":
   version: 4.4.8
   resolution: "@nuxt/kit@npm:4.4.8"
   dependencies:
@@ -4389,6 +4389,39 @@ __metadata:
   peerDependencies:
     valibot: ^1.4.0
   checksum: 10c0/15ef472fae3229ab0dc6860325e5c6d21e724e4edbb1794ec603bc3881925bcaf5db44b30536925141758abea155b33b640129dcbb0ddfb47414cb967a6eeae1
+  languageName: node
+  linkType: hard
+
+"@vercel/analytics@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@vercel/analytics@npm:2.0.1"
+  peerDependencies:
+    "@remix-run/react": ^2
+    "@sveltejs/kit": ^1 || ^2
+    next: ">= 13"
+    nuxt: ">= 3"
+    react: ^18 || ^19 || ^19.0.0-rc
+    svelte: ">= 4"
+    vue: ^3
+    vue-router: ^4
+  peerDependenciesMeta:
+    "@remix-run/react":
+      optional: true
+    "@sveltejs/kit":
+      optional: true
+    next:
+      optional: true
+    nuxt:
+      optional: true
+    react:
+      optional: true
+    svelte:
+      optional: true
+    vue:
+      optional: true
+    vue-router:
+      optional: true
+  checksum: 10c0/c788c03d0f072f6f2be52d3f6f4f0680d2343f0d8765a759a044204223b14a6e14b285d0c5d5d05c0b66d4419746c5b245656ebdc48398328d85d96f1ede982b
   languageName: node
   linkType: hard
 
@@ -8195,6 +8228,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nuxt-gtag@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "nuxt-gtag@npm:4.1.0"
+  dependencies:
+    "@nuxt/kit": "npm:^4.1.3"
+    defu: "npm:^6.1.4"
+    pathe: "npm:^2.0.3"
+    ufo: "npm:^1.6.1"
+  checksum: 10c0/36a0c1f5a9f78d93021fc2a791a25c0498b2037417318c93d958958d64c3e8599458f4d2d69b05840631f70bda926cae99ba866443ca251c3c7816ca8167b000
+  languageName: node
+  linkType: hard
+
 "nuxt-link-checker@npm:^5.1.1":
   version: 5.1.2
   resolution: "nuxt-link-checker@npm:5.1.2"
@@ -10695,7 +10740,9 @@ __metadata:
   dependencies:
     "@nuxt/fonts": "npm:^0.11.4"
     "@nuxtjs/seo": "npm:^5.3.1"
+    "@vercel/analytics": "npm:^2.0.1"
     nuxt: "npm:^4.0.3"
+    nuxt-gtag: "npm:^4.1.0"
   languageName: unknown
   linkType: soft
 

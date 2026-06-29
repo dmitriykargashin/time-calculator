@@ -822,7 +822,7 @@ onBeforeUnmount(() => {
   color: var(--ink-soft); font-family: var(--font-app); font-size: 0.86rem;
   padding: 0.42em 0.7em; border-radius: 8px; cursor: pointer; transition: 0.16s;
 }
-.ex:hover { border-color: rgba(51, 105, 30, 0.36); color: var(--app-unit); background: #fff; transform: translateY(-1px); box-shadow: 0 3px 11px -6px rgba(28, 27, 21, 0.2); }
+.ex:hover { border-color: rgba(51, 105, 30, 0.36); color: var(--app-unit); background: var(--card); transform: translateY(-1px); box-shadow: 0 3px 11px -6px rgba(28, 27, 21, 0.2); }
 .micro { margin: 1rem 0.2rem 0; font-size: 0.84rem; color: var(--ink-faint); max-width: none; }
 .resize-tip { color: var(--app-unit); }
 .micro code { font-family: var(--font-mono); font-size: 0.82em; background: var(--paper-deep); padding: 0.1em 0.35em; border-radius: 5px; color: var(--olive); }

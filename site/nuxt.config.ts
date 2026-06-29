@@ -8,7 +8,12 @@ export default defineNuxtConfig({
   // Local dev server (yarn dev) port.
   devServer: { port: 3060 },
 
-  modules: ['@nuxt/fonts', '@nuxtjs/seo'],
+  // Modules: self-hosted fonts, SEO (robots/sitemap/canonical), Google
+  // Analytics 4 (nuxt-gtag), and Vercel Web Analytics (cookieless; auto-injects
+  // and no-ops off Vercel). The GA Measurement ID is never hardcoded — it comes
+  // from NUXT_PUBLIC_GTAG_ID (set in Vercel). gtag stays inert until that env
+  // var exists, so local dev and previews send nothing unless you opt in.
+  modules: ['@nuxt/fonts', '@nuxtjs/seo', 'nuxt-gtag', '@vercel/analytics/nuxt'],
 
   css: ['~/assets/css/main.css'],
 
@@ -28,6 +33,40 @@ export default defineNuxtConfig({
   // retrieval bots (1–5s fetch windows, little/no JS) can read.
   nitro: {
     prerender: { crawlLinks: true, routes: ['/', '/robots.txt', '/sitemap.xml', '/llms.txt'] },
+  },
+
+  // Attach the social card as an <image:image> on the home URL and stamp a
+  // build-time lastmod. Absolute URLs still resolve from site.url (NUXT_SITE_URL).
+  sitemap: {
+    autoLastmod: true,
+    urls: [
+      {
+        loc: '/',
+        images: [
+          {
+            loc: '/og.png',
+            title: 'Time Calculator by Cardamon',
+            caption: '5h 30m + 2h 15m = 7 Hours 45 Minutes',
+          },
+        ],
+      },
+    ],
+  },
+
+  // Google Analytics 4 (gtag.js). The Measurement ID is read from
+  // NUXT_PUBLIC_GTAG_ID (env, never hardcoded). Consent Mode v2: analytics is
+  // DENIED by default (nothing stored) until a visitor accepts in the cookie
+  // banner, which pushes a live `consent update`. See composables/useConsent.ts.
+  gtag: {
+    initCommands: [
+      ['consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500,
+      }],
+    ],
   },
 
   fonts: {
@@ -60,6 +99,13 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#f3efe4' },
       ],
       script: [
+        {
+          // Apply the saved/system theme before first paint so dark mode never
+          // flashes light. Mirrors composables/useTheme.ts (key `tc-theme`).
+          innerHTML:
+            "(function(){try{var t=localStorage.getItem('tc-theme')||'auto';var d=t==='dark'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);var e=document.documentElement;e.dataset.theme=d?'dark':'light';if(d)e.classList.add('dark')}catch(e){}})()",
+          tagPosition: 'head',
+        },
         {
           // Set the motion gate before first paint so reveal elements never
           // flash; skipped under reduced-motion so content stays fully visible.
