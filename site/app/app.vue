@@ -8,7 +8,7 @@ const year = 2026
   <div class="page">
     <header class="site-head">
       <div class="wrap head-inner">
-        <a href="/" class="brand" aria-label="Time Calculator Cardamon — home">
+        <a href="/" class="brand" aria-label="Time Calculator Cardamon home">
           <img src="/icons/app-logo.png" alt="" width="34" height="34" class="brand-mark" />
           <span class="brand-name">Time&nbsp;Calculator<span class="brand-sub">by Cardamon</span></span>
         </a>
@@ -30,10 +30,10 @@ const year = 2026
       <div class="ticks" aria-hidden="true" />
       <div class="wrap foot-inner">
         <div class="foot-brand">
-          <img src="/icons/app-logo.png" alt="" width="30" height="30" />
+          <img src="/icons/app-logo.png" alt="" width="38" height="38" class="foot-mark" />
           <div>
             <p class="foot-title">Time Calculator</p>
-            <p class="foot-by">A Cardamon product · the same engine as the mobile apps.</p>
+            <p class="foot-by">From Cardamon, running the same engine as the mobile apps.</p>
           </div>
         </div>
         <nav class="foot-links">
@@ -81,8 +81,10 @@ main {
   color: var(--ink);
 }
 .brand-mark {
-  border-radius: 7px;
-  filter: drop-shadow(0 2px 5px rgba(40, 36, 20, 0.16));
+  /* transparent green-clock mark — height matched to the brand text block */
+  display: block;
+  width: auto;
+  height: 2.2rem;
 }
 .brand-name {
   font-family: var(--font-display);
@@ -144,6 +146,12 @@ main {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+}
+.foot-mark {
+  /* transparent green-clock mark — height matched to the footer text block */
+  display: block;
+  width: auto;
+  height: 2.5rem;
 }
 .foot-title {
   font-family: var(--font-display);

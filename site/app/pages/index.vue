@@ -4,15 +4,15 @@ const playUrl =
   'https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator'
 
 useSeoMeta({
-  title: 'Time Calculator — Add & Subtract Hours, Minutes & Days',
+  title: 'Time Calculator: Add & Subtract Hours, Minutes & Days',
   description:
     'Free online time duration calculator. Type "5h 30m + 2h 15m" to add or '
-    + 'subtract hours, minutes, days and seconds. Same engine as the Cardamon '
-    + 'Android & iOS apps — instant, in your browser.',
-  ogTitle: 'Time Calculator — add & subtract durations instantly',
+    + 'subtract hours, minutes, days, and seconds. Same engine as the Cardamon '
+    + 'apps, right in your browser.',
+  ogTitle: 'Time Calculator: add and subtract durations',
   ogDescription:
-    'Type a time expression like "2 days - 4h" and get the answer. Free, fast, '
-    + 'and runs in your browser.',
+    'Type something like "2 days - 4h" and read off the answer. Free, fast, and '
+    + 'it runs in your browser.',
   ogUrl: site.url,
   ogType: 'website',
   // Static social card (og-image module is off — see nuxt.config). Stopgap
@@ -27,27 +27,27 @@ useSeoMeta({
 const faqs = [
   {
     q: 'How do I add hours and minutes together?',
-    a: 'Type the durations with + between them, e.g. "5h 30m + 2h 15m". The calculator returns 7 Hours 45 Minutes. You can mix any units (days, hours, minutes, seconds) and the result rolls up automatically into the format you pick.',
+    a: 'Put a + between the durations, like "5h 30m + 2h 15m", and you get 7 Hours 45 Minutes. Mix any units you like (days, hours, minutes, seconds) and choose how the answer reads with the format picker.',
   },
   {
     q: 'How do I subtract time?',
-    a: 'Use a minus sign, e.g. "8h - 90m" gives 6 Hours 30 Minutes, or "2 days - 4h" gives 1 Day 20 Hours. Subtraction works across units, so you do not have to convert everything to minutes first.',
+    a: 'Use a minus sign. "8h - 90m" gives 6 Hours 30 Minutes, and "2 days - 4h" gives 1 Day 20 Hours. It subtracts across units, so you never have to convert everything to minutes first.',
   },
   {
     q: 'Can I multiply or divide a duration?',
-    a: 'Yes. Use × (or *) and ÷ (or /) with a number, e.g. "8h 15m * 3" returns 24 Hours 45 Minutes, and "1 day / 4" returns 6 Hours. This is handy for shifts, billing, and splitting time evenly.',
+    a: 'Yes. Pair a number with × (or *) and ÷ (or /). "8h 15m × 3" gives 24 Hours 45 Minutes, and "1 day ÷ 4" gives 6 Hours. Handy for shifts, billing, or splitting time evenly.',
   },
   {
     q: 'What units does the time calculator support?',
-    a: 'Years, months, weeks, days, hours, minutes, seconds and milliseconds. Use full words or shorthand — h, m, d, w, s — for example "1w 3d", "90 min", or "1d 4h 30m". Months use "mo" to avoid clashing with minutes.',
+    a: 'Years, months, weeks, days, hours, minutes, seconds, and milliseconds. Type the full word or the shorthand (h, m, d, w, s), like "1w 3d", "90 min", or "1d 4h 30m". Months take "mo" so they don\'t clash with minutes.',
   },
   {
     q: 'Is the time calculator free?',
-    a: 'Yes, the web version is completely free and runs entirely in your browser — nothing is sent to a server. The Android and iOS apps are also free, with an optional Pro unlock (iOS) or a small donation (Android).',
+    a: 'Yes. The web version is free and stays in your browser, so nothing leaves your device. The Android and iOS apps are free too, with an optional Pro unlock on iOS or a small donation on Android.',
   },
   {
     q: 'Does the website give the same results as the app?',
-    a: 'Yes. The website runs the exact same calculation engine as the Cardamon mobile apps, compiled to run in your browser, so a result you get here matches the app to the millisecond.',
+    a: 'Yes. The site runs the very same engine as the Cardamon apps, compiled for your browser, so the answer you get here matches the app down to the millisecond.',
   },
 ]
 
@@ -70,7 +70,7 @@ const jsonLd = computed(() => ({
       operatingSystem: 'Web, Android, iOS',
       url: site.url,
       description:
-        'Free online time duration calculator — add, subtract, multiply and divide hours, minutes, days, weeks and seconds.',
+        'Free online time duration calculator. Add, subtract, multiply, and divide hours, minutes, days, weeks, and seconds.',
       publisher: { '@id': `${site.url}/#org` },
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       featureList: [
@@ -107,20 +107,20 @@ useHead({
   <section class="hero">
     <div class="wrap hero-inner">
       <header class="hero-copy">
-        <span class="eyebrow">Free · runs in your browser</span>
-        <h1>The time calculator<br /><em>that just adds up</em>.</h1>
-        <p class="lede">
-          Type a duration like <code>5h 30m + 2h 15m</code> — add, subtract,
-          multiply and divide time with your keyboard. The same engine as the
-          Cardamon mobile apps, right in your browser.
+        <span class="eyebrow" data-reveal style="--rd: 0s">Free · runs in your browser</span>
+        <h1 data-reveal style="--rd: 0.07s">The time calculator<br /><em>that just adds up</em>.</h1>
+        <p class="lede" data-reveal style="--rd: 0.14s">
+          Type a sum like <code>5h 30m + 2h 15m</code> and read off the answer.
+          Add, subtract, multiply, and divide time straight from your keyboard.
+          It runs the same engine as the Cardamon app, now in your browser.
         </p>
       </header>
 
-      <div class="hero-tool">
+      <div class="hero-tool" data-reveal style="--rd: 0.24s">
         <TimeCalculator />
       </div>
 
-      <div class="hero-cta">
+      <div class="hero-cta" data-reveal style="--rd: 0.34s">
         <a :href="playUrl" target="_blank" rel="noopener" class="store-badge">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
             <path fill="#3DA50C" d="M3.6 2.3 13 12 3.6 21.7a1.4 1.4 0 0 1-.6-1.2V3.5c0-.5.2-.9.6-1.2Z"/>
@@ -141,16 +141,15 @@ useHead({
   <div class="wrap"><div class="ticks" aria-hidden="true" /></div>
 
   <!-- HOW: answer-first + syntax table -->
-  <section id="how" class="wrap block">
+  <section id="how" class="wrap block" data-reveal>
     <span class="eyebrow">How it works</span>
     <h2>How do I calculate time with this tool?</h2>
     <p class="answer">
-      Type your durations on one line and join them with operators. Use
-      <strong>+</strong> to add, <strong>−</strong> to subtract,
-      <strong>×</strong> to multiply by a number and <strong>÷</strong> to
-      divide. Each duration is a number followed by a unit, like
-      <code>2h</code> or <code>45 min</code>, and you can chain as many as you
-      like — the result rolls up automatically.
+      Write your durations on one line and join them with operators.
+      <strong>+</strong> adds, <strong>−</strong> subtracts, <strong>×</strong>
+      multiplies by a number, and <strong>÷</strong> divides. Each duration is a
+      number and a unit, like <code>2h</code> or <code>45 min</code>. Chain as
+      many as you want and the calculator rolls them up for you.
     </p>
 
     <div class="table-card">
@@ -167,19 +166,20 @@ useHead({
           <tr><td>Hours</td><td><code>h · hr · hour</code></td><td><code>8h 15m</code></td></tr>
           <tr><td>Minutes</td><td><code>m · min · minute</code></td><td><code>90 min</code></td></tr>
           <tr><td>Seconds</td><td><code>s · sec · second</code></td><td><code>30s</code></td></tr>
+          <tr><td>Milliseconds</td><td><code>ms · msec · millisecond</code></td><td><code>500 ms</code></td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
   <!-- REFERENCE: quotable conversion facts (GEO gold) -->
-  <section class="wrap block">
+  <section class="wrap block" data-reveal>
     <span class="eyebrow">Reference</span>
     <h2>Time unit conversions, at a glance</h2>
     <p class="answer">
-      These are the exact conversions the calculator uses. <strong>1 day =
-      24 hours = 1,440 minutes = 86,400 seconds.</strong> One week is 7 days,
-      one hour is 60 minutes, and one minute is 60 seconds.
+      The calculator runs on these exact numbers. <strong>1 day = 24 hours =
+      1,440 minutes = 86,400 seconds.</strong> A week is 7 days, an hour is 60
+      minutes, and a minute is 60 seconds.
     </p>
     <div class="conv-grid">
       <div class="conv"><b>1 week</b><span>7 days · 168 hours</span></div>
@@ -190,7 +190,7 @@ useHead({
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="wrap block">
+  <section id="faq" class="wrap block" data-reveal>
     <span class="eyebrow">FAQ</span>
     <h2>Frequently asked questions</h2>
     <div class="faq">

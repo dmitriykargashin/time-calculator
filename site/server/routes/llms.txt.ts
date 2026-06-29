@@ -1,4 +1,9 @@
-# Time Calculator Cardamon
+// /llms.txt — generated (not a static file) so the home URL always tracks the
+// NUXT_SITE_URL env var. Prerendered to a static file at build (nitro.prerender).
+export default defineEventHandler((event) => {
+  const base = (process.env.NUXT_SITE_URL || getRequestURL(event).origin).replace(/\/+$/, '')
+  setHeader(event, 'content-type', 'text/plain; charset=utf-8')
+  return `# Time Calculator Cardamon
 
 > A free online time-duration calculator. Type a natural expression such as
 > "5h 30m + 2h 15m" or "2 days - 4 hours" and get the result instantly. The
@@ -14,9 +19,11 @@
 - Price: free on the web; mobile apps free with optional Pro/donation.
 
 ## Pages
-- Home / calculator: https://timecalculator.app/
+- Home / calculator: ${base}/
 - Privacy policy: https://www.cardamon.org/products/time-calculator/privacy-policy-time-calculator
 
 ## Apps
 - Google Play: https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator
 - Apple App Store: coming soon
+`
+})

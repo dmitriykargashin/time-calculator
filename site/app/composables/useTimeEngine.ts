@@ -42,6 +42,8 @@ export interface EvalResult {
   result: string // e.g. "7 Hours 45 Minutes"
   error: boolean // engine returned ERROR (malformed / divide-by-zero)
   normalized: string // what we actually sent the engine (debug/preview)
+  incomplete?: boolean // a number is missing its unit, e.g. "20h 15m + 25"
+  hint?: string // a short reason to show in place of the result when incomplete
 }
 
 // Longest-match-first so "mo"→Month beats "m"→Minute and "ms"→MSecond, etc.
@@ -125,6 +127,8 @@ export function useTimeEngine() {
       return { ok: false, result: '', error: true, normalized }
     }
     if (out === 'ERROR') return { ok: false, result: '', error: true, normalized }
+    if (out === 'INCOMPLETE') return { ok: false, result: '', error: false, normalized, incomplete: true, hint: 'give every number a unit' }
+    if (out === 'SCALAR_ONLY') return { ok: false, result: '', error: false, normalized, incomplete: true, hint: 'multiply and divide by a number only' }
     if (out === '') return { ok: false, result: '', error: false, normalized }
     return { ok: true, result: out, error: false, normalized }
   }

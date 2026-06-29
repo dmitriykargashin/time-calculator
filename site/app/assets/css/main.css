@@ -1,7 +1,7 @@
 /* =========================================================================
    Time Calculator Cardamon — design system
    "Horological / warm editorial": cream paper, brand green over olive,
-   an ochre sundial accent. Fraunces (display) + Hanken Grotesk (body) +
+   an ochre sundial accent. ABeeZee (headers + calculator) + Hanken Grotesk (body) +
    JetBrains Mono (instrument readout). Light, fast, tactile.
    ========================================================================= */
 
@@ -28,7 +28,7 @@
   --on-green: #f6f3e8;
 
   /* Type */
-  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-display: "ABeeZee", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   /* the mobile app's font, used inside the calculator so web == app */
@@ -49,6 +49,9 @@
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset,
     0 18px 40px -24px rgba(40, 36, 20, 0.45);
   --maxw: 1080px;
+
+  /* gentle spring-ish overshoot for reveals & pops */
+  --ease-pop: cubic-bezier(0.25, 1.35, 0.45, 1);
 }
 
 *,
@@ -67,8 +70,9 @@ body {
   background-color: var(--paper);
   /* faint paper grain + a low warm radial glow for depth (no images) */
   background-image:
-    radial-gradient(1200px 700px at 78% -8%, rgba(185, 121, 26, 0.10), transparent 60%),
-    radial-gradient(900px 600px at 6% 102%, rgba(92, 125, 14, 0.10), transparent 55%),
+    radial-gradient(1250px 720px at 50% -12%, rgba(255, 255, 255, 0.5), transparent 60%),
+    radial-gradient(1200px 700px at 80% -6%, rgba(185, 121, 26, 0.12), transparent 60%),
+    radial-gradient(950px 620px at 4% 104%, rgba(92, 125, 14, 0.12), transparent 55%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   color: var(--ink);
   font-family: var(--font-body);
@@ -96,7 +100,7 @@ h3 {
 
 h1 {
   font-size: clamp(2.6rem, 1.7rem + 4.2vw, 4.6rem);
-  font-weight: 500;
+  font-weight: 700;
 }
 h2 {
   font-size: clamp(1.7rem, 1.2rem + 1.9vw, 2.5rem);
@@ -217,7 +221,29 @@ strong {
   border-color: var(--line-strong);
 }
 .btn-ghost:hover {
-  border-color: var(--ink);
+  border-color: var(--line-strong);
+  box-shadow: 0 4px 12px -6px rgba(0, 0, 0, 0.16);
+}
+
+/* ---- motion: reveal-on-enter ----
+   Gated behind `.has-motion` (set by a tiny inline <head> script). No-JS and
+   reduced-motion users never get the class, so all content stays fully visible
+   and crawlable; only enhanced clients animate it in. */
+.has-motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(6px);
+  transition:
+    opacity 0.62s var(--ease-pop),
+    transform 0.62s var(--ease-pop),
+    filter 0.62s var(--ease-pop);
+  transition-delay: var(--rd, 0s);
+}
+.has-motion [data-reveal]:not(.is-in) { will-change: opacity, transform, filter; }
+.has-motion [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

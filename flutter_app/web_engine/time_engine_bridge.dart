@@ -23,10 +23,39 @@ import 'package:cardamon_time_calculator/engine/calculator_of_time.dart';
 import 'package:cardamon_time_calculator/engine/lexical_analyzer.dart';
 import 'package:cardamon_time_calculator/engine/time_converter.dart';
 import 'package:cardamon_time_calculator/engine/token_type.dart';
+import 'package:cardamon_time_calculator/engine/tokens.dart';
+
+/// You can only multiply or divide a duration by a plain NUMBER, never by a
+/// value-with-a-unit. The mobile app enforces this at the keypad (it disables
+/// the unit keys right after × / ÷); on the web people type freely, so reject
+/// e.g. "25m / 12m" or "25m × 3h" here. True when a ×/÷ operand is unit-bound.
+bool _hasUnitOperandInMulDiv(Tokens expr) {
+  for (var i = 0; i < expr.length; i++) {
+    final type = expr[i].type;
+    if (type != TokenType.multiply && type != TokenType.divide) continue;
+    var j = i + 1;
+    // skip a unary sign on the operand (e.g. "× -3")
+    if (j < expr.length &&
+        (expr[j].type == TokenType.plus || expr[j].type == TokenType.minus)) {
+      j++;
+    }
+    if (j < expr.length && expr[j].type == TokenType.number) {
+      final after = j + 1 < expr.length ? expr[j + 1].type : null;
+      if (after != null && after.isTimeKeyword) return true;
+    }
+  }
+  return false;
+}
 
 String _evaluate(String input, String format) {
   try {
     final expr = LexicalAnalyzer.analyze(input);
+    // Same guard the mobile app uses (CalculatorModel._evaluateExpression): a
+    // bare number that isn't bound to a unit and isn't a ×/÷ scalar (e.g. the
+    // "25" in "20h 15m + 25") would be silently counted as 25 raw milliseconds.
+    // Report it as incomplete instead of showing a nonsense micro-amount.
+    if (expr.hasDanglingUnitlessNumber()) return 'INCOMPLETE';
+    if (_hasUnitOperandInMulDiv(expr)) return 'SCALAR_ONLY';
     final result = CalculatorOfTime.evaluate(expr);
     if (result.isEmpty) return '';
     for (final t in result) {
@@ -45,6 +74,8 @@ String _evaluate(String input, String format) {
 String _intervalBreakdown(String input) {
   try {
     final expr = LexicalAnalyzer.analyze(input);
+    if (expr.hasDanglingUnitlessNumber()) return '{"ok":false}';
+    if (_hasUnitOperandInMulDiv(expr)) return '{"ok":false}';
     final result = CalculatorOfTime.evaluate(expr);
     if (result.isEmpty) return '{"ok":false}';
     for (final t in result) {

@@ -5,32 +5,34 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-01',
   devtools: { enabled: true },
 
+  // Local dev server (yarn dev) port.
+  devServer: { port: 3060 },
+
   modules: ['@nuxt/fonts', '@nuxtjs/seo'],
 
   css: ['~/assets/css/main.css'],
 
-  // Drives canonical, robots.txt, sitemap.xml and OG image base URL. Production
-  // domain is timecalculator.app (the web home of the Time Calculator app);
-  // override per-environment with NUXT_SITE_URL in Vercel if needed.
+  // The canonical URL is NEVER hardcoded — it comes from the NUXT_SITE_URL env
+  // var (set it to https://www.timecalculator.app in Vercel; locally it reads
+  // site/.env, and falls back to auto-detected http://localhost:3060 in dev).
+  // This single value drives canonical, robots.txt, sitemap.xml, OG and JSON-LD.
   site: {
-    url: process.env.NUXT_SITE_URL || 'https://timecalculator.app',
     name: 'Time Calculator Cardamon',
     description:
-      'Free online time duration calculator. Add and subtract hours, minutes, '
-      + 'days and seconds — just type, e.g. "5h 30m + 2h 15m".',
+      'Free online time duration calculator. Just type something like '
+      + '"5h 30m + 2h 15m" to add and subtract hours, minutes, and days.',
     defaultLocale: 'en',
   },
 
   // Static-render the landing page → instant, fully crawlable HTML that AI
   // retrieval bots (1–5s fetch windows, little/no JS) can read.
   nitro: {
-    prerender: { crawlLinks: true, routes: ['/', '/robots.txt', '/sitemap.xml'] },
+    prerender: { crawlLinks: true, routes: ['/', '/robots.txt', '/sitemap.xml', '/llms.txt'] },
   },
 
   fonts: {
     // Self-hosted (privacy + Core Web Vitals). Only the weights we use.
     families: [
-      { name: 'Fraunces', provider: 'google', weights: [400, 500, 600, 700], styles: ['normal', 'italic'] },
       { name: 'Hanken Grotesk', provider: 'google', weights: [400, 500, 600, 700] },
       { name: 'JetBrains Mono', provider: 'google', weights: [500, 700] },
       // ABeeZee — the exact font the mobile apps use, for the calculator itself.
@@ -57,9 +59,20 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         { name: 'theme-color', content: '#f3efe4' },
       ],
+      script: [
+        {
+          // Set the motion gate before first paint so reveal elements never
+          // flash; skipped under reduced-motion so content stays fully visible.
+          innerHTML:
+            "(function(){try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}document.documentElement.classList.add('has-motion')})()",
+          tagPosition: 'head',
+        },
+      ],
       link: [
+        // Browser-tab favicon: transparent green clock (SVG preferred, PNG fallback).
+        { rel: 'icon', type: 'image/svg+xml', href: '/icons/app-logo.svg' },
         { rel: 'icon', type: 'image/png', href: '/icons/app-logo.png' },
-        { rel: 'icon', type: 'image/png', sizes: '512x512', href: '/icons/icon-512.png' },
+        // iOS home-screen tile can't be transparent, so it keeps the white-backed icon.
         { rel: 'apple-touch-icon', href: '/icons/icon-512.png' },
         { rel: 'manifest', href: '/site.webmanifest' },
       ],
