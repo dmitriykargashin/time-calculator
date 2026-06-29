@@ -1,0 +1,32 @@
+# Nuxt / Node
+node_modules
+.nuxt
+.output
+.data
+.nitro
+.cache
+dist
+
+# Yarn 4 (Berry) — commit yarn.lock + releases, ignore the rest
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+yarn-error.log
+
+# Vercel
+.vercel
+
+# Dart-compiler sidecars (we commit only time_engine.js)
+public/engine/*.map
+public/engine/*.deps
+
+# Env / logs / OS
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store

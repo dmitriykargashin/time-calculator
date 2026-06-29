@@ -1,0 +1,20 @@
+{
+  "name": "time-calculator-site",
+  "private": true,
+  "type": "module",
+  "packageManager": "yarn@4.4.1",
+  "description": "Marketing + web calculator for Time Calculator Cardamon (Nuxt 4, Vercel).",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "sync-engine": "bash scripts/sync-engine.sh"
+  },
+  "devDependencies": {
+    "@nuxt/fonts": "^0.11.4",
+    "@nuxtjs/seo": "^5.3.1",
+    "nuxt": "^4.0.3"
+  }
+}
