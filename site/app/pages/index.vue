@@ -15,11 +15,16 @@ useSeoMeta({
     + 'it runs in your browser.',
   ogUrl: site.url,
   ogType: 'website',
-  // Static social card (og-image module is off — see nuxt.config). Stopgap
-  // square icon; swap for a dedicated 1200×630 og.png when ready.
-  ogImage: `${site.url}/icons/icon-512.png`,
+  // Dedicated 1200×630 social card (og-image module stays off — see nuxt.config;
+  // this is a pre-rendered PNG in public/og.png).
+  ogImage: `${site.url}/og.png`,
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageType: 'image/png',
+  ogImageAlt: 'Time Calculator by Cardamon: 5h 30m + 2h 15m = 7 Hours 45 Minutes',
   twitterCard: 'summary_large_image',
-  twitterImage: `${site.url}/icons/icon-512.png`,
+  twitterImage: `${site.url}/og.png`,
+  twitterImageAlt: 'Time Calculator by Cardamon: 5h 30m + 2h 15m = 7 Hours 45 Minutes',
 })
 // Canonical is handled automatically by nuxt-seo-utils (now Nuxt 4-compatible).
 
@@ -43,7 +48,7 @@ const faqs = [
   },
   {
     q: 'Is the time calculator free?',
-    a: 'Yes. The web version is free and stays in your browser, so nothing leaves your device. The Android and iOS apps are free too, with an optional Pro unlock on iOS or a small donation on Android.',
+    a: 'Yes. The web version is free and runs entirely in your browser, so your calculations never leave your device (we only count anonymous page visits). The Android and iOS apps are free too, with an optional Pro unlock on iOS or a small donation on Android.',
   },
   {
     q: 'Does the website give the same results as the app?',

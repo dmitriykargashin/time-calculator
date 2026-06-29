@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { reopen: openCookieSettings } = useConsent()
 const playUrl =
   'https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator'
 const year = 2026
@@ -15,6 +16,7 @@ const year = 2026
         <nav class="head-nav">
           <a href="#how" class="head-link">How it works</a>
           <a href="#faq" class="head-link">FAQ</a>
+          <ThemeSwitcher />
           <a :href="playUrl" target="_blank" rel="noopener" class="btn btn-ghost head-cta">
             Get the app
           </a>
@@ -40,11 +42,14 @@ const year = 2026
           <a :href="playUrl" target="_blank" rel="noopener">Google&nbsp;Play</a>
           <span class="foot-soon">App&nbsp;Store · soon</span>
           <a href="https://www.cardamon.org/products/time-calculator/privacy-policy-time-calculator" target="_blank" rel="noopener">Privacy</a>
+          <button type="button" class="foot-cookie" @click="openCookieSettings">Cookie settings</button>
           <a href="mailto:support@cardamon.org">support@cardamon.org</a>
         </nav>
       </div>
       <p class="foot-copy wrap">© {{ year }} Cardamon. All rights reserved.</p>
     </footer>
+
+    <CookieConsent />
   </div>
 </template>
 
@@ -177,6 +182,18 @@ main {
   text-decoration: none;
 }
 .foot-links a:hover {
+  color: var(--green-deep);
+}
+.foot-cookie {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.foot-cookie:hover {
   color: var(--green-deep);
 }
 .foot-soon {

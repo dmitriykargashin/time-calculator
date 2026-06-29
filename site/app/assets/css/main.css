@@ -54,6 +54,61 @@
   --ease-pop: cubic-bezier(0.25, 1.35, 0.45, 1);
 }
 
+/* Light is the default. Dark re-defines every token, so any component using
+   var(--*) flips automatically — set by the theme switcher + a pre-paint inline
+   script (see nuxt.config) that toggles [data-theme] on <html>. A "dark roast"
+   counterpart to the cream paper: warm espresso surfaces, brighter brand green,
+   dark text on green buttons. */
+:root {
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces — warm espresso, not blue-black */
+  --paper: #16140d;
+  --paper-deep: #100e08;
+  --card: #211d14;
+  --card-edge: #37311f;
+
+  /* Ink — warm cream */
+  --ink: #f2ecdb;
+  --ink-soft: #c0b8a3;
+  --ink-faint: #978f79;
+  --line: rgba(240, 234, 217, 0.12);
+  --line-strong: rgba(240, 234, 217, 0.22);
+
+  /* Brand — brighter on dark; green-deep is the bright link/hover green and
+     buttons carry dark text (--on-green) for punch */
+  --green: #4fb524;
+  --green-bright: #5fc62f;
+  --green-deep: #6fcf3f;
+  --olive: #aabe50;
+  --ochre: #d99a3a;
+  --on-green: #0f1c07;
+
+  /* Calculator readout — a recessed dark screen with light figures */
+  --app-num: #e8e3d4;
+  --app-unit: #7cc24a;
+  --app-op: #3bb6e6;
+  --app-res-num: #cdc8b8;
+  --app-res-unit: #8fce5e;
+  --app-display: #1b1810;
+  --app-error: #ff6a4a;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 20px 46px -24px rgba(0, 0, 0, 0.72);
+}
+
+[data-theme="dark"] body {
+  background-image:
+    radial-gradient(1250px 720px at 50% -12%, rgba(255, 255, 255, 0.045), transparent 60%),
+    radial-gradient(1200px 700px at 80% -6%, rgba(185, 121, 26, 0.1), transparent 60%),
+    radial-gradient(950px 620px at 4% 104%, rgba(92, 125, 14, 0.13), transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
 *,
 *::before,
 *::after {
