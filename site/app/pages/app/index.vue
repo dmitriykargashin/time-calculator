@@ -240,7 +240,9 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
 .as-back a { font-weight: 600; }
 
 @media (max-width: 720px) {
-  .screen-row, .screen-row.flip .screen-shot { grid-template-columns: 1fr; order: 0; }
-  .screen-shot { display: flex; justify-content: center; }
+  .screen-row { grid-template-columns: 1fr; }
+  /* stacked: header + description first, then the screenshot */
+  .screen-copy { order: 1; }
+  .screen-shot { order: 2; display: flex; justify-content: center; }
 }
 </style>
