@@ -1,11 +1,17 @@
 <script setup lang="ts">
 const { theme, setTheme } = useTheme()
+const trackEvent = useTrack()
 
 const opts = [
   { value: 'light', label: 'Light' },
   { value: 'auto', label: 'System' },
   { value: 'dark', label: 'Dark' },
 ] as const
+
+function choose(v: 'light' | 'dark' | 'auto') {
+  setTheme(v)
+  trackEvent('theme_changed', { theme: v })
+}
 </script>
 
 <template>
@@ -20,7 +26,7 @@ const opts = [
         :aria-pressed="theme === o.value"
         :aria-label="`${o.label} theme`"
         :title="`${o.label} theme`"
-        @click="setTheme(o.value)"
+        @click="choose(o.value)"
       >
         <svg v-if="o.value === 'light'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="4" />

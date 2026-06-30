@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   // Static-render the landing page → instant, fully crawlable HTML that AI
   // retrieval bots (1–5s fetch windows, little/no JS) can read.
   nitro: {
-    prerender: { crawlLinks: true, routes: ['/', '/robots.txt', '/sitemap.xml', '/llms.txt'] },
+    prerender: { crawlLinks: true, routes: ['/', '/robots.txt', '/sitemap.xml', '/llms.txt', '/llms-full.txt'] },
   },
 
   // Attach the social card as an <image:image> on the home URL and stamp a

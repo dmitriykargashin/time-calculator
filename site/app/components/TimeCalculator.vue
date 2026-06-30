@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { colorize, PER_UNITS, type PerUnit } from '~/composables/useTimeEngine'
+import { colorize, PER_UNITS, type ColorTok, type PerUnit } from '~/composables/useTimeEngine'
 
 const { ready, evaluate, perBreakdown } = useTimeEngine()
+const trackEvent = useTrack()
 
 // The full result-format set from the app (data/repositories.dart), same order.
 const FORMATS = [
@@ -41,12 +42,29 @@ const labelOf = (v: string) => FORMATS.find(f => f.value === v)?.label ?? v
 
 const EXAMPLES = ['5h 30m + 2h 15m', '2 days - 4h', '8h 15m × 3', '1 week + 3 days', '1 day - 90 min']
 
-const input = ref('5h 30m + 2h 15m')
-const format = ref<string>('Hour Minute')
-const result = ref('7 Hours 45 Minutes') // SSR default (matches the engine)
-const isError = ref(false)
-const isIncomplete = ref(false)
-const hintMsg = ref('')
+const props = withDefaults(defineProps<{ initialExpr?: string; initialFormat?: string }>(), {
+  initialExpr: '5h 30m + 2h 15m',
+  initialFormat: 'Hour Minute',
+})
+
+const input = ref(props.initialExpr)
+const format = ref<string>(props.initialFormat)
+// SSR default result is only valid for the homepage default; guides recompute on mount.
+const result = ref(
+  props.initialExpr === '5h 30m + 2h 15m' && props.initialFormat === 'Hour Minute'
+    ? '7 Hours 45 Minutes'
+    : '',
+)
+// Error feedback (the wavy underline + the hint line) is debounced: while you
+// are actively typing it stays hidden, and only appears once you pause. The
+// valid result still updates live.
+const pendingError = ref(false)
+const pendingIncomplete = ref(false)
+const pendingHint = ref('')
+const settled = ref(true)
+const isError = computed(() => settled.value && pendingError.value)
+const isIncomplete = computed(() => settled.value && pendingIncomplete.value)
+const hintMsg = computed(() => (settled.value ? pendingHint.value : ''))
 // zero-width space appended to the highlight so a trailing newline still renders
 // a line — keeps the highlight the same height as the textarea (cursor aligned).
 const pad = '​'
@@ -59,6 +77,7 @@ const rateUnit = ref('USD')
 const openPanel = ref<'convert' | 'rate' | 'history' | null>(null)
 function togglePanel(p: 'convert' | 'rate' | 'history') {
   openPanel.value = openPanel.value === p ? null : p
+  if (openPanel.value === p) trackEvent('panel_opened', { panel: p })
 }
 
 const ta = useTemplateRef<HTMLTextAreaElement>('ta')
@@ -71,12 +90,40 @@ const formatLabel = computed(() => labelOf(format.value))
 function recompute() {
   if (!ready.value) return
   const r = evaluate(input.value, format.value)
-  isError.value = r.error
-  isIncomplete.value = !!r.incomplete
-  hintMsg.value = r.hint ?? ''
+  pendingError.value = r.error
+  pendingIncomplete.value = !!r.incomplete
+  pendingHint.value = r.hint ?? ''
   result.value = r.ok ? r.result : ''
 }
-watch([input, format, ready], recompute)
+// `immediate` so a calculator mounted after the engine already loaded (e.g. when
+// navigating to a guide page) still computes — `ready` won't change, so without
+// this the result would stay empty. recompute() no-ops while !ready, so this is
+// safe during SSR and before the engine finishes loading.
+watch([input, format, ready], recompute, { immediate: true })
+
+// Debounce the error feedback: hide the wavy underline + hint while typing,
+// reveal ~0.6s after the last keystroke.
+let settleTimer: ReturnType<typeof setTimeout>
+watch(input, () => {
+  settled.value = false
+  clearTimeout(settleTimer)
+  settleTimer = setTimeout(() => { settled.value = true }, 600)
+})
+
+// Hold the unknown-unit underline back until typing settles (no mid-word flag).
+function exprTokClass(t: ColorTok): string {
+  return 't-' + (t.t === 'bad' && !settled.value ? 'num' : t.t)
+}
+
+// Fire once per session the first time the visitor edits the expression — a
+// clean "did they actually use the calculator" signal (the field is pre-filled).
+let usedFired = false
+watch(input, () => {
+  if (!usedFired) {
+    usedFired = true
+    trackEvent('calculator_used')
+  }
+})
 
 // --- Convert panel: the current value in EVERY format (computed only while open) ---
 const formatPreviews = computed<Record<string, string>>(() => {
@@ -96,6 +143,7 @@ function toggleFmt() { fmtOpen.value = !fmtOpen.value }
 function pickFormat(v: string) {
   format.value = v
   fmtOpen.value = false
+  trackEvent('format_changed', { format: v })
 }
 function onKey(e: KeyboardEvent) {
   if (e.key === 'Escape') fmtOpen.value = false
@@ -138,6 +186,7 @@ function toggleStar() {
   } else {
     history.value.unshift({ e, r, f: format.value, t: Date.now() })
     if (history.value.length > HIST_MAX) history.value = history.value.slice(0, HIST_MAX)
+    trackEvent('result_starred')
   }
   persistHistory()
 }
@@ -209,6 +258,7 @@ async function copyResult() {
   try {
     await navigator.clipboard.writeText(result.value)
     copied.value = true
+    trackEvent('result_copied', { source: 'result' })
     setTimeout(() => (copied.value = false), 1400)
   } catch { /* unavailable */ }
 }
@@ -219,6 +269,7 @@ async function copyConversion(v: string) {
   try {
     await navigator.clipboard.writeText(val)
     copiedFmt.value = v
+    trackEvent('result_copied', { source: 'convert', format: v })
     setTimeout(() => { if (copiedFmt.value === v) copiedFmt.value = '' }, 1200)
   } catch { /* unavailable */ }
 }
@@ -235,6 +286,7 @@ function clearAll() {
 
 function useExample(ex: string) {
   input.value = ex
+  trackEvent('example_used', { expr: ex })
 }
 
 // --- mount: restore width, animate height changes, load history, wire listeners ---
@@ -333,7 +385,7 @@ onBeforeUnmount(() => {
       <!-- EXPRESSION: a highlighted, editable field (units green, ops blue) -->
       <div class="expr-field">
         <div class="expr-hl" aria-hidden="true">
-          <template v-if="input"><span v-for="(t, i) in exprToks" :key="i" :class="'t-' + t.t">{{ t.v }}</span><span class="t-pad">{{ pad }}</span></template>
+          <template v-if="input"><span v-for="(t, i) in exprToks" :key="i" :class="exprTokClass(t)">{{ t.v }}</span><span class="t-pad">{{ pad }}</span></template>
           <span v-else class="ph">e.g. 5h 30m + 2h 15m</span>
         </div>
         <textarea
@@ -654,6 +706,8 @@ onBeforeUnmount(() => {
 .t-num { color: var(--app-num); }
 .t-unit { color: var(--app-unit); }
 .t-op { color: var(--app-op); }
+/* an unrecognised unit word (e.g. "minu") — a soft, thin wavy underline */
+.t-bad { color: var(--app-num); text-decoration: wavy underline; text-decoration-color: color-mix(in srgb, var(--app-error) 42%, transparent); text-decoration-thickness: 1px; text-decoration-skip-ink: none; text-underline-offset: 3px; }
 .ph { color: var(--ink-faint); }
 
 /* result */

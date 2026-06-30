@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { open, read, choose, applyStored, hasChoice } = useConsent()
+const trackEvent = useTrack()
 
 const show = ref(false)
 const details = ref(false)
@@ -25,14 +26,17 @@ watch(open, (v) => {
 
 const acceptAll = () => {
   choose(true)
+  trackEvent('consent', { choice: 'accept' })
   show.value = false
 }
 const rejectAll = () => {
   choose(false)
+  trackEvent('consent', { choice: 'reject' })
   show.value = false
 }
 const savePrefs = () => {
   choose(analytics.value)
+  trackEvent('consent', { choice: 'save', analytics: analytics.value })
   show.value = false
 }
 </script>

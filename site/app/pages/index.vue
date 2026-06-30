@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { FAQS } from '~/utils/faqs'
+
 const site = useSiteConfig()
+const trackEvent = useTrack()
 const playUrl =
   'https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator'
 
@@ -7,8 +10,7 @@ useSeoMeta({
   title: 'Time Calculator: Add & Subtract Hours, Minutes & Days',
   description:
     'Free online time duration calculator. Type "5h 30m + 2h 15m" to add or '
-    + 'subtract hours, minutes, days, and seconds. Same engine as the Cardamon '
-    + 'apps, right in your browser.',
+    + 'subtract hours, minutes, days, and seconds, right in your browser.',
   ogTitle: 'Time Calculator: add and subtract durations',
   ogDescription:
     'Type something like "2 days - 4h" and read off the answer. Free, fast, and '
@@ -28,32 +30,23 @@ useSeoMeta({
 })
 // Canonical is handled automatically by nuxt-seo-utils (now Nuxt 4-compatible).
 
-// Answer-first FAQ — also emitted as FAQPage JSON-LD for AI extraction.
-const faqs = [
-  {
-    q: 'How do I add hours and minutes together?',
-    a: 'Put a + between the durations, like "5h 30m + 2h 15m", and you get 7 Hours 45 Minutes. Mix any units you like (days, hours, minutes, seconds) and choose how the answer reads with the format picker.',
-  },
-  {
-    q: 'How do I subtract time?',
-    a: 'Use a minus sign. "8h - 90m" gives 6 Hours 30 Minutes, and "2 days - 4h" gives 1 Day 20 Hours. It subtracts across units, so you never have to convert everything to minutes first.',
-  },
-  {
-    q: 'Can I multiply or divide a duration?',
-    a: 'Yes. Pair a number with × (or *) and ÷ (or /). "8h 15m × 3" gives 24 Hours 45 Minutes, and "1 day ÷ 4" gives 6 Hours. Handy for shifts, billing, or splitting time evenly.',
-  },
-  {
-    q: 'What units does the time calculator support?',
-    a: 'Years, months, weeks, days, hours, minutes, seconds, and milliseconds. Type the full word or the shorthand (h, m, d, w, s), like "1w 3d", "90 min", or "1d 4h 30m". Months take "mo" so they don\'t clash with minutes.',
-  },
-  {
-    q: 'Is the time calculator free?',
-    a: 'Yes. The web version is free and runs entirely in your browser, so your calculations never leave your device (we only count anonymous page visits). The Android and iOS apps are free too, with an optional Pro unlock on iOS or a small donation on Android.',
-  },
-  {
-    q: 'Does the website give the same results as the app?',
-    a: 'Yes. The site runs the very same engine as the Cardamon apps, compiled for your browser, so the answer you get here matches the app down to the millisecond.',
-  },
+// Answer-first FAQ — single source in utils/faqs.ts (also feeds llms.txt and
+// llms-full.txt). Emitted as FAQPage JSON-LD for AI extraction.
+const faqs = FAQS
+
+// Real Google Play reviews (391 ratings, 4.564★ average). Verbatim, lightly
+// tidied for readability. The same set feeds the visible cards and the schema.
+const rating = { value: 4.6, count: 391, reviews: 256 }
+const testimonials = [
+  { name: 'Sharon Lloyd', stars: 5, use: 'Timesheets', text: 'Love the app, makes doing my timesheets for work so much easier.' },
+  { name: 'Carlos L.', stars: 5, use: 'Truck driving', text: "As a truck driver, it's important to keep track of all the different times you've worked. Very practical." },
+  { name: 'John Berghof', stars: 5, use: 'Developers', text: 'Handy tool to convert time between different formats, e.g. for software developers.' },
+  { name: 'austin somerset', stars: 5, use: 'Audio editing', text: 'Works great for my audio editing.' },
+  { name: 'One Room Shed', stars: 5, text: 'Able to do any type of time calculation that I would ever need, with ease. No ads either. What else could you ask for?' },
+  { name: 'debest autofix', stars: 5, use: 'Milliseconds', text: 'The only time calculator app with milliseconds I found.' },
+  { name: 'Konstantin M.', stars: 5, use: 'Custom formats', text: 'It correctly converts to days, hours, minutes and seconds, and you can choose a different format. I liked it, even with the simple interface.' },
+  { name: 'Haris Siddiqui', stars: 5, use: 'Work hours', text: 'Use it to calculate work hours.' },
+  { name: 'Slimmy Jimmy', stars: 5, text: 'I like this app because you can divide, multiply, subtract and add the time.' },
 ]
 
 const jsonLd = computed(() => ({
@@ -66,6 +59,7 @@ const jsonLd = computed(() => ({
       url: 'https://www.cardamon.org',
       logo: `${site.url}/icons/icon-512.png`,
       email: 'support@cardamon.org',
+      sameAs: [playUrl],
     },
     {
       '@type': ['WebApplication', 'SoftwareApplication'],
@@ -84,6 +78,20 @@ const jsonLd = computed(() => ({
         'Years, months, weeks, days, hours, minutes, seconds, milliseconds',
         'Multiple result formats',
       ],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.6',
+        ratingCount: 391,
+        reviewCount: 256,
+        bestRating: '5',
+        worstRating: '1',
+      },
+      review: testimonials.map((t) => ({
+        '@type': 'Review',
+        reviewRating: { '@type': 'Rating', ratingValue: t.stars, bestRating: 5 },
+        author: { '@type': 'Person', name: t.name },
+        reviewBody: t.text,
+      })),
     },
     {
       '@type': 'FAQPage',
@@ -126,7 +134,8 @@ useHead({
       </div>
 
       <div class="hero-cta" data-reveal style="--rd: 0.34s">
-        <a :href="playUrl" target="_blank" rel="noopener" class="store-badge">
+        <a :href="playUrl" target="_blank" rel="noopener" class="store-badge"
+          @click="trackEvent('app_store_click', { store: 'play', location: 'hero' })">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
             <path fill="#3DA50C" d="M3.6 2.3 13 12 3.6 21.7a1.4 1.4 0 0 1-.6-1.2V3.5c0-.5.2-.9.6-1.2Z"/>
             <path fill="#5C7D0E" d="M16.8 8.4 14.3 12l2.5 3.6 3.6-2.1c1-.6 1-2 0-2.6l-3.6-2.5Z"/>
@@ -184,15 +193,31 @@ useHead({
     <p class="answer">
       The calculator runs on these exact numbers. <strong>1 day = 24 hours =
       1,440 minutes = 86,400 seconds.</strong> A week is 7 days, an hour is 60
-      minutes, and a minute is 60 seconds.
+      minutes, a minute is 60 seconds, and a second is 1,000 milliseconds.
     </p>
     <div class="conv-grid">
       <div class="conv"><b>1 week</b><span>7 days · 168 hours</span></div>
       <div class="conv"><b>1 day</b><span>24 hours · 1,440 minutes</span></div>
       <div class="conv"><b>1 hour</b><span>60 minutes · 3,600 seconds</span></div>
       <div class="conv"><b>1 minute</b><span>60 seconds · 60,000 ms</span></div>
+      <div class="conv"><b>1 second</b><span>1,000 milliseconds</span></div>
     </div>
   </section>
+
+  <!-- GUIDES teaser: surfaces the cluster + internal links from the home page -->
+  <section class="wrap block" data-reveal>
+    <span class="eyebrow">Guides</span>
+    <h2>Step-by-step time-math guides</h2>
+    <ul class="guide-teaser">
+      <li v-for="g in GUIDES.slice(0, 4)" :key="g.slug">
+        <NuxtLink :to="`/guides/${g.slug}`">{{ g.h1 }}</NuxtLink>
+      </li>
+    </ul>
+    <p><NuxtLink class="guide-teaser-all" to="/guides">See all guides →</NuxtLink></p>
+  </section>
+
+  <!-- REVIEWS: real Google Play testimonials + AggregateRating schema -->
+  <Testimonials :items="testimonials" :rating="rating" :play-url="playUrl" />
 
   <!-- FAQ -->
   <section id="faq" class="wrap block" data-reveal>
@@ -367,6 +392,25 @@ useHead({
   font-family: var(--font-mono);
   font-size: 0.82rem;
   color: var(--ink-soft);
+}
+.guide-teaser {
+  list-style: none;
+  padding: 0;
+  margin: 1.2rem 0 0.9rem;
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.guide-teaser a {
+  color: var(--green-deep);
+  font-weight: 600;
+  text-decoration: none;
+}
+.guide-teaser a:hover {
+  text-decoration: underline;
+}
+.guide-teaser-all {
+  font-weight: 600;
 }
 
 

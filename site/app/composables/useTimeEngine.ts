@@ -11,9 +11,10 @@ declare global {
   }
 }
 
-/** A coloured token of an expression or result (units green, ops blue). */
+/** A coloured token of an expression or result (units green, ops blue, an
+ *  unrecognised unit word like "minu" flagged as 'bad' for a wavy underline). */
 export interface ColorTok {
-  t: 'num' | 'unit' | 'op' | 'sp'
+  t: 'num' | 'unit' | 'op' | 'sp' | 'bad'
   v: string
 }
 
@@ -27,7 +28,7 @@ export function colorize(s: string): ColorTok[] {
   let m: RegExpExecArray | null
   while ((m = re.exec(s))) {
     if (m[1] != null) out.push({ t: 'num', v: m[1] })
-    else if (m[2] != null) out.push({ t: UNIT_WORD.test(m[2]) ? 'unit' : 'num', v: m[2] })
+    else if (m[2] != null) out.push({ t: UNIT_WORD.test(m[2]) ? 'unit' : 'bad', v: m[2] })
     else if (m[3] != null) out.push({ t: 'op', v: m[3] })
     else out.push({ t: 'sp', v: m[4] ?? m[5] ?? '' })
   }
@@ -75,6 +76,19 @@ export function normalizeExpression(raw: string): string {
   return s.replace(/\s+/g, ' ').trim()
 }
 
+// Units the engine understands, in canonical (post-normalization) form. Any
+// other alphabetic token is a typo or garbage (e.g. "minu") and must be
+// rejected, not silently dropped — otherwise "2h 15m / 2minu" quietly computes
+// as "/ 2" and returns a misleading result.
+const CANONICAL_UNITS = new Set(['Year', 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Second', 'MSecond'])
+
+function firstUnknownUnit(normalized: string): string | null {
+  const words = normalized.match(/[A-Za-z]+/g)
+  if (!words) return null
+  for (const w of words) if (!CANONICAL_UNITS.has(w)) return w
+  return null
+}
+
 let loadPromise: Promise<boolean> | null = null
 
 function loadEngine(): Promise<boolean> {
@@ -120,6 +134,12 @@ export function useTimeEngine() {
       return { ok: false, result: '', error: false, normalized }
     }
     if (normalized === '') return { ok: false, result: '', error: false, normalized }
+    // Reject typo'd / unknown units (e.g. "2minu") instead of letting the engine
+    // silently drop them and still return a number.
+    const unknown = firstUnknownUnit(normalized)
+    if (unknown) {
+      return { ok: false, result: '', error: false, normalized, incomplete: true, hint: `"${unknown}" is not a known unit` }
+    }
     let out = ''
     try {
       out = window.evaluateTime(normalized, format)
