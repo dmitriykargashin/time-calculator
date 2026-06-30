@@ -4,6 +4,11 @@ const trackEvent = useTrack()
 const playUrl =
   'https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator'
 const year = 2026
+
+// Mobile burger menu (nav links are hidden under 640px).
+const mobileOpen = ref(false)
+const route = useRoute()
+watch(() => route.fullPath, () => { mobileOpen.value = false })
 </script>
 
 <template>
@@ -24,8 +29,37 @@ const year = 2026
             @click="trackEvent('app_store_click', { store: 'play', location: 'header' })">
             Get the app
           </a>
+          <button
+            type="button"
+            class="head-burger"
+            :aria-expanded="mobileOpen"
+            aria-controls="mobile-menu"
+            aria-label="Menu"
+            @click="mobileOpen = !mobileOpen"
+          >
+            <svg v-if="!mobileOpen" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+            <svg v-else viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
         </nav>
       </div>
+
+      <Transition name="mmenu">
+        <nav v-if="mobileOpen" id="mobile-menu" class="mobile-menu" aria-label="Mobile">
+          <NuxtLink to="/" @click="mobileOpen = false">Home</NuxtLink>
+          <NuxtLink to="/guides" @click="mobileOpen = false">Guides</NuxtLink>
+          <NuxtLink to="/app" @click="mobileOpen = false">Mobile app</NuxtLink>
+          <NuxtLink to="/reviews" @click="mobileOpen = false">Reviews</NuxtLink>
+          <NuxtLink to="/whats-new" @click="mobileOpen = false">What's new</NuxtLink>
+          <NuxtLink to="/#faq" @click="mobileOpen = false">FAQ</NuxtLink>
+          <a
+            :href="playUrl"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-green mobile-cta"
+            @click="mobileOpen = false; trackEvent('app_store_click', { store: 'play', location: 'mobile-menu' })"
+          >Get the app</a>
+        </nav>
+      </Transition>
     </header>
 
     <main>
@@ -154,9 +188,62 @@ main {
   padding: 0.6em 1.05em;
   font-size: 0.88rem;
 }
+.head-burger {
+  display: none;
+  background: none;
+  border: 0;
+  padding: 0.3rem;
+  margin: -0.3rem;
+  color: var(--ink);
+  cursor: pointer;
+  align-items: center;
+}
 @media (max-width: 640px) {
-  .head-link {
+  .head-link,
+  .head-cta {
     display: none;
+  }
+  .head-burger {
+    display: inline-flex;
+  }
+}
+
+/* mobile dropdown menu */
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem 1.2rem 1.1rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.mobile-menu > a:not(.mobile-cta) {
+  padding: 0.85rem 0.3rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.02rem;
+  border-bottom: 1px solid var(--line);
+}
+.mobile-menu > a:not(.mobile-cta):hover {
+  color: var(--green-deep);
+}
+.mobile-cta {
+  margin-top: 0.9rem;
+  justify-content: center;
+}
+.mmenu-enter-active,
+.mmenu-leave-active {
+  transition: opacity 0.22s ease, transform 0.22s var(--ease-pop);
+  transform-origin: top;
+}
+.mmenu-enter-from,
+.mmenu-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+@media (min-width: 641px) {
+  .mobile-menu {
+    display: none !important;
   }
 }
 
