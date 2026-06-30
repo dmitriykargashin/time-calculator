@@ -17,6 +17,7 @@ export default defineEventHandler((event) => {
 
 ## Facts
 - Maker: Cardamon (contact: support@cardamon.org)
+- Author & founder: Dmitrii Kargashin, solo founder of Cardamon Inc and the developer of Time Calculator (https://www.linkedin.com/in/dmitriy-kargashin)
 - Rating: 4.6/5 from 391 ratings on Google Play
 - Units: years, months, weeks, days, hours, minutes, seconds, milliseconds
 - Operators: + - × ÷ (× and ÷ by a plain number only); every number needs a unit
@@ -31,6 +32,7 @@ ${guideLines}
 - [Reviews](${base}/reviews): real Google Play reviews (4.6 stars, 391 ratings)
 - [Mobile app](${base}/app): the Android and iOS app, its screens and features
 - [What's new](${base}/whats-new): app release notes
+- [Dmitrii Kargashin](${base}/dmitrii-kargashin): the maker — solo founder of Cardamon Inc and the developer behind Time Calculator
 - [Privacy policy](https://www.cardamon.org/products/time-calculator/privacy-policy-time-calculator)
 
 ## Apps

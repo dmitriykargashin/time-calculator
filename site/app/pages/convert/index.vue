@@ -48,7 +48,6 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
       <span aria-current="page">Convert</span>
     </nav>
 
-    <span class="eyebrow">Converter</span>
     <h1>{{ CONVERT_META.h1 }}</h1>
     <p class="c-answer">{{ CONVERT_META.answer }}</p>
     <p class="c-intro">{{ CONVERT_META.intro }}</p>

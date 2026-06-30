@@ -54,7 +54,6 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
       <span aria-current="page">What's new</span>
     </nav>
 
-    <span class="eyebrow">What's new</span>
     <h1>Release notes</h1>
     <p class="wn-lead">
       What changed in the Time Calculator app. The web version shares the same calculation

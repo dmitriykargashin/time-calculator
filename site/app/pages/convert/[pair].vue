@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { personNode } from '~/utils/author'
 // /convert/[pair] — one landing page per conversion pair (e.g. minutes-to-hours).
 // Data + the engine-verified value table come from app/utils/conversions.ts.
 const slug = String(useRoute().params.pair)
@@ -26,11 +27,13 @@ const jsonLd = {
     {
       '@type': 'FAQPage',
       '@id': `${url}#faq`,
+      author: { '@id': `${site.url}/#person` },
       mainEntity: [
         { '@type': 'Question', name: c.question, acceptedAnswer: { '@type': 'Answer', text: `${c.answer} In the calculator, ${c.expr} returns ${c.result}.` } },
         ...c.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
       ],
     },
+    personNode(site.url),
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
@@ -54,8 +57,8 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
       <span aria-current="page">{{ c.from }} to {{ c.to }}</span>
     </nav>
 
-    <span class="eyebrow">{{ c.from }} <span aria-hidden="true">→</span> {{ c.to }}</span>
     <h1>{{ c.h1 }}</h1>
+    <AuthorByline />
     <p class="p-answer">{{ c.answer }}</p>
     <p class="p-intro">{{ c.intro }}</p>
 
@@ -88,6 +91,8 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
         <p>{{ f.a }}</p>
       </details>
     </section>
+
+    <AuthorCard />
 
     <nav class="p-related" aria-label="Related conversions">
       <h2>Related conversions</h2>

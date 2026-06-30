@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { personNode, monthYear } from '~/utils/author'
 // Each prerendered page has a fixed slug, so this can be non-reactive.
 const slug = String(useRoute().params.slug)
 const guide = getGuide(slug)
@@ -7,6 +8,7 @@ if (!guide) throw createError({ statusCode: 404, statusMessage: 'Guide not found
 const site = useSiteConfig()
 const url = `${site.url}/guides/${slug}`
 const related = relatedGuides(slug)
+const updatedLabel = monthYear(GUIDE_UPDATED)
 
 useSeoMeta({
   title: guide.metaTitle,
@@ -29,9 +31,11 @@ const jsonLd = {
       name: guide.h1,
       description: guide.answer,
       dateModified: GUIDE_UPDATED,
+      author: { '@id': `${site.url}/#person` },
       publisher: { '@type': 'Organization', name: 'Cardamon', url: 'https://www.cardamon.org' },
       step: guide.steps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.title, text: s.body })),
     },
+    personNode(site.url),
     {
       '@type': 'FAQPage',
       '@id': `${url}#faq`,
@@ -61,6 +65,7 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
     </nav>
 
     <h1>{{ guide.h1 }}</h1>
+    <AuthorByline :date="updatedLabel" />
     <p class="g-answer">{{ guide.answer }}</p>
     <p class="g-intro">{{ guide.intro }}</p>
 
@@ -98,6 +103,8 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
     </section>
 
     <p class="g-usecase">{{ guide.useCaseLine }}</p>
+
+    <AuthorCard />
 
     <nav v-if="related.length" class="g-related" aria-label="Related guides">
       <h2>Related guides</h2>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { colorize, PER_UNITS, type ColorTok, type PerUnit } from '~/composables/useTimeEngine'
+import { colorize, expandColon, hasColonTime, colonIsAmbiguous, toClockString, PER_UNITS, type ColorTok, type PerUnit } from '~/composables/useTimeEngine'
 
 const { ready, evaluate, perBreakdown } = useTimeEngine()
 const trackEvent = useTrack()
@@ -34,11 +34,20 @@ const FORMATS = [
   { label: 'All Units', value: 'Year Month Week Day Hour Minute Second MSecond' },
 ] as const
 
+// Digital-clock display formats. These are NOT engine formats: we evaluate with
+// `engine` and then post-process the numbers into a colon string (e.g. 25:15:00).
+const CLOCK = [
+  { label: 'H:MM', value: 'clock:hm', engine: 'Hour Minute', pads: [0, 2], msIndex: -1 },
+  { label: 'H:MM:SS', value: 'clock:hms', engine: 'Hour Minute Second', pads: [0, 2, 2], msIndex: -1 },
+  { label: 'H:MM:SS.mmm', value: 'clock:hmsms', engine: 'Hour Minute Second MSecond', pads: [0, 2, 2, 3], msIndex: 3 },
+] as const
+
 // Grouped exactly like the app's Formats screen: single-unit vs combined.
 const unitCount = (v: string) => v.trim().split(/\s+/).length
 const singleFormats = FORMATS.filter(f => unitCount(f.value) === 1)
 const combinedFormats = FORMATS.filter(f => unitCount(f.value) > 1)
-const labelOf = (v: string) => FORMATS.find(f => f.value === v)?.label ?? v
+const labelOf = (v: string) =>
+  FORMATS.find(f => f.value === v)?.label ?? CLOCK.find(c => c.value === v)?.label ?? v
 
 const EXAMPLES = ['5h 30m + 2h 15m', '2 days - 4h', '8h 15m × 3', '1 week + 3 days', '1 day - 90 min']
 
@@ -49,6 +58,17 @@ const props = withDefaults(defineProps<{ initialExpr?: string; initialFormat?: s
 
 const input = ref(props.initialExpr)
 const format = ref<string>(props.initialFormat)
+// Clock-style paste: a bare "2:45" reads as hours:minutes by default; the Adapt
+// chip flips it to minutes:seconds. `adapted` is what we actually evaluate, so
+// the result is live even before you click Adapt (which rewrites the field).
+const colonMode = ref<'hm' | 'ms'>('hm')
+const adapted = computed(() => expandColon(input.value, colonMode.value))
+const hasColon = computed(() => hasColonTime(input.value))
+const colonAmbiguous = computed(() => colonIsAmbiguous(input.value))
+function applyAdapt() {
+  input.value = adapted.value
+  trackEvent('expr_adapted', { mode: colonMode.value })
+}
 // SSR default result is only valid for the homepage default; guides recompute on mount.
 const result = ref(
   props.initialExpr === '5h 30m + 2h 15m' && props.initialFormat === 'Hour Minute'
@@ -87,9 +107,18 @@ const exprToks = computed(() => colorize(input.value))
 const resultToks = computed(() => colorize(result.value))
 const formatLabel = computed(() => labelOf(format.value))
 
+// Evaluate, then (for a clock format) reshape the engine numbers into a colon
+// string. Plain engine formats pass straight through.
+function evalDisplay(src: string, fmt: string) {
+  const clock = CLOCK.find(c => c.value === fmt)
+  if (!clock) return evaluate(src, fmt)
+  const r = evaluate(src, clock.engine)
+  return r.ok ? { ...r, result: toClockString(r.result, clock.engine, [...clock.pads], clock.msIndex) } : r
+}
+
 function recompute() {
   if (!ready.value) return
-  const r = evaluate(input.value, format.value)
+  const r = evalDisplay(adapted.value, format.value)
   pendingError.value = r.error
   pendingIncomplete.value = !!r.incomplete
   pendingHint.value = r.hint ?? ''
@@ -99,7 +128,7 @@ function recompute() {
 // navigating to a guide page) still computes — `ready` won't change, so without
 // this the result would stay empty. recompute() no-ops while !ready, so this is
 // safe during SSR and before the engine finishes loading.
-watch([input, format, ready], recompute, { immediate: true })
+watch([adapted, format, ready], recompute, { immediate: true })
 
 // Debounce the error feedback: hide the wavy underline + hint while typing,
 // reveal ~0.6s after the last keystroke.
@@ -130,8 +159,12 @@ const formatPreviews = computed<Record<string, string>>(() => {
   const m: Record<string, string> = {}
   if (openPanel.value !== 'convert' || !ready.value) return m
   for (const f of FORMATS) {
-    const r = evaluate(input.value, f.value)
+    const r = evalDisplay(adapted.value, f.value)
     m[f.value] = r.ok ? r.result : '—'
+  }
+  for (const c of CLOCK) {
+    const r = evalDisplay(adapted.value, c.value)
+    m[c.value] = r.ok ? r.result : '—'
   }
   return m
 })
@@ -191,7 +224,7 @@ function toggleStar() {
   persistHistory()
 }
 function restoreHistory(h: HistEntry) {
-  if (FORMATS.some(f => f.value === h.f)) format.value = h.f
+  if (FORMATS.some(f => f.value === h.f) || CLOCK.some(c => c.value === h.f)) format.value = h.f
   input.value = h.e
   openPanel.value = null
 }
@@ -374,6 +407,10 @@ onBeforeUnmount(() => {
                     <div class="fmt-grid">
                       <button v-for="f in combinedFormats" :key="f.value" type="button" class="fmt-opt" :class="{ on: f.value === format }" :aria-selected="f.value === format" @click="pickFormat(f.value)">{{ f.label }}</button>
                     </div>
+                    <div class="fmt-sec">Digital clock</div>
+                    <div class="fmt-grid">
+                      <button v-for="c in CLOCK" :key="c.value" type="button" class="fmt-opt" :class="{ on: c.value === format }" :aria-selected="c.value === format" @click="pickFormat(c.value)">{{ c.label }}</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -399,6 +436,19 @@ onBeforeUnmount(() => {
           aria-label="Time expression"
         />
       </div>
+
+      <!-- ADAPT: pasted a clock time like 2:30:15 or 2:45? Offer to rewrite it
+           into the calculator's grammar; the result is already live below. -->
+      <Transition name="adapt">
+        <div v-if="hasColon" class="adapt-bar">
+          <span class="adapt-txt">Clock time — read as <code>{{ adapted }}</code></span>
+          <div v-if="colonAmbiguous" class="adapt-modes" role="group" aria-label="Read two-part time as">
+            <button type="button" :class="{ on: colonMode === 'hm' }" @click="colonMode = 'hm'">H:MM</button>
+            <button type="button" :class="{ on: colonMode === 'ms' }" @click="colonMode = 'ms'">M:SS</button>
+          </div>
+          <button type="button" class="adapt-btn" @click="applyAdapt">Adapt</button>
+        </div>
+      </Transition>
 
       <!-- RESULT -->
       <div class="result-row">
@@ -469,6 +519,15 @@ onBeforeUnmount(() => {
                 <button class="cv-row" :class="{ on: f.value === format }" type="button" @click="copyConversion(f.value)">
                   <span class="cv-name">{{ f.label }}</span>
                   <span class="cv-val">{{ copiedFmt === f.value ? '✓ copied' : (formatPreviews[f.value] || '—') }}</span>
+                </button>
+              </li>
+            </ul>
+            <div class="cv-sec">Digital clock</div>
+            <ul class="cv-list">
+              <li v-for="c in CLOCK" :key="c.value">
+                <button class="cv-row" :class="{ on: c.value === format }" type="button" @click="copyConversion(c.value)">
+                  <span class="cv-name">{{ c.label }}</span>
+                  <span class="cv-val">{{ copiedFmt === c.value ? '✓ copied' : (formatPreviews[c.value] || '—') }}</span>
                 </button>
               </li>
             </ul>
@@ -709,6 +768,25 @@ onBeforeUnmount(() => {
 /* an unrecognised unit word (e.g. "minu") — a soft, thin wavy underline */
 .t-bad { color: var(--app-num); text-decoration: wavy underline; text-decoration-color: color-mix(in srgb, var(--app-error) 42%, transparent); text-decoration-thickness: 1px; text-decoration-skip-ink: none; text-underline-offset: 3px; }
 .ph { color: var(--ink-faint); }
+
+/* adapt chip — shown when a pasted clock time (2:30:15 / 2:45) is detected */
+.adapt-bar {
+  display: flex; align-items: center; gap: 0.5rem 0.6rem; flex-wrap: wrap;
+  margin: 0.15rem 0 0.1rem; padding: 0.45rem 0.65rem;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--app-num) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--app-num) 18%, transparent);
+  font-size: 0.84rem;
+}
+.adapt-txt { color: var(--app-num); }
+.adapt-txt code { font-family: var(--font-app); color: var(--app-res-unit); font-weight: 700; background: none; padding: 0; }
+.adapt-modes { display: inline-flex; border: 1px solid color-mix(in srgb, var(--app-num) 26%, transparent); border-radius: 0.5rem; overflow: hidden; }
+.adapt-modes button { font: inherit; font-size: 0.76rem; padding: 0.16rem 0.5rem; background: none; border: 0; color: var(--app-num); cursor: pointer; }
+.adapt-modes button.on { background: var(--app-unit); color: #fff; }
+.adapt-btn { margin-left: auto; font: inherit; font-size: 0.8rem; font-weight: 700; padding: 0.26rem 0.85rem; border-radius: 0.5rem; border: 0; background: var(--app-unit); color: #fff; cursor: pointer; }
+.adapt-btn:hover { filter: brightness(1.06); }
+.adapt-enter-active, .adapt-leave-active { transition: opacity 0.2s ease, transform 0.2s var(--ease-pop); }
+.adapt-enter-from, .adapt-leave-to { opacity: 0; transform: translateY(-4px); }
 
 /* result */
 .result-row {

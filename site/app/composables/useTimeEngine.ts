@@ -76,6 +76,71 @@ export function normalizeExpression(raw: string): string {
   return s.replace(/\s+/g, ' ').trim()
 }
 
+// ---- Clock-style (colon) input -------------------------------------------
+// Let people paste a time like "2:30:15" (h:m:s) or "2:45" and turn it into the
+// engine's grammar. A 3-part token is unambiguous; a bare 2-part token is read
+// with `mode` ('hm' = hours:minutes, the default; 'ms' = minutes:seconds). A
+// decimal tail is milliseconds, so "2:30:15.5" → "2h 30m 15s 500ms" and a bare
+// "2:45.5" is treated as minutes:seconds because the decimal implies seconds.
+const COLON_SRC = String.raw`(?<![\d.:])(\d{1,4}):(\d{1,2})(?::(\d{1,2}))?(?:\.(\d{1,3}))?(?![\d:])`
+
+function fracToMs(frac: string): number {
+  return Math.round(parseFloat('0.' + frac) * 1000)
+}
+
+export function expandColon(raw: string, mode: 'hm' | 'ms' = 'hm'): string {
+  if (!raw) return raw
+  return raw.replace(new RegExp(COLON_SRC, 'g'), (_m, a, b, c, frac) => {
+    const parts: string[] = []
+    if (c != null) {
+      parts.push(`${Number(a)}h`, `${Number(b)}m`, `${Number(c)}s`)
+    } else if (frac != null) {
+      // a decimal tail implies the second number is seconds (mm:ss.mmm)
+      parts.push(`${Number(a)}m`, `${Number(b)}s`)
+    } else {
+      parts.push(...(mode === 'ms' ? [`${Number(a)}m`, `${Number(b)}s`] : [`${Number(a)}h`, `${Number(b)}m`]))
+    }
+    if (frac != null) parts.push(`${fracToMs(frac)}ms`)
+    return parts.join(' ')
+  })
+}
+
+/** True when the text contains at least one clock-style token. */
+export function hasColonTime(raw: string): boolean {
+  return new RegExp(COLON_SRC).test(raw)
+}
+
+/** True when a bare two-part token is present, so its reading is ambiguous. */
+export function colonIsAmbiguous(raw: string): boolean {
+  const re = new RegExp(COLON_SRC, 'g')
+  let m: RegExpExecArray | null
+  while ((m = re.exec(raw))) if (m[3] == null && m[4] == null) return true
+  return false
+}
+
+/** Render an engine result ("25 Hours 15 Minutes 0 Seconds") as a digital-clock
+ *  string ("25:15:00"). Components are read BY UNIT NAME from `engineFormat`
+ *  (e.g. "Hour Minute Second"), because the engine omits zero leading units —
+ *  "9 Minutes 5 Seconds" must still render the Hour slot as 0. `pads` zero-pads
+ *  each component; the component at `msIndex` (if any) is joined with a dot. */
+export function toClockString(engineResult: string, engineFormat: string, pads: number[], msIndex = -1): string {
+  const neg = engineResult.trim().startsWith('-')
+  const found: Record<string, number> = {}
+  const re = /(\d+(?:\.\d+)?)\s+(Hour|Minute|Second|MSecond)s?/g
+  let m: RegExpExecArray | null
+  while ((m = re.exec(engineResult))) if (m[1] && m[2]) found[m[2]] = parseFloat(m[1])
+  const units = engineFormat.split(' ')
+  let out = ''
+  units.forEach((u, i) => {
+    const raw = found[u] ?? 0
+    const v = i === msIndex ? Math.round(raw) : Math.trunc(raw)
+    const p = pads[i] ?? 0
+    const s = p > 0 ? String(v).padStart(p, '0') : String(v)
+    out += i === 0 ? s : (i === msIndex ? '.' : ':') + s
+  })
+  return (neg ? '-' : '') + out
+}
+
 // Units the engine understands, in canonical (post-normalization) form. Any
 // other alphabetic token is a typo or garbage (e.g. "minu") and must be
 // rejected, not silently dropped — otherwise "2h 15m / 2minu" quietly computes

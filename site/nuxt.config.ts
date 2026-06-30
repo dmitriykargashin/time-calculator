@@ -32,7 +32,13 @@ export default defineNuxtConfig({
   // Static-render the landing page → instant, fully crawlable HTML that AI
   // retrieval bots (1–5s fetch windows, little/no JS) can read.
   nitro: {
-    prerender: { crawlLinks: true, routes: ['/', '/convert', '/robots.txt', '/sitemap.xml', '/llms.txt', '/llms-full.txt'] },
+    prerender: { crawlLinks: true, routes: ['/', '/convert', '/dmitrii-kargashin', '/robots.txt', '/sitemap.xml', '/llms.txt', '/llms-full.txt'] },
+  },
+
+  // The author page is the person-brand URL (/dmitrii-kargashin); the old /about
+  // 301-redirects to it so any existing or guessed links still resolve.
+  routeRules: {
+    '/about': { redirect: { to: '/dmitrii-kargashin', statusCode: 301 } },
   },
 
   // Attach the social card as an <image:image> on the home URL and stamp a

@@ -97,6 +97,7 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
           </div>
           <div class="foot-col">
             <h3>More</h3>
+            <NuxtLink to="/dmitrii-kargashin">Dmitrii Kargashin</NuxtLink>
             <a href="https://www.cardamon.org/products/time-calculator/privacy-policy-time-calculator" target="_blank" rel="noopener">Privacy</a>
             <button type="button" class="foot-cookie" @click="openCookieSettings">Cookie settings</button>
             <a href="mailto:support@cardamon.org">support@cardamon.org</a>

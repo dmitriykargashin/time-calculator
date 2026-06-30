@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FAQS } from '~/utils/faqs'
+import { personNode } from '~/utils/author'
 
 const site = useSiteConfig()
 const trackEvent = useTrack()
@@ -59,8 +60,10 @@ const jsonLd = computed(() => ({
       url: 'https://www.cardamon.org',
       logo: `${site.url}/icons/icon-512.png`,
       email: 'support@cardamon.org',
+      founder: { '@id': `${site.url}/#person` },
       sameAs: [playUrl],
     },
+    personNode(site.url),
     {
       '@type': ['WebApplication', 'SoftwareApplication'],
       '@id': `${site.url}/#app`,

@@ -44,7 +44,6 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
       <span aria-hidden="true">/</span>
       <span aria-current="page">Guides</span>
     </nav>
-    <span class="eyebrow">Guides</span>
     <h1>Time calculator guides</h1>
     <p class="hub-lead">
       Short, practical walk-throughs for the most common time-math jobs. Every guide leads

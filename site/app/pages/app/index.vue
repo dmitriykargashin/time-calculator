@@ -82,7 +82,6 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
         <span aria-current="page">Mobile app</span>
       </nav>
 
-      <span class="eyebrow">Mobile app</span>
       <h1 data-reveal style="--rd: 0s">{{ SHOWCASE.h1 }}</h1>
       <p class="as-pitch" data-reveal style="--rd: 0.06s">{{ SHOWCASE.pitch }}</p>
 

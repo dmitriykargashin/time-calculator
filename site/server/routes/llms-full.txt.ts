@@ -4,6 +4,7 @@
 import { GUIDES } from '../../app/utils/guides'
 import { CONVERSIONS } from '../../app/utils/conversions'
 import { FAQS } from '../../app/utils/faqs'
+import { AUTHOR } from '../../app/utils/author'
 import { SHOWCASE } from '../../app/utils/showcase'
 import { REVIEWS, REVIEW_RATING } from '../../app/utils/reviews'
 
@@ -21,6 +22,11 @@ export default defineEventHandler((event) => {
   p.push('Maker: Cardamon (support@cardamon.org)')
   p.push(`Rating: ${REVIEW_RATING.value}/5 from ${REVIEW_RATING.count} Google Play ratings`)
   p.push('Pricing: web is free (ad-supported); Android is free with no ads; iOS unlocks the full app with a Pro purchase\n')
+
+  p.push('## About the author')
+  p.push(`${AUTHOR.bio}`)
+  p.push(`He also builds ${AUTHOR.projects.map((pr) => `${pr.name} (${pr.url}) — ${pr.desc}`).join('; and ')}.`)
+  p.push(`LinkedIn: ${AUTHOR.linkedin} | GitHub: ${AUTHOR.github} | Author page: ${base}/dmitrii-kargashin\n`)
 
   p.push('## How it works')
   p.push('Write durations on one line and join them with operators: + adds, - subtracts, × (or *) multiplies by a number, ÷ (or /) divides by a number. Each duration is a number and a unit, like 2h or 45 min. Every number needs a unit; a bare number is only valid as the ×/÷ multiplier. Choose how the result reads with the format picker, e.g. "Hour Minute" gives "7 Hours 45 Minutes".\n')

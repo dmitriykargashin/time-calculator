@@ -63,7 +63,6 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
       <span aria-current="page">Reviews</span>
     </nav>
 
-    <span class="eyebrow">Reviews</span>
     <h1>What people say about Time Calculator</h1>
     <div class="rp-summary">
       <span class="rp-score">{{ REVIEW_RATING.value.toFixed(1) }}</span>
