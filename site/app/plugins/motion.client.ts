@@ -29,6 +29,6 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     requestAnimationFrame(run)
     // re-scan after client-side navigation
-    nuxtApp.hook('page:finish', () => requestAnimationFrame(run))
+    nuxtApp.hook('page:finish', () => { requestAnimationFrame(run) })
   })
 })

@@ -2,6 +2,7 @@
 // one-shot LLM ingestion. Generated from the same data the pages render, so it
 // never drifts. Prerendered fresh on each build (see nitro.prerender).
 import { GUIDES } from '../../app/utils/guides'
+import { CONVERSIONS } from '../../app/utils/conversions'
 import { FAQS } from '../../app/utils/faqs'
 import { SHOWCASE } from '../../app/utils/showcase'
 import { REVIEWS, REVIEW_RATING } from '../../app/utils/reviews'
@@ -26,6 +27,9 @@ export default defineEventHandler((event) => {
 
   p.push('## Unit conversions')
   p.push('1 day = 24 hours = 1,440 minutes = 86,400 seconds. 1 week = 7 days. 1 hour = 60 minutes = 3,600 seconds. 1 minute = 60 seconds = 60,000 milliseconds. 1 second = 1,000 milliseconds.\n')
+
+  p.push(`## Time unit converter (${base}/convert)`)
+  for (const c of CONVERSIONS) p.push(`### ${c.question}\n${c.answer} In the calculator, \`${c.expr}\` returns ${c.result}.\n`)
 
   p.push('## Frequently asked questions')
   for (const f of FAQS) p.push(`### ${f.q}\n${f.a}\n`)

@@ -9,13 +9,16 @@
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "typecheck": "nuxt typecheck",
     "postinstall": "nuxt prepare",
     "sync-engine": "bash scripts/sync-engine.sh"
   },
   "devDependencies": {
     "@nuxt/fonts": "^0.11.4",
     "@nuxtjs/seo": "^5.3.1",
-    "nuxt": "^4.0.3"
+    "nuxt": "^4.0.3",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.3.5"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

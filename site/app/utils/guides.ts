@@ -21,7 +21,7 @@ export interface Guide {
 }
 
 // Last content review — feeds dateModified in the per-guide schema.
-export const GUIDE_UPDATED = '2026-06-29'
+export const GUIDE_UPDATED = '2026-06-30'
 
 export const GUIDES: Guide[] = [
   {
@@ -246,10 +246,10 @@ export const GUIDES: Guide[] = [
   {
     "slug": "timesheet-total-hours",
     "query": "total timesheet hours",
-    "answer": "To total timesheet hours, type each day's worked time as a duration and add them with plus signs on one line, like 8h 12m + 7h 48m + 8h 30m, then pick a result format such as Hour Minute. The calculator carries minutes over into whole hours and shows the weekly total instantly.",
+    "answer": "To total timesheet or time card hours, type each day's worked time as a duration and add them with plus signs on one line, like 8h 12m + 7h 48m + 8h 30m, then pick a result format such as Hour Minute. The calculator carries minutes over into whole hours and shows the weekly total instantly.",
     "h1": "How do I total the hours on a weekly timesheet?",
     "metaTitle": "Total Timesheet Hours: Add Up a Week Fast",
-    "metaDescription": "Add up your weekly timesheet hours in seconds. Type each day as hours and minutes, hit plus, and get a clean Hour Minute total. Free, right in your browser.",
+    "metaDescription": "Add up your weekly timesheet or time card hours in seconds. Type each day as hours and minutes, hit plus, and get a clean Hour Minute total. Free, in your browser.",
     "intro": "Adding hours and minutes by hand is where timesheets go wrong: 45 plus 50 minutes is not 95, it rolls into an extra hour. This calculator handles that carry for you. Type each shift as a duration, join them with plus signs, and read the weekly total. Drivers, hourly staff, and freelancers use the same one-line method every week.",
     "useCaseLine": "A truck driver logging different start and finish times every day can type all five shifts on one line and get the week's payable total without touching a spreadsheet.",
     "steps": [
@@ -460,6 +460,330 @@ export const GUIDES: Guide[] = [
       "multiply-and-divide-time",
       "add-and-subtract-time",
       "add-hours-and-minutes"
+    ]
+  },
+  {
+    "slug": "convert-time-to-decimal",
+    "query": "convert time to decimal hours",
+    "h1": "Convert Time to Decimal Hours",
+    "metaTitle": "Convert Time to Decimal Hours for Payroll",
+    "metaDescription": "Convert hours and minutes to decimal hours for payroll. See why 8h 15m = 8.25, the 15/30/45 rule, and how to handle repeating decimals like 8.3333333.",
+    "answer": "To convert time to decimal hours, divide the minutes by 60 and add the whole hours. So 8h 15m becomes 8 + 15/60 = 8.25 hours. In the calculator, type the duration and pick the single \"Hour\" format to get the decimal directly: 15m is .25, 30m is .5, 45m is .75.",
+    "intro": "Most payroll and timesheet systems want hours as a decimal, not as hours and minutes. They expect 8.25, not 8h 15m. The conversion is just minutes divided by 60, added to the whole hours. The calculator does it for you: enter the duration and choose the single \"Hour\" result format to read the decimal straight off. The clean quarters are easy to memorize (15m = .25, 30m = .5, 45m = .75), but odd minute counts produce repeating decimals like 8.3333333, which payroll usually rounds to two places.",
+    "useCaseLine": "For a payroll clerk who has to enter each employee's daily hours as a decimal into the wage system.",
+    "steps": [
+      {
+        "title": "Enter the duration with units",
+        "body": "Type the worked time as a number-plus-unit duration, for example 8h 15m. Each value needs a unit; the engine reads hours and minutes, not clock times. If you started from a clock span, calculate that first (for example 17h 45m - 9h 15m) and convert the result."
+      },
+      {
+        "title": "Choose the single \"Hour\" format",
+        "body": "Set the result format to \"Hour\". This single-unit format returns decimal hours instead of splitting the answer into hours and minutes. So 8h 15m reads as 8.25 Hours and 90 min reads as 1.5 Hours."
+      },
+      {
+        "title": "Read the quarter-hour shortcuts",
+        "body": "Quarter hours convert to clean decimals: 15m = .25, 30m = .5, 45m = .75. Any whole-hour amount plus one of these stays exact, so 8h 30m is 8.5 and 8h 45m is 8.75. These are worth memorizing for quick timesheet checks."
+      },
+      {
+        "title": "Round repeating decimals for payroll",
+        "body": "Odd minute counts do not divide evenly by 60, so they produce repeating decimals. The engine shows 7 digits, so 8h 20m becomes 8.3333333 Hours. Payroll systems usually round to 2 decimal places, making that 8.33. Round only the final total, not each daily figure, to avoid drift."
+      }
+    ],
+    "examples": [
+      {
+        "expr": "8h 15m",
+        "format": "Hour",
+        "result": "8.25 Hours",
+        "note": "A standard shift with a quarter hour, the classic payroll example."
+      },
+      {
+        "expr": "8h 45m",
+        "format": "Hour",
+        "result": "8.75 Hours",
+        "note": "Three quarters of an hour converts to a clean .75 decimal."
+      },
+      {
+        "expr": "8h 20m",
+        "format": "Hour",
+        "result": "8.3333333 Hours",
+        "note": "An odd minute count gives a repeating decimal that payroll rounds to 8.33."
+      },
+      {
+        "expr": "8h 15m",
+        "format": "Minute",
+        "result": "495 Minutes",
+        "note": "Same shift shown as total minutes if your system wants minutes instead."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How do I convert hours and minutes to decimal hours?",
+        "a": "Divide the minutes by 60 and add the whole hours. For 8h 15m, that is 8 + 15/60 = 8.25. In the calculator, type the duration and select the single \"Hour\" format to get the decimal automatically."
+      },
+      {
+        "q": "Why is 8h 15m equal to 8.25 and not 8.15?",
+        "a": "Decimal hours are fractions of an hour, not the minute count written after a dot. 15 minutes is a quarter of an hour, which is 0.25, so 8h 15m is 8.25 hours. The 15 is not the decimal; 15/60 is."
+      },
+      {
+        "q": "What are 15, 30, and 45 minutes in decimal?",
+        "a": "15 minutes is .25, 30 minutes is .5, and 45 minutes is .75. These are the quarter-hour values, the most common conversions on a timesheet. So 6h 30m is 6.5 and 2h 45m is 2.75."
+      },
+      {
+        "q": "Why does 8h 20m show 8.3333333?",
+        "a": "20 minutes is 20/60 of an hour, which is 0.3333... repeating. The calculator displays 7 digits, so you see 8.3333333. Payroll systems round this to two places, giving 8.33."
+      },
+      {
+        "q": "Can I convert a duration to total minutes instead?",
+        "a": "Yes. Use the single \"Minute\" format and the result comes back as total minutes. For example, 8h 15m returns 495 Minutes, useful when a system tracks minutes rather than decimal hours."
+      }
+    ],
+    "related": [
+      "timesheet-total-hours",
+      "add-hours-and-minutes",
+      "billable-hours"
+    ]
+  },
+  {
+    "slug": "time-between-two-times",
+    "query": "time between two times",
+    "h1": "How to Calculate the Time Between Two Times",
+    "metaTitle": "Time Between Two Times: How to Calculate Elapsed Time",
+    "metaDescription": "Find the time between two times by writing each clock time as a duration from midnight, then subtracting. Examples for parking, ovens, study blocks, and flights.",
+    "answer": "Write each clock time as a duration from midnight, then subtract the earlier from the later. 5:30 PM minus 9:15 AM becomes \"17h 45m - 9h 15m\", which equals 8h 30m. If the span crosses midnight, add 24h to the end time before subtracting.",
+    "intro": "You want to know how long something lasted: a parking session, an oven timer, a study block, or a long flight. The trick is to stop thinking in clock labels and start thinking in durations. Convert each clock time into hours and minutes counted from midnight, then subtract the start from the end. This calculator does duration math only. It has no concept of \"now\", today's date, or the calendar, so it answers \"how long between these two times\" but not \"what time is it after this delay\".",
+    "useCaseLine": "Measure how long a parking session, oven timer, study block, flight, or overnight span lasted by subtracting two clock times.",
+    "steps": [
+      {
+        "title": "Turn each clock time into a duration from midnight",
+        "body": "Read each time off the clock and rewrite it as hours and minutes since 12:00 midnight. 9:15 AM becomes 9h 15m. 5:45 PM becomes 17h 45m, because afternoon hours keep counting up: 1 PM is 13, 2 PM is 14, and so on. Midnight itself is 0h. This is the step that lets a plain subtraction work."
+      },
+      {
+        "title": "Subtract the earlier time from the later time",
+        "body": "Put the later duration first and subtract the earlier one: \"17h 45m - 9h 15m\". The calculator handles the minute borrowing for you, so you never have to convert to a decimal or borrow 60 minutes by hand. The result is the elapsed time, for example 8h 30m."
+      },
+      {
+        "title": "If the span crosses midnight, add 24h to the end",
+        "body": "When the end time is on the next day, such as parking from 10:30 PM to 6:15 AM, add 24h to the end before subtracting: \"6h 15m + 24h - 22h 30m\". The 24h represents one full day, so the math lands on the real overnight length instead of a negative number."
+      },
+      {
+        "title": "Pick the result format you want to read",
+        "body": "Choose Hour Minute for a clean \"8 hours 30 minutes\" readout, or switch to the single Hour format to get decimal hours like 8.5 for spreadsheets and billing. The Minute format gives the whole span as total minutes, handy for timers and cooking."
+      }
+    ],
+    "examples": [
+      {
+        "expr": "14h 20m - 9h 45m",
+        "format": "Hour Minute",
+        "result": "4 Hours 35 Minutes",
+        "note": "Parking session from 9:45 AM to 2:20 PM."
+      },
+      {
+        "expr": "19h 50m - 19h 05m",
+        "format": "Minute",
+        "result": "45 Minutes",
+        "note": "Oven timer set at 7:05 PM and pulled at 7:50 PM."
+      },
+      {
+        "expr": "16h 30m - 13h 15m",
+        "format": "Hour",
+        "result": "3.25 Hours",
+        "note": "An afternoon study block from 1:15 PM to 4:30 PM, in decimal hours."
+      },
+      {
+        "expr": "6h 15m + 24h - 22h 30m",
+        "format": "Hour Minute",
+        "result": "7 Hours 45 Minutes",
+        "note": "An overnight stretch from 10:30 PM to 6:15 AM the next morning."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How do I calculate the time between two times?",
+        "a": "Write each clock time as a duration from midnight, then subtract the earlier from the later. For 9:15 AM to 5:45 PM, enter \"17h 45m - 9h 15m\" to get 8h 30m. The calculator does the minute borrowing, so you do not convert anything by hand."
+      },
+      {
+        "q": "What if the second time is on the next day?",
+        "a": "Add 24h to the end time before subtracting. A span from 10:30 PM to 6:15 AM becomes \"6h 15m + 24h - 22h 30m\", which equals 7h 45m. The 24h stands in for the full day that passed overnight."
+      },
+      {
+        "q": "Can it tell me what time it will be in 3 hours?",
+        "a": "No. This is a duration calculator. It measures how long a span lasts when you give it both ends, but it has no idea what time it is now and cannot add a delay to the current clock or to a calendar date."
+      },
+      {
+        "q": "How do I get the answer in decimal hours?",
+        "a": "Use the single Hour format. A 3 hour 15 minute span shows as 3.25 Hours, and 45 minutes shows as 0.75 Hours. This is the format to use for timesheets, billing, or any spreadsheet that expects a decimal."
+      }
+    ],
+    "related": [
+      "hours-worked-between-two-times",
+      "add-and-subtract-time",
+      "convert-time-units"
+    ]
+  },
+  {
+    "slug": "add-video-audio-lengths",
+    "query": "add up video and audio lengths",
+    "h1": "Add Up Video and Audio Lengths (mm:ss and Milliseconds)",
+    "metaTitle": "Add Up Video & Audio Lengths: mm:ss Calculator",
+    "metaDescription": "Total clip and track lengths in minutes and seconds, roll past an hour, and work in milliseconds. A free mm:ss calculator built for video editors and audio work.",
+    "answer": "To total video or audio lengths, enter each clip as minutes and seconds and add them: \"2m 45s + 3m 12s + 1m 58s\" returns 7 Minutes 55 Seconds in the Minute Second format. The seconds roll into minutes automatically, and minutes roll into hours when you pick the Hour Minute Second format.",
+    "intro": "Editors, podcasters, and musicians stack clip and track lengths constantly, and the math is annoying because 45s plus 30s is not 75, it is 1:15. This calculator carries seconds into minutes and minutes into hours for you. Enter each length as a number plus a unit, add them, and read the total in whichever mm:ss or h:mm:ss format you need. It also works in milliseconds, which most time calculators drop. The web version is free and ad-supported, running the same engine as the mobile apps.",
+    "useCaseLine": "For video editors, podcasters, and musicians totalling clip runtimes and track lengths down to the millisecond.",
+    "steps": [
+      {
+        "title": "Type each clip as minutes and seconds",
+        "body": "Write a length as a number and a unit with no colon: a 2:45 clip is \"2m 45s\", a 12-second sting is \"12s\". Use \"m\" for minutes and \"s\" for seconds. A bare number is only allowed as a multiplier, so always attach a unit to each length."
+      },
+      {
+        "title": "Add them with the plus sign",
+        "body": "Chain the clips with +, for example \"2m 45s + 3m 12s + 1m 58s\". The engine sums everything in the background and carries 60 seconds up into a minute, so you never have to fix overflowing seconds by hand."
+      },
+      {
+        "title": "Pick Minute Second for short reels",
+        "body": "Set the result format to Minute Second to read totals as whole minutes and seconds, like 7 Minutes 55 Seconds. This is the format you want for a single reel, a song, or a short clip stack that stays under an hour."
+      },
+      {
+        "title": "Switch to Hour Minute Second once you cross an hour",
+        "body": "For a full playlist or episode, choose Hour Minute Second. A four-clip set like \"18m 30s + 22m 15s + 12m 45s + 14m 50s\" reads 1 Hour 8 Minutes 20 Seconds, with the minutes rolling cleanly into one hour."
+      },
+      {
+        "title": "Work in milliseconds for audio and frames",
+        "body": "Add the ms unit for sub-second precision most calculators skip. Use \"1s - 250ms\" to find a 750 ms gap, or multiply a frame duration: \"41ms * 30\" with the Hour Minute Second MSecond format gives 0 Hours 0 Minutes 1 Second 230 MSeconds. Pick a format ending in MSecond to keep the millisecond digits."
+      }
+    ],
+    "examples": [
+      {
+        "expr": "2m 45s + 3m 12s + 1m 58s",
+        "format": "Minute Second",
+        "result": "7 Minutes 55 Seconds",
+        "note": "Total three short clips for a reel; seconds carry into minutes automatically."
+      },
+      {
+        "expr": "18m 30s + 22m 15s + 12m 45s + 14m 50s",
+        "format": "Hour Minute Second",
+        "result": "1 Hour 8 Minutes 20 Seconds",
+        "note": "Sum a playlist of segments that crosses the one-hour mark."
+      },
+      {
+        "expr": "1s - 250ms",
+        "format": "MSecond",
+        "result": "750 MSeconds",
+        "note": "Find the millisecond gap left after trimming a quarter-second from a one-second cue."
+      },
+      {
+        "expr": "41ms * 30",
+        "format": "Hour Minute Second MSecond",
+        "result": "1 Second 230 MSeconds",
+        "note": "Multiply one frame at 41 ms by 30 frames to get the clip length to the millisecond."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How do I total clip lengths in mm:ss?",
+        "a": "Type each clip as minutes and seconds with a unit, like \"3m 20s\", join them with +, and set the result format to Minute Second. The calculator carries every 60 seconds into a minute, so \"3m 20s + 2m 50s\" returns 6 Minutes 10 Seconds rather than 5:70."
+      },
+      {
+        "q": "What if my total goes over an hour?",
+        "a": "Switch the result format to Hour Minute Second. The same sum then rolls 60 minutes into an hour, so a long playlist shows as something like 1 Hour 8 Minutes 20 Seconds instead of 68 minutes."
+      },
+      {
+        "q": "Can it handle milliseconds?",
+        "a": "Yes. Use the ms unit, which many time calculators lack. You can compute \"1s - 250ms\" to get 750 MSeconds, or multiply a frame or sample duration. Pick any result format ending in MSecond to keep the millisecond digits visible."
+      },
+      {
+        "q": "Why do I have to add a unit to every number?",
+        "a": "Each value needs a unit so the engine knows whether 3 means minutes, seconds, or milliseconds. A bare number is only valid as a multiplier or divisor, as in \"41ms * 30\" or \"6m / 2\". \"2 + 2\" alone is not a valid time expression."
+      },
+      {
+        "q": "Does this know the actual clock time or release date?",
+        "a": "No. It works with durations only. It adds, subtracts, multiplies, and divides lengths of time. It does not track wall-clock time, calendar dates, or the current moment, so it cannot tell you when a render will finish in real time."
+      }
+    ],
+    "related": [
+      "convert-time-units",
+      "multiply-and-divide-time",
+      "add-and-subtract-time"
+    ]
+  },
+  {
+    "slug": "billable-hours",
+    "query": "calculate billable hours",
+    "h1": "Billable Hours Calculator",
+    "metaTitle": "Billable Hours Calculator: Total Time to Decimal",
+    "metaDescription": "Add up billable time across client sessions and convert the total to decimal hours for invoicing. Sum durations, multiply repeated tasks, and get a clean decimal.",
+    "answer": "To calculate billable hours, add each session duration with the + operator (for example 1h 15m + 45m + 2h 30m = 4h 30m), then switch the result format to the single \"Hour\" option to get the decimal total, 4.5 hours. Invoices and billing software expect decimals, so this converts your tracked time directly.",
+    "intro": "Freelancers, lawyers, and agencies bill in decimal hours, not hours and minutes. Most invoicing tools want 4.5, not 4h 30m. This calculator adds every tracked session, multiplies repeated tasks, and converts the total to a clean decimal you can drop straight into an invoice. Everything stays as duration math, so the engine handles the rounding for you.",
+    "useCaseLine": "Total client sessions and convert to decimal hours for invoicing.",
+    "steps": [
+      {
+        "title": "Enter each session as a duration",
+        "body": "Type every work block with a unit attached: 1h 15m for a meeting, 45m for a call, 2h 30m for deep work. Hours use h, minutes use m. Each value needs a unit, so write 45m, not a bare 45."
+      },
+      {
+        "title": "Add the sessions with +",
+        "body": "Join the durations with the plus operator: 1h 15m + 45m + 2h 30m. The calculator returns 4h 30m. Keep stacking sessions across the day or the week the same way to build one running total."
+      },
+      {
+        "title": "Multiply any repeated task",
+        "body": "For a task that ran several times at the same length, multiply instead of retyping it. Six 25-minute calls become 25m * 6, which equals 2h 30m. The count is a bare number because it acts as a multiplier."
+      },
+      {
+        "title": "Switch the result to decimal hours",
+        "body": "Set the result format to the single \"Hour\" option. Your 4h 30m total becomes 4.5 hours, and 8h 15m becomes 8.25 hours. This is the figure invoices and billing software expect, so copy it straight onto the line item."
+      },
+      {
+        "title": "Apply your rate",
+        "body": "Use the rate panel to multiply the decimal total by your hourly rate and read the money amount, or paste the decimal hours into your own invoicing tool. The time result itself never includes currency, so the rate panel is where the dollar figure appears."
+      }
+    ],
+    "examples": [
+      {
+        "expr": "1h 15m + 45m + 2h 30m",
+        "format": "Hour Minute",
+        "result": "4 Hours 30 Minutes",
+        "note": "Add three client sessions logged in one day to see the running total."
+      },
+      {
+        "expr": "1h 15m + 45m + 2h 30m",
+        "format": "Hour",
+        "result": "4.5 Hours",
+        "note": "Same total shown as decimal hours, ready to type onto an invoice."
+      },
+      {
+        "expr": "25m * 6",
+        "format": "Hour Minute",
+        "result": "2 Hours 30 Minutes",
+        "note": "Bill a repeated 25-minute support call that happened six times."
+      },
+      {
+        "expr": "25m * 6",
+        "format": "Hour",
+        "result": "2.5 Hours",
+        "note": "The same repeated block as a decimal for the line item."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How do I total my billable hours?",
+        "a": "Enter each session as a duration and join them with the + operator, like 1h 15m + 45m + 2h 30m. The calculator returns the combined total, 4h 30m. Keep every value tagged with a unit (h for hours, m for minutes) so the engine reads it correctly."
+      },
+      {
+        "q": "How do I convert billable time to decimal hours?",
+        "a": "Calculate your total, then set the result format to the single \"Hour\" option. A total of 4h 30m becomes 4.5 hours, and 8h 15m becomes 8.25 hours. Totals that do not divide evenly show seven digits, so 1h 20m reads 1.3333333 hours."
+      },
+      {
+        "q": "How do I bill the same task repeated several times?",
+        "a": "Multiply one session by the count. For six 25-minute calls, type 25m * 6 to get 2h 30m, or 2.5 hours in decimal format. A bare number is allowed only as a multiplier or divisor, so the unit stays on the duration."
+      },
+      {
+        "q": "Can the calculator turn my hours into a money amount?",
+        "a": "Yes. The calculator has a rate panel that multiplies a duration by your hourly rate to show a dollar figure. The plain result string only reports time, so use the decimal hours total there or paste it into your invoicing software."
+      }
+    ],
+    "related": [
+      "convert-time-to-decimal",
+      "timesheet-total-hours",
+      "multiply-and-divide-time"
     ]
   }
 ]

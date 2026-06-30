@@ -22,6 +22,7 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
         <nav class="head-nav">
           <NuxtLink to="/" class="head-link">Home</NuxtLink>
           <NuxtLink to="/guides" class="head-link">Guides</NuxtLink>
+          <NuxtLink to="/convert" class="head-link">Convert</NuxtLink>
           <NuxtLink to="/app" class="head-link">Mobile&nbsp;app</NuxtLink>
           <NuxtLink to="/#faq" class="head-link">FAQ</NuxtLink>
           <ThemeSwitcher />
@@ -47,6 +48,7 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
         <nav v-if="mobileOpen" id="mobile-menu" class="mobile-menu" aria-label="Mobile">
           <NuxtLink to="/" @click="mobileOpen = false">Home</NuxtLink>
           <NuxtLink to="/guides" @click="mobileOpen = false">Guides</NuxtLink>
+          <NuxtLink to="/convert" @click="mobileOpen = false">Convert</NuxtLink>
           <NuxtLink to="/app" @click="mobileOpen = false">Mobile app</NuxtLink>
           <NuxtLink to="/reviews" @click="mobileOpen = false">Reviews</NuxtLink>
           <NuxtLink to="/whats-new" @click="mobileOpen = false">What's new</NuxtLink>
@@ -80,6 +82,7 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
           <div class="foot-col">
             <h3>Calculator</h3>
             <NuxtLink to="/">Web calculator</NuxtLink>
+            <NuxtLink to="/convert">Unit converter</NuxtLink>
             <NuxtLink to="/guides">Guides</NuxtLink>
             <NuxtLink to="/reviews">Reviews</NuxtLink>
             <NuxtLink to="/#faq">FAQ</NuxtLink>

@@ -202,6 +202,7 @@ useHead({
       <div class="conv"><b>1 minute</b><span>60 seconds · 60,000 ms</span></div>
       <div class="conv"><b>1 second</b><span>1,000 milliseconds</span></div>
     </div>
+    <p><NuxtLink class="guide-teaser-all" to="/convert">Convert any time unit →</NuxtLink></p>
   </section>
 
   <!-- GUIDES teaser: surfaces the cluster + internal links from the home page -->

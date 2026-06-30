@@ -27,6 +27,7 @@ export default defineEventHandler((event) => {
 - [Time Calculator (home)](${base}/): the web calculator, how it works, unit conversions, FAQ, and reviews
 - [Guides](${base}/guides): step-by-step how-to guides for common time-math jobs
 ${guideLines}
+- [Time unit converter](${base}/convert): single-pair conversions (minutes to hours, seconds to minutes, days to hours, weeks to days, milliseconds to seconds) each with a worked example
 - [Reviews](${base}/reviews): real Google Play reviews (4.6 stars, 391 ratings)
 - [Mobile app](${base}/app): the Android and iOS app, its screens and features
 - [What's new](${base}/whats-new): app release notes

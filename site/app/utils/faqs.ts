@@ -55,4 +55,16 @@ export const FAQS: Faq[] = [
     q: "Does it handle milliseconds?",
     a: "Yes. Milliseconds are a supported unit, written as \"ms\". You can add, subtract, multiply, or divide them like any other unit, for example \"1s - 250ms\" gives 750 Milliseconds. It is one of the few time calculators that goes down to the millisecond, which audio and dev users rely on.",
   },
+  {
+    q: "How do I get a decimal hours result like 8.25?",
+    a: "Type your durations, then choose the single Hour format from the picker. \"8h 15m\" reads as 8.25 Hours, and \"90 min\" reads as 1.5 Hours. Values that don't divide evenly show seven digits, so \"1h 20m\" becomes 1.3333333 Hours. Great for payroll and timesheets.",
+  },
+  {
+    q: "How do I find the time between two times?",
+    a: "Enter each clock time as a duration from midnight, then subtract. For 9:15 to 17:45, type \"17h 45m - 9h 15m\" to get 8 Hours 30 Minutes. For an overnight span, add 24h to the end time. This is pure duration math, so it never uses dates, the clock, or now.",
+  },
+  {
+    q: "How do I add up video or audio lengths?",
+    a: "Add the clip lengths with + signs, like \"22m 30s + 45s + 1m 15s\", then pick Minute Second to read 24 Minutes 30 Seconds. Seconds and milliseconds are both supported, so \"3m 12s 500ms + 47s\" works too. Handy for stacking podcast segments, tracks, or render times.",
+  },
 ]
