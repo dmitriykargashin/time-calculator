@@ -1,0 +1,13 @@
+{
+  "name": "time-calculator-extension",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Chrome (MV3) build for Time Calculator — reuses the site's TimeCalculator.vue.",
+  "scripts": {
+    "build": "vite build --config build/vite.config.mjs",
+    "release": "bash build.sh prod",
+    "release:dev": "bash build.sh dev",
+    "sync-engine": "bash scripts/sync-engine.sh",
+    "pack": "bash scripts/pack.sh"
+  }
+}

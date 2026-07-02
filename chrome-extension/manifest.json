@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Time Calculator Cardamon",
+  "version": "1.0.0",
+  "description": "Add, subtract, multiply, divide & convert durations in Chrome’s side panel or address bar. Offline, no sign-in.",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "minimum_chrome_version": "114",
+  "action": {
+    "default_title": "Open Time Calculator panel",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "src/popup/panel.html"
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "omnibox": {
+    "keyword": "tc"
+  },
+  "permissions": ["sidePanel"],
+  "host_permissions": []
+}

@@ -1,11 +1,15 @@
+import 'dart:ui' as ui;
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../data/per_units.dart';
 import '../engine/big_decimal.dart';
 import '../engine/tokens.dart';
+import '../services/monetization.dart';
 import '../state/calculator_model.dart';
 import 'formats_screen.dart' show overlayHeader;
+import 'pro_screen.dart';
 import 'spans.dart';
 import 'theme.dart';
 
@@ -128,10 +132,19 @@ class _PerScreenState extends State<PerScreen> {
               // instead of a blank gap, show a centered hint (rubric axis 5:
               // empty states say what to do next).
               child: _listVisible
-                  ? ValueListenableBuilder<PerUnits>(
-                      valueListenable: widget.model.perUnits,
-                      builder: (context, perUnits, _) =>
-                          _resultsCard(perUnits, dim, palette),
+                  // Listen to Monetization so the blur drops the instant Pro is
+                  // unlocked (gating off on Android/web -> locked is always
+                  // false, so the totals render normally there).
+                  ? ListenableBuilder(
+                      listenable: Monetization.instance,
+                      builder: (context, _) {
+                        final locked = !Monetization.instance.hasPro;
+                        return ValueListenableBuilder<PerUnits>(
+                          valueListenable: widget.model.perUnits,
+                          builder: (context, perUnits, _) => _resultsCard(
+                              perUnits, dim, palette, locked: locked),
+                        );
+                      },
                     )
                   : _emptyHint(palette),
             ),
@@ -282,23 +295,83 @@ class _PerScreenState extends State<PerScreen> {
   /// The results: ONE rounded tonal card holding a single-line row per time
   /// unit, soft inset dividers between, scrollable so the eight rows stay
   /// reachable in a short landscape height / at large text scale.
-  Widget _resultsCard(PerUnits perUnits, Dimens dim, AppPalette palette) {
+  Widget _resultsCard(
+    PerUnits perUnits,
+    Dimens dim,
+    AppPalette palette, {
+    required bool locked,
+  }) {
     final rows = <Widget>[];
     for (var index = 0; index < perUnits.length; index++) {
       if (index > 0) rows.add(_rowDivider(palette));
-      rows.add(_perRow(perUnits, index, dim, palette));
+      rows.add(_perRow(perUnits, index, dim, palette, locked: locked));
     }
+    final card = Material(
+      color: palette.displayCardSurface,
+      borderRadius: BorderRadius.circular(dim.cardRadius),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: rows,
+      ),
+    );
     return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(16, 0, 16, dim.margin16),
-      child: Material(
-        color: palette.displayCardSurface,
-        borderRadius: BorderRadius.circular(dim.cardRadius),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: rows,
+      child: locked ? _lockedOverlay(card, dim, palette) : card,
+    );
+  }
+
+  /// Pro gate for free (gated, not-unlocked) users: the totals are already
+  /// blurred per row; this drops a transparent tap layer over the whole card
+  /// (any tap opens the paywall) and a centered "Unlock Pro" CTA on top, so the
+  /// feature reads as "working, but the answer is behind Pro".
+  Widget _lockedOverlay(Widget card, Dimens dim, AppPalette palette) {
+    return Stack(
+      children: [
+        card,
+        Positioned.fill(
+          child: Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(dim.cardRadius),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () => showProPaywall(context),
+              child: Center(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: AppPalette.accent,
+                    borderRadius: BorderRadius.circular(dim.toolButtonRadius),
+                    boxShadow: [
+                      BoxShadow(
+                        color: palette.shadowBase.withValues(alpha: 0.35),
+                        blurRadius: 14,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.lock_outline, color: Colors.white, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Unlock Pro to see totals',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -324,11 +397,42 @@ class _PerScreenState extends State<PerScreen> {
     PerUnits perUnits,
     int index,
     Dimens dim,
-    AppPalette palette,
-  ) {
+    AppPalette palette, {
+    required bool locked,
+  }) {
     final perUnit = perUnits[index];
     const totalSize = 22.0;
     final formatted = formatPerTotal(perUnit.unitsPerResult);
+    // The computed total. When locked it is blurred + hidden from screen
+    // readers, so the real figure is neither readable nor announced - only its
+    // presence is teased.
+    final Widget total = AutoSizeText.rich(
+      TextSpan(
+        children: [
+          // "~" (ASCII tilde) marks a rounded total. The math glyph "≈" is not
+          // in ABeeZee and renders as tofu, so use the ASCII sign.
+          if (formatted.rounded) const TextSpan(text: '~'),
+          TextSpan(text: formatted.text),
+          TextSpan(
+            // Unit-name suffix in colorResultTime, smaller so the number stays
+            // the focus and the repeated unit reads as a quiet tag.
+            text: ' ${perUnits.unitName}',
+            style: TextStyle(
+              color: palette.resultTime,
+              fontSize: totalSize * kTokenRelativeSize,
+            ),
+          ),
+        ],
+      ),
+      maxLines: 1,
+      minFontSize: 12,
+      textAlign: TextAlign.end,
+      style: TextStyle(
+        fontSize: totalSize,
+        fontWeight: FontWeight.bold,
+        color: palette.nums,
+      ),
+    );
     return Container(
       constraints: const BoxConstraints(minHeight: 52),
       padding: const EdgeInsetsDirectional.fromSTEB(20, 12, 16, 12),
@@ -353,35 +457,17 @@ class _PerScreenState extends State<PerScreen> {
           ),
           const SizedBox(width: 16),
           // Right: the computed total, right-aligned so the figures form a
-          // scannable column down the card.
+          // scannable column down the card. Blurred (and a11y-excluded) when
+          // the Pro gate is active.
           Expanded(
-            child: AutoSizeText.rich(
-              TextSpan(
-                children: [
-                  // "~" (ASCII tilde) marks a rounded total. The math glyph "≈"
-                  // is not in ABeeZee and renders as tofu, so use the ASCII sign.
-                  if (formatted.rounded) const TextSpan(text: '~'),
-                  TextSpan(text: formatted.text),
-                  TextSpan(
-                    // Unit-name suffix in colorResultTime, smaller so the number
-                    // stays the focus and the repeated unit reads as a quiet tag.
-                    text: ' ${perUnits.unitName}',
-                    style: TextStyle(
-                      color: palette.resultTime,
-                      fontSize: totalSize * kTokenRelativeSize,
+            child: locked
+                ? ExcludeSemantics(
+                    child: ImageFiltered(
+                      imageFilter: ui.ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                      child: total,
                     ),
-                  ),
-                ],
-              ),
-              maxLines: 1,
-              minFontSize: 12,
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                fontSize: totalSize,
-                fontWeight: FontWeight.bold,
-                color: palette.nums,
-              ),
-            ),
+                  )
+                : total,
           ),
         ],
       ),

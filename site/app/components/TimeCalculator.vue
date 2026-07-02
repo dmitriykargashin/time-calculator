@@ -49,7 +49,7 @@ const combinedFormats = FORMATS.filter(f => unitCount(f.value) > 1)
 const labelOf = (v: string) =>
   FORMATS.find(f => f.value === v)?.label ?? CLOCK.find(c => c.value === v)?.label ?? v
 
-const EXAMPLES = ['5h 30m + 2h 15m', '2 days - 4h', '8h 15m × 3', '1 week + 3 days', '1 day - 90 min']
+const EXAMPLES = ['5h 30m + 2h 15m', '2 days - 4h', '8h 15m * 3', '1 week + 3 days', '1 day - 90 min']
 
 const props = withDefaults(defineProps<{ initialExpr?: string; initialFormat?: string }>(), {
   initialExpr: '5h 30m + 2h 15m',
@@ -568,7 +568,7 @@ onBeforeUnmount(() => {
                     <template v-else>{{ fmtNum(perBreak[u]) }} {{ unitWord(u, perBreak[u]) }}</template>
                   </span>
                 </div>
-                <div v-if="perTotals" class="per-calc">{{ niceAmount }} × {{ fmtNum(perBreak[u]) }} {{ unitWord(u, perBreak[u]) }}</div>
+                <div v-if="perTotals" class="per-calc">{{ niceAmount }} * {{ fmtNum(perBreak[u]) }} {{ unitWord(u, perBreak[u]) }}</div>
               </li>
             </ul>
             <p v-else class="per-hint">Enter a duration above to see the breakdown.</p>
@@ -605,7 +605,7 @@ onBeforeUnmount(() => {
     </div>
     <p class="micro">
       Type hours, minutes, days, weeks, months, years, or seconds, as full words
-      or shorthand (<code>h m d w</code>), with <code>+ − × ÷</code>. Pick how the
+      or shorthand (<code>h m d w</code>), with <code>+ - * /</code>. Pick how the
       answer reads with <b>Show&nbsp;result&nbsp;as</b> up top. It all runs in
       your browser. <span class="resize-tip">Drag the card’s right edge to make it wider.</span>
     </p>

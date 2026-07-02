@@ -1,0 +1,78 @@
+<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:'Hanken Grotesk';src:url('file:///Volumes/Additional/My Projects/Apps/time-calculator/time-calculator/store-listings/src/fonts/HankenGrotesk.ttf');font-weight:100 900;font-style:normal}*{margin:0;box-sizing:border-box}html,body{width:1024px;height:500px}
+.fg{position:relative;width:1024px;height:500px;overflow:hidden;font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased;
+  background:linear-gradient(108deg,#eef2e2 0%,#dceac2 46%,#c2e0aa 100%)}
+
+.dev-fgr{position:relative;width:184px;padding:4px;background:linear-gradient(135deg,#3a3a40 0%,#202024 45%,#0e0e10 100%);border-radius:19px;
+  box-shadow:0 0 0 1px #4a4a50 inset,0 2px 0 rgba(255,255,255,.06) inset,
+    0 9px 19px rgba(20,18,10,.34),0 2px 5px rgba(20,18,10,.24)}
+.dev-fgr .b{position:absolute;width:3px;border-radius:3px;background:#0c0c0e}
+.dev-fgr .b.bl{left:-2px}.dev-fgr .b.br{right:-2px}
+.dev-fgr .screen{position:relative;width:176px;height:381px;overflow:hidden;border-radius:16px;background:#f7f4ec}
+.dev-fgr .screen img{display:block;width:176px;height:381px}
+.dev-fgr .sb{position:absolute;z-index:4;top:3px;left:0;right:0;height:18px;display:flex;align-items:center;justify-content:space-between;padding:0 11px;color:#1c1b15}
+.dev-fgr .sb-time{font-weight:600;font-size:6px}
+.dev-fgr .sb-icons{display:flex;align-items:center;gap:2px}
+.dev-fgr .sb-icons svg{height:4px;width:auto}
+.dev-fgr .notch{position:absolute;z-index:5;left:50%;transform:translateX(-50%)}
+.dev-fgf{position:relative;width:184px;padding:4px;background:linear-gradient(135deg,#3a3a40 0%,#202024 45%,#0e0e10 100%);border-radius:19px;
+  box-shadow:0 0 0 1px #4a4a50 inset,0 2px 0 rgba(255,255,255,.06) inset,
+    0 9px 19px rgba(20,18,10,.34),0 2px 5px rgba(20,18,10,.24)}
+.dev-fgf .b{position:absolute;width:3px;border-radius:3px;background:#0c0c0e}
+.dev-fgf .b.bl{left:-2px}.dev-fgf .b.br{right:-2px}
+.dev-fgf .screen{position:relative;width:176px;height:381px;overflow:hidden;border-radius:16px;background:#f7f4ec}
+.dev-fgf .screen img{display:block;width:176px;height:381px}
+.dev-fgf .sb{position:absolute;z-index:4;top:3px;left:0;right:0;height:18px;display:flex;align-items:center;justify-content:space-between;padding:0 11px;color:#1c1b15}
+.dev-fgf .sb-time{font-weight:600;font-size:6px}
+.dev-fgf .sb-icons{display:flex;align-items:center;gap:2px}
+.dev-fgf .sb-icons svg{height:4px;width:auto}
+.dev-fgf .notch{position:absolute;z-index:5;left:50%;transform:translateX(-50%)}
+.dev-fgc{position:relative;width:218px;padding:4px;background:linear-gradient(135deg,#3a3a40 0%,#202024 45%,#0e0e10 100%);border-radius:23px;
+  box-shadow:0 0 0 1px #4a4a50 inset,0 2px 0 rgba(255,255,255,.06) inset,
+    0 11px 23px rgba(20,18,10,.34),0 3px 6px rgba(20,18,10,.24)}
+.dev-fgc .b{position:absolute;width:3px;border-radius:3px;background:#0c0c0e}
+.dev-fgc .b.bl{left:-2px}.dev-fgc .b.br{right:-2px}
+.dev-fgc .screen{position:relative;width:210px;height:454px;overflow:hidden;border-radius:19px;background:#f7f4ec}
+.dev-fgc .screen img{display:block;width:210px;height:454px}
+.dev-fgc .sb{position:absolute;z-index:4;top:4px;left:0;right:0;height:21px;display:flex;align-items:center;justify-content:space-between;padding:0 13px;color:#1c1b15}
+.dev-fgc .sb-time{font-weight:600;font-size:7px}
+.dev-fgc .sb-icons{display:flex;align-items:center;gap:3px}
+.dev-fgc .sb-icons svg{height:4px;width:auto}
+.dev-fgc .notch{position:absolute;z-index:5;left:50%;transform:translateX(-50%)}
+.txt{position:absolute;z-index:5;left:58px;top:0;height:500px;display:flex;flex-direction:column;justify-content:space-between;padding:86px 0;max-width:408px}
+.brand{display:flex;align-items:center;gap:16px}
+.brand img{width:58px;height:58px;display:block}
+.brand .wmstack{display:flex;flex-direction:column;line-height:1.02}
+.brand .wm{font-weight:800;font-size:41px;letter-spacing:-0.025em;color:#1c1b15}
+.brand .wmsub{font-weight:800;font-size:41px;letter-spacing:-0.025em;color:#2f9412}
+.tag{font-weight:700;font-size:28px;color:#26331c;letter-spacing:-0.015em;line-height:1.24}
+.tag .a{color:#2f9412}
+.cases{font-weight:600;font-size:19px;color:#5c7d0e;letter-spacing:.005em}
+.ph{position:absolute;filter:drop-shadow(0 14px 24px rgba(20,18,10,.26))}
+.ph .dev-fgr,.ph .dev-fgf,.ph .dev-fgc{box-shadow:0 0 0 1px #4a4a50 inset,0 2px 0 rgba(255,255,255,.06) inset}</style></head>
+<body><div class="fg">
+  <svg width="1024" height="500" viewBox="0 0 1024 500" preserveAspectRatio="none" style="position:absolute;inset:0;z-index:1">
+    <defs><linearGradient id="fgB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset="0.16" stop-color="#f2f8e8"/><stop offset="0.29" stop-color="#d6ecb8"/><stop offset="0.39" stop-color="#8aa86a"/><stop offset="0.47" stop-color="#3e5230"/><stop offset="0.56" stop-color="#313f24"/><stop offset="0.65" stop-color="#3e5230"/><stop offset="0.71" stop-color="#8aa86a"/><stop offset="0.81" stop-color="#d6ecb8"/><stop offset="0.94" stop-color="#f2f8e8"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+    <polygon points="0,330 1024,100 1024,250 0,480" fill="url(#fgB)" opacity="0.5"/>
+    <polygon points="0,210 1024,-20 1024,60 0,290" fill="url(#fgB)" opacity="0.32"/>
+    <path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(471 60) scale(2.2)" fill="#2f9412" opacity="0.4"/><path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(72 370) scale(1.8)" fill="#1f6c10" opacity="0.4"/><path d="M-1.6,-7 H1.6 V-1.6 H7 V1.6 H1.6 V7 H-1.6 V1.6 H-7 V-1.6 H-1.6 Z" transform="translate(440 410) scale(2)" fill="#2f9412" opacity="0.35"/><circle cx="41" cy="150" r="5" fill="#2f9412" opacity="0.35"/><path d="M-1.6,-7 H1.6 V-1.6 H7 V1.6 H1.6 V7 H-1.6 V1.6 H-7 V-1.6 H-1.6 Z" transform="translate(51 250) scale(1.7)" fill="#1f6c10" opacity="0.32"/><path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(410 250) scale(1.5)" fill="#2f9412" opacity="0.3"/></svg>
+  <div class="ph" style="left:502px;top:36px;z-index:2"><div class="rot" style="transform:rotate(-8deg)"><div class="dev-fgr"><i class="b br" style="top:84px;height:18px"></i>
+       <i class="b br" style="top:130px;height:30px"></i><div class="screen">
+    <img src="file:///Volumes/Additional/My Projects/Apps/time-calculator/time-calculator/store-listings/src/screens/rate.png">
+    <div class="sb"><div class="sb-time">9:41</div><div class="sb-icons"><svg viewBox="0 0 20 14" fill="currentColor"><rect x="0" y="9" width="3.2" height="5" rx="1"/><rect x="5" y="6" width="3.2" height="8" rx="1"/><rect x="10" y="3" width="3.2" height="11" rx="1"/><rect x="15" y="0" width="3.2" height="14" rx="1"/></svg><svg viewBox="0 0 20 15" fill="currentColor"><path d="M10 3.2c3.2 0 6.1 1.3 8.2 3.4l-1.7 1.8A9 9 0 0 0 10 5.8 9 9 0 0 0 3.5 8.4L1.8 6.6A11.6 11.6 0 0 1 10 3.2Z"/><path d="M10 8.1c1.8 0 3.5.7 4.8 2l-1.8 1.8A4.4 4.4 0 0 0 10 10.6c-1.2 0-2.3.4-3 1.3L5.2 10.1A6.9 6.9 0 0 1 10 8.1Z"/><circle cx="10" cy="13" r="1.6"/></svg><svg viewBox="0 0 28 14" fill="none"><rect x="0.7" y="0.7" width="23" height="12.6" rx="3.2" stroke="currentColor" stroke-width="1.3" opacity="0.5"/><rect x="2.4" y="2.4" width="17" height="9.2" rx="1.8" fill="currentColor"/><rect x="25" y="4.6" width="2.2" height="4.8" rx="1.1" fill="currentColor" opacity="0.6"/></svg></div></div>
+    <div class="notch" style="top:4px;width:6px;height:6px;border-radius:999px;background:#0a0a0a;box-shadow:0 0 0 2px rgba(0,0,0,.3)"></div></div></div></div></div>
+  <div class="ph" style="left:822px;top:70px;z-index:2"><div class="rot" style="transform:rotate(11deg)"><div class="dev-fgf"><i class="b br" style="top:84px;height:18px"></i>
+       <i class="b br" style="top:130px;height:30px"></i><div class="screen">
+    <img src="file:///Volumes/Additional/My Projects/Apps/time-calculator/time-calculator/store-listings/src/screens/formats.png">
+    <div class="sb"><div class="sb-time">9:41</div><div class="sb-icons"><svg viewBox="0 0 20 14" fill="currentColor"><rect x="0" y="9" width="3.2" height="5" rx="1"/><rect x="5" y="6" width="3.2" height="8" rx="1"/><rect x="10" y="3" width="3.2" height="11" rx="1"/><rect x="15" y="0" width="3.2" height="14" rx="1"/></svg><svg viewBox="0 0 20 15" fill="currentColor"><path d="M10 3.2c3.2 0 6.1 1.3 8.2 3.4l-1.7 1.8A9 9 0 0 0 10 5.8 9 9 0 0 0 3.5 8.4L1.8 6.6A11.6 11.6 0 0 1 10 3.2Z"/><path d="M10 8.1c1.8 0 3.5.7 4.8 2l-1.8 1.8A4.4 4.4 0 0 0 10 10.6c-1.2 0-2.3.4-3 1.3L5.2 10.1A6.9 6.9 0 0 1 10 8.1Z"/><circle cx="10" cy="13" r="1.6"/></svg><svg viewBox="0 0 28 14" fill="none"><rect x="0.7" y="0.7" width="23" height="12.6" rx="3.2" stroke="currentColor" stroke-width="1.3" opacity="0.5"/><rect x="2.4" y="2.4" width="17" height="9.2" rx="1.8" fill="currentColor"/><rect x="25" y="4.6" width="2.2" height="4.8" rx="1.1" fill="currentColor" opacity="0.6"/></svg></div></div>
+    <div class="notch" style="top:4px;width:6px;height:6px;border-radius:999px;background:#0a0a0a;box-shadow:0 0 0 2px rgba(0,0,0,.3)"></div></div></div></div></div>
+  <div class="ph" style="left:644px;top:26px;z-index:3"><div class="rot" style="transform:rotate(3deg)"><div class="dev-fgc"><i class="b br" style="top:100px;height:21px"></i>
+       <i class="b br" style="top:154px;height:36px"></i><div class="screen">
+    <img src="file:///Volumes/Additional/My Projects/Apps/time-calculator/time-calculator/store-listings/src/screens/calc_light_android.png">
+    <div class="sb"><div class="sb-time">9:41</div><div class="sb-icons"><svg viewBox="0 0 20 14" fill="currentColor"><rect x="0" y="9" width="3.2" height="5" rx="1"/><rect x="5" y="6" width="3.2" height="8" rx="1"/><rect x="10" y="3" width="3.2" height="11" rx="1"/><rect x="15" y="0" width="3.2" height="14" rx="1"/></svg><svg viewBox="0 0 20 15" fill="currentColor"><path d="M10 3.2c3.2 0 6.1 1.3 8.2 3.4l-1.7 1.8A9 9 0 0 0 10 5.8 9 9 0 0 0 3.5 8.4L1.8 6.6A11.6 11.6 0 0 1 10 3.2Z"/><path d="M10 8.1c1.8 0 3.5.7 4.8 2l-1.8 1.8A4.4 4.4 0 0 0 10 10.6c-1.2 0-2.3.4-3 1.3L5.2 10.1A6.9 6.9 0 0 1 10 8.1Z"/><circle cx="10" cy="13" r="1.6"/></svg><svg viewBox="0 0 28 14" fill="none"><rect x="0.7" y="0.7" width="23" height="12.6" rx="3.2" stroke="currentColor" stroke-width="1.3" opacity="0.5"/><rect x="2.4" y="2.4" width="17" height="9.2" rx="1.8" fill="currentColor"/><rect x="25" y="4.6" width="2.2" height="4.8" rx="1.1" fill="currentColor" opacity="0.6"/></svg></div></div>
+    <div class="notch" style="top:5px;width:7px;height:7px;border-radius:999px;background:#0a0a0a;box-shadow:0 0 0 2px rgba(0,0,0,.3)"></div></div></div></div></div>
+  <div class="txt">
+    <div class="brand"><img src="file:///Volumes/Additional/My Projects/Apps/time-calculator/time-calculator/site/public/icons/app-logo.png"><div class="wmstack"><span class="wm">Time Calculator</span><span class="wmsub">Cardamon</span></div></div>
+    <div class="tag">Add, subtract &amp; convert <span class="a">time</span>,<br>from days to <span class="a">milliseconds</span>.</div>
+    <div class="cases">Timesheets · Billing · Audio &amp; video · Code</div>
+  </div>
+</div></body></html>

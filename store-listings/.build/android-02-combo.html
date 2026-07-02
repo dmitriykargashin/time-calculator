@@ -1,0 +1,71 @@
+<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:'Hanken Grotesk';src:url('file:///Volumes/Additional/My Projects/Apps/time-calculator/time-calculator/store-listings/src/fonts/HankenGrotesk.ttf');font-weight:100 900;font-style:normal}*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;overflow:hidden}
+.pano{position:absolute;top:0;left:-1080px;width:2160px;height:1920px;font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased;background:linear-gradient(91deg, #e9f1dd 0%, #dceac2 16%, #b9d69b 29%, #5a7540 39%, #1a2414 47%, #0d0c08 56%, #1a2414 65%, #5a7540 71%, #b9d69b 81%, #dceac2 94%, #e9f1dd 100%);background-size:8640px 1920px;background-position:-0px 0;background-repeat:no-repeat}
+.rowdecor{position:absolute;top:0;z-index:0}
+.decor{position:absolute;top:0;left:0;z-index:1}
+.h1{font-weight:800;letter-spacing:-0.025em;color:#1c1b15}.h1 .a{color:#1f6c10}
+.sub{font-weight:500;color:#524d3f;letter-spacing:-0.005em}
+.dark .h1{color:#f2ecdb}.dark .h1 .a{color:#7fd24a}.dark .sub{color:#bdb6a3}
+.dev-pano{position:relative;width:820px;padding:16px;background:linear-gradient(135deg,#3a3a40 0%,#202024 45%,#0e0e10 100%);border-radius:87px;
+  box-shadow:0 0 0 1px #4a4a50 inset,0 2px 0 rgba(255,255,255,.06) inset,
+    0 39px 87px rgba(20,18,10,.34),0 10px 24px rgba(20,18,10,.24)}
+.dev-pano .b{position:absolute;width:9px;border-radius:9px;background:#0c0c0e}
+.dev-pano .b.bl{left:-8px}.dev-pano .b.br{right:-8px}
+.dev-pano .screen{position:relative;width:788px;height:1705px;overflow:hidden;border-radius:72px;background:#f7f4ec}
+.dev-pano .screen img{display:block;width:788px;height:1705px}
+.dev-pano .sb{position:absolute;z-index:4;top:14px;left:0;right:0;height:79px;display:flex;align-items:center;justify-content:space-between;padding:0 55px;color:#1c1b15}
+.dev-pano .sb-time{font-weight:600;font-size:25px}
+.dev-pano .sb-icons{display:flex;align-items:center;gap:10px}
+.dev-pano .sb-icons svg{height:17px;width:auto}
+.dev-pano .notch{position:absolute;z-index:5;left:50%;transform:translateX(-50%)}
+/* frame 1 headline top-left; frame 2 headline BOTTOM-right (frees the top-right
+   for the big tilted phone, fills the lower-right corner). */
+.capL{position:absolute;z-index:3;left:76px;top:115px;max-width:508px;text-align:left}
+.capR{position:absolute;z-index:3;right:76px;bottom:134px;max-width:508px;text-align:right}
+.h1{font-size:108px;line-height:1.0;letter-spacing:-0.03em}.sub{margin-top:33px;font-size:50px;line-height:1.24}
+/* flat tilt, top to the right (clockwise), no perspective; the big phone fits
+   whole into the two-frame canvas. The drop-shadow lives on the NON-rotated
+   .stage so it falls straight down in screen space (a natural soft shadow)
+   rather than tilting into a weird vertical streak. */
+.stage{position:absolute;z-index:2;left:1080px;top:50%;transform:translate(-50%,-50%);
+  filter:drop-shadow(0 39px 59px rgba(20,18,10,.32))}
+.phrot{transform:rotateZ(8deg)}
+.phrot .dev-pano{box-shadow:0 0 0 1px #4a4a50 inset,0 2px 0 rgba(255,255,255,.06) inset}
+.uc{position:absolute;z-index:4;display:flex;align-items:center;gap:.5em;background:linear-gradient(135deg,#37a015,#1d770b);
+  color:#fff;border-radius:28px;padding:.52em .95em;font-weight:700;font-size:41px;letter-spacing:-0.01em;
+  box-shadow:0 21px 39px rgba(20,18,10,.26);white-space:nowrap}
+.uc svg{width:1.35em;height:1.35em;flex:none;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.uc.l{right:1436px}.uc.r{left:1436px}</style></head>
+<body><div class="pano">
+  <svg class="rowdecor" width="8640" height="1920" viewBox="0 0 8640 1920" preserveAspectRatio="none" style="left:-0px">
+    <defs>
+      <linearGradient id="bandG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset="0.16" stop-color="#f2f8e8"/><stop offset="0.29" stop-color="#d6ecb8"/><stop offset="0.39" stop-color="#8aa86a"/><stop offset="0.47" stop-color="#3e5230"/><stop offset="0.56" stop-color="#313f24"/><stop offset="0.65" stop-color="#3e5230"/><stop offset="0.71" stop-color="#8aa86a"/><stop offset="0.81" stop-color="#d6ecb8"/><stop offset="0.94" stop-color="#f2f8e8"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+      <linearGradient id="routeG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f7d18"/><stop offset="0.3" stop-color="#2f7d18"/><stop offset="0.44" stop-color="#6f9a4e"/><stop offset="0.56" stop-color="#a8cf80"/><stop offset="0.65" stop-color="#6f9a4e"/><stop offset="0.78" stop-color="#2f7d18"/><stop offset="1" stop-color="#2f7d18"/></linearGradient>
+    </defs>
+    <polygon points="0,545 8640,-838 8640,-676 0,706" fill="url(#bandG)" opacity="0.285"/><polygon points="0,797 8640,-585 8640,-424 0,958" fill="url(#bandG)" opacity="0.365"/><polygon points="0,1049 8640,-333 8640,-172 0,1211" fill="url(#bandG)" opacity="0.420"/><polygon points="0,1302 8640,-81 8640,81 0,1463" fill="url(#bandG)" opacity="0.440"/><polygon points="0,1554 8640,172 8640,333 0,1715" fill="url(#bandG)" opacity="0.420"/><polygon points="0,1806 8640,424 8640,585 0,1968" fill="url(#bandG)" opacity="0.365"/><polygon points="0,2059 8640,676 8640,838 0,2220" fill="url(#bandG)" opacity="0.285"/><polyline points="0,994 72,997 144,1001 216,1003 288,1005 360,1006 432,1006 504,1005 576,1001 648,997 720,990 792,981 864,971 936,958 1008,944 1080,927 1152,909 1224,889 1296,868 1368,845 1440,821 1512,796 1584,770 1656,744 1728,717 1800,691 1872,664 1944,639 2016,614 2088,590 2160,567 2232,545 2304,525 2376,507 2448,491 2520,476 2592,464 2664,453 2736,445 2808,438 2880,433 2952,430 3024,428 3096,428 3168,429 3240,431 3312,434 3384,437 3456,441 3528,444 3600,448 3672,450 3744,452 3816,453 3888,453 3960,452 4032,448 4104,444 4176,437 4248,428 4320,418 4392,405 4464,391 4536,374 4608,356 4680,336 4752,315 4824,292 4896,268 4968,243 5040,217 5112,191 5184,164 5256,138 5328,111 5400,86 5472,61 5544,37 5616,14 5688,-8 5760,-28 5832,-46 5904,-62 5976,-77 6048,-89 6120,-100 6192,-108 6264,-115 6336,-120 6408,-123 6480,-124 6552,-125 6624,-124 6696,-122 6768,-119 6840,-116 6912,-112 6984,-109 7056,-105 7128,-103 7200,-101 7272,-100 7344,-100 7416,-101 7488,-105 7560,-109 7632,-116 7704,-125 7776,-135 7848,-148 7920,-162 7992,-178 8064,-197 8136,-217 8208,-238 8280,-261 8352,-285 8424,-310 8496,-336 8568,-362 8640,-389" fill="none" stroke="url(#routeG)" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 32" opacity="0.65"/></svg>
+  <svg class="decor" viewBox="0 0 2160 1920" width="2160" height="1920">
+    <path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(281 384) scale(2.6)" fill="#2f9412" opacity="0.55"/>
+    <path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(1901 307) scale(3)" fill="#ffffff" opacity="0.9"/>
+    <path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(1771 883) scale(2)" fill="#1f6c10" opacity="0.5"/>
+    <path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(216 1056) scale(2.2)" fill="#ffffff" opacity="0.85"/>
+    <path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(2009 1421) scale(2.4)" fill="#2f9412" opacity="0.5"/>
+    <path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(151 1574) scale(1.8)" fill="#1f6c10" opacity="0.45"/>
+    <path d="M0,-10C1.2,-3 3,-1.2 10,0C3,1.2 1.2,3 0,10C-1.2,3 -3,1.2 -10,0C-3,-1.2 -1.2,-3 0,-10Z" transform="translate(1080 134) scale(1.6)" fill="#ffffff" opacity="0.7"/>
+    <path d="M-1.6,-7 H1.6 V-1.6 H7 V1.6 H1.6 V7 H-1.6 V1.6 H-7 V-1.6 H-1.6 Z" transform="translate(389 768) scale(2.2)" fill="#2f9412" opacity="0.4"/>
+    <path d="M-1.6,-7 H1.6 V-1.6 H7 V1.6 H1.6 V7 H-1.6 V1.6 H-7 V-1.6 H-1.6 Z" transform="translate(1944 653) scale(2)" fill="#1f6c10" opacity="0.4"/>
+    <path d="M-1.6,-7 H1.6 V-1.6 H7 V1.6 H1.6 V7 H-1.6 V1.6 H-7 V-1.6 H-1.6 Z" transform="translate(86 576) scale(1.8)" fill="#2f9412" opacity="0.35"/>
+    <path d="M-1.6,-7 H1.6 V-1.6 H7 V1.6 H1.6 V7 H-1.6 V1.6 H-7 V-1.6 H-1.6 Z" transform="translate(1685 1651) scale(2)" fill="#2f9412" opacity="0.4"/>
+    <path d="M-1.6,-7 H1.6 V-1.6 H7 V1.6 H1.6 V7 H-1.6 V1.6 H-7 V-1.6 H-1.6 Z" transform="translate(475 1382) scale(1.8)" fill="#1f6c10" opacity="0.35"/>
+    <circle cx="583" cy="307" r="6" fill="#2f9412" opacity="0.4"/>
+    <circle cx="1577" cy="461" r="7" fill="#1f6c10" opacity="0.35"/>
+    <circle cx="324" cy="1267" r="6" fill="#2f9412" opacity="0.4"/>
+    <circle cx="1836" cy="1152" r="6" fill="#1f6c10" opacity="0.35"/>
+    <circle cx="864" cy="1728" r="7" fill="#2f9412" opacity="0.35"/>
+  </svg>
+  <div class="uc l" style="top:826px"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v4.5l3 1.8"/></svg><span>Work timesheets</span></div><div class="uc l" style="top:1085px"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-2.2-1.4-2 1.4-2-1.4-2 1.4L6 21z"/><path d="M9 8h6M9 12h6"/></svg><span>Billing &amp; splits</span></div><div class="uc l" style="top:1344px"><svg viewBox="0 0 24 24"><path d="M3 6.5h11v9H3z"/><path d="M14 9.5h3.6l3 3v3H14z"/><circle cx="7" cy="17.5" r="1.7"/><circle cx="17" cy="17.5" r="1.7"/></svg><span>Driver hours</span></div><div class="uc r" style="top:384px"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M10.5 9.2l4.6 2.8-4.6 2.8z" fill="#fff" stroke="none"/></svg><span>Audio &amp; video</span></div><div class="uc r" style="top:643px"><svg viewBox="0 0 24 24"><path d="M8.5 8l-4 4 4 4"/><path d="M15.5 8l4 4-4 4"/></svg><span>Developers</span></div><div class="uc r" style="top:902px"><svg viewBox="0 0 24 24"><path d="M4 8.5h12V13a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M16 9.5h2.4a2.3 2.3 0 0 1 0 4.6H16"/><path d="M7.5 3.5v2M11 3.5v2"/></svg><span>Everyday math</span></div>
+  <div class="capL"><div class="h1">Add &amp;<br>subtract<br><span class="a">time</span></div><div class="sub">Mix hours, minutes,<br>seconds and days,<br>then read the answer.</div></div>
+  <div class="capR"><div class="h1">Convert<br>to <span class="a">any<br>unit</span></div><div class="sub">See it as decimal<br>hours, total minutes<br>or seconds.</div></div>
+  <div class="stage"><div class="phrot"><div class="dev-pano"><i class="b br" style="top:375px;height:79px"></i>
+       <i class="b br" style="top:580px;height:134px"></i><div class="screen">
+    <img src="file:///Volumes/Additional/My Projects/Apps/time-calculator/time-calculator/store-listings/src/screens/calc_light_android.png">
+    <div class="sb"><div class="sb-time">9:41</div><div class="sb-icons"><svg viewBox="0 0 20 14" fill="currentColor"><rect x="0" y="9" width="3.2" height="5" rx="1"/><rect x="5" y="6" width="3.2" height="8" rx="1"/><rect x="10" y="3" width="3.2" height="11" rx="1"/><rect x="15" y="0" width="3.2" height="14" rx="1"/></svg><svg viewBox="0 0 20 15" fill="currentColor"><path d="M10 3.2c3.2 0 6.1 1.3 8.2 3.4l-1.7 1.8A9 9 0 0 0 10 5.8 9 9 0 0 0 3.5 8.4L1.8 6.6A11.6 11.6 0 0 1 10 3.2Z"/><path d="M10 8.1c1.8 0 3.5.7 4.8 2l-1.8 1.8A4.4 4.4 0 0 0 10 10.6c-1.2 0-2.3.4-3 1.3L5.2 10.1A6.9 6.9 0 0 1 10 8.1Z"/><circle cx="10" cy="13" r="1.6"/></svg><svg viewBox="0 0 28 14" fill="none"><rect x="0.7" y="0.7" width="23" height="12.6" rx="3.2" stroke="currentColor" stroke-width="1.3" opacity="0.5"/><rect x="2.4" y="2.4" width="17" height="9.2" rx="1.8" fill="currentColor"/><rect x="25" y="4.6" width="2.2" height="4.8" rx="1.1" fill="currentColor" opacity="0.6"/></svg></div></div>
+    <div class="notch" style="top:19px;width:25px;height:25px;border-radius:999px;background:#0a0a0a;box-shadow:0 0 0 2px rgba(0,0,0,.3)"></div></div></div></div></div></div></body></html>

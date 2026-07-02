@@ -474,7 +474,10 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
-  testWidgets('calculator portrait - gated (Per lock badge)', (tester) async {
+  // Gated calculator base screen: the Per icon no longer carries a lock badge
+  // (the Pro gate moved INSIDE the Rate overlay, where the computed totals are
+  // blurred behind an "Unlock Pro" CTA), so nothing on this screen is locked.
+  testWidgets('calculator portrait - gated (no Per lock)', (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     await sizePhone(tester);
     await SettingsModel.instance.setThemeValue('1');
@@ -484,6 +487,7 @@ void main() {
     await tester.pumpWidget(const TimeCalculatorApp());
     await _settle(tester);
     await _typeSample(tester);
+    expect(find.byIcon(Icons.lock_outline), findsNothing);
     await _shot(tester, '14_calc_portrait_gated_light');
     debugDefaultTargetPlatformOverride = null;
   });

@@ -15,7 +15,6 @@ import 'clipboard_feedback.dart';
 import 'formats_screen.dart';
 import 'history_screen.dart';
 import 'per_screen.dart';
-import 'pro_screen.dart';
 import 'settings_screen.dart';
 import 'spans.dart';
 import 'support_screen.dart';
@@ -399,14 +398,10 @@ class _CalculatorScreenState extends State<CalculatorScreen>
   void _openPer() {
     if (_model.isPerViewButtonDisabled) return;
     AnalyticsService.instance.buttonPer();
-    // Pro gate: where gating is on and Pro is not owned, the Per (value/Per
-    // calculator) feature is locked - tapping a valid-result icon opens the
-    // paywall instead of the overlay. Where gating is off (Android/web/not
-    // enabled) hasPro is always true, so this is a no-op there.
-    if (!Monetization.instance.hasPro) {
-      showProPaywall(context);
-      return;
-    }
+    // Pro gate lives INSIDE the overlay now: free (gated, not-unlocked) users
+    // still open the Rate calculator and see it work - only the computed TOTALS
+    // are blurred behind an unlock CTA (a stronger tease than locking the whole
+    // entry icon). Where gating is off (Android/web) nothing is blurred.
     _model.updatePerUnits();
     _perOverlay.revealCenter = _centerOfKey(_perButtonKey) ?? _stackCenter();
     _model.setIsPerLayoutVisible(true);
@@ -1324,31 +1319,20 @@ class _CalculatorScreenState extends State<CalculatorScreen>
   /// neutral tool buttons (toolButtonFill cell + controlsStrong glyph).
   List<Widget> _actionIcons(Dimens dim, AppPalette palette) {
     return [
-      // ic_per (clock + plus). When Pro gating is on and not yet unlocked the
-      // glyph carries a small lock badge (tap still routes through _openPer,
-      // which opens the paywall once a valid result exists). The
-      // ListenableBuilder drops the lock the instant Pro is unlocked.
-      ListenableBuilder(
-        listenable: Monetization.instance,
-        builder: (context, _) {
-          final per = Icon(
-            Icons.more_time,
-            size: dim.actionGlyphSize,
-            color: palette.controlsStrong,
-            semanticLabel: 'Per',
-          );
-          final locked = Monetization.instance.isProGated &&
-              !Monetization.instance.hasPro;
-          return _actionIcon(
-            key: _perButtonKey,
-            dim: dim,
-            icon: locked
-                ? _withLockBadge(per, dim, palette)
-                : per,
-            disabled: _model.isPerViewButtonDisabled,
-            onTap: _openPer,
-          );
-        },
+      // ic_per (clock + plus). No lock badge on the icon anymore: the Pro gate
+      // moved INSIDE the Rate overlay (the computed totals are blurred behind an
+      // unlock CTA), so the entry point itself is always open.
+      _actionIcon(
+        key: _perButtonKey,
+        dim: dim,
+        icon: Icon(
+          Icons.more_time,
+          size: dim.actionGlyphSize,
+          color: palette.controlsStrong,
+          semanticLabel: 'Per',
+        ),
+        disabled: _model.isPerViewButtonDisabled,
+        onTap: _openPer,
       ),
       // F6: the History entry point sits next to Per (Rate). It appears only
       // while history is enabled in Settings (on by default); turning it off
@@ -1408,29 +1392,6 @@ class _CalculatorScreenState extends State<CalculatorScreen>
         onTap: _openSettings,
       ),
     ];
-  }
-
-  /// Overlays a small lock_outline glyph on the bottom-end corner of a Pro-
-  /// gated action icon (the controls tint matches the icon itself, so the lock
-  /// reads as part of the same affordance rather than a separate badge).
-  Widget _withLockBadge(Icon icon, Dimens dim, AppPalette palette) {
-    final lockSize = dim.actionGlyphSize * 0.5;
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        icon,
-        PositionedDirectional(
-          end: -lockSize * 0.25,
-          bottom: -lockSize * 0.25,
-          child: Icon(
-            Icons.lock_outline,
-            size: lockSize,
-            color: palette.controlsStrong,
-            semanticLabel: 'Locked (Pro)',
-          ),
-        ),
-      ],
-    );
   }
 
   /// One BARE action icon sitting on the hero display card (Per / Tea /

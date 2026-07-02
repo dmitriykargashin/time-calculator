@@ -1,0 +1,140 @@
+/* Side-panel chrome: a sticky header (logo + name), the reused calculator in a
+   scrollable middle, and a sticky footer with the website / app links. Works at
+   any panel width and also as a full tab (opened from the omnibox). */
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Theme switch (System / Light / Dark) — a compact segmented control that lives
+   in the footer status bar. Chrome's side panel supplies its own title header, so
+   this extension no longer draws one. */
+.tc-theme {
+  flex: none;
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper-deep);
+}
+.tc-theme button {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease;
+}
+.tc-theme button:hover { color: var(--ink); }
+.tc-theme button.on {
+  background: var(--card);
+  color: var(--green-deep);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
+}
+.tc-theme svg { width: 15px; height: 15px; }
+
+/* Calculator area */
+#app {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 12px 10px;
+}
+#app > * { width: 100%; max-width: 100%; margin-inline: auto; }
+/* The card fills the panel width; the panel itself is the resize handle, so the
+   component's own horizontal-resize + min-width are disabled here (!important to
+   beat the scoped .display rule). overflow:hidden clips any sub-pixel spill
+   cleanly instead of showing a scrollbar. */
+#app .calc { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+#app .display {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  resize: none !important;
+  overflow: hidden !important;
+  /* tighter, symmetric padding so edge elements (format chip, star) never touch
+     the panel edge at narrow widths */
+  padding: clamp(0.85rem, 0.6rem + 1.5vw, 1.6rem) !important;
+}
+/* Keep the format chip compact so it never runs off the top-right. */
+#app .fmt-chip-name { max-width: 8rem !important; }
+/* The card can't be dragged wider in the panel (Chrome resizes the panel), so
+   hide that hint from the reused component's help text. */
+#app .resize-tip { display: none !important; }
+/* In a docked panel the type must not run past the edge. Cap the component's
+   viewport-scaled sizes to a panel-friendly range (this matches how the site
+   itself renders at narrow widths — the small end of each clamp). */
+#app .expr-hl,
+#app .expr-input { font-size: clamp(1.35rem, 1rem + 2vw, 1.9rem) !important; }
+#app .result { font-size: clamp(1.5rem, 1.1rem + 2.4vw, 2rem) !important; }
+#app .result.err { font-size: 1.35rem !important; }
+#app .result.hint { font-size: 1.2rem !important; }
+#app .eq { font-size: 1.3rem !important; }
+
+/* Footer status bar: theme switch (left) + store / site badges (right). Wraps the
+   badges below the switch only when the panel gets very narrow. */
+.tc-foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 9px 12px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+}
+/* Store-style badges, mirrored from the site's .store-badge: a high-contrast pill
+   with a small "Get it on" line above the wordmark. Adapts with the theme (dark
+   pill in light mode, light pill in dark mode), same as the site. */
+.tc-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.tc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: 10px;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+.tc-badge:hover { transform: translateY(-1px); box-shadow: 0 6px 16px -9px rgba(0, 0, 0, 0.45); }
+.tc-badge svg,
+.tc-badge img { flex: none; display: block; }
+.tc-badge span {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12.5px;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+}
+.tc-badge small {
+  font-weight: 400;
+  font-size: 8px;
+  letter-spacing: 0.03em;
+  opacity: 0.82;
+}

@@ -137,26 +137,35 @@ void main() {
       CalculatorModel.instance.selectedFormat.value?.textPresentationOfTokens;
 
   group('gating ON (Apple go-live simulation)', () {
-    testWidgets('Per icon shows a lock and tapping opens the paywall, not the '
-        'Per overlay', (tester) async {
+    testWidgets('Per opens the Rate overlay with the totals locked behind an '
+        'Unlock Pro CTA (no lock on the icon)', (tester) async {
       enterGated();
       await pumpApp(tester);
       await typeSample(tester);
 
-      // The Per glyph carries the lock badge while gated and not unlocked. No
-      // overlay is open, so the only lock on screen is the Per icon's badge.
+      // No lock badge on the Per entry icon anymore - the gate lives INSIDE the
+      // overlay now, so nothing on the base calculator screen is locked.
       // (find.byIcon, not find.bySemanticsLabel: the semantics tree is not
       // built in widget tests without an active SemanticsHandle.)
-      expect(find.byIcon(Icons.lock_outline), findsOneWidget);
+      expect(find.byIcon(Icons.lock_outline), findsNothing);
 
       await tester.tap(find.byIcon(Icons.more_time));
       await tester.pumpAndSettle();
 
-      // The paywall opened ...
+      // The Rate overlay OPENED (unlike before, it is not routed to the paywall)
+      expect(CalculatorModel.instance.isPerLayoutVisible, isTrue);
+      // ... with the totals gated behind the in-overlay CTA (which carries a
+      // lock glyph). The paywall SHEET itself is not open yet.
+      expect(find.text('Unlock Pro to see totals'), findsOneWidget);
+      expect(find.byIcon(Icons.lock_outline), findsOneWidget);
+      expect(paywall(), findsNothing);
+      expect(find.text('Restore Purchases'), findsNothing);
+
+      // Tapping the CTA opens the paywall.
+      await tester.tap(find.text('Unlock Pro to see totals'));
+      await tester.pumpAndSettle();
       expect(paywall(), findsOneWidget);
       expect(find.text('Restore Purchases'), findsOneWidget);
-      // ... and the Per overlay did NOT (no per-unit calculator).
-      expect(CalculatorModel.instance.isPerLayoutVisible, isFalse);
 
       await dismissPaywall(tester);
       leavePlatform();

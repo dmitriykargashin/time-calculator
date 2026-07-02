@@ -1,0 +1,105 @@
+/* Design tokens + fonts for the extension popup, mirrored from the site's
+   app/assets/css/main.css so the reused TimeCalculator.vue looks identical.
+   Loaded statically by popup.html (the Vite bundle only carries the component's
+   scoped styles, which reference these vars). */
+
+@font-face {
+  font-family: 'ABeeZee';
+  src: url('ABeeZee-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('HankenGrotesk.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* The site applies a global border-box reset (main.css); the reused component's
+   scoped styles assume it. Without it, width:100% + padding overflows every box,
+   which truncated the card in the panel. */
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces / ink / lines */
+  --paper: #f3efe4;
+  --paper-deep: #ece5d4;
+  --card-edge: #e4dcc8;
+  --ink: #1c1b15;
+  --ink-soft: #524d3f;
+  --ink-faint: #8a8472;
+  --line: rgba(28, 27, 21, 0.12);
+  --line-strong: rgba(28, 27, 21, 0.22);
+  --card: #fbf8f0;
+
+  /* Brand */
+  --green: #2f9412;
+  --green-bright: #3da50c;
+  --green-deep: #1f6c10;
+  --olive: #5c7d0e;
+  --ochre: #b9791a;
+  --on-green: #f6f3e8;
+
+  /* Type (JetBrains Mono isn't bundled — the stack falls back to system mono) */
+  --font-display: 'ABeeZee', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-app: 'ABeeZee', ui-sans-serif, system-ui, sans-serif;
+
+  /* Calculator span colours — verbatim from the app's light palette */
+  --app-num: #2e2d2d;
+  --app-unit: #33691e;
+  --app-op: #0099cc;
+  --app-res-num: #474646;
+  --app-res-unit: #4d6b41;
+  --app-display: #fffdf8;
+  --app-error: #d23b1f;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 18px 40px -24px rgba(40, 36, 20, 0.45);
+  --ease-pop: cubic-bezier(0.25, 1.35, 0.45, 1);
+}
+
+/* Dark theme — every token flipped, verbatim from the site's main.css. Applied
+   by theme.js setting [data-theme="dark"] on <html>. The reused component and
+   the panel chrome both read these vars, so they re-color live. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #16140d;
+  --paper-deep: #100e08;
+  --card-edge: #37311f;
+  --card: #211d14;
+  --ink: #f2ecdb;
+  --ink-soft: #c0b8a3;
+  --ink-faint: #978f79;
+  --line: rgba(240, 234, 217, 0.12);
+  --line-strong: rgba(240, 234, 217, 0.22);
+  --green: #4fb524;
+  --green-bright: #5fc62f;
+  --green-deep: #6fcf3f;
+  --olive: #aabe50;
+  --ochre: #d99a3a;
+  --app-num: #e8e3d4;
+  --app-unit: #7cc24a;
+  --app-op: #3bb6e6;
+  --app-res-num: #cdc8b8;
+  --app-res-unit: #8fce5e;
+  --app-display: #1b1810;
+  --app-error: #ff6a4a;
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 20px 46px -24px rgba(0, 0, 0, 0.72);
+}
+
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+/* Panel chrome (header / scroll area / footer) lives in panel.css. */

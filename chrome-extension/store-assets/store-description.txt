@@ -1,0 +1,70 @@
+Time Calculator Cardamon adds, subtracts, multiplies, divides, and converts durations right in Chrome. Type an expression like 5h 30m + 2h 15m and read the answer as 7 Hours 45 Minutes. It works in the side panel next to your tabs and in the address bar, runs offline, and needs no sign-in.
+
+WHAT YOU CAN CALCULATE
+Mix any units on one line: years, months, weeks, days, hours, minutes, seconds, and milliseconds. Write them as full words or shorthand (h, m, d, w). Type the operators straight from your keyboard: + to add, - to subtract, * to multiply, / to divide.
+▪️ Add and subtract: 8h 15m + 45m - 30m
+▪️ Multiply and divide: 90m * 3, or 3d 4h / 2
+▪️ Convert: read any total as days, hours, minutes, seconds, or decimal hours
+Paste a clock time like 2:30:15 and it reads it for you, with a one-tap Adapt if you meant minutes and seconds.
+
+IN THE SIDE PANEL AND THE ADDRESS BAR
+Click the toolbar icon and the calculator docks in Chrome's side panel, so it stays open beside whatever you are reading. For a quick one-off, type tc in the address bar and then your expression. The result shows as you type, and Enter opens the full panel with your math already in it.
+
+SEE EVERY UNIT AT ONCE
+Open Convert and your result is listed in every unit from years down to milliseconds, plus combined formats. Click any row to copy it.
+
+TURN A DURATION INTO A RATE
+Rate answers how much per unit of time. Enter an amount and its unit, and each row shows what that rate comes to over your duration. Earn 25 USD per hour, and a 7h 45m shift comes to 193.75 USD. The same idea covers km/h, MB/s, or items per day.
+
+KEEP THE TOTALS YOU NEED
+Star a result and it lands in History with its expression, answer, and time. Reopen any entry to reuse or edit it. History stays on your device.
+
+READ THE ANSWER YOUR WAY
+Choose how totals display from the Show result as menu: Hour Minute, decimal hours, total minutes or seconds, clock styles like H:MM:SS, or all units at once.
+
+LIGHT AND DARK
+The panel follows your system theme and remembers your choice. Switch it from the status bar at the bottom.
+
+RUNS IN YOUR BROWSER
+The math runs locally with the same engine as the Time Calculator apps for iPhone, iPad, and Android. No account, no network calls, no data collected. It keeps working with your wifi off.
+
+COMMON USES
+▪️ Timesheets and work hours: add shifts, subtract breaks, total the week
+▪️ Billing and freelance: hours worked times a rate, split across a team
+▪️ Payroll and overtime: regular plus overtime, shown as decimal hours
+▪️ Driver and delivery hours: log time and check limits
+▪️ Audio, video, and editing: sum clip lengths and find a runtime
+▪️ Developers: reason about durations, timeouts, and intervals in milliseconds
+▪️ Sprints and planning: roll estimates up into days and hours
+▪️ Everyday math: cooking, workouts, fasting windows, travel time
+
+QUICK START
+1. Click the Time Calculator icon to open the side panel.
+2. Type an expression, for example 1 day 6 hours + 18 hours.
+3. Read the total, change the format, or open Convert, Rate, or History.
+Or type tc in the address bar for a fast answer without leaving the page.
+
+QUESTIONS
+
+How do I add hours and minutes?
+Put them on one line, like 5h 30m + 2h 15m, and read the total.
+
+How do I find a time difference?
+Subtract one duration from another, like 40h - 6h 30m.
+
+Can it multiply and divide time?
+Yes. Type 90m * 3 or 3d 4h / 2.
+
+Does it convert hours to minutes or decimal hours?
+Yes. Open Convert, or pick a format from Show result as.
+
+Does it need the internet?
+No. Everything runs on your device and works offline.
+
+Is it free?
+Yes.
+
+What data does it collect?
+None. It asks for no permissions beyond the side panel and makes no network calls.
+
+Time Calculator is also on the web at timecalculator.app and as an app for iPhone, iPad, and Android.
