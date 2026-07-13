@@ -411,8 +411,8 @@ void main() {
         id: kProSku,
         title: 'Pro',
         description: 'One-time unlock',
-        price: r'$2.99',
-        rawPrice: 2.99,
+        price: r'$3.99',
+        rawPrice: 3.99,
         currencyCode: 'USD',
       );
 
@@ -432,6 +432,31 @@ void main() {
     await tester.tap(find.text('Unlock Pro').first);
     await _settle(tester);
     await _shot(tester, '09_pro_paywall_light');
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  // App Review screenshot for the `pro_unlock` IAP. App Store Connect validates
+  // this against accepted iPhone screenshot sizes (a plain >=640x920 image is
+  // rejected with "the dimensions ... are wrong"), so render at an accepted
+  // 6.5" size: 414x896 logical @3x = 1242x2688 px.
+  testWidgets('iap review paywall - hi-res', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    tester.view.physicalSize = const Size(1242, 2688);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await SettingsModel.instance.setThemeValue('1');
+    Monetization.instance.debugSetProGated(true);
+    Monetization.instance.debugSetProProduct(proProduct());
+    addTearDown(Monetization.instance.debugReset);
+
+    await tester.pumpWidget(const TimeCalculatorApp());
+    await _settle(tester);
+    await tester.tap(find.byIcon(Icons.settings));
+    await _settle(tester);
+    await tester.tap(find.text('Unlock Pro').first);
+    await _settle(tester);
+    await _shot(tester, 'iap_review_pro_unlock_paywall');
     debugDefaultTargetPlatformOverride = null;
   });
 

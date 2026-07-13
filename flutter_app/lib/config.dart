@@ -11,7 +11,7 @@ const String kFeedbackEmail = 'support@cardamon.org';
 /// MUST be kept in sync with pubspec.yaml `version: <name>+<code>` on every
 /// release bump (there is no package_info_plus dependency by design).
 const String kAppVersionName = '2.4.0';
-const int kAppVersionCode = 28;
+const int kAppVersionCode = 30;
 
 /// Privacy policy URL, shown from the analytics-consent dialog and the Settings
 /// "Privacy Policy" row. REQUIRED now that the app collects analytics (Play Data
@@ -32,7 +32,7 @@ bool get isApplePlatform =>
 /// Apple App Store numeric app id. EMPTY until the App Store Connect record
 /// is created - set it there first, then fill this in. While empty, Apple
 /// builds never open any store page.
-const String kAppleAppId = '';
+const String kAppleAppId = '6789162864';
 
 /// Non-consumable product id for the Apple-only "Pro" one-time unlock. Must
 /// match the product id created in App Store Connect exactly.

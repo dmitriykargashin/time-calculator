@@ -45,6 +45,12 @@ class _ProPaywallState extends State<_ProPaywall> {
   /// shows a spinner so the store-mandated control never looks dead on tap.
   bool _restoring = false;
 
+  /// True from the moment "Unlock Pro" is tapped until [Monetization.buyPro]
+  /// has launched the billing flow (or failed): disables the button and shows a
+  /// spinner so the tap-to-sheet latency can't be tapped into a stack of
+  /// purchase dialogs. Pro itself is granted asynchronously via the stream.
+  bool _buying = false;
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +71,21 @@ class _ProPaywallState extends State<_ProPaywall> {
       return;
     }
     setState(() {});
+  }
+
+  /// Launches the Pro purchase with an in-button busy state: disabled + spinner
+  /// from tap until [Monetization.buyPro] hands off to StoreKit, so the
+  /// tap-to-sheet latency can't queue multiple purchase dialogs. A successful
+  /// buy is granted via the stream (the listener then closes the sheet); a
+  /// cancel or failure just re-enables the button.
+  Future<void> _onBuy() async {
+    if (_buying || _restoring) return;
+    setState(() => _buying = true);
+    try {
+      await _monetization.buyPro();
+    } finally {
+      if (mounted) setState(() => _buying = false);
+    }
   }
 
   /// Runs the store-mandated "Restore Purchases" action with feedback: a brief
@@ -169,11 +190,20 @@ class _ProPaywallState extends State<_ProPaywall> {
               ),
               SizedBox(height: dim.margin16 + dim.margin8),
               ElevatedButton(
-                onPressed: canBuy ? () => _monetization.buyPro() : null,
+                onPressed: (canBuy && !_buying && !_restoring) ? _onBuy : null,
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(48),
                 ),
-                child: Text(unlockLabel),
+                child: _buying
+                    ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      )
+                    : Text(unlockLabel),
               ),
               if (!canBuy) ...[
                 SizedBox(height: dim.margin8),
@@ -191,7 +221,7 @@ class _ProPaywallState extends State<_ProPaywall> {
               ],
               SizedBox(height: dim.margin8),
               TextButton(
-                onPressed: _restoring ? null : _onRestore,
+                onPressed: (_restoring || _buying) ? null : _onRestore,
                 child: _restoring
                     ? const SizedBox(
                         height: 18,
