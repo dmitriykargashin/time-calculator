@@ -3,6 +3,7 @@ const site = useSiteConfig()
 const trackEvent = useTrack()
 const playUrl =
   'https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator'
+const appStoreUrl = 'https://apps.apple.com/app/id6789162864'
 
 // Real app screens (golden renders from the Flutter app). Each gets its own
 // description — this is the screenshot tour, not a wall of identical cards.
@@ -96,10 +97,11 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
           </svg>
           <span><small>Get it on</small>Google Play</span>
         </a>
-        <span class="store-badge soon" aria-disabled="true">
+        <a :href="appStoreUrl" target="_blank" rel="noopener" class="store-badge"
+          @click="trackEvent('app_store_click', { store: 'ios', location: 'app-page' })">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16 1c.1 1.2-.4 2.4-1.1 3.2-.8.9-2 1.6-3.1 1.5-.1-1.2.4-2.4 1.1-3.2C13.7 1.6 15 .9 16 1Zm3.5 16.6c-.6 1.3-.9 1.9-1.6 3-1 1.6-2.5 3.6-4.3 3.6-1.6 0-2-1-4.2-1-2.1 0-2.6 1-4.2 1-1.8 0-3.2-1.8-4.2-3.4C-.9 17.4-1.2 11 1.5 7.9 2.7 6.4 4.4 5.6 6 5.6c1.7 0 2.7 1 4.1 1 1.3 0 2.1-1 4.1-1 1.4 0 2.9.8 4 2.1-3.5 1.9-3 6.9 1.3 7.9Z"/></svg>
-          <span><small>Coming soon</small>App Store</span>
-        </span>
+          <span><small>Download on the</small>App Store</span>
+        </a>
         <span class="as-rating">★ 4.6 · 391 ratings</span>
       </div>
     </section>
@@ -178,10 +180,9 @@ useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(json
 .as-pitch { max-width: 62ch; font-size: 1.12rem; line-height: 1.6; margin: 1rem 0 1.6rem; }
 .as-cta { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
 .store-badge { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1.05rem; border-radius: 13px; border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); text-decoration: none; font-weight: 600; transition: transform 0.18s var(--ease-pop), border-color 0.18s; }
-.store-badge:not(.soon):hover { border-color: var(--green); transform: translateY(-2px); }
+.store-badge:hover { border-color: var(--green); transform: translateY(-2px); }
 .store-badge span { display: flex; flex-direction: column; line-height: 1.15; }
 .store-badge small { font-size: 0.62rem; font-weight: 500; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; }
-.store-badge.soon { color: var(--ink-faint); cursor: default; }
 .as-rating { font-family: var(--font-mono); font-size: 0.8rem; color: var(--olive); }
 
 .as-h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); margin-top: 0; }

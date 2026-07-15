@@ -3,6 +3,7 @@ const { reopen: openCookieSettings } = useConsent()
 const trackEvent = useTrack()
 const playUrl =
   'https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator'
+const appStoreUrl = 'https://apps.apple.com/app/id6789162864'
 const year = 2026
 
 // Mobile burger menu (nav links are hidden under 640px).
@@ -93,7 +94,8 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
             <a :href="playUrl" target="_blank" rel="noopener"
               @click="trackEvent('app_store_click', { store: 'play', location: 'footer' })">Google&nbsp;Play</a>
             <NuxtLink to="/whats-new">What's&nbsp;new</NuxtLink>
-            <span class="foot-soon">App&nbsp;Store · soon</span>
+            <a :href="appStoreUrl" target="_blank" rel="noopener"
+              @click="trackEvent('app_store_click', { store: 'ios', location: 'footer' })">App&nbsp;Store</a>
           </div>
           <div class="foot-col">
             <h3>More</h3>
@@ -338,9 +340,6 @@ main {
 }
 .foot-cookie:hover {
   color: var(--green-deep);
-}
-.foot-soon {
-  color: var(--ink-faint);
 }
 .foot-bottom {
   display: flex;

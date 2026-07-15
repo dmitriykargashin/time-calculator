@@ -13,8 +13,8 @@ export interface Showcase {
 export const SHOWCASE: Showcase = {
   "h1": "Get Time Calculator Cardamon on your phone",
   "metaTitle": "Get Time Calculator Cardamon for Android & iOS",
-  "metaDescription": "Time Calculator Cardamon is free on Android (no ads), with an iOS version on the way. Add, subtract, multiply, and divide hours, minutes, and days. 4.6 stars.",
-  "pitch": "Time Calculator Cardamon is free on Google Play, with an iOS version on the way. It runs the same engine as the website, so a sum like \"8h 15m × 3\" gives the exact same answer on your phone. The Android app has no ads and no sign-up, and your work timesheets are one tap away on your home screen.",
+  "metaDescription": "Time Calculator Cardamon is free on Android (no ads) and on the App Store. Add, subtract, multiply, and divide hours, minutes, and days. 4.6 stars.",
+  "pitch": "Time Calculator Cardamon is free on Google Play and the App Store. It runs the same engine as the website, so a sum like \"8h 15m × 3\" gives the exact same answer on your phone. The Android app has no ads and no sign-up, and your work timesheets are one tap away on your home screen.",
   "useCases": [
     {
       "title": "Work timesheets",

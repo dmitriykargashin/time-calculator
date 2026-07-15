@@ -24,11 +24,11 @@ const faqs = [
   },
   {
     q: 'Is Time Calculator free?',
-    a: 'Yes. The web calculator and the Chrome extension are free. The mobile app is free on Google Play, with an iOS version on the way.',
+    a: 'Yes. The web calculator and the Chrome extension are free. The Android app is free on Google Play. On iOS the app is free to download, and a one-time Pro purchase unlocks the rate calculator, every result format, the custom keypad, and unlimited history.',
   },
   {
     q: 'Where can I get the app or the browser extension?',
-    a: 'Get it on Google Play, use it on the web at timecalculator.app, or add the Chrome extension to calculate time in your browser side panel.',
+    a: 'Get it on Google Play or the App Store, use it on the web at timecalculator.app, or add the Chrome extension to calculate time in your browser side panel.',
   },
   {
     q: 'How do I report a bug or request a feature?',

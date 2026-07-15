@@ -6,6 +6,7 @@ const site = useSiteConfig()
 const trackEvent = useTrack()
 const playUrl =
   'https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator'
+const appStoreUrl = 'https://apps.apple.com/app/id6789162864'
 
 useSeoMeta({
   title: 'Time Calculator: Add & Subtract Hours, Minutes & Days',
@@ -61,7 +62,7 @@ const jsonLd = computed(() => ({
       logo: `${site.url}/icons/icon-512.png`,
       email: 'support@cardamon.org',
       founder: { '@id': `${site.url}/#person` },
-      sameAs: [playUrl],
+      sameAs: [playUrl, appStoreUrl],
     },
     personNode(site.url),
     {
@@ -147,10 +148,11 @@ useHead({
           </svg>
           <span><small>Get it on</small>Google Play</span>
         </a>
-        <span class="store-badge soon" aria-disabled="true">
+        <a :href="appStoreUrl" target="_blank" rel="noopener" class="store-badge"
+          @click="trackEvent('app_store_click', { store: 'ios', location: 'hero' })">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16 1c.1 1.2-.4 2.4-1.1 3.2-.8.9-2 1.6-3.1 1.5-.1-1.2.4-2.4 1.1-3.2C13.7 1.6 15 .9 16 1Zm3.5 16.6c-.6 1.3-.9 1.9-1.6 3-1 1.6-2.5 3.6-4.3 3.6-1.6 0-2-1-4.2-1-2.1 0-2.6 1-4.2 1-1.8 0-3.2-1.8-4.2-3.4C-.9 17.4-1.2 11 1.5 7.9 2.7 6.4 4.4 5.6 6 5.6c1.7 0 2.7 1 4.1 1 1.3 0 2.1-1 4.1-1 1.4 0 2.9.8 4 2.1-3.5 1.9-3 6.9 1.3 7.9Z"/></svg>
-          <span><small>Coming soon</small>App Store</span>
-        </span>
+          <span><small>Download on the</small>App Store</span>
+        </a>
       </div>
     </div>
   </section>
@@ -318,12 +320,6 @@ useHead({
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.7;
-}
-.store-badge.soon {
-  background: transparent;
-  color: var(--ink-soft);
-  border-color: var(--line-strong);
-  cursor: default;
 }
 .hero-tool {
   width: 100%;
