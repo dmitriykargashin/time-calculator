@@ -27,10 +27,10 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
           <NuxtLink to="/app" class="head-link">Mobile&nbsp;app</NuxtLink>
           <NuxtLink to="/#faq" class="head-link">FAQ</NuxtLink>
           <ThemeSwitcher />
-          <a :href="playUrl" target="_blank" rel="noopener" class="btn btn-ghost head-cta"
-            @click="trackEvent('app_store_click', { store: 'play', location: 'header' })">
+          <NuxtLink to="/app" class="btn btn-ghost head-cta"
+            @click="trackEvent('get_app_click', { location: 'header' })">
             Get the app
-          </a>
+          </NuxtLink>
           <button
             type="button"
             class="head-burger"
@@ -54,13 +54,11 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
           <NuxtLink to="/reviews" @click="mobileOpen = false">Reviews</NuxtLink>
           <NuxtLink to="/whats-new" @click="mobileOpen = false">What's new</NuxtLink>
           <NuxtLink to="/#faq" @click="mobileOpen = false">FAQ</NuxtLink>
-          <a
-            :href="playUrl"
-            target="_blank"
-            rel="noopener"
+          <NuxtLink
+            to="/app"
             class="btn btn-green mobile-cta"
-            @click="mobileOpen = false; trackEvent('app_store_click', { store: 'play', location: 'mobile-menu' })"
-          >Get the app</a>
+            @click="mobileOpen = false; trackEvent('get_app_click', { location: 'mobile-menu' })"
+          >Get the app</NuxtLink>
         </nav>
       </Transition>
     </header>

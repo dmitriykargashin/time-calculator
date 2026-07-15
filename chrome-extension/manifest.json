@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Time Calculator Cardamon",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Add, subtract, multiply, divide & convert durations in Chrome’s side panel or address bar. Offline, no sign-in.",
   "icons": {
     "16": "icons/icon-16.png",
