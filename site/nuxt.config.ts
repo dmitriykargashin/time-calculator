@@ -1,6 +1,37 @@
 // Nuxt 4 — Time Calculator Cardamon marketing site + web calculator.
 // SSR/prerendered (crawlable HTML for SEO + AI answer engines), self-hosted
 // fonts, and @nuxtjs/seo for robots / sitemap / schema.org / OG images.
+import { execSync } from 'node:child_process'
+import { GUIDES, GUIDE_UPDATED } from './app/utils/guides'
+import { CONVERSIONS } from './app/utils/conversions'
+
+// Sitemap <lastmod>: the last git commit that touched a page's CONTENT source,
+// not the deploy time (autoLastmod stamped every URL with the prerender
+// timestamp, which Google discounts as "unverifiable" — Mueller/Illyes; see
+// https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap).
+// When several files feed one page, the newest wins. If git can't answer
+// (shallow CI clone, file outside history), the URL just OMITS lastmod —
+// omitting is honest; a fake fresh date erodes Google's trust in all of them.
+const gitDateCache = new Map<string, string | undefined>()
+function gitLastmod(...files: string[]): string | undefined {
+  const dates = files
+    .map((f) => {
+      if (!gitDateCache.has(f)) {
+        try {
+          gitDateCache.set(
+            f,
+            execSync(`git log -1 --format=%cI -- "${f}"`, { cwd: __dirname, encoding: 'utf8' }).trim() || undefined,
+          )
+        } catch {
+          gitDateCache.set(f, undefined)
+        }
+      }
+      return gitDateCache.get(f)
+    })
+    .filter((d): d is string => !!d)
+  return dates.sort().pop()
+}
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-01',
   devtools: { enabled: true },
@@ -41,13 +72,19 @@ export default defineNuxtConfig({
     '/about': { redirect: { to: '/dmitrii-kargashin', statusCode: 301 } },
   },
 
-  // Attach the social card as an <image:image> on the home URL and stamp a
-  // build-time lastmod. Absolute URLs still resolve from site.url (NUXT_SITE_URL).
+  // Sitemap: real per-page lastmod (see gitLastmod above), NOT the deploy time
+  // (autoLastmod is off for that reason). Guides use GUIDE_UPDATED — the same
+  // editorial date their on-page schema.org dateModified declares, so sitemap
+  // and schema agree. Convert pages date from conversions.ts; static pages from
+  // their .vue file plus the data files that render into them. The home URL
+  // also attaches the social card as an <image:image>. These entries merge onto
+  // the app-discovered URLs by loc; absolute URLs resolve from site.url.
   sitemap: {
-    autoLastmod: true,
-    urls: [
+    autoLastmod: false,
+    urls: () => [
       {
         loc: '/',
+        lastmod: gitLastmod('app/pages/index.vue', 'app/utils/faqs.ts', 'app/components/TimeCalculator.vue'),
         images: [
           {
             loc: '/og.png',
@@ -56,6 +93,18 @@ export default defineNuxtConfig({
           },
         ],
       },
+      { loc: '/app', lastmod: gitLastmod('app/pages/app/index.vue', 'app/utils/showcase.ts') },
+      { loc: '/convert', lastmod: gitLastmod('app/pages/convert/index.vue', 'app/utils/conversions.ts') },
+      { loc: '/dmitrii-kargashin', lastmod: gitLastmod('app/pages/dmitrii-kargashin.vue', 'app/utils/author.ts') },
+      { loc: '/guides', lastmod: gitLastmod('app/pages/guides/index.vue', 'app/utils/guides.ts') },
+      { loc: '/reviews', lastmod: gitLastmod('app/pages/reviews/index.vue') },
+      { loc: '/support', lastmod: gitLastmod('app/pages/support.vue') },
+      { loc: '/whats-new', lastmod: gitLastmod('app/pages/whats-new.vue') },
+      ...GUIDES.map((g) => ({ loc: `/guides/${g.slug}`, lastmod: GUIDE_UPDATED })),
+      ...CONVERSIONS.map((c) => ({
+        loc: `/convert/${c.slug}`,
+        lastmod: gitLastmod('app/utils/conversions.ts', 'app/pages/convert/[pair].vue'),
+      })),
     ],
   },
 
