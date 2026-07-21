@@ -18,6 +18,10 @@ export interface Guide {
   faqs: GuideFaq[]
   related: string[]
   useCaseLine: string
+  /** Per-guide content date (YYYY-MM-DD). Falls back to GUIDE_UPDATED. Feeds
+   *  the on-page dateModified schema AND the sitemap lastmod — set it when a
+   *  guide's content meaningfully changes, and on every new guide. */
+  updated?: string
 }
 
 // Last content review — feeds dateModified in the per-guide schema.
@@ -94,7 +98,8 @@ export const GUIDES: Guide[] = [
     "related": [
       "timesheet-total-hours",
       "hours-worked-between-two-times",
-      "add-and-subtract-time"
+      "add-and-subtract-time",
+      "work-hours-calculator"
     ]
   },
   {
@@ -167,7 +172,8 @@ export const GUIDES: Guide[] = [
     "related": [
       "add-hours-and-minutes",
       "timesheet-total-hours",
-      "add-and-subtract-time"
+      "add-and-subtract-time",
+      "subtract-breaks-from-work-hours"
     ]
   },
   {
@@ -313,7 +319,8 @@ export const GUIDES: Guide[] = [
     "related": [
       "add-hours-and-minutes",
       "hours-worked-between-two-times",
-      "add-and-subtract-time"
+      "add-and-subtract-time",
+      "time-card-calculator"
     ]
   },
   {
@@ -783,8 +790,330 @@ export const GUIDES: Guide[] = [
     "related": [
       "convert-time-to-decimal",
       "timesheet-total-hours",
-      "multiply-and-divide-time"
+      "multiply-and-divide-time",
+      "overtime-calculator"
     ]
+  },
+  {
+    "slug": "time-card-calculator",
+    "query": "time card calculator",
+    "h1": "How do I use a time card calculator to total payable hours?",
+    "metaTitle": "Time Card Calculator: Punch Times to Payable Hours",
+    "metaDescription": "Free time card calculator: turn clock-in and clock-out punches into payable hours. Subtract 30m breaks, total the week, and convert to decimal for payroll.",
+    "answer": "A time card calculator turns clock-in and clock-out punches into payable hours. Write each punch as hours and minutes from midnight, subtract clock-in from clock-out, then subtract the break: 16h 48m - 8h 12m - 30m gives 8 Hours 6 Minutes. Add the days with plus signs and pick the Hour format for a decimal payroll total.",
+    "intro": "A punch time card gives you pairs of clock times, and payroll wants one number. The method is the same on every row: write each punch as hours and minutes counted from midnight, subtract the clock-in from the clock-out, then take off the unpaid break. That leaves one day's payable span, like 8h 6m. Add the spans with plus signs for the weekly total, and switch the result format to Hour when your payroll software wants decimal hours.",
+    "useCaseLine": "Payroll admins and hourly workers turn a week of punch-clock in and out times into one payable total without retyping the card into a spreadsheet.",
+    "steps": [
+      {
+        "title": "Turn each punch pair into a span",
+        "body": "Write every punch as hours and minutes counted from midnight on a 24-hour clock, so an 8:12 clock-in is 8h 12m and a 4:48 p.m. clock-out is 16h 48m. Subtract the in from the out: 16h 48m - 8h 12m gives 8 Hours 36 Minutes for that row of the card."
+      },
+      {
+        "title": "Subtract the breaks on the same line",
+        "body": "Chain a minus for every unpaid break the card shows. A 30-minute lunch makes the line 16h 48m - 8h 12m - 30m, which returns 8 Hours 6 Minutes of payable time. Use - 1h for a full-hour break, and add more minus signs for a second break."
+      },
+      {
+        "title": "Add the days into a weekly total",
+        "body": "Join each day's payable span with plus signs: 8h 6m + 7h 51m + 8h 24m + 8h + 7h 57m totals 40 Hours 18 Minutes. Order does not matter, and an overtime week can carry a sixth or seventh span on the same line."
+      },
+      {
+        "title": "Convert the total to decimal hours for payroll",
+        "body": "Payroll software wants 40.3, not 40h 18m. Switch the result format to Hour and the same expression reads 40.3 Hours, because 18 minutes is 18 ÷ 60 = 0.3 of an hour. Nothing gets retyped; only the format changes."
+      }
+    ],
+    "examples": [
+      {
+        "expr": "16h 48m - 8h 12m - 30m",
+        "format": "Hour Minute",
+        "result": "8 Hours 6 Minutes",
+        "note": "One card row: an 8:12 clock-in, a 16:48 clock-out, and a 30-minute unpaid lunch."
+      },
+      {
+        "expr": "12h - 8h + 17h 30m - 13h",
+        "format": "Hour Minute",
+        "result": "8 Hours 30 Minutes",
+        "note": "A split-shift card with two punch pairs, 8:00 to 12:00 and 13:00 to 17:30, on one line."
+      },
+      {
+        "expr": "8h 6m + 7h 51m + 8h 24m + 8h + 7h 57m",
+        "format": "Hour Minute",
+        "result": "40 Hours 18 Minutes",
+        "note": "Five daily payable spans from the card summed into the weekly total."
+      },
+      {
+        "expr": "8h 6m + 7h 51m + 8h 24m + 8h + 7h 57m",
+        "format": "Hour",
+        "result": "40.3 Hours",
+        "note": "The same week as decimal hours, ready to type into payroll software."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Can I type the punch times with a colon, like 8:12?",
+        "a": "Not with a colon. Write each punch as hours and minutes counted from midnight, so 8:12 becomes 8h 12m and 4:48 p.m. becomes 16h 48m. Then subtract: 16h 48m - 8h 12m gives 8 Hours 36 Minutes, the span for that row of the card."
+      },
+      {
+        "q": "How do I subtract a 30-minute or one-hour lunch?",
+        "a": "Chain another minus on the same line. 16h 48m - 8h 12m - 30m removes a half-hour lunch and returns 8 Hours 6 Minutes. Use - 1h for a full hour, and keep adding minus signs if the card shows more than one break."
+      },
+      {
+        "q": "How do I get decimal hours for payroll software?",
+        "a": "Switch the result format to Hour. The weekly line 8h 6m + 7h 51m + 8h 24m + 8h + 7h 57m then reads 40.3 Hours instead of 40 Hours 18 Minutes, because 18 minutes is 18 ÷ 60 = 0.3 of an hour."
+      },
+      {
+        "q": "What about a shift that crosses midnight?",
+        "a": "Add 24h to the clock-out, since it lands on the next day. A card showing 22:00 in and 6:30 out is 6h 30m + 24h - 22h, which gives 8 Hours 30 Minutes. Without the +24h the subtraction would go negative."
+      }
+    ],
+    "related": [
+      "timesheet-total-hours",
+      "convert-time-to-decimal",
+      "hours-worked-between-two-times",
+      "billable-hours"
+    ],
+    "updated": "2026-07-21"
+  },
+  {
+    "slug": "work-hours-calculator",
+    "query": "work hours calculator",
+    "h1": "Work Hours Calculator: How Many Hours Did I Work?",
+    "metaTitle": "Work Hours Calculator: Add Up Shifts for Payroll",
+    "metaDescription": "Free work hours calculator: type each shift like 8h 15m + 7h 45m + 8h, subtract breaks, and read the total as hours and minutes or decimal hours for payroll.",
+    "answer": "A work hours calculator adds your shifts as durations: type 8h 15m + 7h 45m + 8h on one line and read 24 Hours. Subtract breaks with a minus sign, then pick Hour Minute for an hours-and-minutes total, or the single Hour format for the decimal hours payroll systems expect.",
+    "intro": "Whether you finished three shifts or a full week, the question is the same: how many hours did I work? This work hours calculator answers it in one line. Type each shift as a duration, like 8h 15m, join the shifts with plus signs, and subtract any unpaid breaks. Pick Hour Minute to read the total the way a time card shows it, or the single Hour format when payroll wants decimal hours. The calculator carries every 60 minutes into an hour, so 45 minutes plus 30 minutes lands as 1 hour 15 minutes on the total.",
+    "useCaseLine": "Hourly workers double-checking a pay stub and payroll admins verifying submitted totals type the week's shifts once and read the answer in either format.",
+    "steps": [
+      {
+        "title": "Write each shift as hours and minutes",
+        "body": "Type every shift as a duration with a unit on each number: an 8-hour-15-minute day is 8h 15m, a straight 8-hour day is 8h. Write the worked length, so a 9-hour day with a 45-minute unpaid lunch becomes 9h - 45m."
+      },
+      {
+        "title": "Chain the shifts with plus signs",
+        "body": "Put a + between shifts and keep the whole day or week on one line: 8h 15m + 7h 45m + 8h totals three days. Add all five days for the week, and use a minus sign anywhere in the line to remove unpaid breaks."
+      },
+      {
+        "title": "Read the total as hours and minutes",
+        "body": "Pick Hour Minute to see the total the way a time card reads it, like 40 Hours 15 Minutes. The calculator carries every 60 minutes into an hour, so a stack of odd shift lengths still comes out as a clean total."
+      },
+      {
+        "title": "Switch to decimal hours for payroll",
+        "body": "Change the format to the single Hour option when your payroll system wants a decimal. The same week reads 40.25 Hours, since 15 minutes is a quarter of an hour. Round repeating decimals like 8.3333333 to two places at the end."
+      }
+    ],
+    "examples": [
+      {
+        "expr": "8h 15m + 7h 45m + 8h",
+        "format": "Hour Minute",
+        "result": "24 Hours",
+        "note": "Three daily shifts added into one running total."
+      },
+      {
+        "expr": "8h 15m + 7h 45m + 8h + 8h 30m + 7h 45m",
+        "format": "Hour Minute",
+        "result": "40 Hours 15 Minutes",
+        "note": "A full five-day week totaled the way a time card reads."
+      },
+      {
+        "expr": "8h 15m + 7h 45m + 8h + 8h 30m + 7h 45m",
+        "format": "Hour",
+        "result": "40.25 Hours",
+        "note": "The same week as decimal hours, the figure payroll software expects."
+      },
+      {
+        "expr": "9h - 45m",
+        "format": "Hour Minute",
+        "result": "8 Hours 15 Minutes",
+        "note": "A 9-hour day with the unpaid 45-minute lunch removed."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How do I calculate my work hours for the week?",
+        "a": "Type each day's shift as a duration and add them on one line: 8h 15m + 7h 45m + 8h + 8h 30m + 7h 45m returns 40 Hours 15 Minutes. The calculator carries minutes into hours, so you skip the column arithmetic."
+      },
+      {
+        "q": "How do I get my work hours as decimal hours for payroll?",
+        "a": "Switch the result format to the single Hour option. A 40 hour 15 minute week reads 40.25 Hours. Odd minute counts produce repeating decimals, so 8h 20m shows 8.3333333 Hours, which payroll rounds to 8.33."
+      },
+      {
+        "q": "How do I subtract an unpaid lunch break?",
+        "a": "Use a minus sign in the same line. A 9-hour day with a 45-minute unpaid lunch is 9h - 45m, which returns 8 Hours 15 Minutes. Chain more minus signs to remove several breaks across the week."
+      },
+      {
+        "q": "I only have clock-in and clock-out times. Can I still calculate my hours?",
+        "a": "Yes. Write each clock time as hours and minutes counted from midnight and subtract: a 9:00 to 17:30 day is 17h 30m - 9h, which gives 8 Hours 30 Minutes. Total those shift lengths with plus signs afterward."
+      }
+    ],
+    "related": [
+      "timesheet-total-hours",
+      "hours-worked-between-two-times",
+      "convert-time-to-decimal",
+      "add-hours-and-minutes"
+    ],
+    "updated": "2026-07-21"
+  },
+  {
+    "slug": "overtime-calculator",
+    "query": "overtime calculator",
+    "h1": "Overtime Calculator: Hours Over the 40-Hour Week",
+    "metaTitle": "Overtime Calculator: Hours Over the 40-Hour Week",
+    "metaDescription": "Free overtime calculator: subtract the 40-hour week from your total, like 43h 45m - 40h = 3 Hours 45 Minutes, then read it as decimal hours for 1.5x pay.",
+    "answer": "An overtime calculator subtracts the standard week from your total hours worked. Type 43h 45m - 40h and the result is 3 Hours 45 Minutes of overtime. For daily overtime, subtract 8h from the shift. Switch the format to the single \"Hour\" option to read the same overtime as 3.75 Hours for pay math.",
+    "intro": "Overtime is what remains after the standard week comes out of your total hours. Under the US federal rule the threshold is 40 hours per week, so the math is one subtraction: total worked minus 40h. The catch is that timesheet totals arrive in hours and minutes, and subtracting 40 from 43h 45m by hand invites a borrow slip at the end of a pay period. Type the subtraction into the calculator instead, read the overtime in hours and minutes for the record, then switch to decimal hours when payroll needs a number to multiply.",
+    "useCaseLine": "Payroll admins and hourly workers subtract the 40-hour standard week from a timesheet total to see the overtime hours owed at time and a half.",
+    "steps": [
+      {
+        "title": "Total the week and subtract 40h in one line",
+        "body": "Add each day's shift with plus signs, then append - 40h to the same line: 8h 30m + 9h 15m + 8h + 9h + 9h - 40h. The calculator totals the week to 43h 45m, takes off the standard 40 hours, and returns 3 Hours 45 Minutes of overtime in one pass."
+      },
+      {
+        "title": "Start from a weekly total if you have one",
+        "body": "If the timesheet already shows the week as one number, type it as a duration and subtract: 43h 45m - 40h gives 3 Hours 45 Minutes. A negative answer means the week stayed under 40 hours, so there is no weekly overtime to pay."
+      },
+      {
+        "title": "Check daily overtime against an 8-hour day",
+        "body": "Some states, California among them, count overtime per day once a shift passes 8 hours. Subtract the threshold from the single shift: 9h 30m - 8h gives 1 Hour 30 Minutes. Run the same subtraction on each long day, then add the results with plus signs."
+      },
+      {
+        "title": "Read the overtime as decimal hours for pay",
+        "body": "Switch the result format to the single \"Hour\" option and 43h 45m - 40h reads as 3.75 Hours. Payroll multiplies that decimal by 1.5 times the hourly rate for time and a half. The calculator computes the hours; the currency step belongs to your payroll system."
+      }
+    ],
+    "examples": [
+      {
+        "expr": "43h 45m - 40h",
+        "format": "Hour Minute",
+        "result": "3 Hours 45 Minutes",
+        "note": "A 43 hour 45 minute week minus the standard 40-hour week leaves the overtime."
+      },
+      {
+        "expr": "8h 30m + 9h 15m + 8h + 9h + 9h - 40h",
+        "format": "Hour Minute",
+        "result": "3 Hours 45 Minutes",
+        "note": "Five daily shifts totaled and the standard week subtracted in one line."
+      },
+      {
+        "expr": "43h 45m - 40h",
+        "format": "Hour",
+        "result": "3.75 Hours",
+        "note": "The same overtime as a decimal, ready for the 1.5x rate multiplication in payroll."
+      },
+      {
+        "expr": "9h 30m - 8h",
+        "format": "Hour Minute",
+        "result": "1 Hour 30 Minutes",
+        "note": "Daily overtime: a 9 hour 30 minute shift measured against an 8-hour day."
+      },
+      {
+        "expr": "3h 45m * 1.5",
+        "format": "Hour",
+        "result": "5.625 Hours",
+        "note": "Time and a half as duration math: multiplying the 3.75 overtime hours by 1.5 gives the equivalent straight-time hours."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How do I calculate my overtime hours for the week?",
+        "a": "Subtract the standard 40-hour week from your total hours worked. Type 43h 45m - 40h to get 3 Hours 45 Minutes, or build the total and the subtraction into one line: 8h 30m + 9h 15m + 8h + 9h + 9h - 40h returns the same answer."
+      },
+      {
+        "q": "What happens if I worked under 40 hours?",
+        "a": "The subtraction goes negative. 38h 30m - 40h returns -1 Hours -30 Minutes, meaning the week fell 1 hour 30 minutes short of the threshold, so there is no weekly overtime. Daily overtime can still apply if a single shift ran past 8 hours."
+      },
+      {
+        "q": "How does the overtime number turn into time-and-a-half pay?",
+        "a": "Read the overtime in the single \"Hour\" format to get a decimal like 3.75 Hours, then payroll multiplies that by 1.5 times the hourly rate. The calculator works in hours only. To see the time itself scaled, multiply the duration: 3h 45m * 1.5 gives 5.625 Hours."
+      },
+      {
+        "q": "Does daily overtime work the same way?",
+        "a": "Yes, with an 8h threshold per shift in place of 40h per week. Subtract it from each day: 9h 30m - 8h gives 1 Hour 30 Minutes, which reads as 1.5 Hours in the decimal \"Hour\" format. Swap in - 12h where double-time rules start at 12 hours."
+      }
+    ],
+    "related": [
+      "work-hours-calculator",
+      "timesheet-total-hours",
+      "convert-time-to-decimal",
+      "hours-worked-between-two-times"
+    ],
+    "updated": "2026-07-21"
+  },
+  {
+    "slug": "subtract-breaks-from-work-hours",
+    "query": "subtract lunch break from work hours",
+    "h1": "How do I subtract lunch break from work hours?",
+    "metaTitle": "Subtract Lunch Break from Work Hours (Time Calculator)",
+    "metaDescription": "Subtract lunch break from work hours in one line: 9h - 45m gives 8 Hours 15 Minutes. Chain minus signs to deduct every unpaid break and total the week.",
+    "answer": "Subtract lunch break from work hours by typing the full shift span, then removing each unpaid break with a minus sign: 9h - 45m returns 8 Hours 15 Minutes. Chain more minuses for extra breaks, like 8h 30m - 30m - 15m, and pick a result format such as Hour Minute or decimal Hour.",
+    "intro": "An 8:30 to 17:30 shift looks like nine hours on paper, but 45 minutes of it is an unpaid lunch, so only 8 hours 15 minutes counts as work. Doing that subtraction by hand means a borrow across the hour boundary, and a second rest break makes the borrow worse. This calculator takes the whole line at once: type the shift span, put a minus sign before every unpaid break, and read the paid total in the format your payroll expects.",
+    "useCaseLine": "Payroll admins and hourly workers use it to strip unpaid lunches and rest breaks from each shift before the hours reach the pay run.",
+    "steps": [
+      {
+        "title": "Start with the full shift span",
+        "body": "Write the whole clock-in to clock-out span as one duration: a nine hour day is 9h, an eight-and-a-half hour day is 8h 30m. If you only know the clock times, subtract them in the same line, so 17h 30m - 8h 30m returns 9 Hours to deduct from."
+      },
+      {
+        "title": "Put a minus sign before every unpaid break",
+        "body": "Deduct the lunch with a minus: 9h - 45m leaves 8 Hours 15 Minutes of paid time. Chain another minus for each extra break, so a half-hour lunch plus a 15 minute rest becomes 8h 30m - 30m - 15m. The calculator borrows across the hour boundary for you."
+      },
+      {
+        "title": "Chain the whole week on one line",
+        "body": "Alternate plus and minus to net out every day at once. Each plus adds a shift span and each minus removes that day's break: 9h - 45m + 8h 30m - 30m + 9h - 45m covers three days and three lunches and returns 24 Hours 30 Minutes."
+      },
+      {
+        "title": "Pick the format your payroll expects",
+        "body": "Hour Minute reads like 8 Hours 15 Minutes. Switch to Hour when payroll wants a decimal to multiply by a pay rate: the same 9h - 45m shows 8.25 Hours. One expression feeds both views, so change the picker instead of retyping."
+      }
+    ],
+    "examples": [
+      {
+        "expr": "9h - 45m",
+        "format": "Hour Minute",
+        "result": "8 Hours 15 Minutes",
+        "note": "A nine hour shift span with a 45-minute unpaid lunch deducted."
+      },
+      {
+        "expr": "8h 30m - 30m - 15m",
+        "format": "Hour Minute",
+        "result": "7 Hours 45 Minutes",
+        "note": "One shift minus a half-hour lunch and a 15-minute rest break, chained with two minus signs."
+      },
+      {
+        "expr": "9h - 45m + 8h 30m - 30m + 9h - 45m + 8h - 30m + 9h 15m - 45m",
+        "format": "Hour Minute",
+        "result": "40 Hours 30 Minutes",
+        "note": "A five-day week on one line: each plus adds a shift span, each minus removes that day's unpaid break."
+      },
+      {
+        "expr": "9h - 45m",
+        "format": "Hour",
+        "result": "8.25 Hours",
+        "note": "The same shift as decimal hours, ready to multiply by an hourly pay rate."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Do I subtract paid breaks too?",
+        "a": "No. Deduct only unpaid time. If your employer pays for a 15 minute rest break, leave it inside the span and remove the unpaid lunch alone: 8h 30m - 30m returns 8 Hours of paid time. Check your contract for which breaks count as unpaid."
+      },
+      {
+        "q": "I only have clock-in and clock-out times. Can I still deduct the break?",
+        "a": "Yes, in one line. Write each clock time as hours and minutes from midnight, then chain the subtraction: an 8:30 to 17:15 shift with a 45 minute lunch is 17h 15m - 8h 30m - 45m, which returns 8 Hours."
+      },
+      {
+        "q": "How do I deduct breaks from a whole week of hours?",
+        "a": "Chain the days with plus signs and the breaks with minus signs on a single line. 9h - 45m + 8h 30m - 30m + 9h - 45m nets out three days at once and returns 24 Hours 30 Minutes. Extend the same pattern to five days."
+      },
+      {
+        "q": "What if the break is bigger than the minutes on the clock?",
+        "a": "The calculator borrows from the hour. 9h 15m - 30m returns 8 Hours 45 Minutes, with the borrow across the 60 minute boundary handled for you, so the minutes column never goes negative."
+      }
+    ],
+    "related": [
+      "time-card-calculator",
+      "hours-worked-between-two-times",
+      "timesheet-total-hours"
+    ],
+    "updated": "2026-07-21"
   }
 ]
 

@@ -128,7 +128,7 @@ useHead({
         <h1 data-reveal style="--rd: 0.07s">The time calculator<br /><em>that just adds up</em>.</h1>
         <p class="lede" data-reveal style="--rd: 0.14s">
           Type a sum like <code>5h 30m + 2h 15m</code> and read off the answer.
-          Add, subtract, multiply, and divide time straight from your keyboard.
+          Add, subtract, multiply, and divide durations straight from your keyboard.
           It runs the same engine as the Cardamon app, now in your browser.
         </p>
       </header>

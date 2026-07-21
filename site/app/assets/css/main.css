@@ -23,7 +23,7 @@
   --green: #2f9412;
   --green-bright: #3da50c;
   --green-deep: #1f6c10;
-  --olive: #5c7d0e;
+  --olive: #4f6b0c; /* ≥4.5:1 (WCAG AA) on --paper-deep and --paper; was #5c7d0e (3.8:1) */
   --ochre: #b9791a;
   --on-green: #f6f3e8;
 

@@ -449,7 +449,7 @@ export const CONVERSIONS: Conversion[] = [
     "slug": "weeks-to-days",
     "from": "Weeks",
     "to": "Days",
-    "inverse": null,
+    "inverse": "days-to-weeks",
     "metaTitle": "Weeks to Days Converter — Multiply Weeks by 7",
     "metaDescription": "Convert weeks to days fast. Multiply any number of weeks by 7 to get days (3 weeks = 21 days). Free converter, formula, and value table for whole or fractional weeks.",
     "h1": "Weeks to Days",
@@ -626,6 +626,366 @@ export const CONVERSIONS: Conversion[] = [
       {
         "q": "How do I convert milliseconds back to seconds?",
         "a": "Divide the milliseconds by 1000. So 4500 ms becomes 4.5 seconds, and 250 ms becomes 0.25 seconds. It is the exact inverse of the seconds-to-milliseconds step, where you multiply by 1000 instead."
+      }
+    ]
+  },
+  {
+    "slug": "seconds-to-hours",
+    "from": "Seconds",
+    "to": "Hours",
+    "inverse": "hours-to-seconds",
+    "metaTitle": "Seconds to Hours Converter | Time Calculator",
+    "metaDescription": "Convert seconds to hours by dividing by 3600. See why 7200 seconds equals 2 hours, how to read decimal results, and convert any value with the live calculator.",
+    "h1": "Seconds to Hours",
+    "question": "How many hours is 7200 seconds?",
+    "answer": "7200 seconds is 2 hours, because one hour is 3600 seconds and 7200 divided by 3600 is 2. To convert seconds to hours, divide the second count by 3600. Choose the Hour format to read any duration in seconds as decimal hours.",
+    "intro": "Stopwatch exports, API logs, and video runtimes often report raw seconds, and a figure like 9000 seconds says little on its own. Divide the seconds by 3600 and you get decimal hours. So 9000 seconds becomes 2.5 hours, and 5400 seconds becomes 1.5 hours.",
+    "formula": "Divide the number of seconds by 3600: 7200 seconds ÷ 3600 = 2 hours, and 5400 seconds ÷ 3600 = 1.5 hours.",
+    "expr": "7200 seconds",
+    "format": "Hour",
+    "result": "2 Hours",
+    "table": [
+      {
+        "label": "900 Seconds",
+        "result": "0.25 Hours"
+      },
+      {
+        "label": "1800 Seconds",
+        "result": "0.5 Hours"
+      },
+      {
+        "label": "2700 Seconds",
+        "result": "0.75 Hours"
+      },
+      {
+        "label": "3600 Seconds",
+        "result": "1 Hour"
+      },
+      {
+        "label": "5400 Seconds",
+        "result": "1.5 Hours"
+      },
+      {
+        "label": "7200 Seconds",
+        "result": "2 Hours"
+      },
+      {
+        "label": "10800 Seconds",
+        "result": "3 Hours"
+      },
+      {
+        "label": "18000 Seconds",
+        "result": "5 Hours"
+      },
+      {
+        "label": "28800 Seconds",
+        "result": "8 Hours"
+      },
+      {
+        "label": "43200 Seconds",
+        "result": "12 Hours"
+      },
+      {
+        "label": "86400 Seconds",
+        "result": "24 Hours"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How many hours is 3600 seconds?",
+        "a": "3600 seconds is exactly 1 hour. An hour holds 60 minutes of 60 seconds each, and 60 × 60 = 3600. Every multiple follows the same rule: 7200 seconds is 2 hours and 10800 seconds is 3 hours."
+      },
+      {
+        "q": "How do I read an uneven value like 10000 seconds?",
+        "a": "Divide by 3600 the same way. 10000 ÷ 3600 gives 2.7777778 hours, which the calculator prints as 2.7777778 Hours. The decimal part is the leftover 2800 seconds expressed as a fraction of the 3600-second hour."
+      }
+    ]
+  },
+  {
+    "slug": "hours-to-seconds",
+    "from": "Hours",
+    "to": "Seconds",
+    "inverse": "seconds-to-hours",
+    "metaTitle": "Hours to Seconds Converter | Time Calculator",
+    "metaDescription": "Convert hours to seconds by multiplying by 3600. 1 hour is 3600 seconds and 2 hours is 7200. Use the live calculator and full value table for any hour count.",
+    "h1": "Hours to Seconds",
+    "question": "How many seconds is 2 hours?",
+    "answer": "2 hours is 7200 seconds, because each hour holds 3600 seconds and 2 times 3600 is 7200. To convert hours to seconds, multiply the hours by 3600. The Second format returns any duration as a single second count, so 1.5 hours reads as 5400 Seconds.",
+    "intro": "Countdown timers, video encoders, and cron settings usually want raw seconds while you think in hours. Multiply the hours by 3600 to convert. A 2-hour timer counts down 7200 seconds; a 45-minute session, entered as 0.75 hours, runs 2700 seconds.",
+    "formula": "Multiply the number of hours by 3600 to get total seconds: 2 hours × 3600 = 7200 seconds, and 2.5 hours × 3600 = 9000 seconds.",
+    "expr": "2h",
+    "format": "Second",
+    "result": "7200 Seconds",
+    "table": [
+      {
+        "label": "0.5 Hours",
+        "result": "1800 Seconds"
+      },
+      {
+        "label": "1 Hour",
+        "result": "3600 Seconds"
+      },
+      {
+        "label": "1.5 Hours",
+        "result": "5400 Seconds"
+      },
+      {
+        "label": "2 Hours",
+        "result": "7200 Seconds"
+      },
+      {
+        "label": "3 Hours",
+        "result": "10800 Seconds"
+      },
+      {
+        "label": "4 Hours",
+        "result": "14400 Seconds"
+      },
+      {
+        "label": "6 Hours",
+        "result": "21600 Seconds"
+      },
+      {
+        "label": "8 Hours",
+        "result": "28800 Seconds"
+      },
+      {
+        "label": "12 Hours",
+        "result": "43200 Seconds"
+      },
+      {
+        "label": "24 Hours",
+        "result": "86400 Seconds"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How many seconds are in 1 hour?",
+        "a": "One hour is 3600 seconds. An hour has 60 minutes, each minute has 60 seconds, and 60 × 60 = 3600. That constant sits behind every row in the table above."
+      },
+      {
+        "q": "How many seconds is an 8-hour workday?",
+        "a": "8 hours is 28800 seconds, since 8 × 3600 = 28800. A full 24-hour day comes to 86400 seconds, which is why Unix timestamps advance by 86400 between one midnight and the next."
+      },
+      {
+        "q": "How do I convert a fractional value like 1.5 hours?",
+        "a": "Multiply by 3600 the same way. 1.5 × 3600 = 5400 seconds: 3600 from the full hour plus 1800 from the half. Any decimal carries straight through the multiplication."
+      }
+    ]
+  },
+  {
+    "slug": "days-to-weeks",
+    "from": "Days",
+    "to": "Weeks",
+    "inverse": "weeks-to-days",
+    "metaTitle": "Days to Weeks Converter | Time Calculator",
+    "metaDescription": "Convert days to weeks by dividing by 7. 14 days is 2 weeks and 21 days is 3. Free converter, formula, and value table for whole and fractional day counts.",
+    "h1": "Days to Weeks",
+    "question": "How many weeks is 14 days?",
+    "answer": "14 days is 2 weeks, because one week is 7 days and 14 divided by 7 is 2. To convert days to weeks, divide the day count by 7. Pick the Week format to read any number of days as weeks, so 21 days returns 3 Weeks.",
+    "intro": "A 42-day training block, a 63-day notice period, a return window counted in days: these read better as weeks. Divide the days by 7 and you have the answer. So 42 days becomes 6 weeks, and 63 days becomes 9 weeks. Day counts that do not divide evenly print as decimals, so 30 days reads as 4.2857143 weeks.",
+    "formula": "Divide the number of days by 7 to get weeks: 14 days ÷ 7 = 2 weeks, and 3.5 days ÷ 7 = 0.5 weeks.",
+    "expr": "14 days",
+    "format": "Week",
+    "result": "2 Weeks",
+    "table": [
+      {
+        "label": "3.5 Days",
+        "result": "0.5 Weeks"
+      },
+      {
+        "label": "7 Days",
+        "result": "1 Week"
+      },
+      {
+        "label": "10.5 Days",
+        "result": "1.5 Weeks"
+      },
+      {
+        "label": "14 Days",
+        "result": "2 Weeks"
+      },
+      {
+        "label": "21 Days",
+        "result": "3 Weeks"
+      },
+      {
+        "label": "28 Days",
+        "result": "4 Weeks"
+      },
+      {
+        "label": "35 Days",
+        "result": "5 Weeks"
+      },
+      {
+        "label": "49 Days",
+        "result": "7 Weeks"
+      },
+      {
+        "label": "70 Days",
+        "result": "10 Weeks"
+      },
+      {
+        "label": "84 Days",
+        "result": "12 Weeks"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How many weeks is 30 days?",
+        "a": "30 days is 4.2857143 weeks, because 30 ÷ 7 leaves a remainder. The whole part covers 4 full weeks (28 days), and the leftover 2 days divide by 7 to give the 0.2857143. For calendar planning, read it as 4 weeks and 2 days."
+      },
+      {
+        "q": "How many weeks are in 365 days?",
+        "a": "365 days is 52.1428571 weeks. A common year covers 52 full weeks (364 days) plus one extra day, which is why the same date falls one weekday later each common year."
+      },
+      {
+        "q": "How many weeks is a 90-day period?",
+        "a": "90 days is 12.8571429 weeks. The first 84 days make 12 full weeks, and the remaining 6 days add 0.8571429. A 90-day trial therefore runs a little under 13 weeks."
+      }
+    ]
+  },
+  {
+    "slug": "years-to-days",
+    "from": "Years",
+    "to": "Days",
+    "inverse": "days-to-years",
+    "metaTitle": "Years to Days Converter | Time Calculator",
+    "metaDescription": "Convert years to days by multiplying by 365. 1 year is 365 days and 2 years is 730. See the formula, a value table, and a live calculator for any year count.",
+    "h1": "Years to Days",
+    "question": "How many days is 2 years?",
+    "answer": "2 years is 730 days, because the calculator counts each year as 365 days and 2 times 365 is 730. To convert years to days, multiply the years by 365. Choose the Day format to turn any year count into days, so 5 years returns 1825 Days.",
+    "intro": "Loan terms, warranty periods, and age milestones often start as years and end up needing a day count. Multiply the years by 365 to convert. A 3-year warranty covers 1095 days; a 10-year plan spans 3650 days. The calculator uses a fixed 365-day year, so leap days stay out of the count.",
+    "formula": "Multiply the number of years by 365 to get days: 2 years × 365 = 730 days, and 0.5 years × 365 = 182.5 days.",
+    "expr": "2 years",
+    "format": "Day",
+    "result": "730 Days",
+    "table": [
+      {
+        "label": "0.5 Years",
+        "result": "182.5 Days"
+      },
+      {
+        "label": "1 Year",
+        "result": "365 Days"
+      },
+      {
+        "label": "2 Years",
+        "result": "730 Days"
+      },
+      {
+        "label": "3 Years",
+        "result": "1095 Days"
+      },
+      {
+        "label": "4 Years",
+        "result": "1460 Days"
+      },
+      {
+        "label": "5 Years",
+        "result": "1825 Days"
+      },
+      {
+        "label": "10 Years",
+        "result": "3650 Days"
+      },
+      {
+        "label": "20 Years",
+        "result": "7300 Days"
+      },
+      {
+        "label": "50 Years",
+        "result": "18250 Days"
+      },
+      {
+        "label": "100 Years",
+        "result": "36500 Days"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How many days are in 1 year?",
+        "a": "One year is 365 days in this converter. Calendar years alternate between 365 and 366 days because of leap years, but for duration math the fixed 365-day year keeps every result consistent: 4 years is 1460 days rather than the calendar's 1461."
+      },
+      {
+        "q": "How many days is 1.5 years?",
+        "a": "1.5 years is 547.5 days, since 1.5 × 365 = 547.5. The full year contributes 365 days and the half year adds 182.5. Fractions carry straight through the multiplication."
+      },
+      {
+        "q": "How many days is 7 years?",
+        "a": "7 years is 2555 days, because 7 × 365 = 2555. On the calendar the same span usually includes one or two leap days on top, so a 7-year anniversary lands 2556 or 2557 calendar days after the start."
+      }
+    ]
+  },
+  {
+    "slug": "days-to-years",
+    "from": "Days",
+    "to": "Years",
+    "inverse": "years-to-days",
+    "metaTitle": "Days to Years Converter | Time Calculator",
+    "metaDescription": "Convert days to years by dividing by 365. 730 days is 2 years and 1825 days is 5. Read decimal results like 2.739726 years and convert any day count instantly.",
+    "h1": "Days to Years",
+    "question": "How many years is 730 days?",
+    "answer": "730 days is 2 years, because the calculator counts each year as 365 days and 730 divided by 365 is 2. To convert days to years, divide the day count by 365. Pick the Year format to read any number of days as decimal years.",
+    "intro": "A 1000-day streak, a sobriety counter, a service record kept in days: at some point you want the figure in years. Divide the days by 365 and you have it. So 1825 days becomes 5 years, and 1000 days becomes 2.739726 years on the fixed 365-day year this calculator uses.",
+    "formula": "Divide the number of days by 365 to get years: 730 days ÷ 365 = 2 years, and 182.5 days ÷ 365 = 0.5 years.",
+    "expr": "730 days",
+    "format": "Year",
+    "result": "2 Years",
+    "table": [
+      {
+        "label": "73 Days",
+        "result": "0.2 Years"
+      },
+      {
+        "label": "182.5 Days",
+        "result": "0.5 Years"
+      },
+      {
+        "label": "365 Days",
+        "result": "1 Year"
+      },
+      {
+        "label": "730 Days",
+        "result": "2 Years"
+      },
+      {
+        "label": "1095 Days",
+        "result": "3 Years"
+      },
+      {
+        "label": "1825 Days",
+        "result": "5 Years"
+      },
+      {
+        "label": "3650 Days",
+        "result": "10 Years"
+      },
+      {
+        "label": "7300 Days",
+        "result": "20 Years"
+      },
+      {
+        "label": "18250 Days",
+        "result": "50 Years"
+      },
+      {
+        "label": "36500 Days",
+        "result": "100 Years"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "How many years is 10000 days?",
+        "a": "10000 days is 27.3972603 years on the 365-day year this calculator uses. Divide 10000 by 365 to get it. The 10000th day of a life lands a few months after the 27th birthday."
+      },
+      {
+        "q": "How many years is 500 days?",
+        "a": "500 days is 1.369863 years. The first 365 days complete one year, and the remaining 135 days divide by 365 to give the 0.369863. Call it 1 year and about 4.5 months."
+      },
+      {
+        "q": "Does the converter account for leap years?",
+        "a": "No. It uses a fixed 365-day year, so 730 days always returns 2 years. Calendar spans that cross a leap day run one day longer, which shifts the decimal by about 0.003 years per leap day."
       }
     ]
   }

@@ -24,7 +24,7 @@ defineProps<{
 
     <div class="tgrid">
       <figure v-for="(t, i) in items" :key="i" class="tcard">
-        <div class="tstars" :aria-label="`${t.stars} out of 5 stars`">
+        <div class="tstars" role="img" :aria-label="`${t.stars} out of 5 stars`">
           <svg v-for="n in t.stars" :key="n" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg>
         </div>
         <blockquote>{{ t.text }}</blockquote>

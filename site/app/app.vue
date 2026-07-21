@@ -16,8 +16,8 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
   <div class="page">
     <header class="site-head">
       <div class="wrap head-inner">
-        <a href="/" class="brand" aria-label="Time Calculator Cardamon home">
-          <img src="/icons/app-logo.png" alt="" width="34" height="34" class="brand-mark" />
+        <a href="/" class="brand" aria-label="Time Calculator by Cardamon — home">
+          <img src="/icons/app-logo.svg" alt="" width="34" height="34" class="brand-mark" />
           <span class="brand-name">Time&nbsp;Calculator<span class="brand-sub">by Cardamon</span></span>
         </a>
         <nav class="head-nav">
@@ -71,7 +71,7 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
       <div class="ticks" aria-hidden="true" />
       <div class="wrap foot-inner">
         <div class="foot-brand">
-          <img src="/icons/app-logo.png" alt="" width="38" height="38" class="foot-mark" />
+          <img src="/icons/app-logo.svg" alt="" width="38" height="38" class="foot-mark" />
           <div>
             <p class="foot-title">Time Calculator</p>
             <p class="foot-by">From Cardamon, running the same engine as the mobile apps.</p>

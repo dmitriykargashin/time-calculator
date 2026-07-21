@@ -100,7 +100,7 @@ export default defineNuxtConfig({
       { loc: '/reviews', lastmod: gitLastmod('app/pages/reviews/index.vue') },
       { loc: '/support', lastmod: gitLastmod('app/pages/support.vue') },
       { loc: '/whats-new', lastmod: gitLastmod('app/pages/whats-new.vue') },
-      ...GUIDES.map((g) => ({ loc: `/guides/${g.slug}`, lastmod: GUIDE_UPDATED })),
+      ...GUIDES.map((g) => ({ loc: `/guides/${g.slug}`, lastmod: g.updated ?? GUIDE_UPDATED })),
       ...CONVERSIONS.map((c) => ({
         loc: `/convert/${c.slug}`,
         lastmod: gitLastmod('app/utils/conversions.ts', 'app/pages/convert/[pair].vue'),
@@ -113,6 +113,10 @@ export default defineNuxtConfig({
   // DENIED by default (nothing stored) until a visitor accepts in the cookie
   // banner, which pushes a live `consent update`. See composables/useConsent.ts.
   gtag: {
+    // Deferred: gtag.js (~169 KiB, ~350 ms of mobile main-thread) loads at
+    // browser idle via app/plugins/gtag-idle.client.ts instead of blocking
+    // startup. initCommands (Consent Mode defaults) still run at initialize.
+    initMode: 'manual',
     initCommands: [
       ['consent', 'default', {
         analytics_storage: 'denied',

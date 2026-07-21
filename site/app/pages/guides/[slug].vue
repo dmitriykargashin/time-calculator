@@ -8,7 +8,7 @@ if (!guide) throw createError({ statusCode: 404, statusMessage: 'Guide not found
 const site = useSiteConfig()
 const url = `${site.url}/guides/${slug}`
 const related = relatedGuides(slug)
-const updatedLabel = monthYear(GUIDE_UPDATED)
+const updatedLabel = monthYear(guide.updated ?? GUIDE_UPDATED)
 
 useSeoMeta({
   title: guide.metaTitle,
@@ -30,7 +30,7 @@ const jsonLd = {
       '@id': `${url}#howto`,
       name: guide.h1,
       description: guide.answer,
-      dateModified: GUIDE_UPDATED,
+      dateModified: guide.updated ?? GUIDE_UPDATED,
       author: { '@id': `${site.url}/#person` },
       publisher: { '@type': 'Organization', name: 'Cardamon', url: 'https://www.cardamon.org' },
       step: guide.steps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.title, text: s.body })),
