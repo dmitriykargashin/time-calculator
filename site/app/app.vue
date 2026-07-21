@@ -4,6 +4,8 @@ const trackEvent = useTrack()
 const playUrl =
   'https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator'
 const appStoreUrl = 'https://apps.apple.com/app/id6789162864'
+const chromeUrl =
+  'https://chromewebstore.google.com/detail/time-calculator-cardamon/apgmodigokbblokbgfokpobmlcmijjpl'
 const year = 2026
 
 // Mobile burger menu (nav links are hidden under 640px).
@@ -82,6 +84,8 @@ watch(() => route.fullPath, () => { mobileOpen.value = false })
             <h3>Calculator</h3>
             <NuxtLink to="/">Web calculator</NuxtLink>
             <NuxtLink to="/convert">Unit converter</NuxtLink>
+            <a :href="chromeUrl" target="_blank" rel="noopener"
+              @click="trackEvent('app_store_click', { store: 'chrome', location: 'footer' })">Chrome&nbsp;extension</a>
             <NuxtLink to="/guides">Guides</NuxtLink>
             <NuxtLink to="/reviews">Reviews</NuxtLink>
             <NuxtLink to="/#faq">FAQ</NuxtLink>

@@ -7,6 +7,8 @@ const trackEvent = useTrack()
 const playUrl =
   'https://play.google.com/store/apps/details?id=com.dmitriykargashin.cardamontimecalculator'
 const appStoreUrl = 'https://apps.apple.com/app/id6789162864'
+const chromeUrl =
+  'https://chromewebstore.google.com/detail/time-calculator-cardamon/apgmodigokbblokbgfokpobmlcmijjpl'
 
 useSeoMeta({
   title: 'Time Calculator: Add & Subtract Hours, Minutes & Days',
@@ -62,7 +64,7 @@ const jsonLd = computed(() => ({
       logo: `${site.url}/icons/icon-512.png`,
       email: 'support@cardamon.org',
       founder: { '@id': `${site.url}/#person` },
-      sameAs: [playUrl, appStoreUrl],
+      sameAs: [playUrl, appStoreUrl, chromeUrl],
     },
     personNode(site.url),
     {
@@ -152,6 +154,11 @@ useHead({
           @click="trackEvent('app_store_click', { store: 'ios', location: 'hero' })">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16 1c.1 1.2-.4 2.4-1.1 3.2-.8.9-2 1.6-3.1 1.5-.1-1.2.4-2.4 1.1-3.2C13.7 1.6 15 .9 16 1Zm3.5 16.6c-.6 1.3-.9 1.9-1.6 3-1 1.6-2.5 3.6-4.3 3.6-1.6 0-2-1-4.2-1-2.1 0-2.6 1-4.2 1-1.8 0-3.2-1.8-4.2-3.4C-.9 17.4-1.2 11 1.5 7.9 2.7 6.4 4.4 5.6 6 5.6c1.7 0 2.7 1 4.1 1 1.3 0 2.1-1 4.1-1 1.4 0 2.9.8 4 2.1-3.5 1.9-3 6.9 1.3 7.9Z"/></svg>
           <span><small>Download on the</small>App Store</span>
+        </a>
+        <a :href="chromeUrl" target="_blank" rel="noopener" class="store-badge"
+          @click="trackEvent('app_store_click', { store: 'chrome', location: 'hero' })">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
+          <span><small>Add to</small>Chrome</span>
         </a>
       </div>
     </div>

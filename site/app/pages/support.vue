@@ -102,8 +102,9 @@ useHead({ script: jsonLd.map((j) => ({ type: 'application/ld+json', innerHTML: J
     </div>
 
     <p class="sup-back">
-      <NuxtLink to="/app">Get the app</NuxtLink> or
-      <NuxtLink to="/">use the web calculator</NuxtLink>.
+      <NuxtLink to="/app">Get the app</NuxtLink>,
+      <NuxtLink to="/">use the web calculator</NuxtLink>, or
+      <a href="https://chromewebstore.google.com/detail/time-calculator-cardamon/apgmodigokbblokbgfokpobmlcmijjpl" target="_blank" rel="noopener">add the Chrome extension</a>.
     </p>
   </section>
 </template>
